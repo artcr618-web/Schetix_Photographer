@@ -457,20 +457,34 @@ font-variant-numeric:tabular-nums;letter-spacing:-.02em}
 /* ---- второй экран шапки: время ----
    Продолжение зелёного экрана про деньги. Гамма голубой плашки
    «Условий труда» (.cn.b), чтобы читалось как другая тема. */
-#phr-root .hero2{background:linear-gradient(135deg,var(--c-b-600),var(--c-b-400));
+/* Второй экран: один заголовок и три рамки с данными за месяц.
+   Гамма — морская волна из карточки «Ставка в ноль» блока «Четыре цифры»
+   (.fct.b): ближе к зелёному, чем прежний синий. Фон — часы. */
+#phr-root .hero2{background:linear-gradient(155deg,#176B77 0%,#58B1B9 100%);
 color:#fff;border-radius:var(--r);padding:30px 26px 26px;text-align:center;
 position:relative;overflow:hidden;margin-top:14px}
 #phr-root .hero2>*{position:relative;z-index:1}
-#phr-root .hero2 .lb{font-size:14px;opacity:.9;margin-bottom:6px}
-#phr-root .hero2 .big{font-size:46px;font-weight:700;letter-spacing:-.03em;line-height:1.05}
-#phr-root .hero2 .un{font-size:15px;opacity:.85;margin-top:8px}
-#phr-root .hero2 .rw2{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;
-margin-top:24px;padding-top:22px;border-top:1px solid rgba(255,255,255,.24)}
-#phr-root .hero2 .rw2 .v{font-size:21px;font-weight:600;font-variant-numeric:tabular-nums}
-#phr-root .hero2 .rw2 .k{font-size:12.5px;opacity:.85;line-height:1.35;margin-top:4px}
-#phr-root .hero2 .rw2 .s{font-size:11.5px;opacity:.7;margin-top:3px}
-@media(max-width:760px){#phr-root .hero2 .rw2{grid-template-columns:1fr 1fr}
-#phr-root .hero2 .big{font-size:36px}}
+#phr-root .hero2 .h2deco{position:absolute;right:-38px;top:-30px;
+width:230px;height:230px;opacity:.13;z-index:0;pointer-events:none}
+#phr-root .hero2 .lb{font-size:19px;font-weight:700;letter-spacing:-.02em;
+margin-bottom:20px;opacity:1}
+#phr-root .hero2 .un{font-size:13.5px;opacity:.85;margin-top:18px;line-height:1.55}
+/* три рамки: прозрачные, только контур — заливка спорила бы с фоном */
+#phr-root .hero2 .h2g{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+#phr-root .hero2 .h2c{border:1px solid rgba(255,255,255,.34);border-radius:16px;
+padding:18px 16px;background:rgba(255,255,255,.10);display:flex;
+flex-direction:column;align-items:center}
+#phr-root .hero2 .h2t{display:block;font-size:12px;font-weight:600;
+letter-spacing:.04em;color:rgba(255,255,255,.85);line-height:1.4;min-height:34px}
+#phr-root .hero2 .h2v{display:block;font-size:34px;font-weight:800;
+letter-spacing:-.035em;line-height:1.05;margin-top:6px;
+font-variant-numeric:tabular-nums}
+#phr-root .hero2 .h2s{display:block;font-style:normal;font-size:12px;
+color:rgba(255,255,255,.82);margin-top:10px;padding-top:10px;
+border-top:1px solid rgba(255,255,255,.26);width:100%;line-height:1.45}
+@media(max-width:760px){#phr-root .hero2 .h2g{grid-template-columns:1fr}
+#phr-root .hero2 .h2v{font-size:30px}
+#phr-root .hero2 .h2t{min-height:0}}
 
 #phr-root .ex .exm:before{content:'';position:absolute;left:0;top:7px;
 width:9px;height:9px;border-radius:2px;transform:rotate(45deg);
@@ -720,6 +734,27 @@ margin-bottom:3px;font-size:13.5px}
 display:flex;align-items:flex-start;gap:7px}
 #phr-root .npd .warn b{color:var(--ink);font-weight:700}
 /* ---------- справочник-памятка ---------- */
+/* баннер благодарности: тот же приём, что «30 сценариев», гамма тёплая */
+#phr-root .cta.thx{background:linear-gradient(140deg,var(--c-a-700),var(--c-a-500))}
+#phr-root .cta.thx .btn2{color:var(--c-a-800)}
+#phr-root .cta.thx .btn2:hover{background:var(--c-a-50)}
+#phr-root .cta.thx .btn2:active{background:var(--c-a-100)}
+/* ---- «Поблагодарить проект» ----
+   Одна и та же кнопка во всех четырёх местах отчёта, чтобы узнавалась.
+   Образец формы — .savebtn (сохранить в PDF), гамма своя, тёплая. */
+#phr-root .thxb{display:inline-flex;align-items:center;justify-content:center;gap:10px;
+padding:13px 26px;border-radius:14px;border:1px solid var(--c-a-300);
+background:linear-gradient(140deg,var(--c-white),var(--c-a-50));
+font-size:14px;font-weight:700;color:var(--c-a-800);text-decoration:none;
+cursor:pointer;transition:background .2s,border-color .2s,transform .1s}
+#phr-root .thxb:hover{background:linear-gradient(140deg,var(--c-a-50),var(--c-a-100));
+border-color:var(--c-a-400)}
+#phr-root .thxb:active{transform:translateY(1px)}
+#phr-root .thxb svg{flex:none}
+/* обёртка: кнопка по центру, с отступами от соседних блоков */
+#phr-root .thxbar{text-align:center;margin:26px 0}
+#phr-root .thxbar.tight{margin:14px 0 0}
+
 /* Ссылка на пункт справочника: обычная текстовая, без плашек и рамок.
    Один вид на весь отчёт — и в легенде блока 01, и в остальных блоках. */
 #phr-root .refl{color:var(--c-b-600);text-decoration:none;
@@ -1694,6 +1729,7 @@ break-inside:avoid;page-break-inside:avoid;margin-bottom:12px}
 <p class="sub" data-t="rh_02">Быть независимым автором не значит работать больше, чем в найме, и постоянно уходить в минус.</p>
 <p class="sub sub2" data-t="rh_03">Мы оцифровали ваше творчество и превратили его в точную математическую модель, которая возвращает ценность каждому часу вашего таланта, времени и опыта — и защищает ваш доход от скрытых издержек и работы себе в убыток.</p>
 <div class="meta" id="rMeta">Расчёт от 2 августа 2026</div>
+<div class="thxbar tight"><a class="thxb" href="#thanks" data-thx><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M20.8 4.6a5.5 5.5 0 00-7.8 0l-1 1-1-1a5.5 5.5 0 00-7.8 7.8l1 1 7.8 7.8 7.8-7.8 1-1a5.5 5.5 0 000-7.8z" fill="none" stroke="var(--c-a-600)" stroke-width="2"/></svg><span data-t="rthx_01">Поблагодарить проект</span></a></div>
 </div>
 <div class="brand" title="Счетикс — твоя юнит-экономика"><span class="btx"><span class="bt">счетикс</span><span class="bd" data-t="bt_02"><i>т</i><i>в</i><i>о</i><i>я</i><i>&nbsp;</i><i>ю</i><i>н</i><i>и</i><i>т</i><i>-</i><i>э</i><i>к</i><i>о</i><i>н</i><i>о</i><i>м</i><i>и</i><i>к</i><i>а</i></span></span><svg class="bx" viewBox="0 0 32 32" fill="none" aria-hidden="true"><rect x="10.95" y="2.09" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 7.14)" fill="var(--c-gr3)"/><rect x="19.81" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 24.86 16)" fill="var(--c-g-500)"/><rect x="10.95" y="19.81" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 24.86)" fill="var(--c-gr3)"/><rect x="2.09" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 7.14 16)" fill="var(--c-gr3)"/></svg></div>
 </div>
@@ -1722,15 +1758,32 @@ break-inside:avoid;page-break-inside:avoid;margin-bottom:12px}
 </div></div>
 
 <div class="hero2" id="hero2">
-<div class="lb" data-t="rlb_02">Столько съёмок вы можете провести за год</div>
-<div class="big" id="h2Cnt">—</div>
+<svg class="h2deco" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+<circle cx="12" cy="13" r="9" stroke="#fff" stroke-width="1.3"/>
+<path d="M12 8.2V13l3.1 1.9" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M9 2.2h6M12 2.2v1.9" stroke="#fff" stroke-width="1.3" stroke-linecap="round"/>
+<path d="M19.2 5.6l1.5 1.5" stroke="#fff" stroke-width="1.3" stroke-linecap="round"/>
+</svg>
+<div class="lb" data-t="rlb_02">Ваш рабочий месяц</div>
+<div class="h2g">
+  <div class="h2c">
+    <span class="h2t" data-t="rk_04">Съёмок в месяц</span>
+    <b class="h2v" id="h2Cnt">—</b>
+    <i class="h2s" id="h2Sh">—</i>
+  </div>
+  <div class="h2c">
+    <span class="h2t" data-t="rk_05">Часов на работу с заказом</span>
+    <b class="h2v" id="h2Wk">—</b>
+    <i class="h2s" id="h2WkS">—</i>
+  </div>
+  <div class="h2c">
+    <span class="h2t" data-t="rk_06">Продвижение и прочее</span>
+    <b class="h2v" id="h2Ot">—</b>
+    <i class="h2s" id="h2OtS">—</i>
+  </div>
+</div>
 <div class="un" id="h2Sub"></div>
-<div class="rw2">
-<div><div class="v" id="h2Sh">—</div><div class="k" data-t="rk_04">Съёмка</div><div class="s" id="h2ShW"></div></div>
-<div><div class="v" id="h2Po">—</div><div class="k" data-t="rk_05">Обработка</div><div class="s" id="h2PoW"></div></div>
-<div><div class="v" id="h2Pr">—</div><div class="k" data-t="rk_06">Продвижение и работа с клиентом</div><div class="s" id="h2PrW"></div></div>
-<div><div class="v" id="h2Ot">—</div><div class="k" data-t="rk_07">Учёт, паузы и форс-мажоры</div><div class="s" id="h2OtW"></div></div>
-</div></div>
+</div>
 
 <div class="savebar top">
 <button class="savebtn" id="dlpdf">
@@ -1739,6 +1792,7 @@ break-inside:avoid;page-break-inside:avoid;margin-bottom:12px}
 <path d="M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2" stroke="var(--c-g-700)" stroke-width="2.2" stroke-linecap="round"/></svg>
 <span data-t="rsv_01">Сохранить отчёт в PDF</span></button>
 </div>
+<div class="thxbar"><a class="thxb" href="#thanks" data-thx><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M20.8 4.6a5.5 5.5 0 00-7.8 0l-1 1-1-1a5.5 5.5 0 00-7.8 7.8l1 1 7.8 7.8 7.8-7.8 1-1a5.5 5.5 0 000-7.8z" fill="none" stroke="var(--c-a-600)" stroke-width="2"/></svg><span data-t="rthx_01">Поблагодарить проект</span></a></div>
 
 <div class="cond">
 <div class="ch2" data-t="rcd_01">Ваши условия труда по ТК РФ</div>
@@ -1905,6 +1959,8 @@ break-inside:avoid;page-break-inside:avoid;margin-bottom:12px}
 <div class="pmknote txnote" id="txNote"></div>
 </div>
 
+<div class="thxbar"><a class="thxb" href="#thanks" data-thx><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M20.8 4.6a5.5 5.5 0 00-7.8 0l-1 1-1-1a5.5 5.5 0 00-7.8 7.8l1 1 7.8 7.8 7.8-7.8 1-1a5.5 5.5 0 000-7.8z" fill="none" stroke="var(--c-a-600)" stroke-width="2"/></svg><span data-t="rthx_01">Поблагодарить проект</span></a></div>
+
 <div class="card" id="card04"><div class="bn">05</div>
 <h2 class="big-h" data-t="rh2_02">Три сценария вашей работы</h2>
 <p class="hint ctr" data-t="rhi_02">Одна и та же загрузка при разной ставке часа. Разница только в цене — и в том, что остаётся вам</p>
@@ -1983,6 +2039,26 @@ break-inside:avoid;page-break-inside:avoid;margin-bottom:12px}
 <path d="M12 3v12m0 0l-4.5-4.5M12 15l4.5-4.5" stroke="var(--c-g-700)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2" stroke="var(--c-g-700)" stroke-width="2.2" stroke-linecap="round"/></svg>
 Забрать сценарии</a>
+</div>
+</div>
+
+<div class="cta thx">
+<svg class="dec" style="right:-60px;top:-50px" width="280" height="280" viewBox="0 0 100 100" fill="none">
+<circle cx="50" cy="50" r="50" fill="#fff"/></svg>
+<svg class="dec" style="right:90px;bottom:-70px" width="180" height="180" viewBox="0 0 100 100" fill="none">
+<circle cx="50" cy="50" r="50" fill="#fff"/></svg>
+<svg class="dec" style="right:52px;top:56px;opacity:.3" width="132" height="132" viewBox="0 0 24 24" fill="none">
+<path d="M20.8 4.6a5.5 5.5 0 00-7.8 0l-1 1-1-1a5.5 5.5 0 00-7.8 7.8l1 1 7.8 7.8 7.8-7.8 1-1a5.5 5.5 0 000-7.8z"
+ fill="var(--c-a-700)" stroke="#fff" stroke-width="1.3"/></svg>
+<div class="in">
+<div class="kick" data-t="rthx_02">Если расчёт оказался полезным</div>
+<h3 data-t="rthx_03">Поблагодарить проект</h3>
+<p data-t="rthx_04">«Счетикс» держится на тех, кому он пригодился. Любая сумма помогает считать точнее и добавлять новое.</p>
+<a class="btn2" href="#thanks" data-thx>
+<svg width="19" height="19" viewBox="0 0 24 24" fill="none">
+<path d="M20.8 4.6a5.5 5.5 0 00-7.8 0l-1 1-1-1a5.5 5.5 0 00-7.8 7.8l1 1 7.8 7.8 7.8-7.8 1-1a5.5 5.5 0 000-7.8z"
+ fill="none" stroke="var(--c-a-700)" stroke-width="2"/></svg>
+Поблагодарить</a>
 </div>
 </div>
 
@@ -2066,6 +2142,10 @@ function loadData(){
   }catch(e){}
   return DEMO;
 }
+/* Куда ведёт «Поблагодарить проект». Заглушка: поставьте сюда адрес
+   страницы благодарности (боости, ЮMoney и т.п.) — подставится во все
+   четыре кнопки сразу. */
+var THANKS_URL='#thanks';
 var d=loadData();
 
 function parts(x){
@@ -2231,29 +2311,45 @@ function render(){
   $('hExp').textContent=f0(expMo)+MO;
   $('hMon').textContent=f0(d.R/12)+MO;
 
-  /* --- второй экран шапки: время ---
-     Первый экран про деньги, этот про загрузку. Часы берём те же, что
-     в блоке 02, — второго расчёта нет. Проверка: сумма четырёх колонок
-     равна всему рабочему времени за год. */
+  /* адрес благодарности — во все кнопки разом */
   (function(){
-    var зак=Math.round(d.py||0);
-    var прочее=(d.accT||0)+(d.idle||0)+(d.fmT||0);
-    var всего=(d.sh||0)+(d.post||0)+(d.clT||0)+(d.promo||0)+прочее;
-    var нед=d.NW||43.8;
-    function пара(idV,idW,ч){
-      var v=$(idV), w=$(idW);
-      if(v)v.textContent=Math.round(ч)+' ч';
-      if(w)w.textContent=f1(ч/нед)+' ч/нед';
+    var сп=document.querySelectorAll('[data-thx]');
+    for(var i=0;i<сп.length;i++){
+      сп[i].setAttribute('href',THANKS_URL);
+      if(THANKS_URL.charAt(0)!=='#'){сп[i].setAttribute('target','_blank');
+        сп[i].setAttribute('rel','noopener');}
     }
-    var c=$('h2Cnt');
-    if(c)c.textContent=зак+' '+скл(зак,'съёмка','съёмки','съёмок');
+  })();
+
+  /* --- второй экран шапки: время ---
+     Первый экран про деньги, этот про загрузку. Всё в МЕСЯЦ: год
+     человек не чувствует, а месяц — планирует. Часы берём из тех же
+     полей, что блок 02, второго расчёта нет.
+     Проверка: сумма трёх плашек = всё рабочее время за месяц. */
+  (function(){
+    var МЕС=12;
+    var съём=(d.py||0)/МЕС;                       /* съёмок в месяц      */
+    var чСъём=(d.sh||0)/МЕС;                      /* часы на площадке    */
+    var чЗаказ=((d.post||0)+(d.clT||0))/МЕС;      /* обработка + клиент  */
+    var чПроч=((d.promo||0)+(d.accT||0)+(d.idle||0)+(d.fmT||0))/МЕС;
+    var всего=чСъём+чЗаказ+чПроч;
+    var нед=(d.NW||43.8)/МЕС;                     /* недель в месяце     */
+    function пара(idV,idS,знач,подпись){
+      var v=$(idV), s2=$(idS);
+      if(v)v.textContent=знач;
+      if(s2)s2.textContent=подпись;
+    }
+    пара('h2Cnt','h2Sh',f1(съём).replace(',0',''),
+      Math.round(чСъём)+' \u0447 \u043d\u0430 \u043f\u043b\u043e\u0449\u0430\u0434\u043a\u0435');
+    пара('h2Wk','h2WkS',Math.round(чЗаказ)+' \u0447',
+      '\u043e\u0431\u0440\u0430\u0431\u043e\u0442\u043a\u0430 \u0438 \u043e\u0431\u0449\u0435\u043d\u0438\u0435 \u0441 \u043a\u043b\u0438\u0435\u043d\u0442\u043e\u043c');
+    пара('h2Ot','h2OtS',Math.round(чПроч)+' \u0447',
+      '\u043f\u0440\u043e\u0434\u0432\u0438\u0436\u0435\u043d\u0438\u0435, \u0443\u0447\u0451\u0442, \u043f\u0430\u0443\u0437\u044b \u0438 \u0444\u043e\u0440\u0441-\u043c\u0430\u0436\u043e\u0440\u044b');
     var sb=$('h2Sub');
-    if(sb)sb.textContent='при вашей продолжительности '+f1(d.S)+' '+hword(d.S)+
-      ' \u2014 это '+Math.round(всего)+' \u0447 работы за год, или '+f1(всего/нед)+' ч в неделю';
-    пара('h2Sh','h2ShW',d.sh||0);
-    пара('h2Po','h2PoW',d.post||0);
-    пара('h2Pr','h2PrW',(d.clT||0)+(d.promo||0));
-    пара('h2Ot','h2OtW',прочее);
+    if(sb)sb.textContent='\u041f\u0440\u0438 \u0432\u0430\u0448\u0435\u0439 \u043f\u0440\u043e\u0434\u043e\u043b\u0436\u0438\u0442\u0435\u043b\u044c\u043d\u043e\u0441\u0442\u0438 \u0441\u044a\u0451\u043c\u043a\u0438 '+
+      f1(d.S)+' '+hword(d.S)+' \u044d\u0442\u043e '+Math.round(всего)+
+      ' \u0447 \u0440\u0430\u0431\u043e\u0442\u044b \u0432 \u043c\u0435\u0441\u044f\u0446, \u0438\u043b\u0438 '+
+      f1(всего/нед)+' \u0447 \u0432 \u043d\u0435\u0434\u0435\u043b\u044e';
   })();
 
   var dt=new Date();
