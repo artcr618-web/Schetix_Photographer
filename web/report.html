@@ -1,4 +1,6 @@
-<div id="phr-root">
+
+<!-- saved from url=(0044)file:///C:/Users/kommv/Downloads/report.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head><body><div id="phr-root">
 <style>
 #phr-root{
 /* ===== ПАЛИТРА · единственный источник цвета ===== */
@@ -98,12 +100,144 @@ padding:32px 16px 80px;display:block}
 #phr-root *{box-sizing:border-box;margin:0;padding:0}
 #phr-root .wp{max-width:1080px;margin:0 auto}
 
+/* ---------- верхнее меню ----------
+   Логотип слева, кнопки справа. Подложки нет: фон тот же, что у страницы,
+   поэтому меню читается как её продолжение. Липкое — остаётся сверху
+   при прокрутке, чтобы «Редактировать данные» была под рукой. */
+/* Меню прижато к верху страницы: над ним 28 px — не вплотную, но и
+   не провисает. Считается так: отступ страницы 32 − 12 + свой 8. */
+#phr-root .tbar{display:flex;align-items:center;justify-content:space-between;
+gap:24px;padding:8px 0 16px;margin:-12px 0 26px;background:var(--c-bg)}
+#phr-root .tbar .brand{margin-top:0}
+#phr-root .tbn{display:flex;align-items:center;gap:10px;flex:none}
+/* Текстовая кнопка и значки выделяются одинаково: мягкая подложка
+   и один радиус — единый приём на всё меню. */
+#phr-root .tbar .fbl{font-size:14px;font-weight:600;color:var(--c-gr);
+text-decoration:none;white-space:nowrap;padding:7px 12px;border-radius:11px;
+transition:background .18s,color .18s,transform .12s}
+#phr-root .tbar .fbl:hover{background:var(--c-white);color:var(--c-ink2)}
+#phr-root .tbar .fbl:active{transform:translateY(1px)}
+#phr-root .tbar .fbi{display:inline-flex;align-items:center;justify-content:center;
+width:34px;height:34px;border:0;border-radius:11px;background:transparent;
+color:var(--c-gr);cursor:pointer;padding:0;position:relative;
+transition:background .18s,color .18s,transform .12s}
+#phr-root .tbar .fbi svg{width:20px;height:20px}
+#phr-root .tbar .fbi:hover{background:var(--c-white);color:var(--c-ink2)}
+#phr-root .tbar .fbi:active{transform:translateY(1px)}
+/* Пометка о пробном режиме. Не кнопка — нажимать нечего, только
+   подсказка при наведении. Цвет янтарный: внимание, но не тревога. */
+#phr-root .tbar .fbt{color:var(--c-a-500);text-decoration:none}
+#phr-root .tbar .fbt:hover{background:var(--c-a-50);color:var(--c-a-700)}
+#phr-root .tbar .fbt:active{transform:translateY(1px)}
+#phr-root .tbar .fbh{color:var(--c-ig-3)}
+#phr-root .tbar .fbh:hover{background:#FDF4FB;color:var(--c-ig-2)}
+/* Подсказка оформлена как .segtip — плашка на диаграмме блока 01:
+   белый фон, светлая рамка, тот же радиус и тень. */
+#phr-root .tbar .fbi:after{content:attr(data-tip);position:absolute;
+top:calc(100% + 9px);left:50%;padding:10px 14px;border-radius:12px;
+background:var(--c-white);color:var(--c-ink);border:1px solid var(--c-ln);
+font-size:12.5px;font-weight:600;white-space:nowrap;opacity:0;pointer-events:none;
+transform:translateX(-50%) translateY(-4px);
+transition:opacity .16s,transform .16s;box-shadow:0 8px 28px rgba(16,24,40,.16)}
+#phr-root .tbar .fbi:hover:after{opacity:1;transform:translateX(-50%)}
+#phr-root .tbar .fbi.done:after{content:'\0421\0441\044b\043b\043a\0430 \0441\043a\043e\043f\0438\0440\043e\0432\0430\043d\0430';
+opacity:1;transform:translateX(-50%)}
+@media(max-width:700px){#phr-root .tbar{gap:12px;padding:6px 0 12px;margin-top:-8px}
+#phr-root .tbar .fbl{font-size:13px;padding:6px 9px}
+#phr-root .tbar .brand .bx{width:46px;height:46px}
+#phr-root .tbar .brand .bt{font-size:16px}}
+@media print{#phr-root .tbar{position:static;border-bottom:0}
+#phr-root .tbn{display:none}}
+
+/* ---------- плавающая плашка ----------
+   Меню выше прокручивается со страницей. Эта плашка появляется после
+   500 px, висит по центру сверху и содержит только действия.
+   Подложка полупрозрачная, углы как у блоков. */
+#phr-root .fbar{position:fixed;top:16px;left:50%;z-index:60;
+display:flex;align-items:center;gap:10px;padding:12px 18px;
+border-radius:var(--r);background:rgba(255,255,255,.62);
+backdrop-filter:blur(14px) saturate(140%);-webkit-backdrop-filter:blur(14px) saturate(140%);
+border:1px solid rgba(255,255,255,.55);box-shadow:0 8px 28px rgba(16,24,40,.12);
+opacity:0;visibility:hidden;transform:translateX(-50%) translateY(-14px);
+transition:opacity .28s ease,transform .28s ease,visibility .28s}
+#phr-root .fbar.on{opacity:1;visibility:visible;transform:translateX(-50%)}
+/* кнопки те же, что в меню: подложка и радиус при наведении */
+#phr-root .fbar .fbl{font-size:14px;font-weight:600;color:var(--c-gr);
+text-decoration:none;white-space:nowrap;padding:7px 12px;border-radius:11px;
+transition:background .18s,color .18s,transform .12s}
+#phr-root .fbar .fbl:hover{background:var(--c-white);color:var(--c-ink2)}
+#phr-root .fbar .fbl:active{transform:translateY(1px)}
+#phr-root .fbar .fbi{display:inline-flex;align-items:center;justify-content:center;
+width:34px;height:34px;border:0;border-radius:11px;background:transparent;
+color:var(--c-gr);cursor:pointer;padding:0;position:relative;
+transition:background .18s,color .18s,transform .12s}
+#phr-root .fbar .fbi svg{width:20px;height:20px}
+#phr-root .fbar .fbi:hover{background:var(--c-white);color:var(--c-ink2)}
+#phr-root .fbar .fbi:active{transform:translateY(1px)}
+#phr-root .fbar .fbt{color:var(--c-a-500);cursor:default}
+#phr-root .fbar .fbt:hover{background:var(--c-a-50);color:var(--c-a-700)}
+#phr-root .fbar .fbt:active{transform:none}
+#phr-root .fbar .fbh{color:var(--c-ig-3)}
+#phr-root .fbar .fbh:hover{background:#FDF4FB;color:var(--c-ig-2)}
+/* подсказка — как .segtip на диаграмме блока 01 */
+#phr-root .fbar .fbi:after{content:attr(data-tip);position:absolute;
+top:calc(100% + 9px);left:50%;padding:10px 14px;border-radius:12px;
+background:var(--c-white);color:var(--c-ink);border:1px solid var(--c-ln);
+font-size:12.5px;font-weight:600;white-space:nowrap;opacity:0;pointer-events:none;
+transform:translateX(-50%) translateY(-4px);
+transition:opacity .16s,transform .16s;box-shadow:0 8px 28px rgba(16,24,40,.16)}
+#phr-root .fbar .fbi:hover:after{opacity:1;transform:translateX(-50%)}
+#phr-root .fbar .fbi.done:after{content:'\0421\0441\044b\043b\043a\0430 \0441\043a\043e\043f\0438\0440\043e\0432\0430\043d\0430';
+opacity:1;transform:translateX(-50%)}
+@media(max-width:700px){#phr-root .fbar{top:10px;gap:8px;padding:10px 12px;
+max-width:calc(100vw - 20px)}
+#phr-root .fbar .fbl{font-size:13px;padding:6px 9px}}
+@media print{#phr-root .fbar{display:none!important}}
+
+/* ---------- появление диаграмм ----------
+   Диаграмма оживает, когда доезжает до экрана: кольца проявляются
+   поворотом, полосы наливаются слева направо. Приём тот же, что
+   в анкете, но кольца отчёта нарисованы секторами-path, а не обводкой,
+   поэтому вместо stroke-dasharray крутим сам рисунок.
+   Пока блок не показан, .anim держит его в исходном состоянии;
+   класс .go снимает ограничение и запускает переход. */
+
+/* Кольца: каждый сектор выезжает отдельно — это делает <animate>
+   внутри маски, запуск из скрипта. Здесь только подписи процентов:
+   они проступают, когда секторы уже на местах. */
+#phr-root .anim-ring text{opacity:0;transition:opacity .4s ease .55s}
+#phr-root .anim-ring.go text{opacity:1}
+
+/* полосы: наливаются слева направо */
+#phr-root .anim-bar .fill,
+#phr-root .anim-bar .bl > i,
+#phr-root .anim-bar .dfill{width:0!important;
+transition:width .9s cubic-bezier(.22,1,.36,1)}
+#phr-root .anim-bar.go .fill,
+#phr-root .anim-bar.go .bl > i,
+#phr-root .anim-bar.go .dfill{width:var(--w)!important}
+
+/* сетка недели: плашки дней проявляются волной */
+#phr-root .anim-wk i{opacity:0;transform:scale(.9);
+transition:opacity .45s ease,transform .45s ease}
+#phr-root .anim-wk.go i{opacity:1;transform:none}
+
+@media(prefers-reduced-motion:reduce){
+#phr-root .anim-ring text,#phr-root .anim-wk i{opacity:1;transform:none;transition:none}
+#phr-root .anim-bar .fill,#phr-root .anim-bar .bl > i,
+#phr-root .anim-bar .dfill{width:var(--w)!important;transition:none}}
+@media print{
+#phr-root .anim-ring text,#phr-root .anim-wk i{opacity:1!important;transform:none!important}
+#phr-root .anim-bar .fill,#phr-root .anim-bar .bl > i,
+#phr-root .anim-bar .dfill{width:var(--w)!important}}
+
 /* ---------- шапка ---------- */
-#phr-root .hdr{display:flex;align-items:flex-start;justify-content:space-between;
-gap:28px;margin:0 0 30px}
-#phr-root .htx{flex:1;min-width:0;padding-top:34px}
+#phr-root .hdr{margin:0 0 30px}
+#phr-root .htx{min-width:0;padding-top:0}
 #phr-root h1{font-size:34px;font-weight:700;letter-spacing:-.02em;margin-bottom:8px}
-#phr-root .sub{color:var(--gr);font-size:16px;max-width:660px}
+/* Ширина не ограничена: логотип теперь в меню, шапка занимает всю
+   колонку. Раньше max-width:660px рвал строку посередине. */
+#phr-root .sub{color:var(--gr);font-size:16px}
 #phr-root .sub2{font-size:14.5px;line-height:1.65;margin-top:10px;color:var(--c-gr2)}
 #phr-root .brand{display:flex;align-items:center;gap:12px;flex:none;line-height:1;margin-top:-4px}
 #phr-root .brand .btx{display:flex;flex-direction:column;align-items:stretch;gap:5px}
@@ -112,7 +246,8 @@ gap:28px;margin:0 0 30px}
 #phr-root .brand .bd{font-size:9px;color:var(--c-gr2);white-space:nowrap;display:flex;justify-content:space-between;text-transform:lowercase}
 #phr-root .brand .bd i{font-style:normal}
 #phr-root .brand .bx{display:block;flex:none;width:62px;height:62px}
-#phr-root .meta{font-size:12.5px;color:var(--c-gr2);margin-top:10px}
+/* дата — цветом заголовков, а не блёклой серой */
+#phr-root .meta{font-size:12.5px;color:var(--c-ink);margin-top:10px}
 
 /* ---------- карточки ---------- */
 #phr-root .card{background:#fff;border-radius:var(--r);padding:26px 28px;box-shadow:var(--sh);
@@ -579,26 +714,12 @@ font-variant-numeric:tabular-nums}
 #phr-root #card10 .subhd{text-align:center;max-width:620px;margin:0 auto 20px;font-size:14.5px}
 
 /* ---------- контент-план ---------- */
-#phr-root .cta{background:linear-gradient(135deg,var(--c-g-800),var(--c-g-500));border-radius:22px;
-padding:40px 44px;color:#fff;position:relative;overflow:hidden;margin-top:20px}
-#phr-root .cta .dec{position:absolute;pointer-events:none;opacity:.13}
-#phr-root .cta .in{position:relative;z-index:2;max-width:620px}
-#phr-root .cta .kick{font-size:12px;font-weight:700;letter-spacing:.14em;
-text-transform:uppercase;opacity:.75;margin-bottom:12px}
-#phr-root .cta h3{font-size:32px;font-weight:700;letter-spacing:-.025em;line-height:1.12;
-margin-bottom:14px}
-#phr-root .cta p{font-size:15.5px;line-height:1.65;opacity:.93;margin-bottom:26px}
-#phr-root .cta .btn2{display:inline-flex;align-items:center;gap:11px;background:#fff;
-color:var(--gd);border-radius:14px;padding:0 30px;height:56px;font-size:16px;
-font-weight:700;text-decoration:none;transition:.16s;box-shadow:0 6px 20px rgba(0,0,0,.16)}
 /* Кнопки во всех документах ведут себя одинаково: при наведении темнеют,
    при нажатии слегка утапливаются. Никаких подпрыгиваний. */
-#phr-root .cta .btn2:hover{background:var(--c-g-50)}
-#phr-root .cta .btn2:active{background:var(--c-g-100);transform:translateY(1px)}
-#phr-root .cta .sm{font-size:13px;opacity:.8;margin-top:16px}
-@media(max-width:700px){#phr-root .cta{padding:30px 24px}
-#phr-root .cta h3{font-size:24px}
-#phr-root .cal{gap:4px}}
+/* Баннер: заливка, радиус и отступы. Правило основное — на узких
+   экранах отступы ужимаются медиазапросом ниже. */
+#phr-root .cta{background:linear-gradient(135deg,var(--c-g-800),var(--c-g-500));border-radius:22px;
+padding:40px 44px;color:#fff;position:relative;overflow:hidden;margin-top:20px}
 
 /* ---------- лучший режим ---------- */
 /* Блок про налоги — в синей ведомственной гамме, а не в зелёной фирменной:
@@ -734,34 +855,83 @@ margin-bottom:3px;font-size:13.5px}
 display:flex;align-items:flex-start;gap:7px}
 #phr-root .npd .warn b{color:var(--ink);font-weight:700}
 /* ---------- справочник-памятка ---------- */
-/* баннер благодарности: тот же приём, что «30 сценариев», гамма тёплая */
-#phr-root .cta.thx{background:linear-gradient(140deg,var(--c-a-700),var(--c-a-500))}
-#phr-root .cta.thx .btn2{color:var(--c-a-800)}
-#phr-root .cta.thx .btn2:hover{background:var(--c-a-50)}
-#phr-root .cta.thx .btn2:active{background:var(--c-a-100)}
-/* ---- «Поблагодарить проект» ----
-   Одна и та же кнопка во всех четырёх местах отчёта, чтобы узнавалась.
-   Образец формы — .savebtn (сохранить в PDF), гамма своя, тёплая. */
-#phr-root .thxb{display:inline-flex;align-items:center;justify-content:center;gap:10px;
-padding:13px 26px;border-radius:14px;border:1px solid var(--c-a-300);
-background:linear-gradient(140deg,var(--c-white),var(--c-a-50));
-font-size:14px;font-weight:700;color:var(--c-a-800);text-decoration:none;
-cursor:pointer;transition:background .2s,border-color .2s,transform .1s}
-#phr-root .thxb:hover{background:linear-gradient(140deg,var(--c-a-50),var(--c-a-100));
-border-color:var(--c-a-400)}
-#phr-root .thxb:active{transform:translateY(1px)}
-#phr-root .thxb svg{flex:none}
-/* обёртка: кнопка по центру, с отступами от соседних блоков */
-#phr-root .thxbar{text-align:center;margin:26px 0}
-#phr-root .thxbar.tight{margin:14px 0 0}
+/* Скрытые элементы: остаются в разметке, но не показываются.
+   Так проще вернуть — не нужно искать код по архиву. */
+#phr-root .hide{display:none!important}
 
-/* Ссылка на пункт справочника: обычная текстовая, без плашек и рамок.
-   Один вид на весь отчёт — и в легенде блока 01, и в остальных блоках. */
-#phr-root .refl{color:var(--c-b-600);text-decoration:none;
-border-bottom:1px solid var(--c-b-250);white-space:nowrap}
-#phr-root .refl:hover{color:var(--c-b-800);border-bottom-color:var(--c-b-500)}
-#phr-root .pmknote{margin-top:26px;padding:22px 26px;background:var(--c-surf);border-radius:16px;
-border:1px solid var(--c-bg)}
+/* Общая форма баннера. Её использует .cta.thx; баннер «30 сценариев»
+   вынесен в части/09_баннер_сценарии.html, но правила нужны здесь. */
+
+#phr-root .cta .dec{position:absolute;pointer-events:none;opacity:.13}
+#phr-root .cta .in{position:relative;z-index:2;max-width:620px}
+#phr-root .cta .kick{font-size:12px;font-weight:700;letter-spacing:.14em;
+text-transform:uppercase;opacity:.75;margin-bottom:12px}
+#phr-root .cta h3{font-size:32px;font-weight:700;letter-spacing:-.025em;line-height:1.12;
+margin-bottom:14px}
+#phr-root .cta p{font-size:15.5px;line-height:1.65;opacity:.93;margin-bottom:26px}
+#phr-root .cta .btn2{display:inline-flex;align-items:center;gap:11px;background:#fff;
+color:var(--gd);border-radius:14px;padding:0 30px;height:56px;font-size:16px;
+font-weight:700;text-decoration:none;transition:.16s;box-shadow:0 6px 20px rgba(0,0,0,.16)}
+#phr-root .cta .btn2:hover{background:var(--c-g-50)}
+#phr-root .cta .btn2:active{background:var(--c-g-100);transform:translateY(1px)}
+#phr-root .cta .sm{font-size:13px;opacity:.8;margin-top:16px}
+@media(max-width:700px){#phr-root .cta{padding:30px 24px}
+#phr-root .cta h3{font-size:24px}
+#phr-root .cal{gap:4px}}
+
+/* Баннер благодарности — в одной гамме с кнопками .thxb: тот же
+   инста-градиент, те же сердечки в декоре. */
+/* та же крутящаяся заливка, что на кнопках, только медленнее */
+#phr-root .cta.thx{background:linear-gradient(140deg,var(--c-ig-1),var(--c-ig-2) 42%,var(--c-ig-4))}
+
+#phr-root .cta.thx .in{position:relative;z-index:2}
+
+#phr-root .cta.thx .btn2{color:var(--c-ig-2)}
+#phr-root .cta.thx .btn2:hover{background:#FDF4FB}
+#phr-root .cta.thx .btn2:active{background:#FBE9F6}
+/* ---- «Поблагодарить проект» ----
+   Форма — от кнопки «Сохранить отчёт в PDF» (.savebtn): та же ширина,
+   высота и кегль. Оформление — от плашек блока 08 (.cn.s1..s3):
+   инста-градиент заливкой, белый текст, круг-блик в углу. */
+#phr-root .thxb{display:flex;width:100%;align-items:center;justify-content:center;gap:11px;
+border:0;border-radius:var(--r);padding:0 30px;height:72px;
+background:linear-gradient(140deg,var(--c-ig-1),var(--c-ig-2) 42%,var(--c-ig-4));
+font-family:inherit;font-size:17px;font-weight:700;letter-spacing:-.01em;
+color:var(--c-white);text-decoration:none;cursor:pointer;
+position:relative;overflow:hidden;box-shadow:0 6px 20px rgba(16,24,40,.18);
+transition:filter .16s,transform .1s}
+/* Декор в углу: круг-блик как у .cn:before в блоке 08, поверх него
+   сердце — тот же приём, что на баннере благодарности. */
+#phr-root .thxb:before{content:'';position:absolute;right:-30px;top:-46px;
+width:130px;height:130px;border-radius:50%;background:rgba(255,255,255,.13)}
+#phr-root .thxb .thxd{position:absolute;right:16px;top:50%;
+transform:translateY(-50%);width:56px;height:56px;opacity:.30;
+z-index:0;pointer-events:none}
+#phr-root .thxb .thxd2{position:absolute;left:26px;top:50%;
+transform:translateY(-50%);width:34px;height:34px;opacity:.22;
+z-index:0;pointer-events:none}
+
+#phr-root .thxb span,#phr-root .thxb svg{position:relative;z-index:1}
+#phr-root .thxb:hover{filter:brightness(1.06)}
+#phr-root .thxb:active{transform:translateY(1px);filter:brightness(.97)}
+#phr-root .thxb svg{flex:none}
+/* обёртка повторяет .savebar: тот же отступ, ширина во всю колонку */
+#phr-root .thxbar{margin:16px 0;text-align:center}
+/* Пояснение под кнопкой: почему проект просит поддержки. Тон спокойный,
+   кегль как у примечаний, ширина ограничена — читается одним взглядом. */
+#phr-root .thxn{max-width:720px;margin:14px auto 0;font-size:13px;line-height:1.7;
+color:var(--c-gr);text-align:center}
+#phr-root .thxn br{content:"";display:block;margin-bottom:9px}
+
+/* Ссылка на пункт справочника: не выделяется цветом — наследует шрифт,
+   кегль, начертание и цвет того описания, вместо которого стоит.
+   Подчёркивание оставлено, чтобы было видно: это ссылка. */
+#phr-root .refl{color:inherit;font:inherit;text-decoration:none;
+border-bottom:1px solid currentColor;opacity:.9;white-space:nowrap}
+#phr-root .refl:hover{opacity:1}
+/* Без подложки: фон тот же, что у страницы и меню. Отступы по бокам
+   убраны — текст выравнивается по общей колонке. */
+#phr-root .pmknote{margin-top:26px;padding:22px 0;background:none;border:0}
 #phr-root .pmknote .pnh{font-size:13px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;
 color:var(--c-gr2);margin-bottom:14px}
 #phr-root .pmknote .pi2{font-size:12.5px;line-height:1.7;color:var(--c-gr);margin-bottom:9px;
@@ -782,9 +952,11 @@ margin-top:1px;transition:background .25s,color .25s,border-color .25s}
 border-color:transparent;color:var(--c-white)}
 #phr-root .pmknote .pi2:target b{color:var(--c-b-800)}
 #phr-root .pmknote .pi2 b{color:var(--c-ink2);font-weight:600}
-#phr-root .pmknote .pi2 a{color:var(--c-fns-2);font-weight:600;text-decoration:none;
-border-bottom:1px solid var(--c-fns-3)}
-#phr-root .pmknote .pi2 a:hover{border-bottom-color:var(--c-fns-2)}
+/* Ссылки внутри памятки — как .refl: цветом не выделяются, наследуют
+   шрифт абзаца, обозначены только подчёркиванием. */
+#phr-root .pmknote .pi2 a{color:inherit;font:inherit;text-decoration:none;
+border-bottom:1px solid currentColor;opacity:.9}
+#phr-root .pmknote .pi2 a:hover{opacity:1}
 #phr-root .pmknote .pnf{font-size:12px;color:var(--c-gr2);margin-top:14px;padding-top:12px;
 border-top:1px solid var(--c-bg);line-height:1.55}
 
@@ -944,7 +1116,6 @@ margin:16px 0 8px;position:relative;z-index:1}
 #phr-root .cn .sm{font-size:13.5px;opacity:.92;line-height:1.45;position:relative;z-index:1}
 @media(max-width:760px){#phr-root .cnd{grid-template-columns:1fr}
 #phr-root .cn{min-height:auto;padding:22px}#phr-root .cn .bg{font-size:32px}}
-
 
 /* ---------- полная таблица расчёта ---------- */
 #phr-root .tabw{margin-top:10px;overflow-x:auto}
@@ -1228,6 +1399,15 @@ border-radius:13px;padding:12px 15px;background:var(--c-surf);position:relative;
 /* предупреждение внутри строки легенды: вид из .note.warn,
    здесь только раскладка в гриде */
 #phr-root .lgi .note.warn{grid-column:1/-1;z-index:2;margin-top:10px}
+/* Кнопка внутри предупреждения: ведёт к нужному полю анкеты.
+   Гамма предупреждения, чтобы не спорить с плашкой. */
+#phr-root .lgwb{display:table;margin-top:12px;
+padding:8px 15px;border-radius:11px;border:1px solid var(--c-a-300);
+background:var(--c-white);color:var(--c-a-800);font-size:12.5px;font-weight:700;
+text-decoration:none;transition:background .18s,border-color .18s,transform .12s}
+#phr-root .lgwb:hover{background:var(--c-a-50);border-color:var(--c-a-400)}
+#phr-root .lgwb:active{transform:translateY(1px)}
+@media print{#phr-root .lgwb{display:none}}
 #phr-root .lgi.zero .lvv .a{font-size:12.5px;font-weight:600;color:var(--c-a-700)}
 #phr-root .lgi .ltx{position:relative;z-index:2;display:flex;align-items:center;gap:10px;min-width:0}
 #phr-root .lgi .ltx i{width:10px;height:10px;border-radius:3px;flex:none}
@@ -1661,8 +1841,27 @@ background:var(--c-bg);border-radius:10px;padding:7px 13px}
 #phr-root .wk i{height:30px;border-radius:9px}
 #phr-root .wk .hr{line-height:30px;font-size:10px}}
 
+/* ---------- пробный режим: объяснение ----------
+   Перед подвалом. Подложки нет: это сноска ко всему отчёту, а не блок
+   с данными. Отделена сверху чертой. Копия того, что в анкете. */
+#phr-root .trb{padding:22px 4px 0;margin:14px 0 4px;
+border-top:1px solid var(--c-ln)}
+#phr-root .trb .trh{display:flex;align-items:center;gap:11px;
+font-size:17px;font-weight:700;letter-spacing:-.02em;
+color:var(--c-ink);margin-bottom:11px}
+#phr-root .trb .tri{width:21px;height:21px;flex:none;display:block;color:var(--c-gr)}
+#phr-root .trb p{font-size:13.5px;line-height:1.6;color:var(--c-gr);margin:0 0 9px}
+#phr-root .trb p:last-child{margin-bottom:0}
+#phr-root .trb b{font-weight:700;color:var(--c-ink2)}
+#phr-root .trb:target{animation:phrtr 2.4s ease}
+@keyframes phrtr{0%,42%{background:var(--c-a-50)}100%{background:transparent}}
+@media print{#phr-root .trb{display:none}}
+
 /* ---------- подвал ---------- */
-#phr-root .foot{display:flex;justify-content:center;padding:30px 0 10px}
+#phr-root .foot{display:flex;flex-direction:column;align-items:center;gap:12px;
+padding:30px 0 10px}
+/* реквизиты под знаком: мелко и тихо, это не часть логотипа */
+#phr-root .fcop{font-size:11.5px;color:var(--c-gr2);text-align:center;line-height:1.5}
 /* подвальный знак — точная копия шапки, уменьшенная. Пропорции те же:
    надпись слева, знак справа, «твоя юнит-экономика» растянута под словом */
 #phr-root .lgs{display:flex;align-items:center;gap:9px;line-height:1}
@@ -1674,7 +1873,7 @@ display:flex;justify-content:space-between;text-transform:lowercase}
 #phr-root .lgs .bd i{font-style:normal}
 #phr-root .lgs .lx{display:block;flex:none;width:46px;height:46px}
 #phr-root .savebar{margin-top:22px;padding-top:20px;border-top:1px solid var(--c-bg);text-align:center}
-#phr-root .savebar.top{margin:0 0 16px;padding-top:0;border-top:0}
+#phr-root .savebar.top{margin:16px 0;padding-top:0;border-top:0}
 #phr-root .savebtn{display:flex;width:100%;align-items:center;justify-content:center;gap:11px;
 background:#fff;color:var(--gd);border:1.5px solid var(--ln);border-radius:var(--r);
 padding:0 30px;height:72px;font-family:inherit;font-size:17px;font-weight:600;
@@ -1699,7 +1898,6 @@ margin-top:12px;line-height:1.5}
 @media(max-width:820px){
 #phr-root .three{grid-template-columns:1fr;gap:28px}
 #phr-root .scmp{grid-template-columns:1fr}
-#phr-root .hdr{flex-direction:column-reverse;align-items:flex-start;gap:14px}
 #phr-root .htx{padding-top:4px}
 #phr-root h1{font-size:26px}
 #phr-root .hero .big{font-size:40px}
@@ -1723,76 +1921,108 @@ break-inside:avoid;page-break-inside:avoid;margin-bottom:12px}
 
 <div class="wp">
 
+<!-- Верхнее меню: логотип слева, кнопки справа. Подложки нет —
+     фон тот же, что у страницы. Липкое: остаётся сверху при прокрутке. -->
+<div class="tbar" id="topbar">
+<nav class="tbn">
+<a class="fbl" id="editLink" href="file:///C:/Users/kommv/Downloads/calc.html">Редактировать данные</a>
+<a class="fbi fbt" href="file:///C:/Users/kommv/Downloads/report.html#trial" data-tip="Сервис работает в пробном режиме" aria-label="Пробный режим">
+<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 4.2L2.8 20h18.4z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"></path><path d="M12 10v4.4" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"></path><circle cx="12" cy="17.4" r="1.05" fill="currentColor"></circle></svg></a>
+<button class="fbi" id="dlBtn" type="button" data-tip="Скачать отчёт" aria-label="Скачать отчёт">
+<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0l-4.5-4.5M12 15l4.5-4.5" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"></path><path d="M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"></path></svg></button>
+<button class="fbi" id="shareBtn" type="button" data-tip="Поделиться" aria-label="Поделиться">
+<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="18" cy="5" r="2.6" stroke="currentColor" stroke-width="1.8"></circle><circle cx="6" cy="12" r="2.6" stroke="currentColor" stroke-width="1.8"></circle><circle cx="18" cy="19" r="2.6" stroke="currentColor" stroke-width="1.8"></circle><path d="M8.4 10.8l7.2-4.2M8.4 13.2l7.2 4.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg></button>
+<a class="fbi fbh" href="file:///C:/Users/kommv/Downloads/report.html#thanks" data-thx="" data-tip="Поблагодарить проект" aria-label="Поблагодарить проект">
+<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 00-7.8 0l-1 1-1-1a5.5 5.5 0 00-7.8 7.8l1 1 7.8 7.8 7.8-7.8 1-1a5.5 5.5 0 000-7.8z" fill="none" stroke="currentColor" stroke-width="2"></path></svg></a>
+</nav>
+<div class="brand" title="Счетикс — твоя юнит-экономика"><span class="btx"><span class="bt">счетикс</span><span class="bd" data-t="bt_02"><i>т</i><i>в</i><i>о</i><i>я</i><i>&nbsp;</i><i>ю</i><i>н</i><i>и</i><i>т</i><i>-</i><i>э</i><i>к</i><i>о</i><i>н</i><i>о</i><i>м</i><i>и</i><i>к</i><i>а</i></span></span><svg class="bx" viewBox="0 0 32 32" fill="none" aria-hidden="true"><rect x="10.95" y="2.09" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 7.14)" fill="var(--c-gr3)"></rect><rect x="19.81" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 24.86 16)" fill="var(--c-g-500)"></rect><rect x="10.95" y="19.81" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 24.86)" fill="var(--c-gr3)"></rect><rect x="2.09" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 7.14 16)" fill="var(--c-gr3)"></rect></svg></div>
+<!-- Плавающая плашка. Меню выше прокручивается вместе со страницей,
+     а эта появляется после 500 px и висит по центру сверху. Логотипа
+     в ней нет — только действия. -->
+<div class="fbar on" id="fbar">
+<a class="fbl" id="editLink2" href="file:///C:/Users/kommv/Downloads/calc.html">Редактировать данные</a>
+<span class="fbi fbt" aria-label="Пробный режим">
+<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 4.2L2.8 20h18.4z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"></path><path d="M12 10v4.4" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"></path><circle cx="12" cy="17.4" r="1.05" fill="currentColor"></circle></svg></span>
+<button class="fbi" id="dlBtn2" type="button" data-tip="Скачать отчёт" aria-label="Скачать отчёт">
+<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0l-4.5-4.5M12 15l4.5-4.5" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"></path><path d="M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"></path></svg></button>
+<button class="fbi" id="shareBtn2" type="button" data-tip="Поделиться" aria-label="Поделиться">
+<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="18" cy="5" r="2.6" stroke="currentColor" stroke-width="1.8"></circle><circle cx="6" cy="12" r="2.6" stroke="currentColor" stroke-width="1.8"></circle><circle cx="18" cy="19" r="2.6" stroke="currentColor" stroke-width="1.8"></circle><path d="M8.4 10.8l7.2-4.2M8.4 13.2l7.2 4.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg></button>
+<a class="fbi fbh" href="file:///C:/Users/kommv/Downloads/report.html#thanks" data-thx="" data-tip="Поблагодарить проект" aria-label="Поблагодарить проект">
+<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 00-7.8 0l-1 1-1-1a5.5 5.5 0 00-7.8 7.8l1 1 7.8 7.8 7.8-7.8 1-1a5.5 5.5 0 000-7.8z" fill="none" stroke="currentColor" stroke-width="2"></path></svg></a>
+</div>
+
+</div>
+
 <div class="hdr">
 <div class="htx">
 <h1 data-t="rh_01">Юнит-экономика фотографа</h1>
-<p class="sub" data-t="rh_02">Быть независимым автором не значит работать больше, чем в найме, и постоянно уходить в минус.</p>
-<p class="sub sub2" data-t="rh_03">Мы оцифровали ваше творчество и превратили его в точную математическую модель, которая возвращает ценность каждому часу вашего таланта, времени и опыта — и защищает ваш доход от скрытых издержек и работы себе в убыток.</p>
-<div class="meta" id="rMeta">Расчёт от 2 августа 2026</div>
-<div class="thxbar tight"><a class="thxb" href="#thanks" data-thx><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M20.8 4.6a5.5 5.5 0 00-7.8 0l-1 1-1-1a5.5 5.5 0 00-7.8 7.8l1 1 7.8 7.8 7.8-7.8 1-1a5.5 5.5 0 000-7.8z" fill="none" stroke="var(--c-a-600)" stroke-width="2"/></svg><span data-t="rthx_01">Поблагодарить проект</span></a></div>
+<p class="sub" data-t="rh_02">Создано фотографами для фотографов на основе реального опыта.</p>
+<p class="sub sub2" data-t="rh_03">Быть независимым автором не значит работать больше, чем в найме, и постоянно уходить в минус.</p>
+<div class="meta" id="rMeta">Расчёт от 13 августа 2026</div>
 </div>
-<div class="brand" title="Счетикс — твоя юнит-экономика"><span class="btx"><span class="bt">счетикс</span><span class="bd" data-t="bt_02"><i>т</i><i>в</i><i>о</i><i>я</i><i>&nbsp;</i><i>ю</i><i>н</i><i>и</i><i>т</i><i>-</i><i>э</i><i>к</i><i>о</i><i>н</i><i>о</i><i>м</i><i>и</i><i>к</i><i>а</i></span></span><svg class="bx" viewBox="0 0 32 32" fill="none" aria-hidden="true"><rect x="10.95" y="2.09" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 7.14)" fill="var(--c-gr3)"/><rect x="19.81" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 24.86 16)" fill="var(--c-g-500)"/><rect x="10.95" y="19.81" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 24.86)" fill="var(--c-gr3)"/><rect x="2.09" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 7.14 16)" fill="var(--c-gr3)"/></svg></div>
+
 </div>
 
 <div class="hero">
 <div class="hdeco" aria-hidden="true">
 <svg class="h1" viewBox="0 0 32 32" fill="none">
-<rect x="10.95" y="2.09" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 7.14)" fill="#fff"/>
-<rect x="19.81" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 24.86 16)" fill="#fff"/>
-<rect x="10.95" y="19.81" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 24.86)" fill="#fff"/>
-<rect x="2.09" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 7.14 16)" fill="#fff"/></svg>
+<rect x="10.95" y="2.09" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 7.14)" fill="#fff"></rect>
+<rect x="19.81" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 24.86 16)" fill="#fff"></rect>
+<rect x="10.95" y="19.81" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 24.86)" fill="#fff"></rect>
+<rect x="2.09" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 7.14 16)" fill="#fff"></rect></svg>
 <svg class="h2i" viewBox="0 0 24 24" fill="none">
-<rect x="2.2" y="6.4" width="19.6" height="13.4" rx="3.2" stroke="#fff" stroke-width="1"/>
-<path d="M8.4 6.4l1.3-2.3h4.6l1.3 2.3" stroke="#fff" stroke-width="1" stroke-linejoin="round"/>
-<circle cx="12" cy="13.1" r="4.1" stroke="#fff" stroke-width="1"/>
-<circle cx="12" cy="13.1" r="1.7" stroke="#fff" stroke-width=".8"/></svg>
+<rect x="2.2" y="6.4" width="19.6" height="13.4" rx="3.2" stroke="#fff" stroke-width="1"></rect>
+<path d="M8.4 6.4l1.3-2.3h4.6l1.3 2.3" stroke="#fff" stroke-width="1" stroke-linejoin="round"></path>
+<circle cx="12" cy="13.1" r="4.1" stroke="#fff" stroke-width="1"></circle>
+<circle cx="12" cy="13.1" r="1.7" stroke="#fff" stroke-width=".8"></circle></svg>
 </div>
 <div class="lb" data-t="rlb_01">Ваша ставка за час съёмки</div>
-<div class="big" id="hRate">—</div>
-<div class="un" id="hRateEx"></div>
-<div class="fact" id="hFact"></div>
+<div class="big" id="hRate">19&nbsp;000 ₽/ч</div>
+<div class="un" id="hRateEx">(18&nbsp;946 ₽/ч)</div>
+<div class="fact" id="hFact">Фактическая стоимость вашего часа работы — <b>1&nbsp;712 ₽/ч</b></div>
 <div class="rw">
-<div><div class="v" id="hInc">—</div><div class="k" data-t="rk_03">Ваш доход на руки</div></div>
-<div><div class="v" id="hExp">—</div><div class="k" data-t="rk_01">Всего расходов</div></div>
-<div><div class="v" id="hMon">—</div><div class="k" data-t="rk_02">Общая выручка</div></div>
+<div><div class="v" id="hInc">250&nbsp;000 ₽/мес</div><div class="k" data-t="rk_03">Ваш доход на руки</div></div>
+<div><div class="v" id="hExp">91&nbsp;968 ₽/мес</div><div class="k" data-t="rk_01">Всего расходов</div></div>
+<div><div class="v" id="hMon">341&nbsp;968 ₽/мес</div><div class="k" data-t="rk_02">Общая выручка</div></div>
 </div></div>
 
 <div class="hero2" id="hero2">
 <svg class="h2deco" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-<circle cx="12" cy="13" r="9" stroke="#fff" stroke-width="1.3"/>
-<path d="M12 8.2V13l3.1 1.9" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M9 2.2h6M12 2.2v1.9" stroke="#fff" stroke-width="1.3" stroke-linecap="round"/>
-<path d="M19.2 5.6l1.5 1.5" stroke="#fff" stroke-width="1.3" stroke-linecap="round"/>
+<circle cx="12" cy="13" r="9" stroke="#fff" stroke-width="1.3"></circle>
+<path d="M12 8.2V13l3.1 1.9" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+<path d="M9 2.2h6M12 2.2v1.9" stroke="#fff" stroke-width="1.3" stroke-linecap="round"></path>
+<path d="M19.2 5.6l1.5 1.5" stroke="#fff" stroke-width="1.3" stroke-linecap="round"></path>
 </svg>
 <div class="lb" data-t="rlb_02">Ваш рабочий месяц</div>
 <div class="h2g">
   <div class="h2c">
     <span class="h2t" data-t="rk_04">Съёмок в месяц</span>
-    <b class="h2v" id="h2Cnt">—</b>
-    <i class="h2s" id="h2Sh">—</i>
+    <b class="h2v" id="h2Cnt">18,1</b>
+    <i class="h2s" id="h2Sh">18 ч на площадке</i>
   </div>
   <div class="h2c">
     <span class="h2t" data-t="rk_05">Часов на работу с заказом</span>
-    <b class="h2v" id="h2Wk">—</b>
-    <i class="h2s" id="h2WkS">—</i>
+    <b class="h2v" id="h2Wk">72 ч</b>
+    <i class="h2s" id="h2WkS">обработка и общение с клиентом</i>
   </div>
   <div class="h2c">
     <span class="h2t" data-t="rk_06">Продвижение и прочее</span>
-    <b class="h2v" id="h2Ot">—</b>
-    <i class="h2s" id="h2OtS">—</i>
+    <b class="h2v" id="h2Ot">56 ч</b>
+    <i class="h2s" id="h2OtS">продвижение, учёт, паузы и форс-мажоры</i>
   </div>
 </div>
-<div class="un" id="h2Sub"></div>
+<div class="un" id="h2Sub">При вашей продолжительности съёмки 1,0 час это 146 ч работы в месяц, или 40,0 ч в неделю</div>
 </div>
 
 <div class="savebar top">
 <button class="savebtn" id="dlpdf">
 <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-<path d="M12 3v12m0 0l-4.5-4.5M12 15l4.5-4.5" stroke="var(--c-g-700)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2" stroke="var(--c-g-700)" stroke-width="2.2" stroke-linecap="round"/></svg>
+<path d="M12 3v12m0 0l-4.5-4.5M12 15l4.5-4.5" stroke="var(--c-g-700)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path>
+<path d="M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2" stroke="var(--c-g-700)" stroke-width="2.2" stroke-linecap="round"></path></svg>
 <span data-t="rsv_01">Сохранить отчёт в PDF</span></button>
 </div>
-<div class="thxbar"><a class="thxb" href="#thanks" data-thx><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M20.8 4.6a5.5 5.5 0 00-7.8 0l-1 1-1-1a5.5 5.5 0 00-7.8 7.8l1 1 7.8 7.8 7.8-7.8 1-1a5.5 5.5 0 000-7.8z" fill="none" stroke="var(--c-a-600)" stroke-width="2"/></svg><span data-t="rthx_01">Поблагодарить проект</span></a></div>
+<div class="thxbar"><a class="thxb" href="file:///C:/Users/kommv/Downloads/report.html#thanks" data-thx=""><svg class="thxd" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 00-7.8 0l-1 1-1-1a5.5 5.5 0 00-7.8 7.8l1 1 7.8 7.8 7.8-7.8 1-1a5.5 5.5 0 000-7.8z" fill="#fff"></path></svg><svg class="thxd2" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 00-7.8 0l-1 1-1-1a5.5 5.5 0 00-7.8 7.8l1 1 7.8 7.8 7.8-7.8 1-1a5.5 5.5 0 000-7.8z" fill="#fff"></path></svg><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M20.8 4.6a5.5 5.5 0 00-7.8 0l-1 1-1-1a5.5 5.5 0 00-7.8 7.8l1 1 7.8 7.8 7.8-7.8 1-1a5.5 5.5 0 000-7.8z" fill="none" stroke="#fff" stroke-width="2.2" stroke-linejoin="round"></path></svg><span data-t="rthx_01">Поблагодарить проект</span></a>
+<p class="thxn" data-t="rthx_05">Так мы будем знать, что сервис вам нужен, и сможем развивать его и сохранять бесплатным для всех специалистов креативной индустрии.</p></div>
 
 <div class="cond">
 <div class="ch2" data-t="rcd_01">Ваши условия труда по ТК РФ</div>
@@ -1814,18 +2044,17 @@ break-inside:avoid;page-break-inside:avoid;margin-bottom:12px}
 <div class="logi">
 <div class="logii" aria-hidden="true">
 <svg viewBox="0 0 64 64">
-  <circle cx="32" cy="32" r="29" fill="var(--c-ln2)"/>
+  <circle cx="32" cy="32" r="29" fill="var(--c-ln2)"></circle>
   <g fill="var(--c-gr3)">
-    <path d="M14 41V29.5a3.5 3.5 0 0 1 3.5-3.5h15a3.5 3.5 0 0 1 3.5 3.5V41z"/>
-    <path d="M36 32h7.6a3.5 3.5 0 0 1 2.9 1.55L50 38.5V41H36z"/>
-    <rect x="20.5" y="18.5" width="9" height="5" rx="1.4"/>
+    <path d="M14 41V29.5a3.5 3.5 0 0 1 3.5-3.5h15a3.5 3.5 0 0 1 3.5 3.5V41z"></path>
+    <path d="M36 32h7.6a3.5 3.5 0 0 1 2.9 1.55L50 38.5V41H36z"></path>
+    <rect x="20.5" y="18.5" width="9" height="5" rx="1.4"></rect>
   </g>
   <g fill="var(--c-gr2)">
-    <circle cx="22" cy="43" r="4.6"/>
-    <circle cx="43" cy="43" r="4.6"/>
+    <circle cx="22" cy="43" r="4.6"></circle>
+    <circle cx="43" cy="43" r="4.6"></circle>
   </g>
-  <path d="M13 51L51 13" stroke="var(--c-r-500)" stroke-width="5.5"
-        stroke-linecap="round"/>
+  <path d="M13 51L51 13" stroke="var(--c-r-500)" stroke-width="5.5" stroke-linecap="round"></path>
 </svg>
 </div>
 <div class="logit">
@@ -1856,64 +2085,63 @@ break-inside:avoid;page-break-inside:avoid;margin-bottom:12px}
 </div>
 </div>
 
-
 <div class="card" id="card01"><div class="bn">01</div>
 
 <div class="ddeco" aria-hidden="true">
 <svg style="left:-90px;top:70px" width="320" height="320" viewBox="0 0 320 320" fill="none">
-<circle cx="160" cy="160" r="160" fill="var(--c-g-50)"/></svg>
+<circle cx="160" cy="160" r="160" fill="var(--c-g-50)"></circle></svg>
 <svg style="right:-110px;top:20px" width="340" height="340" viewBox="0 0 340 340" fill="none">
-<circle cx="170" cy="170" r="170" fill="var(--c-b-50)"/></svg>
+<circle cx="170" cy="170" r="170" fill="var(--c-b-50)"></circle></svg>
 <svg style="right:150px;top:120px" width="92" height="92" viewBox="0 0 24 24" fill="none" opacity=".42">
-<rect x="2.2" y="6.4" width="19.6" height="13.4" rx="3.2" stroke="var(--c-g-300)" stroke-width="1.1"/>
-<path d="M8.4 6.4l1.3-2.3h4.6l1.3 2.3" stroke="var(--c-g-300)" stroke-width="1.1" stroke-linejoin="round"/>
-<circle cx="12" cy="13.1" r="4.1" stroke="var(--c-g-300)" stroke-width="1.1"/>
-<circle cx="12" cy="13.1" r="1.7" stroke="var(--c-g-300)" stroke-width=".9"/>
-<circle cx="18.4" cy="9.4" r=".8" fill="var(--c-g-300)"/></svg>
+<rect x="2.2" y="6.4" width="19.6" height="13.4" rx="3.2" stroke="var(--c-g-300)" stroke-width="1.1"></rect>
+<path d="M8.4 6.4l1.3-2.3h4.6l1.3 2.3" stroke="var(--c-g-300)" stroke-width="1.1" stroke-linejoin="round"></path>
+<circle cx="12" cy="13.1" r="4.1" stroke="var(--c-g-300)" stroke-width="1.1"></circle>
+<circle cx="12" cy="13.1" r="1.7" stroke="var(--c-g-300)" stroke-width=".9"></circle>
+<circle cx="18.4" cy="9.4" r=".8" fill="var(--c-g-300)"></circle></svg>
 <svg style="left:52px;top:150px" width="120" height="120" viewBox="0 0 32 32" fill="none" opacity=".5">
-<rect x="10.95" y="2.09" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 7.14)" fill="var(--c-ln)"/>
-<rect x="19.81" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 24.86 16)" fill="var(--c-g-200)"/>
-<rect x="10.95" y="19.81" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 24.86)" fill="var(--c-ln)"/>
-<rect x="2.09" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 7.14 16)" fill="var(--c-ln)"/></svg>
+<rect x="10.95" y="2.09" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 7.14)" fill="var(--c-ln)"></rect>
+<rect x="19.81" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 24.86 16)" fill="var(--c-g-200)"></rect>
+<rect x="10.95" y="19.81" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 24.86)" fill="var(--c-ln)"></rect>
+<rect x="2.09" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 7.14 16)" fill="var(--c-ln)"></rect></svg>
 <svg style="left:300px;top:96px" width="20" height="20" viewBox="0 0 24 24" fill="none" opacity=".5">
-<rect x="7" y="7" width="10" height="10" rx="2" transform="rotate(45 12 12)" fill="var(--c-g-200)"/></svg>
+<rect x="7" y="7" width="10" height="10" rx="2" transform="rotate(45 12 12)" fill="var(--c-g-200)"></rect></svg>
 <svg style="right:250px;top:150px" width="15" height="15" viewBox="0 0 24 24" fill="none" opacity=".45">
-<rect x="7" y="7" width="10" height="10" rx="2" transform="rotate(45 12 12)" fill="var(--c-a-200)"/></svg>
+<rect x="7" y="7" width="10" height="10" rx="2" transform="rotate(45 12 12)" fill="var(--c-a-200)"></rect></svg>
 </div>
 <h2 class="big-h" data-t="rh2_01">Как распределяется бюджет</h2>
 <p class="hint ctr" data-t="rhi_01">Наглядная структура расходов, отчислений и вашей чистой прибыли на основе введённых данных</p>
-<div class="dnwrap"><div class="dn big" id="dn1"></div></div>
-<div class="dnsum" id="dnSum"></div>
-<div class="lgd" id="lg1"></div>
-<div class="dnsum exp" id="dnExp"></div>
-<div class="lgd" id="lg2"></div>
+<div class="dnwrap"><div class="dn big anim-ring go" id="dn1"><svg width="260" height="260" viewBox="0 0 260 260"><mask id="sgm1" maskUnits="userSpaceOnUse"><path d="M130.00 40.00A90 90 0 0 1 178.41 54.13" fill="none" stroke="#fff" stroke-width="60" stroke-dasharray="0 52.11"><animate class="segan" attributeName="stroke-dasharray" from="0 52.11" to="51.11 0" dur="0.9s" begin="indefinite" fill="freeze"></animate></path></mask><path class="seg" d="M130.00 11.00A119 119 0 0 1 194.00 29.68L162.81 78.57A61 61 0 0 0 130.00 69.00Z" fill="#0B6B22" fill-rule="evenodd" mask="url(#sgm1)" data-nm="Как фотограф — съёмка" data-pc="9"></path><text x="155.21" y="47.4" text-anchor="middle" font-size="11.5" font-weight="700" fill="#fff" style="pointer-events:none">9%</text><mask id="sgm2" maskUnits="userSpaceOnUse"><path d="M178.41 54.13A90 90 0 0 1 198.79 188.03" fill="none" stroke="#fff" stroke-width="60" stroke-dasharray="0 154.33"><animate class="segan" attributeName="stroke-dasharray" from="0 154.33" to="153.33 0" dur="0.9s" begin="indefinite" fill="freeze"></animate></path></mask><path class="seg" d="M194.00 29.68A119 119 0 0 1 220.96 206.73L176.63 169.33A61 61 0 0 0 162.81 78.57Z" fill="#2FA84A" fill-rule="evenodd" mask="url(#sgm2)" data-nm="Как фотограф — обработка" data-pc="27"></path><text x="218.97" y="120.3" text-anchor="middle" font-size="11.5" font-weight="700" fill="#fff" style="pointer-events:none">27%</text><mask id="sgm3" maskUnits="userSpaceOnUse"><path d="M198.79 188.03A90 90 0 0 1 156.78 215.92" fill="none" stroke="#fff" stroke-width="60" stroke-dasharray="0 52.11"><animate class="segan" attributeName="stroke-dasharray" from="0 52.11" to="51.11 0" dur="0.9s" begin="indefinite" fill="freeze"></animate></path></mask><path class="seg" d="M220.96 206.73A119 119 0 0 1 165.41 243.61L148.15 188.24A61 61 0 0 0 176.63 169.33Z" fill="#5F8A1B" fill-rule="evenodd" mask="url(#sgm3)" data-nm="Как отдел продаж — работа с клиентом" data-pc="9"></path><text x="179.78" y="208.8" text-anchor="middle" font-size="11.5" font-weight="700" fill="#fff" style="pointer-events:none">9%</text><mask id="sgm4" maskUnits="userSpaceOnUse"><path d="M156.78 215.92A90 90 0 0 1 62.61 189.66" fill="none" stroke="#fff" stroke-width="60" stroke-dasharray="0 104.35"><animate class="segan" attributeName="stroke-dasharray" from="0 104.35" to="103.35 0" dur="0.9s" begin="indefinite" fill="freeze"></animate></path></mask><path class="seg" d="M165.41 243.61A119 119 0 0 1 40.90 208.88L84.33 170.43A61 61 0 0 0 148.15 188.24Z" fill="#8CB82F" fill-rule="evenodd" mask="url(#sgm4)" data-nm="Как маркетолог и SMM — продвижение" data-pc="18"></path><text x="105.82" y="220.5" text-anchor="middle" font-size="11.5" font-weight="700" fill="#fff" style="pointer-events:none">18%</text><mask id="sgm5" maskUnits="userSpaceOnUse"><path d="M62.61 189.66A90 90 0 0 1 60.77 187.51" fill="none" stroke="#fff" stroke-width="60" stroke-dasharray="0 3.83"><animate class="segan" attributeName="stroke-dasharray" from="0 3.83" to="2.83 0" dur="0.9s" begin="indefinite" fill="freeze"></animate></path></mask><path class="seg" d="M40.90 208.88A119 119 0 0 1 38.46 206.04L83.08 168.98A61 61 0 0 0 84.33 170.43Z" fill="#B9D96F" fill-rule="evenodd" mask="url(#sgm5)" data-nm="Как бухгалтер — учёт и отчётность" data-pc="0.5"></path><mask id="sgm6" maskUnits="userSpaceOnUse"><path d="M60.77 187.51A90 90 0 0 1 40.64 140.68" fill="none" stroke="#fff" stroke-width="60" stroke-dasharray="0 52.68"><animate class="segan" attributeName="stroke-dasharray" from="0 52.68" to="51.68 0" dur="0.9s" begin="indefinite" fill="freeze"></animate></path></mask><path class="seg" d="M38.46 206.04A119 119 0 0 1 11.84 144.13L69.43 137.24A61 61 0 0 0 83.08 168.98Z" fill="#B6BCC4" fill-rule="evenodd" mask="url(#sgm6)" data-nm="Форс-мажоры и простой" data-pc="9"></path><text x="47.32" y="169.4" text-anchor="middle" font-size="11.5" font-weight="700" fill="#fff" style="pointer-events:none">9%</text><mask id="sgm7" maskUnits="userSpaceOnUse"><path d="M40.64 140.68A90 90 0 0 1 41.98 111.20" fill="none" stroke="#fff" stroke-width="60" stroke-dasharray="0 30.64"><animate class="segan" attributeName="stroke-dasharray" from="0 30.64" to="29.64 0" dur="0.9s" begin="indefinite" fill="freeze"></animate></path></mask><path class="seg" d="M11.84 144.13A119 119 0 0 1 13.62 105.15L70.35 117.26A61 61 0 0 0 69.43 137.24Z" fill="#EF4444" fill-rule="evenodd" mask="url(#sgm7)" data-nm="Отложите на оборудование и ПО" data-pc="5"></path><text x="40.09" y="129.7" text-anchor="middle" font-size="11.5" font-weight="700" fill="#fff" style="pointer-events:none">5%</text><mask id="sgm8" maskUnits="userSpaceOnUse"><path d="M41.98 111.20A90 90 0 0 1 51.58 85.84" fill="none" stroke="#fff" stroke-width="60" stroke-dasharray="0 28.22"><animate class="segan" attributeName="stroke-dasharray" from="0 28.22" to="27.22 0" dur="0.9s" begin="indefinite" fill="freeze"></animate></path></mask><path class="seg" d="M13.62 105.15A119 119 0 0 1 26.31 71.62L76.85 100.07A61 61 0 0 0 70.35 117.26Z" fill="#F59E0B" fill-rule="evenodd" mask="url(#sgm8)" data-nm="Потратите на рекламу и продвижение" data-pc="5"></path><text x="45.82" y="102.0" text-anchor="middle" font-size="11.5" font-weight="700" fill="#fff" style="pointer-events:none">5%</text><mask id="sgm9" maskUnits="userSpaceOnUse"><path d="M51.58 85.84A90 90 0 0 1 83.22 53.12" fill="none" stroke="#fff" stroke-width="60" stroke-dasharray="0 47.02"><animate class="segan" attributeName="stroke-dasharray" from="0 47.02" to="46.02 0" dur="0.9s" begin="indefinite" fill="freeze"></animate></path></mask><path class="seg" d="M26.31 71.62A119 119 0 0 1 68.14 28.34L98.29 77.89A61 61 0 0 0 76.85 100.07Z" fill="#FB923C" fill-rule="evenodd" mask="url(#sgm9)" data-nm="Заплатите по текущим счетам" data-pc="8"></path><text x="65.29" y="71.3" text-anchor="middle" font-size="11.5" font-weight="700" fill="#fff" style="pointer-events:none">8%</text><mask id="sgm10" maskUnits="userSpaceOnUse"><path d="M83.22 53.12A90 90 0 0 1 114.80 41.29" fill="none" stroke="#fff" stroke-width="60" stroke-dasharray="0 34.93"><animate class="segan" attributeName="stroke-dasharray" from="0 34.93" to="33.93 0" dur="0.9s" begin="indefinite" fill="freeze"></animate></path></mask><path class="seg" d="M68.14 28.34A119 119 0 0 1 109.91 12.71L119.70 69.88A61 61 0 0 0 98.29 77.89Z" fill="#8B5CF6" fill-rule="evenodd" mask="url(#sgm10)" data-nm="Заплатите налогов и взносов" data-pc="6"></path><text x="98.45" y="49.5" text-anchor="middle" font-size="11.5" font-weight="700" fill="#fff" style="pointer-events:none">6%</text><mask id="sgm11" maskUnits="userSpaceOnUse"><path d="M114.80 41.29A90 90 0 0 1 130.00 40.00" fill="none" stroke="#fff" stroke-width="60" stroke-dasharray="0 16.27"><animate class="segan" attributeName="stroke-dasharray" from="0 16.27" to="15.27 0" dur="0.9s" begin="indefinite" fill="freeze"></animate></path></mask><path class="seg" d="M109.91 12.71A119 119 0 0 1 130.00 11.00L130.00 69.00A61 61 0 0 0 119.70 69.88Z" fill="#3B82F6" fill-rule="evenodd" mask="url(#sgm11)" data-nm="Отдадите банку за эквайринг" data-pc="3"></path></svg><div class="mid"><div class="v">18&nbsp;946 ₽</div><div class="k">за час съёмки</div></div><div class="segtip" style="display: none;"></div></div></div>
+<div class="dnsum" id="dnSum"><svg class="dsdeco" viewBox="0 0 32 32" fill="none" aria-hidden="true"><rect x="10.95" y="2.09" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 7.14)" fill="var(--c-g-800)"></rect><rect x="19.81" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 24.86 16)" fill="var(--c-g-800)"></rect><rect x="10.95" y="19.81" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 24.86)" fill="var(--c-g-800)"></rect><rect x="2.09" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 7.14 16)" fill="var(--c-g-800)"></rect></svg><div class="dsh">Ваш доход на руки</div><div class="dsm">С каждого часа съёмки вы зарабатываете</div><div class="dsb">13&nbsp;850 ₽</div><div class="dsl">Это оплата за <u>8,1 ч</u> вашей работы — по <u>1&nbsp;712 ₽/ч</u></div></div>
+<div class="lgd anim-bar go" id="lg1"><div class="lggrp">Вы зарабатываете как фотограф</div><div class="lgi"><div class="fill" style="--w:33.3%;width:33.3%;background:#0B6B22"></div><div class="ltx"><i style="background:#0B6B22"></i><div><b>Как фотограф — съёмка</b><em><a class="refl" href="file:///C:/Users/kommv/Downloads/report.html#ref21">п. 22 Справочника</a></em></div></div><div class="lvv"><div class="a">1&nbsp;712 ₽</div><div class="b2">за 1,0 ч</div></div></div><div class="lgi"><div class="fill" style="--w:100.0%;width:100.0%;background:#2FA84A"></div><div class="ltx"><i style="background:#2FA84A"></i><div><b>Как фотограф — обработка</b><em><a class="refl" href="file:///C:/Users/kommv/Downloads/report.html#ref6">п. 7 Справочника</a></em></div></div><div class="lvv"><div class="a">5&nbsp;137 ₽</div><div class="b2">за 3,0 ч</div></div></div><div class="lggrp gap">Вы зарабатываете как бизнес целиком</div><div class="note sm">В компании эти роли закрывали бы отдельные люди. Здесь — вы</div><div class="lgi"><div class="fill" style="--w:33.3%;width:33.3%;background:#5F8A1B"></div><div class="ltx"><i style="background:#5F8A1B"></i><div><b>Как отдел продаж — работа с клиентом</b><em><a class="refl" href="file:///C:/Users/kommv/Downloads/report.html#ref14">п. 15 Справочника</a></em></div></div><div class="lvv"><div class="a">1&nbsp;712 ₽</div><div class="b2">за 1,0 ч</div></div></div><div class="lgi"><div class="fill" style="--w:67.4%;width:67.4%;background:#8CB82F"></div><div class="ltx"><i style="background:#8CB82F"></i><div><b>Как маркетолог и SMM — продвижение</b><em><a class="refl" href="file:///C:/Users/kommv/Downloads/report.html#ref12">п. 13 Справочника</a></em></div></div><div class="lvv"><div class="a">3&nbsp;463 ₽</div><div class="b2">за 2,0 ч</div></div></div><div class="lgi"><div class="fill" style="--w:1.8%;width:1.8%;background:#B9D96F"></div><div class="ltx"><i style="background:#B9D96F"></i><div><b>Как бухгалтер — учёт и отчётность</b><em><a class="refl" href="file:///C:/Users/kommv/Downloads/report.html#ref23">п. 24 Справочника</a></em></div></div><div class="lvv"><div class="a">95 ₽</div><div class="b2">за 0,1 ч</div></div></div><div class="lggrp gap">Вы получаете компенсацию за форс-мажоры и простой</div><div class="lgi"><div class="fill" style="--w:33.7%;width:33.7%;background:#B6BCC4"></div><div class="ltx"><i style="background:#B6BCC4"></i><div><b>Форс-мажоры и простой</b><em><a class="refl" href="file:///C:/Users/kommv/Downloads/report.html#ref24">п. 25 Справочника</a></em></div></div><div class="lvv"><div class="a">1&nbsp;731 ₽</div><div class="b2">за 1,0 ч</div></div></div><div class="note">Эти часы клиент не оплачивает отдельно, но они есть всегда — поэтому заложены в ставку и входят в ваш доход.</div></div>
+<div class="dnsum exp" id="dnExp"><svg class="dsdeco" viewBox="0 0 32 32" fill="none" aria-hidden="true"><rect x="10.95" y="2.09" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 7.14)" fill="var(--c-r-700)"></rect><rect x="19.81" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 24.86 16)" fill="var(--c-r-700)"></rect><rect x="10.95" y="19.81" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 24.86)" fill="var(--c-r-700)"></rect><rect x="2.09" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 7.14 16)" fill="var(--c-r-700)"></rect></svg><div class="dsh">Ваши расходы</div><div class="dsm">С каждого часа съёмки вы отдаёте</div><div class="dsb">5&nbsp;095 ₽</div><div class="dsl">Это <u>27%</u> от стоимости часа — деньги, которые у вас не остаются</div></div>
+<div class="lgd anim-bar go" id="lg2"><div class="lggrp">Из чего складываются расходы</div><div class="lgi"><div class="fill" style="--w:19.3%;width:19.3%;background:#EF4444"></div><div class="ltx"><i style="background:#EF4444"></i><div><b>Отложите на оборудование и ПО</b><em><a class="refl" href="file:///C:/Users/kommv/Downloads/report.html#ref22">п. 23 Справочника</a></em></div></div><div class="lvv"><div class="a">993 ₽</div></div></div><div class="lgi"><div class="fill" style="--w:17.8%;width:17.8%;background:#F59E0B"></div><div class="ltx"><i style="background:#F59E0B"></i><div><b>Потратите на рекламу и продвижение</b><em><a class="refl" href="file:///C:/Users/kommv/Downloads/report.html#ref12">п. 13 Справочника</a></em></div></div><div class="lvv"><div class="a">912 ₽</div></div></div><div class="lgi"><div class="fill" style="--w:30.0%;width:30.0%;background:#FB923C"></div><div class="ltx"><i style="background:#FB923C"></i><div><b>Заплатите по текущим счетам</b><em><a class="refl" href="file:///C:/Users/kommv/Downloads/report.html#ref17">п. 18 Справочника</a></em></div></div><div class="lvv"><div class="a">1&nbsp;542 ₽</div></div></div><div class="lgi"><div class="fill" style="--w:22.1%;width:22.1%;background:#8B5CF6"></div><div class="ltx"><i style="background:#8B5CF6"></i><div><b>Заплатите налогов и взносов</b><em><a class="refl" href="file:///C:/Users/kommv/Downloads/report.html#ref5">п. 6 Справочника</a></em></div></div><div class="lvv"><div class="a">1&nbsp;137 ₽</div></div></div><div class="lgi"><div class="fill" style="--w:10.0%;width:10.0%;background:#3B82F6"></div><div class="ltx"><i style="background:#3B82F6"></i><div><b>Отдадите банку за эквайринг</b><em><a class="refl" href="file:///C:/Users/kommv/Downloads/report.html#ref25">п. 26 Справочника</a></em></div></div><div class="lvv"><div class="a">512 ₽</div></div></div><div class="lgi zero"><div class="fill" style="--w:0.0%;width:0.0%;background:#7189AE"></div><div class="ltx"><i style="background:#7189AE"></i><div><b>Отложите запас средств в фонд развития</b><em><a class="refl" href="file:///C:/Users/kommv/Downloads/report.html#ref4">п. 5 Справочника</a></em></div></div><div class="lvv"><div class="a">не заложено</div></div><div class="note warn lgw">Технику придётся менять из своего кармана или в кредит. Амортизация покрывает только замену того, что уже есть, — на новое стекло, второй корпус и обучение денег в расчёте нет.<a class="lgwb" href="file:///C:/Users/kommv/Downloads/calc.html#fund_on">Заложить фонд развития</a></div></div><div class="lgi zero"><div class="fill" style="--w:0.0%;width:0.0%;background:#B7C9E8"></div><div class="ltx"><i style="background:#B7C9E8"></i><div><b>Заложите запас на скидку</b><em><a class="refl" href="file:///C:/Users/kommv/Downloads/report.html#ref4">п. 5 Справочника</a></em></div></div><div class="lvv"><div class="a">не заложено</div></div><div class="note warn lgw">Любая скидка «просто так» будет вычтена из вашего дохода. Останется только скидка за объём — она посчитана ниже и берётся из накладных расходов.<a class="lgwb" href="file:///C:/Users/kommv/Downloads/calc.html#disc_on">Заложить запас на скидку</a></div></div></div>
 </div>
 
 <div class="card" id="card02"><div class="bn">02</div>
 <h2 class="big-h" data-t="rh2_09">Как распределяется ваше время</h2>
 <p class="hint ctr" data-t="rhi_09">Реальная структура рабочей недели: чтобы провести несколько часов на площадке, вы работаете полную пятидневку</p>
 
-<div class="wk" id="wk"></div>
-<div class="slg" id="wklg"></div>
-<div class="wknote" id="wknote"></div>
+<div class="wk anim-wk go" id="wk"><div></div><div class="hd">ПН</div><div class="hd">ВТ</div><div class="hd">СР</div><div class="hd">ЧТ</div><div class="hd">ПТ</div><div class="hr">10:00</div><div><i class="" style="background:#D8EEDF" title="Обработка"><span>Обработка</span></i></div><div><i class="" style="background:#D8EEDF" title="Обработка"><span>Обработка</span></i></div><div><i class="" style="background:#D8EEDF" title="Обработка"><span>Обработка</span></i></div><div><i class="" style="background:#D8EEDF" title="Обработка"><span>Обработка</span></i></div><div><i class="" style="background:#D8EEDF" title="Обработка"><span>Обработка</span></i></div><div class="hr">11:00</div><div><i class="" style="background:#6FD183" title="Съёмка"><span class="wlbl">Съёмка</span></i></div><div><i class="" style="background:#6FD183" title="Съёмка"><span class="wlbl">Съёмка</span></i></div><div><i class="" style="background:#6FD183" title="Съёмка"><span class="wlbl">Съёмка</span></i></div><div><i class="" style="background:linear-gradient(to bottom,#6FD183 0 95%,var(--c-bg) 95% 100%)" title="Съёмка"><span class="wlbl">Съёмка</span></i></div><div><i class="" style="background:#6FD183" title="Съёмка"><span class="wlbl">Съёмка</span></i></div><div class="hr">12:00</div><div><i class="" style="background:#D8EEDF" title="Обработка"><span>Обработка</span></i></div><div><i class="" style="background:#D8EEDF" title="Обработка"><span>Обработка</span></i></div><div><i class="" style="background:#D8EEDF" title="Обработка"><span>Обработка</span></i></div><div><i class="" style="background:#D8EEDF" title="Обработка"><span>Обработка</span></i></div><div><i class="" style="background:#D8EEDF" title="Обработка"><span>Обработка</span></i></div><div class="hr">13:00</div><div><i class="" style="background:#D8EEDF" title="Обработка"></i></div><div><i class="" style="background:#D8EEDF" title="Обработка"></i></div><div><i class="" style="background:#D8EEDF" title="Обработка"></i></div><div><i class="" style="background:#D8EEDF" title="Обработка"></i></div><div><i class="" style="background:#FCE7F3" title="Продвижение"><span>Продвижение</span></i></div><div class="hr">14:00</div><div><i class="" style="background:#FCE7F3" title="Продвижение"><span>Продвижение</span></i></div><div><i class="" style="background:#FCE7F3" title="Продвижение"><span>Продвижение</span></i></div><div><i class="" style="background:#FCE7F3" title="Продвижение"><span>Продвижение</span></i></div><div><i class="" style="background:#FCE7F3" title="Продвижение"><span>Продвижение</span></i></div><div><i class="" style="background:#FCE7F3" title="Продвижение"></i></div><div class="hr">15:00</div><div><i class="" style="background:#FCE7F3" title="Продвижение"></i></div><div><i class="" style="background:#FCE7F3" title="Продвижение"></i></div><div><i class="" style="background:#FCE7F3" title="Продвижение"></i></div><div><i class="" style="background:#FCE7F3" title="Продвижение"></i></div><div><i class="" style="background:#FEF3D6" title="Клиент"><span>Клиент</span></i></div><div class="hr">16:00</div><div><i class="" style="background:#FEF3D6" title="Клиент"><span>Клиент</span></i></div><div><i class="" style="background:#FEF3D6" title="Клиент"><span>Клиент</span></i></div><div><i class="" style="background:#FEF3D6" title="Клиент"><span>Клиент</span></i></div><div><i class="" style="background:#FEF3D6" title="Клиент"><span>Клиент</span></i></div><div><i class="" style="background:#F5F6F8" title="Рабочие паузы"><span>Рабочие паузы</span></i></div><div class="hr">17:00</div><div><i class="" style="background:#F5F6F8" title="Рабочие паузы"><span>Рабочие паузы</span></i></div><div><i class="" style="background:#F5F6F8" title="Рабочие паузы"><span>Рабочие паузы</span></i></div><div><i class="" style="background:#F5F6F8" title="Рабочие паузы"><span>Рабочие паузы</span></i></div><div><i class="" style="background:#F5F6F8" title="Рабочие паузы"><span>Рабочие паузы</span></i></div><div><i class="" style="background:#FDE8E8" title="Учёт"><span>Учёт</span></i></div></div>
+<div class="slg" id="wklg"><span><i style="background:#6FD183"></i>Съёмка</span><span><i style="background:#D8EEDF"></i>Обработка</span><span><i style="background:#FCE7F3"></i>Продвижение</span><span><i style="background:#FEF3D6"></i>Работа с клиентом</span><span><i style="background:#FDE8E8"></i>Учёт</span><span><i style="background:#F5F6F8"></i>Рабочие паузы</span></div>
+<div class="wknote" id="wknote"><svg class="wkmk" viewBox="0 0 32 32" fill="none" aria-hidden="true"><rect x="10.95" y="2.09" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 7.14)" fill="var(--c-gr3)"></rect><rect x="19.81" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 24.86 16)" fill="var(--c-g-500)"></rect><rect x="10.95" y="19.81" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 24.86)" fill="var(--c-gr3)"></rect><rect x="2.09" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 7.14 16)" fill="var(--c-gr3)"></rect></svg><span class="big3">За неделю у вас четыре съёмки по 1,0 ч и одна съёмка на 0,9 ч</span>Получается всего <b>4,9 часа</b> с камерой в руках, а остальное время — это та самая невидимая, но огромная работа за кадром, без которой ни одна съёмка просто не состоится.</div>
 </div>
 
 <div class="card" id="card06"><div class="bn">03</div>
 <div class="saletag" data-t="rh2_21">Скидка</div>
 <h2 class="big-h" data-t="rh2_18">Как формировать скидку, чтобы не уйти в минус</h2>
-<div class="dst" id="dst"></div>
+<div class="dst off" id="dst"><b>Резерв на скидку не заложен</b><span>Даём скидку только за объём!</span></div>
 
 <div class="pgb p1" id="pgb1">
 <div class="pgh"><i>1</i>Скидка за объём</div>
 <div class="pgd" data-t="rgn_10">Даёт клиенту повод заказывать более продолжительные съёмки — и сразу видеть свою выгоду. Суммируется со скидкой постоянного клиента.</div>
-<div class="dmap" id="dmap"></div>
+<div class="dmap" id="dmap"><div class="dmc b0"><div class="dcond">съёмка от 1 час</div><div class="dpr">19&nbsp;000 ₽</div><div class="dph2">ваша стоимость часа</div><div class="dfoot">базовая ставка</div></div><div class="dmc d1"><div class="dcond">от 3 часа</div><div class="dpr disc">−13,2%</div><div class="dph2">скидка на час</div><div class="dfoot"><b>16&nbsp;500 ₽</b> за час</div></div><div class="dmc d2"><div class="dcond">от 5 часов</div><div class="dpr disc">−15,8%</div><div class="dph2">скидка на час</div><div class="dfoot"><b>16&nbsp;000 ₽</b> за час</div></div><div class="dmc d3"><div class="dcond">от 7 часов</div><div class="dpr disc">−17,4%</div><div class="dph2">скидка на час</div><div class="dfoot"><b>15&nbsp;700 ₽</b> за час</div></div></div>
 <div class="ex" style="--exb:var(--c-g-300);--exg:var(--c-g-50);margin-top:20px" data-t="rgn_02">
 <b>За счёт чего формируется скидка за объём</b>Вся суть — в накладных расходах. Подготовка, созвоны и согласования отнимают одинаковое время как для короткой, так и для более продолжительной съёмки.<br>В многочасовом проекте это время «размазывается», поэтому каждый час обходится клиенту дешевле, а ваш личный доход остаётся прежним.<span class="exm" id="dmapex"></span></div>
 </div>
 
-<div id="zapbox"></div>
+<div id="zapbox" class="note warn" style="margin-top:20px">Если хотите иметь возможность сформировать программу лояльности и давать скидки своим клиентам не только за объём — вернитесь в анкету и включите «Резерв на скидку».<a class="lgwb" href="file:///C:/Users/kommv/Downloads/calc.html#disc_on">Заложить резерв на скидку</a></div>
 
-<div class="pgb p2" id="pgb2">
+<div class="pgb p2" id="pgb2" style="display: none;">
 <div class="pgh n2"><i>2</i>Скидка постоянному клиенту</div>
 <div class="pgd" data-t="rgn_11">Даёт стабильный поток клиентов, которых не нужно каждый раз завоёвывать заново и тратить деньги на привлечение. Суммируется со скидкой за объём.</div>
 <div class="loy" id="loy"></div>
@@ -1921,7 +2149,7 @@ break-inside:avoid;page-break-inside:avoid;margin-bottom:12px}
 Постоянный клиент экономит вам самое ценное — время на поиск новых заказчиков, долгие созвоны и согласования. Его не нужно заново убеждать в качестве, он уже знает все правила и приходит с готовой задачей.<span class="exm">Вы сэкономите:</span><span class="exl"><b>от 30% вашего бюджета</b> — сможете увеличить личный доход или направить его на развитие;</span><span class="exl"><b>до 20% вашего рабочего времени</b> — которое вы можете потратить на отдых, семью или взять ещё одну коммерческую съёмку.</span></div>
 </div>
 
-<div class="pgb p3" id="pgb3">
+<div class="pgb p3" id="pgb3" style="display: none;">
 <div class="pgh n3"><i>3</i>Специальные предложения</div>
 <div class="pgd" data-t="rgn_13">Будут полезны, чтобы уверенно загружать съёмками несезон и создавать ажиотаж вокруг своего продукта в условиях высокой конкуренции.</div>
 <div class="spc" id="spc"></div>
@@ -1929,15 +2157,16 @@ break-inside:avoid;page-break-inside:avoid;margin-bottom:12px}
 <b>Комплект сертификатов на год: готовая система без риска для бюджета</b>Мы уже заложили в расчёт готовый годовой комплект подарочных сертификатов, опираясь на ваш фонд программы лояльности. Это конкретные инструменты для работы, которые идеально сбалансированы под ваши цифры.<br>Вы можете в любой момент изменить их состав или заменить на другие акции под свои задачи. Главное — помните: если будете менять условия или увеличивать номиналы, обязательно пересчитайте общий бюджет программы.<span class="exm">Текущий комплект просчитан так, что при реализации сертификатов вы остаётесь полностью при своих деньгах — они работают на привлечение клиентов и продажи, но абсолютно не задевают вашу маржинальность и не создают лишних расходов.</span></div>
 </div>
 
-<div class="fnd" id="fnd"></div>
+<div class="fnd" id="fnd" style="display: none;"></div>
 </div>
 
+<div class="thxbar"><a class="thxb" href="file:///C:/Users/kommv/Downloads/report.html#thanks" data-thx=""><svg class="thxd" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 00-7.8 0l-1 1-1-1a5.5 5.5 0 00-7.8 7.8l1 1 7.8 7.8 7.8-7.8 1-1a5.5 5.5 0 000-7.8z" fill="#fff"></path></svg><svg class="thxd2" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 00-7.8 0l-1 1-1-1a5.5 5.5 0 00-7.8 7.8l1 1 7.8 7.8 7.8-7.8 1-1a5.5 5.5 0 000-7.8z" fill="#fff"></path></svg><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M20.8 4.6a5.5 5.5 0 00-7.8 0l-1 1-1-1a5.5 5.5 0 00-7.8 7.8l1 1 7.8 7.8 7.8-7.8 1-1a5.5 5.5 0 000-7.8z" fill="none" stroke="#fff" stroke-width="2.2" stroke-linejoin="round"></path></svg><span data-t="rthx_01">Поблагодарить проект</span></a></div>
 
 <div class="card" id="card07"><div class="bn">04</div>
 <h2 class="big-h" data-t="rh2_12">Ваш идеальный налоговый режим</h2>
 <p class="hint ctr" data-t="rhi_12">Посчитали все режимы на ваших цифрах и показали самый выгодный</p>
-<div class="bestbox" id="bestBox"></div>
-<div class="npd" id="npdBox"></div>
+<div class="bestbox" id="bestBox"><div class="bbwin ok"><div class="bbc"><svg viewBox="0 0 40 40" fill="none" aria-hidden="true"><path d="M8 20.6l8.4 8.4L32 11.4" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"></path></svg></div><i>самый<b>выгодный</b></i></div><div class="bb1">Ваш режим</div><div class="bb2">ИП, УСН «Доходы» — 6%</div><div class="bbg"><div><span>Налоги и взносы / год</span><b>246&nbsp;217 ₽</b></div><div><span>Нагрузка на выручку</span><b>6,0%</b></div><div><span>Налоги и взносы / мес</span><b>20&nbsp;518 ₽</b></div></div><div class="bbn">Налог считается со всей выручки, расходы его не уменьшают. Зато фиксированные взносы <b>57 390 ₽</b> вычитаются из налога целиком — при вашей выручке они покрываются полностью.</div></div>
+<div class="npd" id="npdBox"><div class="t">УСН — расти можно долго, но взносы платятся всегда</div><div class="s">Право на УСН сохраняется до <b>490,5 млн ₽/год</b>, идёт страховой стаж, можно нанимать людей. Но с <b>20 млн ₽/год</b> добавляется НДС, а взносы платятся всегда:</div><div class="g"><div><span>Фиксированные взносы / год</span><b>57&nbsp;390 ₽</b></div><div><span>Запас до порога НДС / год</span><b>15&nbsp;896&nbsp;388 ₽</b></div><div><span>Расчётная выручка / год</span><b>4&nbsp;103&nbsp;612 ₽</b></div></div><div class="npdlim"><b>Учёт придётся вести самим или платить специалисту</b>Декларация, авансы каждый квартал, книга учёта и касса. Если нанимаете специалиста — укажите его стоимость в анкете, чтобы она попала в расчёт.</div><div class="warn"><span>Взносы <b>57&nbsp;390 ₽</b> платятся даже в месяцы без заказов. На «Доходах» они вычитаются из налога целиком.</span></div></div>
 <div class="txh" data-t="rth_hd">Сравнение режимов налогообложения на ваших цифрах</div>
 <div class="txhs" data-t="rth_hs">Посмотрите, какой вариант действительно приносит максимальную чистую прибыль и на каких условиях вам будет комфортнее работать.</div>
 <div class="txbox"><div class="txw"><table class="tx"><thead><tr>
@@ -1955,21 +2184,19 @@ break-inside:avoid;page-break-inside:avoid;margin-bottom:12px}
 <th class="srt" data-sort="куд" data-t="rth_r3">КУДиР</th>
 <th class="srt" data-sort="касса" data-t="rth_r4">Касса</th>
 <th class="srt" data-sort="сотр" data-t="rth_r5">Сотрудники</th>
-</tr></thead><tbody id="txrows"></tbody></table></div><div class="txfoot"></div></div>
-<div class="pmknote txnote" id="txNote"></div>
+</tr></thead><tbody id="txrows"><tr class="best"><td class="cnm" style="background:linear-gradient(180deg,rgb(237,248,243) 0%,rgb(214,240,228) 100%)">ИП, УСН «Доходы»</td><td class="num ld">6,0%</td><td class="num tot">246&nbsp;217 ₽</td><td class="num">6%</td><td class="num">150&nbsp;791 ₽</td><td class="num">57&nbsp;390 ₽</td><td class="num">38&nbsp;036 ₽</td><td class="num ok">Нет</td><td class="num">490&nbsp;500&nbsp;000 ₽</td><td class="mk no">Да<i>раз в год</i></td><td class="mk no">Да<i>авансы по налогу</i></td><td class="mk no">Да<i>обязательна</i></td><td class="mk no">Да<i>касса нужна</i></td><td class="mk no">Да<i>если есть — полный комплект</i></td></tr><tr class="zeb"><td class="cnm" style="background:linear-gradient(180deg,rgb(233,244,248) 0%,rgb(205,231,240) 100%)">ИП, АУСН «Доходы»</td><td class="num ld">8,0%</td><td class="num tot">328&nbsp;289 ₽</td><td class="num">8%</td><td class="num">328&nbsp;289 ₽</td><td class="num ok">Нет</td><td class="num ok">Нет</td><td class="num ok">Нет</td><td class="num">60&nbsp;000&nbsp;000 ₽</td><td class="mk ok">Нет</td><td class="mk ok">Нет</td><td class="mk ok">Нет</td><td class="mk no">Да<i>касса нужна</i></td><td class="mk ok">Нет<i>считает банк</i></td></tr><tr class=""><td class="cnm" style="background:linear-gradient(180deg,rgb(237,239,246) 0%,rgb(216,219,236) 100%)">ИП, УСН «Доходы минус расходы»</td><td class="num ld">14,0%</td><td class="num tot">573&nbsp;128 ₽</td><td class="num">15%</td><td class="num">486&nbsp;317 ₽</td><td class="num">57&nbsp;390 ₽</td><td class="num">29&nbsp;421 ₽</td><td class="num ok">Нет</td><td class="num">490&nbsp;500&nbsp;000 ₽</td><td class="mk no">Да<i>раз в год</i></td><td class="mk no">Да<i>авансы по налогу</i></td><td class="mk no">Да<i>обязательна</i></td><td class="mk no">Да<i>касса нужна</i></td><td class="mk no">Да<i>если есть — полный комплект</i></td></tr><tr class="zeb"><td class="cnm" style="background:linear-gradient(180deg,rgb(251,232,237) 0%,rgb(246,204,216) 100%)">ИП, АУСН «Доходы минус расходы»</td><td class="num ld">15,8%</td><td class="num tot">648&nbsp;423 ₽</td><td class="num">20%</td><td class="num">648&nbsp;423 ₽</td><td class="num ok">Нет</td><td class="num ok">Нет</td><td class="num ok">Нет</td><td class="num">60&nbsp;000&nbsp;000 ₽</td><td class="mk ok">Нет</td><td class="mk ok">Нет</td><td class="mk ok">Нет</td><td class="mk no">Да<i>касса нужна</i></td><td class="mk ok">Нет<i>считает банк</i></td></tr><tr class="over"><td class="cnm">Самозанятость (НПД)<br><i>смешанные заказчики</i></td><td class="num ld">5,0%</td><td class="num tot">205&nbsp;181 ₽</td><td class="num">5%</td><td class="num">205&nbsp;181 ₽</td><td class="num ok">Нет</td><td class="num ok">Нет</td><td class="num ok">Нет</td><td class="num">2&nbsp;400&nbsp;000 ₽</td><td class="mk ok">Нет</td><td class="mk ok">Нет</td><td class="mk ok">Нет</td><td class="mk ok">Нет<i>чек в «Мой налог»</i></td><td class="mk no">Нельзя<i>нанимать на НПД</i></td></tr><tr class="over"><td colspan="14" style="font-size:12px;padding-top:0;border:0"><svg class="iwt" viewBox="0 0 28 26" fill="none"><path d="M12.94 3.2 1.6 20.05a1.9 1.9 0 0 0 1.6 2.9h21.6a1.9 1.9 0 0 0 1.6-2.9L15.06 3.2a1.25 1.25 0 0 0-2.12 0Z" fill="var(--c-a-400)"></path><path d="M14 9.6v5.1" stroke="var(--c-white)" stroke-width="2.5" stroke-linecap="round"></path><circle cx="14" cy="18.6" r="1.45" fill="var(--c-white)"></circle></svg> не подходит: ваша выручка 4&nbsp;103&nbsp;612 ₽ выше лимита 2&nbsp;400&nbsp;000 ₽</td></tr></tbody></table></div><div class="txfoot"></div></div>
+<div class="pmknote txnote" id="txNote"><div class="pnh">С чего считается налог</div><div class="pi2"><b>НПД и режимы «Доходы»</b> — налог берётся со всей выручки. Расходы её не уменьшают: сколько получили от клиента — с той суммы и платите.</div><div class="pi2"><b>Режимы «Доходы минус расходы»</b> — налог берётся с разницы между выручкой и затратами. В расчёте из выручки вычтены все годовые затраты и комиссия эквайринга — их состав разложен в блоке <a href="file:///C:/Users/kommv/Downloads/report.html#card01">01 «Как распределяется бюджет»</a>.</div><div class="pi2"><b>Фиксированные взносы</b> — годовая сумма, которую ИП платит за себя независимо от дохода. На НПД их нет, на АУСН остаётся только взнос на травматизм.</div><div class="pi2"><b>Взнос 1%</b> — дополнительный пенсионный взнос ИП с той части дохода, что превышает 300 000 ₽ за год. На «Доходах» считается с выручки, на «Доходах минус расходах» — с разницы. На НПД и АУСН его нет.</div><div class="pi2"><b>НДС в расчёт не входит.</b> На УСН он появляется при выручке свыше 20 млн ₽ за год, на АУСН — свыше 60 млн, на НПД его нет вовсе. Таблица рассчитана на фотографа, который работает один, — до таких оборотов здесь дело обычно не доходит. Если у вас студия с командой и обороты выше и вам требуется расчёт НДС — воспользуйтесь калькулятором юнит-экономики для фотостудии или фотопродакшена.</div><div class="pnf">Расчёт оценочный. Налоговая принимает не любые затраты, а только те, что перечислены в статье 346.16 НК и подтверждены документами. Например, обучение ИП самого себя в расходы не принимается: у предпринимателя нет работодателя. Точный список сверьте с бухгалтером.</div></div>
 </div>
-
-<div class="thxbar"><a class="thxb" href="#thanks" data-thx><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M20.8 4.6a5.5 5.5 0 00-7.8 0l-1 1-1-1a5.5 5.5 0 00-7.8 7.8l1 1 7.8 7.8 7.8-7.8 1-1a5.5 5.5 0 000-7.8z" fill="none" stroke="var(--c-a-600)" stroke-width="2"/></svg><span data-t="rthx_01">Поблагодарить проект</span></a></div>
 
 <div class="card" id="card04"><div class="bn">05</div>
 <h2 class="big-h" data-t="rh2_02">Три сценария вашей работы</h2>
 <p class="hint ctr" data-t="rhi_02">Одна и та же загрузка при разной ставке часа. Разница только в цене — и в том, что остаётся вам</p>
-<div class="three" id="dns"></div>
+<div class="three" id="dns"><div class="scn3 s1"><div class="scdeco"></div><div class="nm3">реальный</div><div class="amt">Ваш текущий доход</div><div class="bigsum top"><b>36&nbsp;553 ₽</b><span>на руки / мес</span></div><div class="dn anim-ring"><svg width="190" height="190" viewBox="0 0 190 190"><defs><lineargradient id="dg1_0" x1="0.12" y1="0" x2="0.78" y2="1"><stop offset="0" stop-color="#5FCC79"></stop><stop offset="0.52" stop-color="#2BA845"></stop><stop offset="1" stop-color="#14762A"></stop></lineargradient><lineargradient id="dg1_1" x1="0.12" y1="0" x2="0.78" y2="1"><stop offset="0" stop-color="#D3D7DC"></stop><stop offset="0.52" stop-color="#B4B9C1"></stop><stop offset="1" stop-color="#8E949E"></stop></lineargradient><lineargradient id="dg1_c" x1="0.15" y1="0" x2="0.8" y2="1"><stop offset="0" stop-color="#5CA8E0"></stop><stop offset="1" stop-color="#2F80C4"></stop></lineargradient><filter id="dg1_s" x="-45%" y="-45%" width="190%" height="190%"><fedropshadow dx="0" dy="4" stdDeviation="5" flood-color="#101828" flood-opacity="0.30"></fedropshadow></filter></defs><mask id="sgm12" maskUnits="userSpaceOnUse"><path d="M95.00 27.00A68 68 0 0 1 152.98 130.54" fill="none" stroke="#fff" stroke-width="32" stroke-dasharray="0 145.21"><animate class="segan" attributeName="stroke-dasharray" from="0 145.21" to="144.21 0" dur="0.9s" begin="indefinite" fill="freeze"></animate></path></mask><path class="seg" d="M95.00 12.00A83 83 0 0 1 165.76 138.38L140.19 122.70A53 53 0 0 0 95.00 42.00Z" fill="url(#dg1_0)" fill-rule="evenodd" mask="url(#sgm12)"></path><mask id="sgm13" maskUnits="userSpaceOnUse"><path d="M152.98 130.54A68 68 0 1 1 95.00 27.00" fill="none" stroke="#fff" stroke-width="32" stroke-dasharray="0 284.05"><animate class="segan" attributeName="stroke-dasharray" from="0 284.05" to="283.05 0" dur="0.9s" begin="indefinite" fill="freeze"></animate></path></mask><path class="seg fixed" d="M165.76 138.38A83 83 0 1 1 95.00 12.00L95.00 42.00A53 53 0 1 0 140.19 122.70Z" fill="url(#dg1_1)" fill-rule="evenodd" mask="url(#sgm13)"></path><g filter="url(#dg1_s)"><circle cx="95" cy="95" r="46" fill="url(#dg1_c)"></circle></g><circle cx="95" cy="95" r="48" fill="none" stroke="#fff" stroke-opacity="0.55" stroke-width="4"></circle><text x="95" y="95" dy="0.355em" text-anchor="middle" font-size="46" font-weight="700" fill="#fff" style="pointer-events:none">1</text></svg><div class="mid"><div class="v"></div><div class="k">за час съёмки</div></div></div><div class="ratebot"><div class="rb1"><b>6&nbsp;000 ₽</b><span>стоимость часа</span></div><div class="rb1"><b>108&nbsp;300 ₽</b><span>выручка / мес</span></div></div></div><div class="scn3 s2"><div class="scdeco"></div><div class="nm3">идеальный</div><div class="amt">Необходимый доход</div><div class="bigsum top"><b>250&nbsp;000 ₽</b><span>на руки / мес</span></div><div class="dn anim-ring"><svg width="190" height="190" viewBox="0 0 190 190"><defs><lineargradient id="dg2_0" x1="0.12" y1="0" x2="0.78" y2="1"><stop offset="0" stop-color="#5FCC79"></stop><stop offset="0.52" stop-color="#2BA845"></stop><stop offset="1" stop-color="#14762A"></stop></lineargradient><lineargradient id="dg2_1" x1="0.12" y1="0" x2="0.78" y2="1"><stop offset="0" stop-color="#D3D7DC"></stop><stop offset="0.52" stop-color="#B4B9C1"></stop><stop offset="1" stop-color="#8E949E"></stop></lineargradient><lineargradient id="dg2_c" x1="0.15" y1="0" x2="0.8" y2="1"><stop offset="0" stop-color="#4FC26A"></stop><stop offset="1" stop-color="#1B9331"></stop></lineargradient><filter id="dg2_s" x="-45%" y="-45%" width="190%" height="190%"><fedropshadow dx="0" dy="4" stdDeviation="5" flood-color="#101828" flood-opacity="0.30"></fedropshadow></filter></defs><mask id="sgm14" maskUnits="userSpaceOnUse"><path d="M95.00 27.00A68 68 0 1 1 27.48 103.07" fill="none" stroke="#fff" stroke-width="32" stroke-dasharray="0 313.35"><animate class="segan" attributeName="stroke-dasharray" from="0 313.35" to="312.35 0" dur="0.9s" begin="indefinite" fill="freeze"></animate></path></mask><path class="seg" d="M95.00 12.00A83 83 0 1 1 12.59 104.85L42.37 101.29A53 53 0 1 0 95.00 42.00Z" fill="url(#dg2_0)" fill-rule="evenodd" mask="url(#sgm14)"></path><mask id="sgm15" maskUnits="userSpaceOnUse"><path d="M27.48 103.07A68 68 0 0 1 95.00 27.00" fill="none" stroke="#fff" stroke-width="32" stroke-dasharray="0 115.90"><animate class="segan" attributeName="stroke-dasharray" from="0 115.90" to="114.90 0" dur="0.9s" begin="indefinite" fill="freeze"></animate></path></mask><path class="seg fixed" d="M12.59 104.85A83 83 0 0 1 95.00 12.00L95.00 42.00A53 53 0 0 0 42.37 101.29Z" fill="url(#dg2_1)" fill-rule="evenodd" mask="url(#sgm15)"></path><g filter="url(#dg2_s)"><circle cx="95" cy="95" r="46" fill="url(#dg2_c)"></circle></g><circle cx="95" cy="95" r="48" fill="none" stroke="#fff" stroke-opacity="0.55" stroke-width="4"></circle><text x="95" y="95" dy="0.355em" text-anchor="middle" font-size="46" font-weight="700" fill="#fff" style="pointer-events:none">2</text></svg><div class="mid"><div class="v"></div><div class="k">за час съёмки</div></div></div><div class="ratebot"><div class="rb1"><b>19&nbsp;000 ₽</b><span>стоимость часа</span></div><div class="rb1"><b>341&nbsp;968 ₽</b><span>выручка / мес</span></div></div></div><div class="scn3 s3"><div class="scdeco"></div><div class="nm3">в ноль</div><div class="amt">Дохода нет</div><div class="bigsum top"><b>0 ₽</b><span>на руки / мес</span></div><div class="dn anim-ring"><svg width="190" height="190" viewBox="0 0 190 190"><defs><lineargradient id="dg3_0" x1="0.12" y1="0" x2="0.78" y2="1"><stop offset="0" stop-color="#5FCC79"></stop><stop offset="0.52" stop-color="#2BA845"></stop><stop offset="1" stop-color="#14762A"></stop></lineargradient><lineargradient id="dg3_1" x1="0.12" y1="0" x2="0.78" y2="1"><stop offset="0" stop-color="#D3D7DC"></stop><stop offset="0.52" stop-color="#B4B9C1"></stop><stop offset="1" stop-color="#8E949E"></stop></lineargradient><lineargradient id="dg3_c" x1="0.15" y1="0" x2="0.8" y2="1"><stop offset="0" stop-color="#E1306C"></stop><stop offset="1" stop-color="#C13584"></stop></lineargradient><filter id="dg3_s" x="-45%" y="-45%" width="190%" height="190%"><fedropshadow dx="0" dy="4" stdDeviation="5" flood-color="#101828" flood-opacity="0.30"></fedropshadow></filter></defs><mask id="sgm16" maskUnits="userSpaceOnUse"><path d="M27 95A68 68 0 1 1 163 95A68 68 0 1 1 27 95" fill="none" stroke="#fff" stroke-width="32" stroke-dasharray="0 428.26"><animate class="segan" attributeName="stroke-dasharray" from="0 428.26" to="427.26 0" dur="0.9s" begin="indefinite" fill="freeze"></animate></path></mask><path class="seg fixed" d="M12 95A83 83 0 1 1 178 95A83 83 0 1 1 12 95ZM42 95A53 53 0 1 0 148 95A53 53 0 1 0 42 95Z" fill="url(#dg3_1)" fill-rule="evenodd" mask="url(#sgm16)"></path><g filter="url(#dg3_s)"><circle cx="95" cy="95" r="46" fill="url(#dg3_c)"></circle></g><circle cx="95" cy="95" r="48" fill="none" stroke="#fff" stroke-opacity="0.55" stroke-width="4"></circle><text x="95" y="95" dy="0.355em" text-anchor="middle" font-size="46" font-weight="700" fill="#fff" style="pointer-events:none">3</text></svg><div class="mid"><div class="v"></div><div class="k">за час съёмки</div></div></div><div class="ratebot"><div class="rb1"><b>3&nbsp;900 ₽</b><span>стоимость часа</span></div><div class="rb1"><b>69&nbsp;386 ₽</b><span>выручка / мес</span></div></div></div><div class="slg" style="grid-column:1/-1"><span><i style="background:linear-gradient(140deg,#5FCC79,#14762A)"></i>Ваш доход на руки</span><span><i style="background:linear-gradient(140deg,#D3D7DC,#8E949E)"></i>Расходы в совокупности</span></div></div>
 <div class="minb" style="margin-top:24px">
 <div class="t" data-t="rmb_01">Точка безубыточности / Съёмка в ноль</div>
 <div class="ts" data-t="rmb_05">Это та самая черта, за которой начинается работа в минус. Если стоимость будет ниже этой границы, вы не просто остаётесь без прибыли — вы буквально сами доплачиваете своим клиентам за то, что выполняете для них работу.</div>
 <div class="mbl">
-<div class="y"><i>✓</i><span data-t="rmb_06">Сюда входят все обязательные расходы, которые вам придётся оплачивать в любом случае: аренда, подписки на софт, амортизация камер и света, реклама, налоги, страховые взносы и банковские комиссии. Полный список — в блоке <a href="#cardTab">«Все цифры расчёта в одной таблице»</a>, раздел «Расходы за год».</span></div>
+<div class="y"><i>✓</i><span data-t="rmb_06">Сюда входят все обязательные расходы, которые вам придётся оплачивать в любом случае: аренда, подписки на софт, амортизация камер и света, реклама, налоги, страховые взносы и банковские комиссии. Полный список — в блоке <a href="file:///C:/Users/kommv/Downloads/report.html#cardTab">«Все цифры расчёта в одной таблице»</a>, раздел «Расходы за год».</span></div>
 <div class="n"><i>✕</i><span data-t="rmb_07">Чего здесь нет — вас! Ни секунды вашего времени. Вся съёмка, многочасовая обработка, бесконечные переписки с клиентами остаются полностью бесплатными, а проезд до съёмочной площадки вы оплачиваете из своего кармана.</span></div>
 </div>
 <div class="mbf" data-t="rmb_04"><b>Главная ловушка</b> в том, что эти расходы капают каждый месяц независимо от того, есть у вас заказы или нет. Из-за этого математика работает безжалостно: чем меньше съёмок удаётся найти, тем выше поднимается эта точка безубыточности, потому что вся аренда и подписки раскидываются на жалкие пару заказов.</div>
@@ -1980,21 +2207,17 @@ break-inside:avoid;page-break-inside:avoid;margin-bottom:12px}
 <div class="card" id="card05"><div class="bn">06</div>
 <h2 data-t="rh2_11">А если просто брать больше заказов?</h2>
 <p class="hint" data-t="rhi_11">Проверим: можно ли выйти на желаемый доход, не поднимая цену для заказчика, — только за счёт объёма работ</p>
-<div class="scn" id="scn"></div>
+<div class="scn" id="scn"><div class="t">Чтобы получать 250&nbsp;000 ₽ в месяц при ставке 6&nbsp;000 ₽</div><div class="d">Цена остаётся прежней, но растёт загрузка. Вот сколько придётся работать:</div><div class="g"><div><span>Съёмок / мес</span><b>57,0</b><em>сейчас 18,1</em></div><div><span>Рабочих ч/день</span><b>25,3</b><em>сейчас 8,0</em></div><div><span>Рабочих дней в году</span><b>692</b><em>сейчас 219</em></div><div><span>Выходных / год</span><b>0</b><em>сейчас 146</em></div></div><div class="out"><b>Математика неумолима</b> — вам придётся работать на пределе человеческих возможностей: без отпусков, почти без выходных, игнорируя болезни и собственные потребности.</div></div>
 <div class="note info">
 <p data-t="rsc_01">Всё ещё хотите просто работать больше? Задайтесь вопросом — зачем.</p>
 <p data-t="rsc_02">Объёмом этот разрыв уже не закрыть. Единственный рычаг, который меняет реальность, — это честная цена часа вашей работы.</p>
 </div>
 </div>
 
-
-
-
-
 <div class="card" id="card09"><div class="bn">07</div>
 <h2 class="big-h" data-t="rh2_20">Четыре цифры, которые стоит запомнить</h2>
 <p class="hint ctr" data-t="rhi_20">Они выведены из вашего расчёта и пригодятся в любом разговоре о деньгах</p>
-<div class="fg" id="factGrid"></div>
+<div class="fg" id="factGrid"><div class="fct a"><div class="fl">Час вашего времени</div><div class="fv">1&nbsp;712 ₽</div><div class="fu">за любую работу</div><div class="fd">Столько вы зарабатываете за час — с камерой или за компьютером. Это ваш доход, разложенный на всё рабочее время.</div></div><div class="fct b"><div class="fl">Ставка в ноль</div><div class="fv">3&nbsp;900 ₽/ч</div><div class="fu">ниже этой цены — в убыток</div><div class="fd">На этой ставке вы покрываете технику, налоги и все счета, но не получаете ни рубля себе. Цифра, ниже которой торговаться нельзя.</div></div><div class="fct c"><div class="fl">Времени на одну съёмку</div><div class="fv">5,0</div><div class="fu">часов работы в целом</div><div class="fd">Не только часы с камерой: подготовка, переписка, отбор, обработка и передача материала клиенту.</div></div><div class="fct d"><div class="fl">Цена одного кадра</div><div class="fv">237 ₽</div><div class="fu">за готовый кадр</div><div class="fd">Клиент получает готовые кадры после отбора и обработки. Всё, что было снято и не вошло, тоже оплачено его временем.</div></div></div>
 </div>
 
 <div class="card" id="card10"><div class="bn">08</div>
@@ -2018,63 +2241,75 @@ break-inside:avoid;page-break-inside:avoid;margin-bottom:12px}
 <div class="note info" data-t="rpm_25">Вы посчитали свою юнит-экономику! Теперь у вас есть железобетонные цифры, которых нет у большинства коллег, — и полный карт-бланш говорить о стоимости без оправданий.</div>
 </div>
 
-<div class="cta">
+<!-- СКРЫТ 10.08.2026 по решению заказчика: баннер «30 сценариев».
+     НЕ УДАЛЁН — чтобы вернуть, снимите класс hide у .cta ниже.
+     Копия для просмотра: части/09_баннер_сценарии.html -->
+<div class="cta hide">
 <svg class="dec" style="right:-60px;top:-50px" width="280" height="280" viewBox="0 0 100 100" fill="none">
-<circle cx="50" cy="50" r="50" fill="#fff"/></svg>
+<circle cx="50" cy="50" r="50" fill="#fff"></circle></svg>
 <svg class="dec" style="right:90px;bottom:-70px" width="180" height="180" viewBox="0 0 100 100" fill="none">
-<circle cx="50" cy="50" r="50" fill="#fff"/></svg>
+<circle cx="50" cy="50" r="50" fill="#fff"></circle></svg>
 <svg class="dec" style="right:40px;top:48px;opacity:.3" width="140" height="140" viewBox="0 0 24 24" fill="none">
-<rect x="2.2" y="5.4" width="14.5" height="16.4" rx="2.4" fill="var(--c-g-700)" stroke="#fff" stroke-width="1.2"/>
-<rect x="4.6" y="3.6" width="14.5" height="16.4" rx="2.4" fill="var(--c-g-700)" stroke="#fff" stroke-width="1.2"/>
-<rect x="7" y="1.8" width="14.5" height="16.4" rx="2.4" fill="var(--c-g-700)" stroke="#fff" stroke-width="1.4"/>
-<rect x="9.2" y="4" width="10.1" height="6" rx="1.3" fill="#fff" opacity=".85"/>
-<path d="M9.2 12.6h10.1M9.2 14.6h10.1M9.2 16.6h6.4" stroke="#fff" stroke-width="1.2" stroke-linecap="round"/>
+<rect x="2.2" y="5.4" width="14.5" height="16.4" rx="2.4" fill="var(--c-g-700)" stroke="#fff" stroke-width="1.2"></rect>
+<rect x="4.6" y="3.6" width="14.5" height="16.4" rx="2.4" fill="var(--c-g-700)" stroke="#fff" stroke-width="1.2"></rect>
+<rect x="7" y="1.8" width="14.5" height="16.4" rx="2.4" fill="var(--c-g-700)" stroke="#fff" stroke-width="1.4"></rect>
+<rect x="9.2" y="4" width="10.1" height="6" rx="1.3" fill="#fff" opacity=".85"></rect>
+<path d="M9.2 12.6h10.1M9.2 14.6h10.1M9.2 16.6h6.4" stroke="#fff" stroke-width="1.2" stroke-linecap="round"></path>
 </svg>
 <div class="in">
 <div class="kick" data-t="rct_01">Готовый контент для вашего блога</div>
 <h3 data-t="rct_02">30 сценариев, которые снимают<br>вопрос «а почему так дорого»</h3>
 <p data-t="rct_03">Рассказывайте о работе подробно и без оправданий — ценность станет очевидной раньше, чем возникнет вопрос о цене.</p>
-<a class="btn2" id="ctaLink" href="#plan">
+<a class="btn2" id="ctaLink" href="file:///C:/Users/kommv/Downloads/report.html#plan">
 <svg width="19" height="19" viewBox="0 0 24 24" fill="none">
-<path d="M12 3v12m0 0l-4.5-4.5M12 15l4.5-4.5" stroke="var(--c-g-700)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2" stroke="var(--c-g-700)" stroke-width="2.2" stroke-linecap="round"/></svg>
+<path d="M12 3v12m0 0l-4.5-4.5M12 15l4.5-4.5" stroke="var(--c-g-700)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path>
+<path d="M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2" stroke="var(--c-g-700)" stroke-width="2.2" stroke-linecap="round"></path></svg>
 Забрать сценарии</a>
 </div>
 </div>
 
 <div class="cta thx">
 <svg class="dec" style="right:-60px;top:-50px" width="280" height="280" viewBox="0 0 100 100" fill="none">
-<circle cx="50" cy="50" r="50" fill="#fff"/></svg>
+<circle cx="50" cy="50" r="50" fill="#fff"></circle></svg>
 <svg class="dec" style="right:90px;bottom:-70px" width="180" height="180" viewBox="0 0 100 100" fill="none">
-<circle cx="50" cy="50" r="50" fill="#fff"/></svg>
+<circle cx="50" cy="50" r="50" fill="#fff"></circle></svg>
+<svg class="dec" style="right:214px;top:24px;opacity:.22" width="54" height="54" viewBox="0 0 24 24" fill="none">
+<path d="M20.8 4.6a5.5 5.5 0 00-7.8 0l-1 1-1-1a5.5 5.5 0 00-7.8 7.8l1 1 7.8 7.8 7.8-7.8 1-1a5.5 5.5 0 000-7.8z" fill="#fff"></path></svg>
 <svg class="dec" style="right:52px;top:56px;opacity:.3" width="132" height="132" viewBox="0 0 24 24" fill="none">
-<path d="M20.8 4.6a5.5 5.5 0 00-7.8 0l-1 1-1-1a5.5 5.5 0 00-7.8 7.8l1 1 7.8 7.8 7.8-7.8 1-1a5.5 5.5 0 000-7.8z"
- fill="var(--c-a-700)" stroke="#fff" stroke-width="1.3"/></svg>
+<path d="M20.8 4.6a5.5 5.5 0 00-7.8 0l-1 1-1-1a5.5 5.5 0 00-7.8 7.8l1 1 7.8 7.8 7.8-7.8 1-1a5.5 5.5 0 000-7.8z" fill="var(--c-a-700)" stroke="#fff" stroke-width="1.3"></path></svg>
 <div class="in">
 <div class="kick" data-t="rthx_02">Если расчёт оказался полезным</div>
 <h3 data-t="rthx_03">Поблагодарить проект</h3>
-<p data-t="rthx_04">«Счетикс» держится на тех, кому он пригодился. Любая сумма помогает считать точнее и добавлять новое.</p>
-<a class="btn2" href="#thanks" data-thx>
+<p data-t="rthx_04">Так мы будем знать, что сервис вам нужен, и сможем развивать его и сохранять бесплатным для всех специалистов креативной индустрии.</p>
+<a class="btn2" href="file:///C:/Users/kommv/Downloads/report.html#thanks" data-thx="">
 <svg width="19" height="19" viewBox="0 0 24 24" fill="none">
-<path d="M20.8 4.6a5.5 5.5 0 00-7.8 0l-1 1-1-1a5.5 5.5 0 00-7.8 7.8l1 1 7.8 7.8 7.8-7.8 1-1a5.5 5.5 0 000-7.8z"
- fill="none" stroke="var(--c-a-700)" stroke-width="2"/></svg>
+<path d="M20.8 4.6a5.5 5.5 0 00-7.8 0l-1 1-1-1a5.5 5.5 0 00-7.8 7.8l1 1 7.8 7.8 7.8-7.8 1-1a5.5 5.5 0 000-7.8z" fill="none" stroke="var(--c-a-700)" stroke-width="2"></path></svg>
 Поблагодарить</a>
 </div>
 </div>
 
 <div class="pmknote">
 <div class="pnh" data-t="rrf_01">Справочник: термины и определения</div>
-<div id="refList"></div>
+<div id="refList"><div class="pi2" id="ref0"><i class="rnum">01</i><span class="rtx"><b>Амортизация</b> — способ распределения стоимости разовой покупки на весь её срок службы — ежегодные или ежемесячные расходы на износ оборудования.</span></div><div class="pi2" id="ref1"><i class="rnum">02</i><span class="rtx"><b>Выручка</b> — общий объём денежных средств, которые необходимо получить от клиентов за год, чтобы после всех обязательных вычетов у вас остался желаемый чистый доход.</span></div><div class="pi2" id="ref2"><i class="rnum">03</i><span class="rtx"><b>Готовые кадры</b> — среднее количество готовых снимков, получаемых клиентом с часа съёмки. Из этого рассчитывается цена одного кадра.</span></div><div class="pi2" id="ref3"><i class="rnum">04</i><span class="rtx"><b>Доход на руки</b> — чистая сумма, которая остаётся у вас после вычета всех расходов и налогов. Это ключевая точка отсчёта для всех дальнейших расчётов.</span></div><div class="pi2" id="ref4"><i class="rnum">05</i><span class="rtx"><b>Запас прочности</b> — финансовый резерв, формирующий фонд развития и запас на предоставление скидок. Не входит в обязательный базовый расчёт и может включаться по вашему усмотрению.</span></div><div class="pi2" id="ref5"><i class="rnum">06</i><span class="rtx"><b>Налоги и взносы</b> — платежи в соответствии с вашим налоговым режимом. Для индивидуальных предпринимателей включают фиксированные страховые взносы, подлежащие уплате независимо от наличия дохода.</span></div><div class="pi2" id="ref6"><i class="rnum">07</i><span class="rtx"><b>Обработка</b> — время, необходимое для обработки полученного контента за один час съёмки: скачивание и бэкап, отбор и отбраковка кадров, выгрузка и загрузка в ПО, кадрирование, устранение значимых артефактов, цветовая и тоновая коррекция, сведение к единому стилю, настройка чёткости кадра, сохранение в нужном формате, экспорт, загрузка в облако, правки при необходимости, а также формирование и хранение архива.</span></div><div class="pi2" id="ref7"><i class="rnum">08</i><span class="rtx"><b>Обустройство места</b> — закупка необходимой для работы мебели, косметический ремонт помещения, предусмотренного под рабочую зону и хранение оборудования.</span></div><div class="pi2" id="ref8"><i class="rnum">09</i><span class="rtx"><b>Обучение</b> — прохождение профессиональных курсов и работа с наставниками. Помимо прямой финансовой стоимости, учитывает периоды временного снижения или полного отсутствия дохода во время учёбы.</span></div><div class="pi2" id="ref9"><i class="rnum">10</i><span class="rtx"><b>Офисное оборудование</b> — оборудование, необходимое для профессиональной деятельности фотографа и выполнения всего комплекса работ: от обработки заказов и решения текущих задач до поиска новых клиентов, ведения учёта и сопутствующей административной деятельности.</span></div><div class="pi2" id="ref10"><i class="rnum">11</i><span class="rtx"><b>Подписки</b> — регулярные платежи за цифровые сервисы и инструменты, без которых невозможна ежедневная работа: Adobe Creative Cloud, облачные хранилища, хостинг, доменное имя и подобное.</span></div><div class="pi2" id="ref11"><i class="rnum">12</i><span class="rtx"><b>Программное обеспечение</b> — специализированный профессиональный софт, необходимый фотографу для обработки изображений и подготовки материалов. Без этих программ выполнение качественной финальной обработки и передача готового заказа клиенту невозможны.</span></div><div class="pi2" id="ref12"><i class="rnum">13</i><span class="rtx"><b>Продвижение и реклама</b> — комплекс мер, направленных на продвижение, популяризацию личного бренда и поиск новых клиентов.</span></div><div class="pi2" id="ref13"><i class="rnum">14</i><span class="rtx"><b>Продолжительность съёмки</b> — привычный или средний формат заказа. Рассчитывается по формуле: общее количество съёмочных часов в месяц разделить на количество съёмок.</span></div><div class="pi2" id="ref14"><i class="rnum">15</i><span class="rtx"><b>Работа с клиентом</b> — презентация личного бренда, демонстрация портфолио, согласование прайса, даты съёмки и референсов, заключение и коррекция договора, формирование и выставление счетов и актов, контроль оплаты, консультации в ходе работы и пр. Рассчитывается на один заказ.</span></div><div class="pi2" id="ref15"><i class="rnum">16</i><span class="rtx"><b>Рабочие паузы</b> — время в течение дня на подготовку и уборку рабочего места, обслуживание и зарядку оборудования, разминку при работе за компьютером и личные надобности. В расчёт заложен один час ежедневно. Это опирается на нормативы Госкомтруда, где всем работающим независимо от вида труда полагается 10–15 минут в смену на личные надобности, и на санитарные рекомендации для работы за монитором: 10–15 минут перерыва каждый час. Обеденное время сюда не входит и в расчёте не учитывается.</span></div><div class="pi2" id="ref16"><i class="rnum">17</i><span class="rtx"><b>Сайт</b> — персональный информационный ресурс в сети интернет, предназначенный для привлечения новых клиентов и поиска заказов. Может быть создан привлечённым специалистом — тогда учитываются прямые финансовые затраты — либо разработан фотографом самостоятельно. При самостоятельной разработке в качестве амортизируемого вложения учитывается время, затраченное на создание и настройку ресурса, пересчитанное по базовой ставке часа.</span></div><div class="pi2" id="ref17"><i class="rnum">18</i><span class="rtx"><b>Содержание рабочего места</b> — регулярные текущие платежи, обеспечивающие функционирование рабочего пространства.</span></div><div class="pi2" id="ref18"><i class="rnum">19</i><span class="rtx"><b>Срок службы</b> — количество лет, в течение которых вещь реально работает до замены. Учитывается не гарантия производителя, а ваш личный практический опыт.</span></div><div class="pi2" id="ref19"><i class="rnum">20</i><span class="rtx"><b>Ставка часа съёмки</b> — стоимость одного часа работы непосредственно на съёмочной площадке для клиента. Покрывает ваш желаемый доход, все сопутствующие расходы, налоги и комиссии банков.</span></div><div class="pi2" id="ref20"><i class="rnum">21</i><span class="rtx"><b>Стоимость часа вашей работы</b> — ваш итоговый доход, разделённый на абсолютно всё потраченное рабочее время. Показывает реальную стоимость любого вашего часа, включая обработку, общение с клиентами и прочие административные задачи.</span></div><div class="pi2" id="ref21"><i class="rnum">22</i><span class="rtx"><b>Съёмка</b> — время, проведённое непосредственно на площадке. Единственное, за что клиент платит напрямую.</span></div><div class="pi2" id="ref22"><i class="rnum">23</i><span class="rtx"><b>Съёмочное оборудование</b> — неизменный рабочий арсенал, который фотограф берёт с собой на каждую съёмку. Без этого минимума проведение съёмочного процесса физически невозможно либо критически усложняется. Узкоспециализированная техника для разовых или нестандартных проектов сюда не относится — она рассчитывается отдельно под конкретные задачи.</span></div><div class="pi2" id="ref23"><i class="rnum">24</i><span class="rtx"><b>Учёт и отчётность</b> — формирование и сдача деклараций, уплата взносов по срокам, сверки, ведение КУДИР, ответы налоговым органам и пр. Учитывается как часы в квартал.</span></div><div class="pi2" id="ref24"><i class="rnum">25</i><span class="rtx"><b>Форс-мажоры</b> — непредвиденные обстоятельства: внезапный перенос или отмена съёмок, срывы договорённостей по вине клиента, повторные выезды на площадку и прочие ситуации, когда рабочее время уже потрачено, но оплата труда не поступает.</span></div><div class="pi2" id="ref25"><i class="rnum">26</i><span class="rtx"><b>Эквайринг</b> — банковская комиссия за приём платежей по картам или через QR-код. Рассчитывается со всей суммы поступлений, а не с чистой прибыли.</span></div></div>
 <div class="pnf" data-t="rrf_02">Эти же пояснения есть в форме под каждым вопросом — разверните «что сюда входит», если захотите пересчитать точнее.</div>
 </div>
 
 <div class="card" id="cardTab">
 <h2 class="big-h" data-t="rtb_01">Все цифры расчёта в одной таблице</h2>
 <p class="hint ctr" data-t="rtb_02">Полная выгрузка: время, проект, доход, расходы, налоги и ставки</p>
-<div class="tabw"><table class="ftab"><tbody id="fullTab"></tbody></table></div>
+<div class="tabw"><table class="ftab"><tbody id="fullTab"><tr class="fg"><td colspan="3">Ваше время за год</td></tr><tr><td class="fn">Чистое рабочее время за год</td><td class="fv">1&nbsp;533,0 ч</td><td class="fc">без отпуска и больничных</td></tr><tr><td class="fn">Съёмочных часов</td><td class="fv">216,6 ч</td><td class="fc">4,9 ч/нед</td></tr><tr><td class="fn">Часов на обработку</td><td class="fv">649,8 ч</td><td class="fc">14,8 ч/нед</td></tr><tr><td class="fn">Часов на продвижение и рекламу</td><td class="fv">438,0 ч</td><td class="fc">10,0 ч/нед</td></tr><tr><td class="fn">Часов на работу с клиентом</td><td class="fv">216,6 ч</td><td class="fc">4,9 ч/нед</td></tr><tr><td class="fn">Часов на учёт и отчётность</td><td class="fv">12,0 ч</td><td class="fc"></td></tr><tr><td class="fn">Часов на рабочие паузы</td><td class="fv">219,0 ч</td><td class="fc">час в день</td></tr><tr><td class="fn">Часов на форс-мажоры</td><td class="fv">0,0 ч</td><td class="fc">не заложен</td></tr><tr class="fg"><td colspan="3">Проект</td></tr><tr><td class="fn">Продолжительность съёмки</td><td class="fv">1,0 ч</td><td class="fc"></td></tr><tr><td class="fn">Коэффициент обработки</td><td class="fv">× 3,0</td><td class="fc">часов обработки на час съёмки</td></tr><tr><td class="fn">Время на один съёмочный проект</td><td class="fv">5,0 ч</td><td class="fc">съёмка + обработка + клиент</td></tr><tr><td class="fn">Проектов / год</td><td class="fv">216,6</td><td class="fc">18,1 в месяц</td></tr><tr><td class="fn">Готовых кадров с часа съёмки</td><td class="fv">80 шт</td><td class="fc"></td></tr><tr class="fg"><td colspan="3">Доход</td></tr><tr><td class="fn">Желаемый доход</td><td class="fv">3&nbsp;000&nbsp;000 ₽</td><td class="fc">250&nbsp;000 ₽/мес</td></tr><tr><td class="fn">Выручка</td><td class="fv">4&nbsp;103&nbsp;612 ₽</td><td class="fc">341&nbsp;968 ₽/мес</td></tr><tr class="fg"><td colspan="3">Расходы за год</td></tr><tr><td class="fn">Съёмочное оборудование</td><td class="fv">137&nbsp;893 ₽</td><td class="fc">11&nbsp;491 ₽/мес</td></tr><tr><td class="fn">Офисное оборудование</td><td class="fv">65&nbsp;733 ₽</td><td class="fc">5&nbsp;478 ₽/мес</td></tr><tr><td class="fn">Программное обеспечение</td><td class="fv">38&nbsp;500 ₽</td><td class="fc">3&nbsp;208 ₽/мес</td></tr><tr><td class="fn">Обучение</td><td class="fv">154&nbsp;286 ₽</td><td class="fc">12&nbsp;857 ₽/мес</td></tr><tr><td class="fn">Сайт</td><td class="fv">10&nbsp;000 ₽</td><td class="fc">833 ₽/мес</td></tr><tr><td class="fn">Обустройство рабочего места</td><td class="fv">9&nbsp;286 ₽</td><td class="fc">774 ₽/мес</td></tr><tr><td class="fn">Продвижение и реклама</td><td class="fv">187&nbsp;500 ₽</td><td class="fc">15&nbsp;625 ₽/мес</td></tr><tr><td class="fn">Содержание рабочего места</td><td class="fv">141&nbsp;600 ₽</td><td class="fc">11&nbsp;800 ₽/мес</td></tr><tr><td class="fn">Банк и РКО</td><td class="fv">112&nbsp;598 ₽</td><td class="fc">9&nbsp;383 ₽/мес</td></tr><tr><td class="fn"><b>Всего расходов</b></td><td class="fv"><b>857&nbsp;395 ₽</b></td><td class="fc">71&nbsp;450 ₽/мес</td></tr><tr class="fg"><td colspan="3">Налоги и взносы</td></tr><tr><td class="fn">Режим</td><td class="fv">ИП, УСН «Доходы» — 6%</td><td class="fc"></td></tr><tr><td class="fn">Налог и страховые взносы</td><td class="fv">246&nbsp;217 ₽</td><td class="fc">6.0% от выручки</td></tr><tr class="fg"><td colspan="3">Ставки</td></tr><tr><td class="fn"><b>Ваша ставка за час съёмки</b></td><td class="fv"><b>19&nbsp;000 ₽</b></td><td class="fc">цена для клиента</td></tr><tr><td class="fn">Стоимость одного съёмочного проекта</td><td class="fv">18&nbsp;946 ₽</td><td class="fc">1,0 ч на площадке</td></tr><tr><td class="fn">Стоимость часа вашей работы</td><td class="fv">1&nbsp;712 ₽</td><td class="fc">доход ÷ всё время</td></tr><tr><td class="fn">Стоимость одного готового кадра</td><td class="fv">237 ₽</td><td class="fc">80 кадров с часа съёмки</td></tr></tbody></table></div>
 </div>
 
-<div class="foot"><span class="lgs" title="Счетикс — твоя юнит-экономика"><span class="btx"><span class="bt">счетикс</span><span class="bd" data-t="bt_02"><i>т</i><i>в</i><i>о</i><i>я</i><i>&nbsp;</i><i>ю</i><i>н</i><i>и</i><i>т</i><i>-</i><i>э</i><i>к</i><i>о</i><i>н</i><i>о</i><i>м</i><i>и</i><i>к</i><i>а</i></span></span><svg class="lx" viewBox="0 0 32 32" fill="none" aria-hidden="true"><rect x="10.95" y="2.09" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 7.14)" fill="var(--c-gr3)"/><rect x="19.81" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 24.86 16)" fill="var(--c-g-500)"/><rect x="10.95" y="19.81" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 24.86)" fill="var(--c-gr3)"/><rect x="2.09" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 7.14 16)" fill="var(--c-gr3)"/></svg></span></div>
+<div class="trb" id="trial">
+<div class="trh"><svg class="tri" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 4.2L2.8 20h18.4z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"></path><path d="M12 10v4.4" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"></path><circle cx="12" cy="17.4" r="1.05" fill="currentColor"></circle></svg><span data-t="rt_01">Что значит пробный режим</span></div>
+<p data-t="rt_02">Сервис уже работает и считает по открытой методике: производственный календарь, нормы Трудового кодекса и налоговые правила 2026 года. Результатом можно пользоваться.</p>
+<p data-t="rt_03">Но мы всё ещё тестируем: где-то может встретиться ошибка в расчёте или неточная формулировка. <b>Если заметите — напишите нам</b>, будем благодарны. Так сервис станет точнее.</p>
+<p data-t="rt_04">Оплата отчёта тоже пока в пробном режиме — сейчас это скорее способ поддержать проект, чем цена. Ваши цифры остаются в браузере и никуда не отправляются.</p>
+</div>
+
+<div class="foot"><span class="lgs" title="Счетикс — твоя юнит-экономика"><span class="btx"><span class="bt">счетикс</span><span class="bd" data-t="bt_02"><i>т</i><i>в</i><i>о</i><i>я</i><i>&nbsp;</i><i>ю</i><i>н</i><i>и</i><i>т</i><i>-</i><i>э</i><i>к</i><i>о</i><i>н</i><i>о</i><i>м</i><i>и</i><i>к</i><i>а</i></span></span><svg class="lx" viewBox="0 0 32 32" fill="none" aria-hidden="true"><rect x="10.95" y="2.09" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 7.14)" fill="var(--c-gr3)"></rect><rect x="19.81" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 24.86 16)" fill="var(--c-g-500)"></rect><rect x="10.95" y="19.81" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 24.86)" fill="var(--c-gr3)"></rect><rect x="2.09" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 7.14 16)" fill="var(--c-gr3)"></rect></svg></span>
+<div class="fcop" data-t="rfc_01">ООО «Центр маркетинговых услуг Гет Маркетинг» © 2026</div>
+</div>
 
 </div>
 </div>
@@ -2119,7 +2354,7 @@ var LB=['\u041a\u0430\u043a \u0444\u043e\u0442\u043e\u0433\u0440\u0430\u0444 \u2
 '\u0417\u0430\u043f\u043b\u0430\u0442\u0438\u0442\u0435 \u043f\u043e \u0442\u0435\u043a\u0443\u0449\u0438\u043c \u0441\u0447\u0435\u0442\u0430\u043c',
 '\u0417\u0430\u043f\u043b\u0430\u0442\u0438\u0442\u0435 \u043d\u0430\u043b\u043e\u0433\u043e\u0432 \u0438 \u0432\u0437\u043d\u043e\u0441\u043e\u0432',
 '\u041e\u0442\u0434\u0430\u0434\u0438\u0442\u0435 \u0431\u0430\u043d\u043a\u0443 \u0437\u0430 \u044d\u043a\u0432\u0430\u0439\u0440\u0438\u043d\u0433',
-'\u041e\u0442\u043b\u043e\u0436\u0438\u0442\u0435 \u0432 \u0444\u043e\u043d\u0434 \u0440\u0430\u0437\u0432\u0438\u0442\u0438\u044f',
+'\u041e\u0442\u043b\u043e\u0436\u0438\u0442\u0435 \u0437\u0430\u043f\u0430\u0441 \u0441\u0440\u0435\u0434\u0441\u0442\u0432 \u0432 \u0444\u043e\u043d\u0434 \u0440\u0430\u0437\u0432\u0438\u0442\u0438\u044f',
 '\u0417\u0430\u043b\u043e\u0436\u0438\u0442\u0435 \u0437\u0430\u043f\u0430\u0441 \u043d\u0430 \u0441\u043a\u0438\u0434\u043a\u0443'];
 
 /* ДЕМО-ДАННЫЕ. Реальные приходят из калькулятора: localStorage 'phc_report' или ?data= */
@@ -2146,6 +2381,10 @@ function loadData(){
    страницы благодарности (боости, ЮMoney и т.п.) — подставится во все
    четыре кнопки сразу. */
 var THANKS_URL='#thanks';
+/* Куда ведёт «Редактировать данные»: обратно в анкету. Отчёт открывается
+   отдельной страницей, поэтому нужен полный путь, а не якорь. */
+var EDIT_URL='calc.html';
+
 var d=loadData();
 
 function parts(x){
@@ -2259,7 +2498,27 @@ function donut(vals,cols,cx,big,idx,labels){
     /* fixed — сегменты, которые нечего разбирать: не ловят наведение.
        Список приходит снаружи, через donut.FIXED. */
     var isFx=donut.FIXED&&donut.FIXED.indexOf(k)>=0;
+    /* Появление: каждый сектор выезжает отдельно, как в анкете. Там кольцо
+       нарисовано обводкой и растёт через stroke-dasharray; здесь секторы —
+       это фигуры, поэтому тот же приём применяем к МАСКЕ: дуга-обводка
+       внутри маски удлиняется и открывает сектор от начала к концу.
+       Дуга идёт по средней линии кольца, толщина W перекрывает сектор. */
+    var mid0=pt(RR,b0), mid1=pt(RR,b1);
+    var mBig=(b1-b0)>180?1:0;
+    var дуга=(sw>=359.999)
+      ? 'M'+(C-RR)+' '+C+'A'+RR+' '+RR+' 0 1 1 '+(C+RR)+' '+C+
+        'A'+RR+' '+RR+' 0 1 1 '+(C-RR)+' '+C
+      : 'M'+mid0[0]+' '+mid0[1]+'A'+RR+' '+RR+' 0 '+mBig+' 1 '+mid1[0]+' '+mid1[1];
+    var дл=(sw/360)*2*Math.PI*RR;            /* длина дуги сектора */
+    var мид='sgm'+(donut._n=(donut._n||0)+1);
+    s+='<mask id="'+мид+'" maskUnits="userSpaceOnUse">'+
+       '<path d="'+дуга+'" fill="none" stroke="#fff" stroke-width="'+(W+2)+'" '+
+       'stroke-dasharray="0 '+(дл+1).toFixed(2)+'">'+
+       '<animate class="segan" attributeName="stroke-dasharray" '+
+       'from="0 '+(дл+1).toFixed(2)+'" to="'+дл.toFixed(2)+' 0" '+
+       'dur="0.9s" begin="indefinite" fill="freeze"/></path></mask>';
     s+='<path class="seg'+(isFx?' fixed':'')+'" d="'+d+'" fill="'+cols[k]+'" fill-rule="evenodd"'+
+       ' mask="url(#'+мид+')"'+
        (nm?' data-nm="'+nm.replace(/"/g,'&quot;')+'" data-pc="'+pct.toFixed(pct<1?1:0)+'"':'')+'/>';
     if(big&&pct>=3.2){
       var mid=(b0+b1)/2, tp=pt(RR,mid);
@@ -2310,6 +2569,55 @@ function render(){
   $('hInc').textContent=f0(d.Ny/12)+MO;
   $('hExp').textContent=f0(expMo)+MO;
   $('hMon').textContent=f0(d.R/12)+MO;
+
+  /* --- меню и плавающая плашка ---
+     Меню прокручивается вместе со страницей. Плашка появляется после
+     500 px и висит по центру сверху. Кнопки в обеих делают одно и то же,
+     поэтому обработчики вешаем сразу на пары. */
+  (function(){
+    var порог=500, виден=false, bar=$('fbar');
+
+    ['editLink','editLink2'].forEach(function(id){
+      var e=$(id); if(e)e.setAttribute('href',EDIT_URL);
+    });
+
+    /* печать в PDF: имя файла подставляется перед открытием окна */
+    ['dlBtn','dlBtn2'].forEach(function(id){
+      var b=$(id); if(!b)return;
+      b.onclick=function(){
+        try{document.title=window.PHR_FILENAME()}catch(e){}
+        window.print();
+      };
+    });
+
+    /* поделиться: системное окно на телефонах, буфер на остальном */
+    ['shareBtn','shareBtn2'].forEach(function(id){
+      var sh=$(id); if(!sh)return;
+      sh.onclick=function(){
+        var url=location.href, ttl=document.title;
+        if(navigator.share){navigator.share({title:ttl,url:url}).catch(function(){});return}
+        var ok=function(){sh.classList.add('done');
+          setTimeout(function(){sh.classList.remove('done')},1800)};
+        if(navigator.clipboard&&navigator.clipboard.writeText){
+          navigator.clipboard.writeText(url).then(ok,function(){});
+        }else{
+          var t=document.createElement('textarea');
+          t.value=url; document.body.appendChild(t); t.select();
+          try{document.execCommand('copy');ok()}catch(_){}
+          document.body.removeChild(t);
+        }
+      };
+    });
+
+    if(!bar)return;
+    function проверить(){
+      var y=window.pageYOffset||document.documentElement.scrollTop||0;
+      var надо=y>порог;
+      if(надо!==виден){виден=надо; bar.classList.toggle('on',надо)}
+    }
+    window.addEventListener('scroll',проверить,{passive:true});
+    проверить();
+  })();
 
   /* адрес благодарности — во все кнопки разом */
   (function(){
@@ -2420,26 +2728,35 @@ var REFD=[
   var HRS=[d.sh,d.post,d.clT,d.promo,d.accT,d.fmT+d.idle].map(function(h){return h/d.sh});
   /* если параметр не заложен — показываем, чем это обернётся */
   var ZW=[];
+  /* Куда ведёт кнопка в предупреждении: якорь поля в анкете
+     и надпись. Ключи те же, что id полей в calc.html. */
+  var ZWA=[];
+  ZWA[11]=['fund_on','\u0417\u0430\u043b\u043e\u0436\u0438\u0442\u044c \u0444\u043e\u043d\u0434 \u0440\u0430\u0437\u0432\u0438\u0442\u0438\u044f'];
+  ZWA[12]=['disc_on','\u0417\u0430\u043b\u043e\u0436\u0438\u0442\u044c \u0437\u0430\u043f\u0430\u0441 \u043d\u0430 \u0441\u043a\u0438\u0434\u043a\u0443'];
   ZW[11]='\u0422\u0435\u0445\u043d\u0438\u043a\u0443 \u043f\u0440\u0438\u0434\u0451\u0442\u0441\u044f \u043c\u0435\u043d\u044f\u0442\u044c \u0438\u0437 \u0441\u0432\u043e\u0435\u0433\u043e \u043a\u0430\u0440\u043c\u0430\u043d\u0430 \u0438\u043b\u0438 \u0432 \u043a\u0440\u0435\u0434\u0438\u0442. \u0410\u043c\u043e\u0440\u0442\u0438\u0437\u0430\u0446\u0438\u044f \u043f\u043e\u043a\u0440\u044b\u0432\u0430\u0435\u0442 \u0442\u043e\u043b\u044c\u043a\u043e \u0437\u0430\u043c\u0435\u043d\u0443 \u0442\u043e\u0433\u043e, \u0447\u0442\u043e \u0443\u0436\u0435 \u0435\u0441\u0442\u044c, \u2014 \u043d\u0430 \u043d\u043e\u0432\u043e\u0435 \u0441\u0442\u0435\u043a\u043b\u043e, \u0432\u0442\u043e\u0440\u043e\u0439 \u043a\u043e\u0440\u043f\u0443\u0441 \u0438 \u043e\u0431\u0443\u0447\u0435\u043d\u0438\u0435 \u0434\u0435\u043d\u0435\u0433 \u0432 \u0440\u0430\u0441\u0447\u0451\u0442\u0435 \u043d\u0435\u0442.';
   ZW[12]='\u041b\u044e\u0431\u0430\u044f \u0441\u043a\u0438\u0434\u043a\u0430 \u00ab\u043f\u0440\u043e\u0441\u0442\u043e \u0442\u0430\u043a\u00bb \u0431\u0443\u0434\u0435\u0442 \u0432\u044b\u0447\u0442\u0435\u043d\u0430 \u0438\u0437 \u0432\u0430\u0448\u0435\u0433\u043e \u0434\u043e\u0445\u043e\u0434\u0430. \u041e\u0441\u0442\u0430\u043d\u0435\u0442\u0441\u044f \u0442\u043e\u043b\u044c\u043a\u043e \u0441\u043a\u0438\u0434\u043a\u0430 \u0437\u0430 \u043e\u0431\u044a\u0451\u043c \u2014 \u043e\u043d\u0430 \u043f\u043e\u0441\u0447\u0438\u0442\u0430\u043d\u0430 \u043d\u0438\u0436\u0435 \u0438 \u0431\u0435\u0440\u0451\u0442\u0441\u044f \u0438\u0437 \u043d\u0430\u043a\u043b\u0430\u0434\u043d\u044b\u0445 \u0440\u0430\u0441\u0445\u043e\u0434\u043e\u0432.';
   function lgRow(i){
     var w=mx>0?P[i]/mx*100:0, zero=P[i]<0.5;
     return '<div class="lgi'+(zero?' zero':'')+'">'+
-    '<div class="fill" style="width:'+w.toFixed(1)+'%;background:'+CO[i]+'"></div>'+
+    '<div class="fill" style="--w:'+w.toFixed(1)+'%;width:'+w.toFixed(1)+'%;background:'+CO[i]+'"></div>'+
     '<div class="ltx"><i style="background:'+CO[i]+'"></i><div><b>'+LB[i]+'</b>'+
     (function(){
       /* Вместо пересказа состава — ссылка на пункт справочника.
          Определение живёт в одном месте и не расходится по блокам. */
       var сп=window.PHR_REF&&REFLB[i]?window.PHR_REF(REFLB[i]):null;
       if(сп)return '<em><a class="refl" href="#'+сп.id+'">'+
-        '\u041f\u043e\u0434\u0440\u043e\u0431\u043d\u0435\u0435 \u0432 \u043f. '+
-        parseInt(сп.n,10)+' \u0421\u043f\u0440\u0430\u0432\u043e\u0447\u043d\u0438\u043a\u0430</a></em>';
+        '\u043f. '+parseInt(сп.n,10)+
+        ' \u0421\u043f\u0440\u0430\u0432\u043e\u0447\u043d\u0438\u043a\u0430</a></em>';
       return SUB[i]?'<em>'+SUB[i]+'</em>':'';
     })()+'</div></div>'+
     '<div class="lvv"><div class="a">'+(zero?'\u043d\u0435 \u0437\u0430\u043b\u043e\u0436\u0435\u043d\u043e':f0(P[i]/d.sh))+'</div>'+
     (HRS[i]!==undefined?'<div class="b2">\u0437\u0430 '+f1(HRS[i])+' \u0447</div>':'')+
     '</div>'+
-    (zero&&ZW[i]?'<div class="note warn lgw">'+ZW[i]+'</div>':'')+
+    (zero&&ZW[i]?'<div class="note warn lgw">'+ZW[i]+
+      /* Кнопка ведёт прямо к нужному полю анкеты — человек может
+         сразу исправить, не разыскивая вопрос вручную. */
+      (ZWA[i]?'<a class="lgwb" href="'+EDIT_URL+'#'+ZWA[i][0]+'">'+ZWA[i][1]+'</a>':'')+
+      '</div>':'')+
     '</div>';
   }
   var gProf=VI.filter(function(i){return i<=1});      /* по специальности */
@@ -2754,7 +3071,9 @@ var REFD=[
     else{
       zb.className='note warn';
       zb.setAttribute('style','margin-top:20px');
-      zb.innerHTML='Если хотите иметь возможность сформировать программу лояльности и давать скидки своим клиентам не только за объём — вернитесь в анкету и включите «Резерв на скидку».';
+      /* Кнопка ведёт прямо к полю анкеты — как в предупреждениях блока 01. */
+      zb.innerHTML='Если хотите иметь возможность сформировать программу лояльности и давать скидки своим клиентам не только за объём — вернитесь в анкету и включите «Резерв на скидку».'+
+        '<a class="lgwb" href="'+EDIT_URL+'#disc_on">Заложить резерв на скидку</a>';
     }
   }
 
@@ -2770,8 +3089,13 @@ var REFD=[
       var C=2*Math.PI*62, off=0, дуги='', подписи='';
       НАПР.forEach(function(x,i){
         var доля=фонд>0?x.v/фонд:0, a=C*доля;
+        /* Кольцо фонда нарисовано обводкой, поэтому сектор растёт
+           напрямую через stroke-dasharray — тот же приём, что в анкете. */
         дуги+='<circle cx="80" cy="80" r="62" fill="none" stroke="url(#fg'+(i+1)+')" stroke-width="26" '+
-              'stroke-dasharray="'+a.toFixed(2)+' '+(C-a).toFixed(2)+'" stroke-dashoffset="'+(-off).toFixed(2)+'"/>';
+              'stroke-dasharray="'+a.toFixed(2)+' '+(C-a).toFixed(2)+'" stroke-dashoffset="'+(-off).toFixed(2)+'">'+
+              '<animate class="segan" attributeName="stroke-dasharray" '+
+              'from="0 '+C.toFixed(2)+'" to="'+a.toFixed(2)+' '+(C-a).toFixed(2)+'" '+
+              'dur="0.9s" begin="indefinite" fill="freeze"/></circle>';
         var mid=(off/C)+доля/2, ang=(-90+360*mid)*Math.PI/180;
         подписи+='<text class="fpc" x="'+(80+62*Math.cos(ang)).toFixed(1)+'" y="'+
                  (80+62*Math.sin(ang)).toFixed(1)+'">'+Math.round(доля*100)+'%</text>';
@@ -2801,7 +3125,7 @@ var REFD=[
       '<div>'+
       НАПР.map(function(x,i){
         return '<div class="bar b'+(i+1)+'"><div class="bt"><i>'+x.t+'</i><b>'+f0(x.v)+'</b></div>'+
-        '<div class="bl"><i style="width:'+(фонд>0?(x.v/фонд*100).toFixed(1):0)+'%"></i></div></div>';
+        '<div class="bl"><i style="--w:'+(фонд>0?(x.v/фонд*100).toFixed(1):0)+'%;width:'+(фонд>0?(x.v/фонд*100).toFixed(1):0)+'%"></i></div></div>';
       }).join('')+
       '<div class="fnn">Мы распределили бюджет между тремя ключевыми направлениями в качестве примера. Вы можете легко перераспределить их под свои текущие задачи или использовать как есть в качестве готовой модели. Хотите — усильте постоянных клиентов или сделайте глубже скидку на долгие съёмки.</div>'+
       '</div></div>'+
@@ -2819,7 +3143,7 @@ var REFD=[
         '<b>'+f0(x.sum)+'<em>'+x.n+' '+скл(x.n,'клиент','клиента','клиентов')+
         ' × '+x.s+' '+скл(x.s,'съёмка','съёмки','съёмок')+' = '+x.z+' '+
         скл(x.z,'заказ','заказа','заказов')+'</em></b></div>'+
-        '<div class="bl"><i style="width:'+(постЗак>0?(x.z/постЗак*100).toFixed(0):0)+'%"></i></div></div>';
+        '<div class="bl"><i style="--w:'+(постЗак>0?(x.z/постЗак*100).toFixed(0):0)+'%;width:'+(постЗак>0?(x.z/постЗак*100).toFixed(0):0)+'%"></i></div></div>';
       }).join('')+
       '<div class="s3t">'+
         '<div><span>Сверх того сэкономите на привлечении</span><b>'+f0(годЭк)+' / год</b></div>'+
@@ -2851,7 +3175,6 @@ var REFD=[
     }).join('');
 
   }
-
 
   /* --- полная таблица расчёта --- */
   var ft=$('fullTab');
@@ -2944,8 +3267,6 @@ var REFD=[
     }
     ft.innerHTML=rows.join('');
   }
-
-
 
   /* --- налоговые режимы --- */
   var IWT='<svg class=\"iwt\" viewBox=\"0 0 28 26\" fill=\"none\"><path d=\"M12.94 3.2 1.6 20.05a1.9 1.9 0 0 0 1.6 2.9h21.6a1.9 1.9 0 0 0 1.6-2.9L15.06 3.2a1.25 1.25 0 0 0-2.12 0Z\" fill=\"var(--c-a-400)\"/><path d=\"M14 9.6v5.1\" stroke=\"var(--c-white)\" stroke-width=\"2.5\" stroke-linecap=\"round\"/><circle cx=\"14\" cy=\"18.6\" r=\"1.45\" fill=\"var(--c-white)\"/></svg>';
@@ -3353,8 +3674,6 @@ var REFD=[
       '<div class="fd">'+x[4]+'</div></div>'}).join('');
   }
 
-
-
   /* --- если брать больше заказов --- */
   var needH=d.curRate>0?d.R/d.curRate:0;
   var kx=d.sh>0?needH/d.sh:0;
@@ -3530,7 +3849,6 @@ var REFD=[
      '\u0430 \u043e\u0441\u0442\u0430\u043b\u044c\u043d\u043e\u0435 \u0432\u0440\u0435\u043c\u044f \u2014 \u044d\u0442\u043e \u0442\u0430 \u0441\u0430\u043c\u0430\u044f \u043d\u0435\u0432\u0438\u0434\u0438\u043c\u0430\u044f, \u043d\u043e \u043e\u0433\u0440\u043e\u043c\u043d\u0430\u044f \u0440\u0430\u0431\u043e\u0442\u0430 \u0437\u0430 \u043a\u0430\u0434\u0440\u043e\u043c, \u0431\u0435\u0437 \u043a\u043e\u0442\u043e\u0440\u043e\u0439 \u043d\u0438 \u043e\u0434\u043d\u0430 \u0441\u044a\u0451\u043c\u043a\u0430 \u043f\u0440\u043e\u0441\u0442\u043e \u043d\u0435 \u0441\u043e\u0441\u0442\u043e\u0438\u0442\u0441\u044f.';
   }
 
-
   /* Плашки «Ставка часа» и «Цена съёмки» убраны из врезки: те же цифры
      уже стоят в третьем сценарии выше, дублировать не нужно.
      bRateV по-прежнему считается — он идёт в блок 07 «Четыре цифры». */
@@ -3590,8 +3908,6 @@ render();
   });
 })();
 
-
-
 /* ===== ИМЯ ФАЙЛА ПРИ ПЕЧАТИ И СОХРАНЕНИИ В PDF =====
    Браузер берёт имя из <title>. Подставляем «2026-08-05 Счетикс для фотографа»
    на время печати и возвращаем прежний заголовок после. */
@@ -3618,6 +3934,64 @@ render();
   window.addEventListener('afterprint',after);
   window.PHR_FILENAME=fname;
 })();
+/* ===== ПОЯВЛЕНИЕ ДИАГРАММ =====
+   Диаграмма оживает, когда доезжает до экрана. Помечаем контейнеры
+   классом по типу рисунка, потом наблюдатель вешает .go — переход
+   запускается сам. Срабатывает один раз: при обратной прокрутке
+   диаграмма не «схлопывается». */
+(function(){
+  var корень=document.getElementById('phr-root');
+  if(!корень)return;
+
+  /* кольца: контейнеры, внутри которых есть svg с секторами */
+  var кольца=['#dn1','#dnB','.dn','.fring','.scn3 .dn'];
+  /* полосы: легенда блока 01, полосы фонда и сценария, расшифровка недели */
+  var полосы=['.lgd','.fnw','.sc3','.drow'];
+
+  function пометить(селекторы,класс){
+    корень.querySelectorAll(селекторы.join(',')).forEach(function(e){
+      /* пустые контейнеры не трогаем — им нечего показывать */
+      if(!e.children.length)return;
+      e.classList.add(класс);
+    });
+  }
+  пометить(кольца,'anim-ring');
+  пометить(полосы,'anim-bar');
+  var wk=document.getElementById('wk');
+  if(wk&&wk.children.length)wk.classList.add('anim-wk');
+
+  var цели=корень.querySelectorAll('.anim-ring,.anim-bar,.anim-wk');
+  if(!цели.length)return;
+
+  if(!window.IntersectionObserver){
+    /* старый браузер: показываем сразу, без анимации */
+    цели.forEach(function(e){e.classList.add('go');
+      e.querySelectorAll('animate.segan').forEach(function(a){
+        try{a.beginElement()}catch(_){}});});
+    return;
+  }
+  /* Секторы кольца пускаем по очереди, с задержкой в 90 мс: сначала
+     первый, потом следующий — так же, как в анкете. Без задержки все
+     выезжали бы разом и разбивка не читалась. */
+  function пуск(цель){
+    var ан=цель.querySelectorAll('animate.segan');
+    for(var i=0;i<ан.length;i++){
+      (function(a,i){
+        setTimeout(function(){ try{a.beginElement()}catch(e){} },i*90);
+      })(ан[i],i);
+    }
+  }
+  var наб=new IntersectionObserver(function(записи){
+    записи.forEach(function(з){
+      if(!з.isIntersecting)return;
+      з.target.classList.add('go');
+      пуск(з.target);
+      наб.unobserve(з.target);
+    });
+  },{threshold:.18,rootMargin:'0px 0px -8% 0px'});
+  цели.forEach(function(e){наб.observe(e)});
+})();
 var _p=$('dlpdf'); if(_p)_p.onclick=function(){try{document.title=window.PHR_FILENAME()}catch(e){}window.print()};
 })();
 </script>
+</body></html>
