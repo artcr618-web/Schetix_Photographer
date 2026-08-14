@@ -98,12 +98,144 @@ padding:32px 16px 80px;display:block}
 #phr-root *{box-sizing:border-box;margin:0;padding:0}
 #phr-root .wp{max-width:1080px;margin:0 auto}
 
+/* ---------- верхнее меню ----------
+   Логотип слева, кнопки справа. Подложки нет: фон тот же, что у страницы,
+   поэтому меню читается как её продолжение. Липкое — остаётся сверху
+   при прокрутке, чтобы «Редактировать данные» была под рукой. */
+/* Меню прижато к верху страницы: над ним 28 px — не вплотную, но и
+   не провисает. Считается так: отступ страницы 32 − 12 + свой 8. */
+#phr-root .tbar{display:flex;align-items:center;justify-content:space-between;
+gap:24px;padding:8px 0 16px;margin:-12px 0 26px;background:var(--c-bg)}
+#phr-root .tbar .brand{margin-top:0}
+#phr-root .tbn{display:flex;align-items:center;gap:10px;flex:none}
+/* Текстовая кнопка и значки выделяются одинаково: мягкая подложка
+   и один радиус — единый приём на всё меню. */
+#phr-root .tbar .fbl{font-size:14px;font-weight:600;color:var(--c-gr);
+text-decoration:none;white-space:nowrap;padding:7px 12px;border-radius:11px;
+transition:background .18s,color .18s,transform .12s}
+#phr-root .tbar .fbl:hover{background:var(--c-white);color:var(--c-ink2)}
+#phr-root .tbar .fbl:active{transform:translateY(1px)}
+#phr-root .tbar .fbi{display:inline-flex;align-items:center;justify-content:center;
+width:34px;height:34px;border:0;border-radius:11px;background:transparent;
+color:var(--c-gr);cursor:pointer;padding:0;position:relative;
+transition:background .18s,color .18s,transform .12s}
+#phr-root .tbar .fbi svg{width:20px;height:20px}
+#phr-root .tbar .fbi:hover{background:var(--c-white);color:var(--c-ink2)}
+#phr-root .tbar .fbi:active{transform:translateY(1px)}
+/* Пометка о пробном режиме. Не кнопка — нажимать нечего, только
+   подсказка при наведении. Цвет янтарный: внимание, но не тревога. */
+#phr-root .tbar .fbt{color:var(--c-a-500);text-decoration:none}
+#phr-root .tbar .fbt:hover{background:var(--c-a-50);color:var(--c-a-700)}
+#phr-root .tbar .fbt:active{transform:translateY(1px)}
+#phr-root .tbar .fbh{color:var(--c-ig-3)}
+#phr-root .tbar .fbh:hover{background:#FDF4FB;color:var(--c-ig-2)}
+/* Подсказка оформлена как .segtip — плашка на диаграмме блока 01:
+   белый фон, светлая рамка, тот же радиус и тень. */
+#phr-root .tbar .fbi:after{content:attr(data-tip);position:absolute;
+top:calc(100% + 9px);left:50%;padding:10px 14px;border-radius:12px;
+background:var(--c-white);color:var(--c-ink);border:1px solid var(--c-ln);
+font-size:12.5px;font-weight:600;white-space:nowrap;opacity:0;pointer-events:none;
+transform:translateX(-50%) translateY(-4px);
+transition:opacity .16s,transform .16s;box-shadow:0 8px 28px rgba(16,24,40,.16)}
+#phr-root .tbar .fbi:hover:after{opacity:1;transform:translateX(-50%)}
+#phr-root .tbar .fbi.done:after{content:'\0421\0441\044b\043b\043a\0430 \0441\043a\043e\043f\0438\0440\043e\0432\0430\043d\0430';
+opacity:1;transform:translateX(-50%)}
+@media(max-width:700px){#phr-root .tbar{gap:12px;padding:6px 0 12px;margin-top:-8px}
+#phr-root .tbar .fbl{font-size:13px;padding:6px 9px}
+#phr-root .tbar .brand .bx{width:46px;height:46px}
+#phr-root .tbar .brand .bt{font-size:16px}}
+@media print{#phr-root .tbar{position:static;border-bottom:0}
+#phr-root .tbn{display:none}}
+
+/* ---------- плавающая плашка ----------
+   Меню выше прокручивается со страницей. Эта плашка появляется после
+   500 px, висит по центру сверху и содержит только действия.
+   Подложка полупрозрачная, углы как у блоков. */
+#phr-root .fbar{position:fixed;top:16px;left:50%;z-index:60;
+display:flex;align-items:center;gap:10px;padding:12px 18px;
+border-radius:var(--r);background:rgba(255,255,255,.62);
+backdrop-filter:blur(14px) saturate(140%);-webkit-backdrop-filter:blur(14px) saturate(140%);
+border:1px solid rgba(255,255,255,.55);box-shadow:0 8px 28px rgba(16,24,40,.12);
+opacity:0;visibility:hidden;transform:translateX(-50%) translateY(-14px);
+transition:opacity .28s ease,transform .28s ease,visibility .28s}
+#phr-root .fbar.on{opacity:1;visibility:visible;transform:translateX(-50%)}
+/* кнопки те же, что в меню: подложка и радиус при наведении */
+#phr-root .fbar .fbl{font-size:14px;font-weight:600;color:var(--c-gr);
+text-decoration:none;white-space:nowrap;padding:7px 12px;border-radius:11px;
+transition:background .18s,color .18s,transform .12s}
+#phr-root .fbar .fbl:hover{background:var(--c-white);color:var(--c-ink2)}
+#phr-root .fbar .fbl:active{transform:translateY(1px)}
+#phr-root .fbar .fbi{display:inline-flex;align-items:center;justify-content:center;
+width:34px;height:34px;border:0;border-radius:11px;background:transparent;
+color:var(--c-gr);cursor:pointer;padding:0;position:relative;
+transition:background .18s,color .18s,transform .12s}
+#phr-root .fbar .fbi svg{width:20px;height:20px}
+#phr-root .fbar .fbi:hover{background:var(--c-white);color:var(--c-ink2)}
+#phr-root .fbar .fbi:active{transform:translateY(1px)}
+#phr-root .fbar .fbt{color:var(--c-a-500);cursor:default}
+#phr-root .fbar .fbt:hover{background:var(--c-a-50);color:var(--c-a-700)}
+#phr-root .fbar .fbt:active{transform:none}
+#phr-root .fbar .fbh{color:var(--c-ig-3)}
+#phr-root .fbar .fbh:hover{background:#FDF4FB;color:var(--c-ig-2)}
+/* подсказка — как .segtip на диаграмме блока 01 */
+#phr-root .fbar .fbi:after{content:attr(data-tip);position:absolute;
+top:calc(100% + 9px);left:50%;padding:10px 14px;border-radius:12px;
+background:var(--c-white);color:var(--c-ink);border:1px solid var(--c-ln);
+font-size:12.5px;font-weight:600;white-space:nowrap;opacity:0;pointer-events:none;
+transform:translateX(-50%) translateY(-4px);
+transition:opacity .16s,transform .16s;box-shadow:0 8px 28px rgba(16,24,40,.16)}
+#phr-root .fbar .fbi:hover:after{opacity:1;transform:translateX(-50%)}
+#phr-root .fbar .fbi.done:after{content:'\0421\0441\044b\043b\043a\0430 \0441\043a\043e\043f\0438\0440\043e\0432\0430\043d\0430';
+opacity:1;transform:translateX(-50%)}
+@media(max-width:700px){#phr-root .fbar{top:10px;gap:8px;padding:10px 12px;
+max-width:calc(100vw - 20px)}
+#phr-root .fbar .fbl{font-size:13px;padding:6px 9px}}
+@media print{#phr-root .fbar{display:none!important}}
+
+/* ---------- появление диаграмм ----------
+   Диаграмма оживает, когда доезжает до экрана: кольца проявляются
+   поворотом, полосы наливаются слева направо. Приём тот же, что
+   в анкете, но кольца отчёта нарисованы секторами-path, а не обводкой,
+   поэтому вместо stroke-dasharray крутим сам рисунок.
+   Пока блок не показан, .anim держит его в исходном состоянии;
+   класс .go снимает ограничение и запускает переход. */
+
+/* Кольца: каждый сектор выезжает отдельно — это делает <animate>
+   внутри маски, запуск из скрипта. Здесь только подписи процентов:
+   они проступают, когда секторы уже на местах. */
+#phr-root .anim-ring text{opacity:0;transition:opacity .4s ease .55s}
+#phr-root .anim-ring.go text{opacity:1}
+
+/* полосы: наливаются слева направо */
+#phr-root .anim-bar .fill,
+#phr-root .anim-bar .bl > i,
+#phr-root .anim-bar .dfill{width:0!important;
+transition:width .9s cubic-bezier(.22,1,.36,1)}
+#phr-root .anim-bar.go .fill,
+#phr-root .anim-bar.go .bl > i,
+#phr-root .anim-bar.go .dfill{width:var(--w)!important}
+
+/* сетка недели: плашки дней проявляются волной */
+#phr-root .anim-wk i{opacity:0;transform:scale(.9);
+transition:opacity .45s ease,transform .45s ease}
+#phr-root .anim-wk.go i{opacity:1;transform:none}
+
+@media(prefers-reduced-motion:reduce){
+#phr-root .anim-ring text,#phr-root .anim-wk i{opacity:1;transform:none;transition:none}
+#phr-root .anim-bar .fill,#phr-root .anim-bar .bl > i,
+#phr-root .anim-bar .dfill{width:var(--w)!important;transition:none}}
+@media print{
+#phr-root .anim-ring text,#phr-root .anim-wk i{opacity:1!important;transform:none!important}
+#phr-root .anim-bar .fill,#phr-root .anim-bar .bl > i,
+#phr-root .anim-bar .dfill{width:var(--w)!important}}
+
 /* ---------- шапка ---------- */
-#phr-root .hdr{display:flex;align-items:flex-start;justify-content:space-between;
-gap:28px;margin:0 0 30px}
-#phr-root .htx{flex:1;min-width:0;padding-top:34px}
+#phr-root .hdr{margin:0 0 30px}
+#phr-root .htx{min-width:0;padding-top:0}
 #phr-root h1{font-size:34px;font-weight:700;letter-spacing:-.02em;margin-bottom:8px}
-#phr-root .sub{color:var(--gr);font-size:16px;max-width:660px}
+/* Ширина не ограничена: логотип теперь в меню, шапка занимает всю
+   колонку. Раньше max-width:660px рвал строку посередине. */
+#phr-root .sub{color:var(--gr);font-size:16px}
 #phr-root .sub2{font-size:14.5px;line-height:1.65;margin-top:10px;color:var(--c-gr2)}
 #phr-root .brand{display:flex;align-items:center;gap:12px;flex:none;line-height:1;margin-top:-4px}
 #phr-root .brand .btx{display:flex;flex-direction:column;align-items:stretch;gap:5px}
@@ -112,7 +244,8 @@ gap:28px;margin:0 0 30px}
 #phr-root .brand .bd{font-size:9px;color:var(--c-gr2);white-space:nowrap;display:flex;justify-content:space-between;text-transform:lowercase}
 #phr-root .brand .bd i{font-style:normal}
 #phr-root .brand .bx{display:block;flex:none;width:62px;height:62px}
-#phr-root .meta{font-size:12.5px;color:var(--c-gr2);margin-top:10px}
+/* дата — цветом заголовков, а не блёклой серой */
+#phr-root .meta{font-size:12.5px;color:var(--c-ink);margin-top:10px}
 
 /* ---------- карточки ---------- */
 #phr-root .card{background:#fff;border-radius:var(--r);padding:26px 28px;box-shadow:var(--sh);
@@ -457,20 +590,34 @@ font-variant-numeric:tabular-nums;letter-spacing:-.02em}
 /* ---- второй экран шапки: время ----
    Продолжение зелёного экрана про деньги. Гамма голубой плашки
    «Условий труда» (.cn.b), чтобы читалось как другая тема. */
-#phr-root .hero2{background:linear-gradient(135deg,var(--c-b-600),var(--c-b-400));
+/* Второй экран: один заголовок и три рамки с данными за месяц.
+   Гамма — морская волна из карточки «Ставка в ноль» блока «Четыре цифры»
+   (.fct.b): ближе к зелёному, чем прежний синий. Фон — часы. */
+#phr-root .hero2{background:linear-gradient(155deg,#176B77 0%,#58B1B9 100%);
 color:#fff;border-radius:var(--r);padding:30px 26px 26px;text-align:center;
 position:relative;overflow:hidden;margin-top:14px}
 #phr-root .hero2>*{position:relative;z-index:1}
-#phr-root .hero2 .lb{font-size:14px;opacity:.9;margin-bottom:6px}
-#phr-root .hero2 .big{font-size:46px;font-weight:700;letter-spacing:-.03em;line-height:1.05}
-#phr-root .hero2 .un{font-size:15px;opacity:.85;margin-top:8px}
-#phr-root .hero2 .rw2{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;
-margin-top:24px;padding-top:22px;border-top:1px solid rgba(255,255,255,.24)}
-#phr-root .hero2 .rw2 .v{font-size:21px;font-weight:600;font-variant-numeric:tabular-nums}
-#phr-root .hero2 .rw2 .k{font-size:12.5px;opacity:.85;line-height:1.35;margin-top:4px}
-#phr-root .hero2 .rw2 .s{font-size:11.5px;opacity:.7;margin-top:3px}
-@media(max-width:760px){#phr-root .hero2 .rw2{grid-template-columns:1fr 1fr}
-#phr-root .hero2 .big{font-size:36px}}
+#phr-root .hero2 .h2deco{position:absolute;right:-38px;top:-30px;
+width:230px;height:230px;opacity:.13;z-index:0;pointer-events:none}
+#phr-root .hero2 .lb{font-size:19px;font-weight:700;letter-spacing:-.02em;
+margin-bottom:20px;opacity:1}
+#phr-root .hero2 .un{font-size:13.5px;opacity:.85;margin-top:18px;line-height:1.55}
+/* три рамки: прозрачные, только контур — заливка спорила бы с фоном */
+#phr-root .hero2 .h2g{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+#phr-root .hero2 .h2c{border:1px solid rgba(255,255,255,.34);border-radius:16px;
+padding:18px 16px;background:rgba(255,255,255,.10);display:flex;
+flex-direction:column;align-items:center}
+#phr-root .hero2 .h2t{display:block;font-size:12px;font-weight:600;
+letter-spacing:.04em;color:rgba(255,255,255,.85);line-height:1.4;min-height:34px}
+#phr-root .hero2 .h2v{display:block;font-size:34px;font-weight:800;
+letter-spacing:-.035em;line-height:1.05;margin-top:6px;
+font-variant-numeric:tabular-nums}
+#phr-root .hero2 .h2s{display:block;font-style:normal;font-size:12px;
+color:rgba(255,255,255,.82);margin-top:10px;padding-top:10px;
+border-top:1px solid rgba(255,255,255,.26);width:100%;line-height:1.45}
+@media(max-width:760px){#phr-root .hero2 .h2g{grid-template-columns:1fr}
+#phr-root .hero2 .h2v{font-size:30px}
+#phr-root .hero2 .h2t{min-height:0}}
 
 #phr-root .ex .exm:before{content:'';position:absolute;left:0;top:7px;
 width:9px;height:9px;border-radius:2px;transform:rotate(45deg);
@@ -565,26 +712,12 @@ font-variant-numeric:tabular-nums}
 #phr-root #card10 .subhd{text-align:center;max-width:620px;margin:0 auto 20px;font-size:14.5px}
 
 /* ---------- контент-план ---------- */
-#phr-root .cta{background:linear-gradient(135deg,var(--c-g-800),var(--c-g-500));border-radius:22px;
-padding:40px 44px;color:#fff;position:relative;overflow:hidden;margin-top:20px}
-#phr-root .cta .dec{position:absolute;pointer-events:none;opacity:.13}
-#phr-root .cta .in{position:relative;z-index:2;max-width:620px}
-#phr-root .cta .kick{font-size:12px;font-weight:700;letter-spacing:.14em;
-text-transform:uppercase;opacity:.75;margin-bottom:12px}
-#phr-root .cta h3{font-size:32px;font-weight:700;letter-spacing:-.025em;line-height:1.12;
-margin-bottom:14px}
-#phr-root .cta p{font-size:15.5px;line-height:1.65;opacity:.93;margin-bottom:26px}
-#phr-root .cta .btn2{display:inline-flex;align-items:center;gap:11px;background:#fff;
-color:var(--gd);border-radius:14px;padding:0 30px;height:56px;font-size:16px;
-font-weight:700;text-decoration:none;transition:.16s;box-shadow:0 6px 20px rgba(0,0,0,.16)}
 /* Кнопки во всех документах ведут себя одинаково: при наведении темнеют,
    при нажатии слегка утапливаются. Никаких подпрыгиваний. */
-#phr-root .cta .btn2:hover{background:var(--c-g-50)}
-#phr-root .cta .btn2:active{background:var(--c-g-100);transform:translateY(1px)}
-#phr-root .cta .sm{font-size:13px;opacity:.8;margin-top:16px}
-@media(max-width:700px){#phr-root .cta{padding:30px 24px}
-#phr-root .cta h3{font-size:24px}
-#phr-root .cal{gap:4px}}
+/* Баннер: заливка, радиус и отступы. Правило основное — на узких
+   экранах отступы ужимаются медиазапросом ниже. */
+#phr-root .cta{background:linear-gradient(135deg,var(--c-g-800),var(--c-g-500));border-radius:22px;
+padding:40px 44px;color:#fff;position:relative;overflow:hidden;margin-top:20px}
 
 /* ---------- лучший режим ---------- */
 /* Блок про налоги — в синей ведомственной гамме, а не в зелёной фирменной:
@@ -720,13 +853,83 @@ margin-bottom:3px;font-size:13.5px}
 display:flex;align-items:flex-start;gap:7px}
 #phr-root .npd .warn b{color:var(--ink);font-weight:700}
 /* ---------- справочник-памятка ---------- */
-/* Ссылка на пункт справочника: обычная текстовая, без плашек и рамок.
-   Один вид на весь отчёт — и в легенде блока 01, и в остальных блоках. */
-#phr-root .refl{color:var(--c-b-600);text-decoration:none;
-border-bottom:1px solid var(--c-b-250);white-space:nowrap}
-#phr-root .refl:hover{color:var(--c-b-800);border-bottom-color:var(--c-b-500)}
-#phr-root .pmknote{margin-top:26px;padding:22px 26px;background:var(--c-surf);border-radius:16px;
-border:1px solid var(--c-bg)}
+/* Скрытые элементы: остаются в разметке, но не показываются.
+   Так проще вернуть — не нужно искать код по архиву. */
+#phr-root .hide{display:none!important}
+
+/* Общая форма баннера. Её использует .cta.thx; баннер «30 сценариев»
+   вынесен в части/09_баннер_сценарии.html, но правила нужны здесь. */
+
+#phr-root .cta .dec{position:absolute;pointer-events:none;opacity:.13}
+#phr-root .cta .in{position:relative;z-index:2;max-width:620px}
+#phr-root .cta .kick{font-size:12px;font-weight:700;letter-spacing:.14em;
+text-transform:uppercase;opacity:.75;margin-bottom:12px}
+#phr-root .cta h3{font-size:32px;font-weight:700;letter-spacing:-.025em;line-height:1.12;
+margin-bottom:14px}
+#phr-root .cta p{font-size:15.5px;line-height:1.65;opacity:.93;margin-bottom:26px}
+#phr-root .cta .btn2{display:inline-flex;align-items:center;gap:11px;background:#fff;
+color:var(--gd);border-radius:14px;padding:0 30px;height:56px;font-size:16px;
+font-weight:700;text-decoration:none;transition:.16s;box-shadow:0 6px 20px rgba(0,0,0,.16)}
+#phr-root .cta .btn2:hover{background:var(--c-g-50)}
+#phr-root .cta .btn2:active{background:var(--c-g-100);transform:translateY(1px)}
+#phr-root .cta .sm{font-size:13px;opacity:.8;margin-top:16px}
+@media(max-width:700px){#phr-root .cta{padding:30px 24px}
+#phr-root .cta h3{font-size:24px}
+#phr-root .cal{gap:4px}}
+
+/* Баннер благодарности — в одной гамме с кнопками .thxb: тот же
+   инста-градиент, те же сердечки в декоре. */
+/* та же крутящаяся заливка, что на кнопках, только медленнее */
+#phr-root .cta.thx{background:linear-gradient(140deg,var(--c-ig-1),var(--c-ig-2) 42%,var(--c-ig-4))}
+
+#phr-root .cta.thx .in{position:relative;z-index:2}
+
+#phr-root .cta.thx .btn2{color:var(--c-ig-2)}
+#phr-root .cta.thx .btn2:hover{background:#FDF4FB}
+#phr-root .cta.thx .btn2:active{background:#FBE9F6}
+/* ---- «Поблагодарить проект» ----
+   Форма — от кнопки «Сохранить отчёт в PDF» (.savebtn): та же ширина,
+   высота и кегль. Оформление — от плашек блока 08 (.cn.s1..s3):
+   инста-градиент заливкой, белый текст, круг-блик в углу. */
+#phr-root .thxb{display:flex;width:100%;align-items:center;justify-content:center;gap:11px;
+border:0;border-radius:var(--r);padding:0 30px;height:72px;
+background:linear-gradient(140deg,var(--c-ig-1),var(--c-ig-2) 42%,var(--c-ig-4));
+font-family:inherit;font-size:17px;font-weight:700;letter-spacing:-.01em;
+color:var(--c-white);text-decoration:none;cursor:pointer;
+position:relative;overflow:hidden;box-shadow:0 6px 20px rgba(16,24,40,.18);
+transition:filter .16s,transform .1s}
+/* Декор в углу: круг-блик как у .cn:before в блоке 08, поверх него
+   сердце — тот же приём, что на баннере благодарности. */
+#phr-root .thxb:before{content:'';position:absolute;right:-30px;top:-46px;
+width:130px;height:130px;border-radius:50%;background:rgba(255,255,255,.13)}
+#phr-root .thxb .thxd{position:absolute;right:16px;top:50%;
+transform:translateY(-50%);width:56px;height:56px;opacity:.30;
+z-index:0;pointer-events:none}
+#phr-root .thxb .thxd2{position:absolute;left:26px;top:50%;
+transform:translateY(-50%);width:34px;height:34px;opacity:.22;
+z-index:0;pointer-events:none}
+
+#phr-root .thxb span,#phr-root .thxb svg{position:relative;z-index:1}
+#phr-root .thxb:hover{filter:brightness(1.06)}
+#phr-root .thxb:active{transform:translateY(1px);filter:brightness(.97)}
+#phr-root .thxb svg{flex:none}
+/* обёртка повторяет .savebar: тот же отступ, ширина во всю колонку */
+#phr-root .thxbar{margin:16px 0;text-align:center}
+/* Пояснение под кнопкой: почему проект просит поддержки. Тон спокойный,
+   кегль как у примечаний, ширина ограничена — читается одним взглядом. */
+#phr-root .thxn{max-width:720px;margin:14px auto 0;font-size:13px;line-height:1.7;
+color:var(--c-gr);text-align:center}
+#phr-root .thxn br{content:"";display:block;margin-bottom:9px}
+
+/* Ссылка на пункт справочника: не выделяется цветом — наследует шрифт,
+   кегль, начертание и цвет того описания, вместо которого стоит.
+   Подчёркивание оставлено, чтобы было видно: это ссылка. */
+#phr-root .refl{color:inherit;font:inherit;text-decoration:none;
+border-bottom:1px solid currentColor;opacity:.9;white-space:nowrap}
+#phr-root .refl:hover{opacity:1}
+/* Без подложки: фон тот же, что у страницы и меню. Отступы по бокам
+   убраны — текст выравнивается по общей колонке. */
+#phr-root .pmknote{margin-top:26px;padding:22px 0;background:none;border:0}
 #phr-root .pmknote .pnh{font-size:13px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;
 color:var(--c-gr2);margin-bottom:14px}
 #phr-root .pmknote .pi2{font-size:12.5px;line-height:1.7;color:var(--c-gr);margin-bottom:9px;
@@ -747,9 +950,11 @@ margin-top:1px;transition:background .25s,color .25s,border-color .25s}
 border-color:transparent;color:var(--c-white)}
 #phr-root .pmknote .pi2:target b{color:var(--c-b-800)}
 #phr-root .pmknote .pi2 b{color:var(--c-ink2);font-weight:600}
-#phr-root .pmknote .pi2 a{color:var(--c-fns-2);font-weight:600;text-decoration:none;
-border-bottom:1px solid var(--c-fns-3)}
-#phr-root .pmknote .pi2 a:hover{border-bottom-color:var(--c-fns-2)}
+/* Ссылки внутри памятки — как .refl: цветом не выделяются, наследуют
+   шрифт абзаца, обозначены только подчёркиванием. */
+#phr-root .pmknote .pi2 a{color:inherit;font:inherit;text-decoration:none;
+border-bottom:1px solid currentColor;opacity:.9}
+#phr-root .pmknote .pi2 a:hover{opacity:1}
 #phr-root .pmknote .pnf{font-size:12px;color:var(--c-gr2);margin-top:14px;padding-top:12px;
 border-top:1px solid var(--c-bg);line-height:1.55}
 
@@ -909,7 +1114,6 @@ margin:16px 0 8px;position:relative;z-index:1}
 #phr-root .cn .sm{font-size:13.5px;opacity:.92;line-height:1.45;position:relative;z-index:1}
 @media(max-width:760px){#phr-root .cnd{grid-template-columns:1fr}
 #phr-root .cn{min-height:auto;padding:22px}#phr-root .cn .bg{font-size:32px}}
-
 
 /* ---------- полная таблица расчёта ---------- */
 #phr-root .tabw{margin-top:10px;overflow-x:auto}
@@ -1193,6 +1397,15 @@ border-radius:13px;padding:12px 15px;background:var(--c-surf);position:relative;
 /* предупреждение внутри строки легенды: вид из .note.warn,
    здесь только раскладка в гриде */
 #phr-root .lgi .note.warn{grid-column:1/-1;z-index:2;margin-top:10px}
+/* Кнопка внутри предупреждения: ведёт к нужному полю анкеты.
+   Гамма предупреждения, чтобы не спорить с плашкой. */
+#phr-root .lgwb{display:table;margin-top:12px;
+padding:8px 15px;border-radius:11px;border:1px solid var(--c-a-300);
+background:var(--c-white);color:var(--c-a-800);font-size:12.5px;font-weight:700;
+text-decoration:none;transition:background .18s,border-color .18s,transform .12s}
+#phr-root .lgwb:hover{background:var(--c-a-50);border-color:var(--c-a-400)}
+#phr-root .lgwb:active{transform:translateY(1px)}
+@media print{#phr-root .lgwb{display:none}}
 #phr-root .lgi.zero .lvv .a{font-size:12.5px;font-weight:600;color:var(--c-a-700)}
 #phr-root .lgi .ltx{position:relative;z-index:2;display:flex;align-items:center;gap:10px;min-width:0}
 #phr-root .lgi .ltx i{width:10px;height:10px;border-radius:3px;flex:none}
@@ -1626,8 +1839,27 @@ background:var(--c-bg);border-radius:10px;padding:7px 13px}
 #phr-root .wk i{height:30px;border-radius:9px}
 #phr-root .wk .hr{line-height:30px;font-size:10px}}
 
+/* ---------- пробный режим: объяснение ----------
+   Перед подвалом. Подложки нет: это сноска ко всему отчёту, а не блок
+   с данными. Отделена сверху чертой. Копия того, что в анкете. */
+#phr-root .trb{padding:22px 4px 0;margin:14px 0 4px;
+border-top:1px solid var(--c-ln)}
+#phr-root .trb .trh{display:flex;align-items:center;gap:11px;
+font-size:17px;font-weight:700;letter-spacing:-.02em;
+color:var(--c-ink);margin-bottom:11px}
+#phr-root .trb .tri{width:21px;height:21px;flex:none;display:block;color:var(--c-gr)}
+#phr-root .trb p{font-size:13.5px;line-height:1.6;color:var(--c-gr);margin:0 0 9px}
+#phr-root .trb p:last-child{margin-bottom:0}
+#phr-root .trb b{font-weight:700;color:var(--c-ink2)}
+#phr-root .trb:target{animation:phrtr 2.4s ease}
+@keyframes phrtr{0%,42%{background:var(--c-a-50)}100%{background:transparent}}
+@media print{#phr-root .trb{display:none}}
+
 /* ---------- подвал ---------- */
-#phr-root .foot{display:flex;justify-content:center;padding:30px 0 10px}
+#phr-root .foot{display:flex;flex-direction:column;align-items:center;gap:12px;
+padding:30px 0 10px}
+/* реквизиты под знаком: мелко и тихо, это не часть логотипа */
+#phr-root .fcop{font-size:11.5px;color:var(--c-gr2);text-align:center;line-height:1.5}
 /* подвальный знак — точная копия шапки, уменьшенная. Пропорции те же:
    надпись слева, знак справа, «твоя юнит-экономика» растянута под словом */
 #phr-root .lgs{display:flex;align-items:center;gap:9px;line-height:1}
@@ -1639,7 +1871,7 @@ display:flex;justify-content:space-between;text-transform:lowercase}
 #phr-root .lgs .bd i{font-style:normal}
 #phr-root .lgs .lx{display:block;flex:none;width:46px;height:46px}
 #phr-root .savebar{margin-top:22px;padding-top:20px;border-top:1px solid var(--c-bg);text-align:center}
-#phr-root .savebar.top{margin:0 0 16px;padding-top:0;border-top:0}
+#phr-root .savebar.top{margin:16px 0;padding-top:0;border-top:0}
 #phr-root .savebtn{display:flex;width:100%;align-items:center;justify-content:center;gap:11px;
 background:#fff;color:var(--gd);border:1.5px solid var(--ln);border-radius:var(--r);
 padding:0 30px;height:72px;font-family:inherit;font-size:17px;font-weight:600;
@@ -1664,7 +1896,6 @@ margin-top:12px;line-height:1.5}
 @media(max-width:820px){
 #phr-root .three{grid-template-columns:1fr;gap:28px}
 #phr-root .scmp{grid-template-columns:1fr}
-#phr-root .hdr{flex-direction:column-reverse;align-items:flex-start;gap:14px}
 #phr-root .htx{padding-top:4px}
 #phr-root h1{font-size:26px}
 #phr-root .hero .big{font-size:40px}
@@ -1688,14 +1919,46 @@ break-inside:avoid;page-break-inside:avoid;margin-bottom:12px}
 
 <div class="wp">
 
+<!-- Верхнее меню: логотип слева, кнопки справа. Подложки нет —
+     фон тот же, что у страницы. Липкое: остаётся сверху при прокрутке. -->
+<div class="tbar" id="topbar">
+<nav class="tbn">
+<a class="fbl" id="editLink" href="#edit">Редактировать данные</a>
+<a class="fbi fbt" href="#trial" data-tip="Сервис работает в пробном режиме" aria-label="Пробный режим">
+<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 4.2L2.8 20h18.4z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M12 10v4.4" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/><circle cx="12" cy="17.4" r="1.05" fill="currentColor"/></svg></a>
+<button class="fbi" id="dlBtn" type="button" data-tip="Скачать отчёт" aria-label="Скачать отчёт">
+<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0l-4.5-4.5M12 15l4.5-4.5" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg></button>
+<button class="fbi" id="shareBtn" type="button" data-tip="Поделиться" aria-label="Поделиться">
+<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="18" cy="5" r="2.6" stroke="currentColor" stroke-width="1.8"/><circle cx="6" cy="12" r="2.6" stroke="currentColor" stroke-width="1.8"/><circle cx="18" cy="19" r="2.6" stroke="currentColor" stroke-width="1.8"/><path d="M8.4 10.8l7.2-4.2M8.4 13.2l7.2 4.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+<a class="fbi fbh" href="#thanks" data-thx data-tip="Поблагодарить проект" aria-label="Поблагодарить проект">
+<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 00-7.8 0l-1 1-1-1a5.5 5.5 0 00-7.8 7.8l1 1 7.8 7.8 7.8-7.8 1-1a5.5 5.5 0 000-7.8z" fill="none" stroke="currentColor" stroke-width="2"/></svg></a>
+</nav>
+<div class="brand" title="Счетикс — твоя юнит-экономика"><span class="btx"><span class="bt">счетикс</span><span class="bd" data-t="bt_02"><i>т</i><i>в</i><i>о</i><i>я</i><i>&nbsp;</i><i>ю</i><i>н</i><i>и</i><i>т</i><i>-</i><i>э</i><i>к</i><i>о</i><i>н</i><i>о</i><i>м</i><i>и</i><i>к</i><i>а</i></span></span><svg class="bx" viewBox="0 0 32 32" fill="none" aria-hidden="true"><rect x="10.95" y="2.09" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 7.14)" fill="var(--c-gr3)"/><rect x="19.81" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 24.86 16)" fill="var(--c-g-500)"/><rect x="10.95" y="19.81" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 24.86)" fill="var(--c-gr3)"/><rect x="2.09" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 7.14 16)" fill="var(--c-gr3)"/></svg></div>
+<!-- Плавающая плашка. Меню выше прокручивается вместе со страницей,
+     а эта появляется после 500 px и висит по центру сверху. Логотипа
+     в ней нет — только действия. -->
+<div class="fbar" id="fbar">
+<a class="fbl" id="editLink2" href="#edit">Редактировать данные</a>
+<span class="fbi fbt" aria-label="Пробный режим">
+<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 4.2L2.8 20h18.4z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M12 10v4.4" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/><circle cx="12" cy="17.4" r="1.05" fill="currentColor"/></svg></span>
+<button class="fbi" id="dlBtn2" type="button" data-tip="Скачать отчёт" aria-label="Скачать отчёт">
+<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0l-4.5-4.5M12 15l4.5-4.5" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg></button>
+<button class="fbi" id="shareBtn2" type="button" data-tip="Поделиться" aria-label="Поделиться">
+<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="18" cy="5" r="2.6" stroke="currentColor" stroke-width="1.8"/><circle cx="6" cy="12" r="2.6" stroke="currentColor" stroke-width="1.8"/><circle cx="18" cy="19" r="2.6" stroke="currentColor" stroke-width="1.8"/><path d="M8.4 10.8l7.2-4.2M8.4 13.2l7.2 4.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+<a class="fbi fbh" href="#thanks" data-thx data-tip="Поблагодарить проект" aria-label="Поблагодарить проект">
+<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 00-7.8 0l-1 1-1-1a5.5 5.5 0 00-7.8 7.8l1 1 7.8 7.8 7.8-7.8 1-1a5.5 5.5 0 000-7.8z" fill="none" stroke="currentColor" stroke-width="2"/></svg></a>
+</div>
+
+</div>
+
 <div class="hdr">
 <div class="htx">
 <h1 data-t="rh_01">Юнит-экономика фотографа</h1>
-<p class="sub" data-t="rh_02">Быть независимым автором не значит работать больше, чем в найме, и постоянно уходить в минус.</p>
-<p class="sub sub2" data-t="rh_03">Мы оцифровали ваше творчество и превратили его в точную математическую модель, которая возвращает ценность каждому часу вашего таланта, времени и опыта — и защищает ваш доход от скрытых издержек и работы себе в убыток.</p>
+<p class="sub" data-t="rh_02">Создано фотографами для фотографов на основе реального опыта.</p>
+<p class="sub sub2" data-t="rh_03">Быть независимым автором не значит работать больше, чем в найме, и постоянно уходить в минус.</p>
 <div class="meta" id="rMeta">Расчёт от 2 августа 2026</div>
 </div>
-<div class="brand" title="Счетикс — твоя юнит-экономика"><span class="btx"><span class="bt">счетикс</span><span class="bd" data-t="bt_02"><i>т</i><i>в</i><i>о</i><i>я</i><i>&nbsp;</i><i>ю</i><i>н</i><i>и</i><i>т</i><i>-</i><i>э</i><i>к</i><i>о</i><i>н</i><i>о</i><i>м</i><i>и</i><i>к</i><i>а</i></span></span><svg class="bx" viewBox="0 0 32 32" fill="none" aria-hidden="true"><rect x="10.95" y="2.09" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 7.14)" fill="var(--c-gr3)"/><rect x="19.81" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 24.86 16)" fill="var(--c-g-500)"/><rect x="10.95" y="19.81" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 24.86)" fill="var(--c-gr3)"/><rect x="2.09" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 7.14 16)" fill="var(--c-gr3)"/></svg></div>
+
 </div>
 
 <div class="hero">
@@ -1722,15 +1985,32 @@ break-inside:avoid;page-break-inside:avoid;margin-bottom:12px}
 </div></div>
 
 <div class="hero2" id="hero2">
-<div class="lb" data-t="rlb_02">Столько съёмок вы можете провести за год</div>
-<div class="big" id="h2Cnt">—</div>
+<svg class="h2deco" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+<circle cx="12" cy="13" r="9" stroke="#fff" stroke-width="1.3"/>
+<path d="M12 8.2V13l3.1 1.9" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M9 2.2h6M12 2.2v1.9" stroke="#fff" stroke-width="1.3" stroke-linecap="round"/>
+<path d="M19.2 5.6l1.5 1.5" stroke="#fff" stroke-width="1.3" stroke-linecap="round"/>
+</svg>
+<div class="lb" data-t="rlb_02">Ваш рабочий месяц</div>
+<div class="h2g">
+  <div class="h2c">
+    <span class="h2t" data-t="rk_04">Съёмок в месяц</span>
+    <b class="h2v" id="h2Cnt">—</b>
+    <i class="h2s" id="h2Sh">—</i>
+  </div>
+  <div class="h2c">
+    <span class="h2t" data-t="rk_05">Часов на работу с заказом</span>
+    <b class="h2v" id="h2Wk">—</b>
+    <i class="h2s" id="h2WkS">—</i>
+  </div>
+  <div class="h2c">
+    <span class="h2t" data-t="rk_06">Продвижение и прочее</span>
+    <b class="h2v" id="h2Ot">—</b>
+    <i class="h2s" id="h2OtS">—</i>
+  </div>
+</div>
 <div class="un" id="h2Sub"></div>
-<div class="rw2">
-<div><div class="v" id="h2Sh">—</div><div class="k" data-t="rk_04">Съёмка</div><div class="s" id="h2ShW"></div></div>
-<div><div class="v" id="h2Po">—</div><div class="k" data-t="rk_05">Обработка</div><div class="s" id="h2PoW"></div></div>
-<div><div class="v" id="h2Pr">—</div><div class="k" data-t="rk_06">Продвижение и работа с клиентом</div><div class="s" id="h2PrW"></div></div>
-<div><div class="v" id="h2Ot">—</div><div class="k" data-t="rk_07">Учёт, паузы и форс-мажоры</div><div class="s" id="h2OtW"></div></div>
-</div></div>
+</div>
 
 <div class="savebar top">
 <button class="savebtn" id="dlpdf">
@@ -1739,6 +2019,8 @@ break-inside:avoid;page-break-inside:avoid;margin-bottom:12px}
 <path d="M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2" stroke="var(--c-g-700)" stroke-width="2.2" stroke-linecap="round"/></svg>
 <span data-t="rsv_01">Сохранить отчёт в PDF</span></button>
 </div>
+<div class="thxbar"><a class="thxb" href="#thanks" data-thx><svg class="thxd" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 00-7.8 0l-1 1-1-1a5.5 5.5 0 00-7.8 7.8l1 1 7.8 7.8 7.8-7.8 1-1a5.5 5.5 0 000-7.8z" fill="#fff"/></svg><svg class="thxd2" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 00-7.8 0l-1 1-1-1a5.5 5.5 0 00-7.8 7.8l1 1 7.8 7.8 7.8-7.8 1-1a5.5 5.5 0 000-7.8z" fill="#fff"/></svg><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M20.8 4.6a5.5 5.5 0 00-7.8 0l-1 1-1-1a5.5 5.5 0 00-7.8 7.8l1 1 7.8 7.8 7.8-7.8 1-1a5.5 5.5 0 000-7.8z" fill="none" stroke="#fff" stroke-width="2.2" stroke-linejoin="round"/></svg><span data-t="rthx_01">Поблагодарить проект</span></a>
+<p class="thxn" data-t="rthx_05">Так мы будем знать, что сервис вам нужен, и сможем развивать его и сохранять бесплатным для всех специалистов креативной индустрии.</p></div>
 
 <div class="cond">
 <div class="ch2" data-t="rcd_01">Ваши условия труда по ТК РФ</div>
@@ -1801,7 +2083,6 @@ break-inside:avoid;page-break-inside:avoid;margin-bottom:12px}
   </div>
 </div>
 </div>
-
 
 <div class="card" id="card01"><div class="bn">01</div>
 
@@ -1878,6 +2159,7 @@ break-inside:avoid;page-break-inside:avoid;margin-bottom:12px}
 <div class="fnd" id="fnd"></div>
 </div>
 
+<div class="thxbar"><a class="thxb" href="#thanks" data-thx><svg class="thxd" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 00-7.8 0l-1 1-1-1a5.5 5.5 0 00-7.8 7.8l1 1 7.8 7.8 7.8-7.8 1-1a5.5 5.5 0 000-7.8z" fill="#fff"/></svg><svg class="thxd2" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 00-7.8 0l-1 1-1-1a5.5 5.5 0 00-7.8 7.8l1 1 7.8 7.8 7.8-7.8 1-1a5.5 5.5 0 000-7.8z" fill="#fff"/></svg><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M20.8 4.6a5.5 5.5 0 00-7.8 0l-1 1-1-1a5.5 5.5 0 00-7.8 7.8l1 1 7.8 7.8 7.8-7.8 1-1a5.5 5.5 0 000-7.8z" fill="none" stroke="#fff" stroke-width="2.2" stroke-linejoin="round"/></svg><span data-t="rthx_01">Поблагодарить проект</span></a></div>
 
 <div class="card" id="card07"><div class="bn">04</div>
 <h2 class="big-h" data-t="rh2_12">Ваш идеальный налоговый режим</h2>
@@ -1931,10 +2213,6 @@ break-inside:avoid;page-break-inside:avoid;margin-bottom:12px}
 </div>
 </div>
 
-
-
-
-
 <div class="card" id="card09"><div class="bn">07</div>
 <h2 class="big-h" data-t="rh2_20">Четыре цифры, которые стоит запомнить</h2>
 <p class="hint ctr" data-t="rhi_20">Они выведены из вашего расчёта и пригодятся в любом разговоре о деньгах</p>
@@ -1962,7 +2240,10 @@ break-inside:avoid;page-break-inside:avoid;margin-bottom:12px}
 <div class="note info" data-t="rpm_25">Вы посчитали свою юнит-экономику! Теперь у вас есть железобетонные цифры, которых нет у большинства коллег, — и полный карт-бланш говорить о стоимости без оправданий.</div>
 </div>
 
-<div class="cta">
+<!-- СКРЫТ 10.08.2026 по решению заказчика: баннер «30 сценариев».
+     НЕ УДАЛЁН — чтобы вернуть, снимите класс hide у .cta ниже.
+     Копия для просмотра: части/09_баннер_сценарии.html -->
+<div class="cta hide">
 <svg class="dec" style="right:-60px;top:-50px" width="280" height="280" viewBox="0 0 100 100" fill="none">
 <circle cx="50" cy="50" r="50" fill="#fff"/></svg>
 <svg class="dec" style="right:90px;bottom:-70px" width="180" height="180" viewBox="0 0 100 100" fill="none">
@@ -1986,6 +2267,28 @@ break-inside:avoid;page-break-inside:avoid;margin-bottom:12px}
 </div>
 </div>
 
+<div class="cta thx">
+<svg class="dec" style="right:-60px;top:-50px" width="280" height="280" viewBox="0 0 100 100" fill="none">
+<circle cx="50" cy="50" r="50" fill="#fff"/></svg>
+<svg class="dec" style="right:90px;bottom:-70px" width="180" height="180" viewBox="0 0 100 100" fill="none">
+<circle cx="50" cy="50" r="50" fill="#fff"/></svg>
+<svg class="dec" style="right:214px;top:24px;opacity:.22" width="54" height="54" viewBox="0 0 24 24" fill="none">
+<path d="M20.8 4.6a5.5 5.5 0 00-7.8 0l-1 1-1-1a5.5 5.5 0 00-7.8 7.8l1 1 7.8 7.8 7.8-7.8 1-1a5.5 5.5 0 000-7.8z" fill="#fff"/></svg>
+<svg class="dec" style="right:52px;top:56px;opacity:.3" width="132" height="132" viewBox="0 0 24 24" fill="none">
+<path d="M20.8 4.6a5.5 5.5 0 00-7.8 0l-1 1-1-1a5.5 5.5 0 00-7.8 7.8l1 1 7.8 7.8 7.8-7.8 1-1a5.5 5.5 0 000-7.8z"
+ fill="var(--c-a-700)" stroke="#fff" stroke-width="1.3"/></svg>
+<div class="in">
+<div class="kick" data-t="rthx_02">Если расчёт оказался полезным</div>
+<h3 data-t="rthx_03">Поблагодарить проект</h3>
+<p data-t="rthx_04">Так мы будем знать, что сервис вам нужен, и сможем развивать его и сохранять бесплатным для всех специалистов креативной индустрии.</p>
+<a class="btn2" href="#thanks" data-thx>
+<svg width="19" height="19" viewBox="0 0 24 24" fill="none">
+<path d="M20.8 4.6a5.5 5.5 0 00-7.8 0l-1 1-1-1a5.5 5.5 0 00-7.8 7.8l1 1 7.8 7.8 7.8-7.8 1-1a5.5 5.5 0 000-7.8z"
+ fill="none" stroke="var(--c-a-700)" stroke-width="2"/></svg>
+Поблагодарить</a>
+</div>
+</div>
+
 <div class="pmknote">
 <div class="pnh" data-t="rrf_01">Справочник: термины и определения</div>
 <div id="refList"></div>
@@ -1998,7 +2301,16 @@ break-inside:avoid;page-break-inside:avoid;margin-bottom:12px}
 <div class="tabw"><table class="ftab"><tbody id="fullTab"></tbody></table></div>
 </div>
 
-<div class="foot"><span class="lgs" title="Счетикс — твоя юнит-экономика"><span class="btx"><span class="bt">счетикс</span><span class="bd" data-t="bt_02"><i>т</i><i>в</i><i>о</i><i>я</i><i>&nbsp;</i><i>ю</i><i>н</i><i>и</i><i>т</i><i>-</i><i>э</i><i>к</i><i>о</i><i>н</i><i>о</i><i>м</i><i>и</i><i>к</i><i>а</i></span></span><svg class="lx" viewBox="0 0 32 32" fill="none" aria-hidden="true"><rect x="10.95" y="2.09" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 7.14)" fill="var(--c-gr3)"/><rect x="19.81" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 24.86 16)" fill="var(--c-g-500)"/><rect x="10.95" y="19.81" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 24.86)" fill="var(--c-gr3)"/><rect x="2.09" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 7.14 16)" fill="var(--c-gr3)"/></svg></span></div>
+<div class="trb" id="trial">
+<div class="trh"><svg class="tri" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 4.2L2.8 20h18.4z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M12 10v4.4" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/><circle cx="12" cy="17.4" r="1.05" fill="currentColor"/></svg><span data-t="rt_01">Что значит пробный режим</span></div>
+<p data-t="rt_02">Сервис уже работает и считает по открытой методике: производственный календарь, нормы Трудового кодекса и налоговые правила 2026 года. Результатом можно пользоваться.</p>
+<p data-t="rt_03">Но мы всё ещё тестируем: где-то может встретиться ошибка в расчёте или неточная формулировка. <b>Если заметите — напишите нам</b>, будем благодарны. Так сервис станет точнее.</p>
+<p data-t="rt_04">Оплата отчёта тоже пока в пробном режиме — сейчас это скорее способ поддержать проект, чем цена. Ваши цифры остаются в браузере и никуда не отправляются.</p>
+</div>
+
+<div class="foot"><span class="lgs" title="Счетикс — твоя юнит-экономика"><span class="btx"><span class="bt">счетикс</span><span class="bd" data-t="bt_02"><i>т</i><i>в</i><i>о</i><i>я</i><i>&nbsp;</i><i>ю</i><i>н</i><i>и</i><i>т</i><i>-</i><i>э</i><i>к</i><i>о</i><i>н</i><i>о</i><i>м</i><i>и</i><i>к</i><i>а</i></span></span><svg class="lx" viewBox="0 0 32 32" fill="none" aria-hidden="true"><rect x="10.95" y="2.09" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 7.14)" fill="var(--c-gr3)"/><rect x="19.81" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 24.86 16)" fill="var(--c-g-500)"/><rect x="10.95" y="19.81" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 24.86)" fill="var(--c-gr3)"/><rect x="2.09" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 7.14 16)" fill="var(--c-gr3)"/></svg></span>
+<div class="fcop" data-t="rfc_01">ООО «Центр маркетинговых услуг Гет Маркетинг» © 2026</div>
+</div>
 
 </div>
 </div>
@@ -2043,7 +2355,7 @@ var LB=['\u041a\u0430\u043a \u0444\u043e\u0442\u043e\u0433\u0440\u0430\u0444 \u2
 '\u0417\u0430\u043f\u043b\u0430\u0442\u0438\u0442\u0435 \u043f\u043e \u0442\u0435\u043a\u0443\u0449\u0438\u043c \u0441\u0447\u0435\u0442\u0430\u043c',
 '\u0417\u0430\u043f\u043b\u0430\u0442\u0438\u0442\u0435 \u043d\u0430\u043b\u043e\u0433\u043e\u0432 \u0438 \u0432\u0437\u043d\u043e\u0441\u043e\u0432',
 '\u041e\u0442\u0434\u0430\u0434\u0438\u0442\u0435 \u0431\u0430\u043d\u043a\u0443 \u0437\u0430 \u044d\u043a\u0432\u0430\u0439\u0440\u0438\u043d\u0433',
-'\u041e\u0442\u043b\u043e\u0436\u0438\u0442\u0435 \u0432 \u0444\u043e\u043d\u0434 \u0440\u0430\u0437\u0432\u0438\u0442\u0438\u044f',
+'\u041e\u0442\u043b\u043e\u0436\u0438\u0442\u0435 \u0437\u0430\u043f\u0430\u0441 \u0441\u0440\u0435\u0434\u0441\u0442\u0432 \u0432 \u0444\u043e\u043d\u0434 \u0440\u0430\u0437\u0432\u0438\u0442\u0438\u044f',
 '\u0417\u0430\u043b\u043e\u0436\u0438\u0442\u0435 \u0437\u0430\u043f\u0430\u0441 \u043d\u0430 \u0441\u043a\u0438\u0434\u043a\u0443'];
 
 /* ДЕМО-ДАННЫЕ. Реальные приходят из калькулятора: localStorage 'phc_report' или ?data= */
@@ -2066,6 +2378,14 @@ function loadData(){
   }catch(e){}
   return DEMO;
 }
+/* Куда ведёт «Поблагодарить проект». Заглушка: поставьте сюда адрес
+   страницы благодарности (боости, ЮMoney и т.п.) — подставится во все
+   четыре кнопки сразу. */
+var THANKS_URL='#thanks';
+/* Куда ведёт «Редактировать данные»: обратно в анкету. Отчёт открывается
+   отдельной страницей, поэтому нужен полный путь, а не якорь. */
+var EDIT_URL='calc.html';
+
 var d=loadData();
 
 function parts(x){
@@ -2179,7 +2499,27 @@ function donut(vals,cols,cx,big,idx,labels){
     /* fixed — сегменты, которые нечего разбирать: не ловят наведение.
        Список приходит снаружи, через donut.FIXED. */
     var isFx=donut.FIXED&&donut.FIXED.indexOf(k)>=0;
+    /* Появление: каждый сектор выезжает отдельно, как в анкете. Там кольцо
+       нарисовано обводкой и растёт через stroke-dasharray; здесь секторы —
+       это фигуры, поэтому тот же приём применяем к МАСКЕ: дуга-обводка
+       внутри маски удлиняется и открывает сектор от начала к концу.
+       Дуга идёт по средней линии кольца, толщина W перекрывает сектор. */
+    var mid0=pt(RR,b0), mid1=pt(RR,b1);
+    var mBig=(b1-b0)>180?1:0;
+    var дуга=(sw>=359.999)
+      ? 'M'+(C-RR)+' '+C+'A'+RR+' '+RR+' 0 1 1 '+(C+RR)+' '+C+
+        'A'+RR+' '+RR+' 0 1 1 '+(C-RR)+' '+C
+      : 'M'+mid0[0]+' '+mid0[1]+'A'+RR+' '+RR+' 0 '+mBig+' 1 '+mid1[0]+' '+mid1[1];
+    var дл=(sw/360)*2*Math.PI*RR;            /* длина дуги сектора */
+    var мид='sgm'+(donut._n=(donut._n||0)+1);
+    s+='<mask id="'+мид+'" maskUnits="userSpaceOnUse">'+
+       '<path d="'+дуга+'" fill="none" stroke="#fff" stroke-width="'+(W+2)+'" '+
+       'stroke-dasharray="0 '+(дл+1).toFixed(2)+'">'+
+       '<animate class="segan" attributeName="stroke-dasharray" '+
+       'from="0 '+(дл+1).toFixed(2)+'" to="'+дл.toFixed(2)+' 0" '+
+       'dur="0.9s" begin="indefinite" fill="freeze"/></path></mask>';
     s+='<path class="seg'+(isFx?' fixed':'')+'" d="'+d+'" fill="'+cols[k]+'" fill-rule="evenodd"'+
+       ' mask="url(#'+мид+')"'+
        (nm?' data-nm="'+nm.replace(/"/g,'&quot;')+'" data-pc="'+pct.toFixed(pct<1?1:0)+'"':'')+'/>';
     if(big&&pct>=3.2){
       var mid=(b0+b1)/2, tp=pt(RR,mid);
@@ -2231,29 +2571,94 @@ function render(){
   $('hExp').textContent=f0(expMo)+MO;
   $('hMon').textContent=f0(d.R/12)+MO;
 
-  /* --- второй экран шапки: время ---
-     Первый экран про деньги, этот про загрузку. Часы берём те же, что
-     в блоке 02, — второго расчёта нет. Проверка: сумма четырёх колонок
-     равна всему рабочему времени за год. */
+  /* --- меню и плавающая плашка ---
+     Меню прокручивается вместе со страницей. Плашка появляется после
+     500 px и висит по центру сверху. Кнопки в обеих делают одно и то же,
+     поэтому обработчики вешаем сразу на пары. */
   (function(){
-    var зак=Math.round(d.py||0);
-    var прочее=(d.accT||0)+(d.idle||0)+(d.fmT||0);
-    var всего=(d.sh||0)+(d.post||0)+(d.clT||0)+(d.promo||0)+прочее;
-    var нед=d.NW||43.8;
-    function пара(idV,idW,ч){
-      var v=$(idV), w=$(idW);
-      if(v)v.textContent=Math.round(ч)+' ч';
-      if(w)w.textContent=f1(ч/нед)+' ч/нед';
+    var порог=500, виден=false, bar=$('fbar');
+
+    ['editLink','editLink2'].forEach(function(id){
+      var e=$(id); if(e)e.setAttribute('href',EDIT_URL);
+    });
+
+    /* печать в PDF: имя файла подставляется перед открытием окна */
+    ['dlBtn','dlBtn2'].forEach(function(id){
+      var b=$(id); if(!b)return;
+      b.onclick=function(){
+        try{document.title=window.PHR_FILENAME()}catch(e){}
+        window.print();
+      };
+    });
+
+    /* поделиться: системное окно на телефонах, буфер на остальном */
+    ['shareBtn','shareBtn2'].forEach(function(id){
+      var sh=$(id); if(!sh)return;
+      sh.onclick=function(){
+        var url=location.href, ttl=document.title;
+        if(navigator.share){navigator.share({title:ttl,url:url}).catch(function(){});return}
+        var ok=function(){sh.classList.add('done');
+          setTimeout(function(){sh.classList.remove('done')},1800)};
+        if(navigator.clipboard&&navigator.clipboard.writeText){
+          navigator.clipboard.writeText(url).then(ok,function(){});
+        }else{
+          var t=document.createElement('textarea');
+          t.value=url; document.body.appendChild(t); t.select();
+          try{document.execCommand('copy');ok()}catch(_){}
+          document.body.removeChild(t);
+        }
+      };
+    });
+
+    if(!bar)return;
+    function проверить(){
+      var y=window.pageYOffset||document.documentElement.scrollTop||0;
+      var надо=y>порог;
+      if(надо!==виден){виден=надо; bar.classList.toggle('on',надо)}
     }
-    var c=$('h2Cnt');
-    if(c)c.textContent=зак+' '+скл(зак,'съёмка','съёмки','съёмок');
+    window.addEventListener('scroll',проверить,{passive:true});
+    проверить();
+  })();
+
+  /* адрес благодарности — во все кнопки разом */
+  (function(){
+    var сп=document.querySelectorAll('[data-thx]');
+    for(var i=0;i<сп.length;i++){
+      сп[i].setAttribute('href',THANKS_URL);
+      if(THANKS_URL.charAt(0)!=='#'){сп[i].setAttribute('target','_blank');
+        сп[i].setAttribute('rel','noopener');}
+    }
+  })();
+
+  /* --- второй экран шапки: время ---
+     Первый экран про деньги, этот про загрузку. Всё в МЕСЯЦ: год
+     человек не чувствует, а месяц — планирует. Часы берём из тех же
+     полей, что блок 02, второго расчёта нет.
+     Проверка: сумма трёх плашек = всё рабочее время за месяц. */
+  (function(){
+    var МЕС=12;
+    var съём=(d.py||0)/МЕС;                       /* съёмок в месяц      */
+    var чСъём=(d.sh||0)/МЕС;                      /* часы на площадке    */
+    var чЗаказ=((d.post||0)+(d.clT||0))/МЕС;      /* обработка + клиент  */
+    var чПроч=((d.promo||0)+(d.accT||0)+(d.idle||0)+(d.fmT||0))/МЕС;
+    var всего=чСъём+чЗаказ+чПроч;
+    var нед=(d.NW||43.8)/МЕС;                     /* недель в месяце     */
+    function пара(idV,idS,знач,подпись){
+      var v=$(idV), s2=$(idS);
+      if(v)v.textContent=знач;
+      if(s2)s2.textContent=подпись;
+    }
+    пара('h2Cnt','h2Sh',f1(съём).replace(',0',''),
+      Math.round(чСъём)+' \u0447 \u043d\u0430 \u043f\u043b\u043e\u0449\u0430\u0434\u043a\u0435');
+    пара('h2Wk','h2WkS',Math.round(чЗаказ)+' \u0447',
+      '\u043e\u0431\u0440\u0430\u0431\u043e\u0442\u043a\u0430 \u0438 \u043e\u0431\u0449\u0435\u043d\u0438\u0435 \u0441 \u043a\u043b\u0438\u0435\u043d\u0442\u043e\u043c');
+    пара('h2Ot','h2OtS',Math.round(чПроч)+' \u0447',
+      '\u043f\u0440\u043e\u0434\u0432\u0438\u0436\u0435\u043d\u0438\u0435, \u0443\u0447\u0451\u0442, \u043f\u0430\u0443\u0437\u044b \u0438 \u0444\u043e\u0440\u0441-\u043c\u0430\u0436\u043e\u0440\u044b');
     var sb=$('h2Sub');
-    if(sb)sb.textContent='при вашей продолжительности '+f1(d.S)+' '+hword(d.S)+
-      ' \u2014 это '+Math.round(всего)+' \u0447 работы за год, или '+f1(всего/нед)+' ч в неделю';
-    пара('h2Sh','h2ShW',d.sh||0);
-    пара('h2Po','h2PoW',d.post||0);
-    пара('h2Pr','h2PrW',(d.clT||0)+(d.promo||0));
-    пара('h2Ot','h2OtW',прочее);
+    if(sb)sb.textContent='\u041f\u0440\u0438 \u0432\u0430\u0448\u0435\u0439 \u043f\u0440\u043e\u0434\u043e\u043b\u0436\u0438\u0442\u0435\u043b\u044c\u043d\u043e\u0441\u0442\u0438 \u0441\u044a\u0451\u043c\u043a\u0438 '+
+      f1(d.S)+' '+hword(d.S)+' \u044d\u0442\u043e '+Math.round(всего)+
+      ' \u0447 \u0440\u0430\u0431\u043e\u0442\u044b \u0432 \u043c\u0435\u0441\u044f\u0446, \u0438\u043b\u0438 '+
+      f1(всего/нед)+' \u0447 \u0432 \u043d\u0435\u0434\u0435\u043b\u044e';
   })();
 
   var dt=new Date();
@@ -2324,26 +2729,35 @@ var REFD=[
   var HRS=[d.sh,d.post,d.clT,d.promo,d.accT,d.fmT+d.idle].map(function(h){return h/d.sh});
   /* если параметр не заложен — показываем, чем это обернётся */
   var ZW=[];
+  /* Куда ведёт кнопка в предупреждении: якорь поля в анкете
+     и надпись. Ключи те же, что id полей в calc.html. */
+  var ZWA=[];
+  ZWA[11]=['fund_on','\u0417\u0430\u043b\u043e\u0436\u0438\u0442\u044c \u0444\u043e\u043d\u0434 \u0440\u0430\u0437\u0432\u0438\u0442\u0438\u044f'];
+  ZWA[12]=['disc_on','\u0417\u0430\u043b\u043e\u0436\u0438\u0442\u044c \u0437\u0430\u043f\u0430\u0441 \u043d\u0430 \u0441\u043a\u0438\u0434\u043a\u0443'];
   ZW[11]='\u0422\u0435\u0445\u043d\u0438\u043a\u0443 \u043f\u0440\u0438\u0434\u0451\u0442\u0441\u044f \u043c\u0435\u043d\u044f\u0442\u044c \u0438\u0437 \u0441\u0432\u043e\u0435\u0433\u043e \u043a\u0430\u0440\u043c\u0430\u043d\u0430 \u0438\u043b\u0438 \u0432 \u043a\u0440\u0435\u0434\u0438\u0442. \u0410\u043c\u043e\u0440\u0442\u0438\u0437\u0430\u0446\u0438\u044f \u043f\u043e\u043a\u0440\u044b\u0432\u0430\u0435\u0442 \u0442\u043e\u043b\u044c\u043a\u043e \u0437\u0430\u043c\u0435\u043d\u0443 \u0442\u043e\u0433\u043e, \u0447\u0442\u043e \u0443\u0436\u0435 \u0435\u0441\u0442\u044c, \u2014 \u043d\u0430 \u043d\u043e\u0432\u043e\u0435 \u0441\u0442\u0435\u043a\u043b\u043e, \u0432\u0442\u043e\u0440\u043e\u0439 \u043a\u043e\u0440\u043f\u0443\u0441 \u0438 \u043e\u0431\u0443\u0447\u0435\u043d\u0438\u0435 \u0434\u0435\u043d\u0435\u0433 \u0432 \u0440\u0430\u0441\u0447\u0451\u0442\u0435 \u043d\u0435\u0442.';
   ZW[12]='\u041b\u044e\u0431\u0430\u044f \u0441\u043a\u0438\u0434\u043a\u0430 \u00ab\u043f\u0440\u043e\u0441\u0442\u043e \u0442\u0430\u043a\u00bb \u0431\u0443\u0434\u0435\u0442 \u0432\u044b\u0447\u0442\u0435\u043d\u0430 \u0438\u0437 \u0432\u0430\u0448\u0435\u0433\u043e \u0434\u043e\u0445\u043e\u0434\u0430. \u041e\u0441\u0442\u0430\u043d\u0435\u0442\u0441\u044f \u0442\u043e\u043b\u044c\u043a\u043e \u0441\u043a\u0438\u0434\u043a\u0430 \u0437\u0430 \u043e\u0431\u044a\u0451\u043c \u2014 \u043e\u043d\u0430 \u043f\u043e\u0441\u0447\u0438\u0442\u0430\u043d\u0430 \u043d\u0438\u0436\u0435 \u0438 \u0431\u0435\u0440\u0451\u0442\u0441\u044f \u0438\u0437 \u043d\u0430\u043a\u043b\u0430\u0434\u043d\u044b\u0445 \u0440\u0430\u0441\u0445\u043e\u0434\u043e\u0432.';
   function lgRow(i){
     var w=mx>0?P[i]/mx*100:0, zero=P[i]<0.5;
     return '<div class="lgi'+(zero?' zero':'')+'">'+
-    '<div class="fill" style="width:'+w.toFixed(1)+'%;background:'+CO[i]+'"></div>'+
+    '<div class="fill" style="--w:'+w.toFixed(1)+'%;width:'+w.toFixed(1)+'%;background:'+CO[i]+'"></div>'+
     '<div class="ltx"><i style="background:'+CO[i]+'"></i><div><b>'+LB[i]+'</b>'+
     (function(){
       /* Вместо пересказа состава — ссылка на пункт справочника.
          Определение живёт в одном месте и не расходится по блокам. */
       var сп=window.PHR_REF&&REFLB[i]?window.PHR_REF(REFLB[i]):null;
       if(сп)return '<em><a class="refl" href="#'+сп.id+'">'+
-        '\u041f\u043e\u0434\u0440\u043e\u0431\u043d\u0435\u0435 \u0432 \u043f. '+
-        parseInt(сп.n,10)+' \u0421\u043f\u0440\u0430\u0432\u043e\u0447\u043d\u0438\u043a\u0430</a></em>';
+        '\u043f. '+parseInt(сп.n,10)+
+        ' \u0421\u043f\u0440\u0430\u0432\u043e\u0447\u043d\u0438\u043a\u0430</a></em>';
       return SUB[i]?'<em>'+SUB[i]+'</em>':'';
     })()+'</div></div>'+
     '<div class="lvv"><div class="a">'+(zero?'\u043d\u0435 \u0437\u0430\u043b\u043e\u0436\u0435\u043d\u043e':f0(P[i]/d.sh))+'</div>'+
     (HRS[i]!==undefined?'<div class="b2">\u0437\u0430 '+f1(HRS[i])+' \u0447</div>':'')+
     '</div>'+
-    (zero&&ZW[i]?'<div class="note warn lgw">'+ZW[i]+'</div>':'')+
+    (zero&&ZW[i]?'<div class="note warn lgw">'+ZW[i]+
+      /* Кнопка ведёт прямо к нужному полю анкеты — человек может
+         сразу исправить, не разыскивая вопрос вручную. */
+      (ZWA[i]?'<a class="lgwb" href="'+EDIT_URL+'#'+ZWA[i][0]+'">'+ZWA[i][1]+'</a>':'')+
+      '</div>':'')+
     '</div>';
   }
   var gProf=VI.filter(function(i){return i<=1});      /* по специальности */
@@ -2658,7 +3072,9 @@ var REFD=[
     else{
       zb.className='note warn';
       zb.setAttribute('style','margin-top:20px');
-      zb.innerHTML='Если хотите иметь возможность сформировать программу лояльности и давать скидки своим клиентам не только за объём — вернитесь в анкету и включите «Резерв на скидку».';
+      /* Кнопка ведёт прямо к полю анкеты — как в предупреждениях блока 01. */
+      zb.innerHTML='Если хотите иметь возможность сформировать программу лояльности и давать скидки своим клиентам не только за объём — вернитесь в анкету и включите «Резерв на скидку».'+
+        '<a class="lgwb" href="'+EDIT_URL+'#disc_on">Заложить резерв на скидку</a>';
     }
   }
 
@@ -2674,8 +3090,13 @@ var REFD=[
       var C=2*Math.PI*62, off=0, дуги='', подписи='';
       НАПР.forEach(function(x,i){
         var доля=фонд>0?x.v/фонд:0, a=C*доля;
+        /* Кольцо фонда нарисовано обводкой, поэтому сектор растёт
+           напрямую через stroke-dasharray — тот же приём, что в анкете. */
         дуги+='<circle cx="80" cy="80" r="62" fill="none" stroke="url(#fg'+(i+1)+')" stroke-width="26" '+
-              'stroke-dasharray="'+a.toFixed(2)+' '+(C-a).toFixed(2)+'" stroke-dashoffset="'+(-off).toFixed(2)+'"/>';
+              'stroke-dasharray="'+a.toFixed(2)+' '+(C-a).toFixed(2)+'" stroke-dashoffset="'+(-off).toFixed(2)+'">'+
+              '<animate class="segan" attributeName="stroke-dasharray" '+
+              'from="0 '+C.toFixed(2)+'" to="'+a.toFixed(2)+' '+(C-a).toFixed(2)+'" '+
+              'dur="0.9s" begin="indefinite" fill="freeze"/></circle>';
         var mid=(off/C)+доля/2, ang=(-90+360*mid)*Math.PI/180;
         подписи+='<text class="fpc" x="'+(80+62*Math.cos(ang)).toFixed(1)+'" y="'+
                  (80+62*Math.sin(ang)).toFixed(1)+'">'+Math.round(доля*100)+'%</text>';
@@ -2705,7 +3126,7 @@ var REFD=[
       '<div>'+
       НАПР.map(function(x,i){
         return '<div class="bar b'+(i+1)+'"><div class="bt"><i>'+x.t+'</i><b>'+f0(x.v)+'</b></div>'+
-        '<div class="bl"><i style="width:'+(фонд>0?(x.v/фонд*100).toFixed(1):0)+'%"></i></div></div>';
+        '<div class="bl"><i style="--w:'+(фонд>0?(x.v/фонд*100).toFixed(1):0)+'%;width:'+(фонд>0?(x.v/фонд*100).toFixed(1):0)+'%"></i></div></div>';
       }).join('')+
       '<div class="fnn">Мы распределили бюджет между тремя ключевыми направлениями в качестве примера. Вы можете легко перераспределить их под свои текущие задачи или использовать как есть в качестве готовой модели. Хотите — усильте постоянных клиентов или сделайте глубже скидку на долгие съёмки.</div>'+
       '</div></div>'+
@@ -2723,7 +3144,7 @@ var REFD=[
         '<b>'+f0(x.sum)+'<em>'+x.n+' '+скл(x.n,'клиент','клиента','клиентов')+
         ' × '+x.s+' '+скл(x.s,'съёмка','съёмки','съёмок')+' = '+x.z+' '+
         скл(x.z,'заказ','заказа','заказов')+'</em></b></div>'+
-        '<div class="bl"><i style="width:'+(постЗак>0?(x.z/постЗак*100).toFixed(0):0)+'%"></i></div></div>';
+        '<div class="bl"><i style="--w:'+(постЗак>0?(x.z/постЗак*100).toFixed(0):0)+'%;width:'+(постЗак>0?(x.z/постЗак*100).toFixed(0):0)+'%"></i></div></div>';
       }).join('')+
       '<div class="s3t">'+
         '<div><span>Сверх того сэкономите на привлечении</span><b>'+f0(годЭк)+' / год</b></div>'+
@@ -2755,7 +3176,6 @@ var REFD=[
     }).join('');
 
   }
-
 
   /* --- полная таблица расчёта --- */
   var ft=$('fullTab');
@@ -2848,8 +3268,6 @@ var REFD=[
     }
     ft.innerHTML=rows.join('');
   }
-
-
 
   /* --- налоговые режимы --- */
   var IWT='<svg class=\"iwt\" viewBox=\"0 0 28 26\" fill=\"none\"><path d=\"M12.94 3.2 1.6 20.05a1.9 1.9 0 0 0 1.6 2.9h21.6a1.9 1.9 0 0 0 1.6-2.9L15.06 3.2a1.25 1.25 0 0 0-2.12 0Z\" fill=\"var(--c-a-400)\"/><path d=\"M14 9.6v5.1\" stroke=\"var(--c-white)\" stroke-width=\"2.5\" stroke-linecap=\"round\"/><circle cx=\"14\" cy=\"18.6\" r=\"1.45\" fill=\"var(--c-white)\"/></svg>';
@@ -3257,8 +3675,6 @@ var REFD=[
       '<div class="fd">'+x[4]+'</div></div>'}).join('');
   }
 
-
-
   /* --- если брать больше заказов --- */
   var needH=d.curRate>0?d.R/d.curRate:0;
   var kx=d.sh>0?needH/d.sh:0;
@@ -3434,7 +3850,6 @@ var REFD=[
      '\u0430 \u043e\u0441\u0442\u0430\u043b\u044c\u043d\u043e\u0435 \u0432\u0440\u0435\u043c\u044f \u2014 \u044d\u0442\u043e \u0442\u0430 \u0441\u0430\u043c\u0430\u044f \u043d\u0435\u0432\u0438\u0434\u0438\u043c\u0430\u044f, \u043d\u043e \u043e\u0433\u0440\u043e\u043c\u043d\u0430\u044f \u0440\u0430\u0431\u043e\u0442\u0430 \u0437\u0430 \u043a\u0430\u0434\u0440\u043e\u043c, \u0431\u0435\u0437 \u043a\u043e\u0442\u043e\u0440\u043e\u0439 \u043d\u0438 \u043e\u0434\u043d\u0430 \u0441\u044a\u0451\u043c\u043a\u0430 \u043f\u0440\u043e\u0441\u0442\u043e \u043d\u0435 \u0441\u043e\u0441\u0442\u043e\u0438\u0442\u0441\u044f.';
   }
 
-
   /* Плашки «Ставка часа» и «Цена съёмки» убраны из врезки: те же цифры
      уже стоят в третьем сценарии выше, дублировать не нужно.
      bRateV по-прежнему считается — он идёт в блок 07 «Четыре цифры». */
@@ -3494,8 +3909,6 @@ render();
   });
 })();
 
-
-
 /* ===== ИМЯ ФАЙЛА ПРИ ПЕЧАТИ И СОХРАНЕНИИ В PDF =====
    Браузер берёт имя из <title>. Подставляем «2026-08-05 Счетикс для фотографа»
    на время печати и возвращаем прежний заголовок после. */
@@ -3521,6 +3934,63 @@ render();
   window.addEventListener('beforeprint',before);
   window.addEventListener('afterprint',after);
   window.PHR_FILENAME=fname;
+})();
+/* ===== ПОЯВЛЕНИЕ ДИАГРАММ =====
+   Диаграмма оживает, когда доезжает до экрана. Помечаем контейнеры
+   классом по типу рисунка, потом наблюдатель вешает .go — переход
+   запускается сам. Срабатывает один раз: при обратной прокрутке
+   диаграмма не «схлопывается». */
+(function(){
+  var корень=document.getElementById('phr-root');
+  if(!корень)return;
+
+  /* кольца: контейнеры, внутри которых есть svg с секторами */
+  var кольца=['#dn1','#dnB','.dn','.fring','.scn3 .dn'];
+  /* полосы: легенда блока 01, полосы фонда и сценария, расшифровка недели */
+  var полосы=['.lgd','.fnw','.sc3','.drow'];
+
+  function пометить(селекторы,класс){
+    корень.querySelectorAll(селекторы.join(',')).forEach(function(e){
+      /* пустые контейнеры не трогаем — им нечего показывать */
+      if(!e.children.length)return;
+      e.classList.add(класс);
+    });
+  }
+  пометить(кольца,'anim-ring');
+  пометить(полосы,'anim-bar');
+  var wk=document.getElementById('wk');
+  if(wk&&wk.children.length)wk.classList.add('anim-wk');
+
+  var цели=корень.querySelectorAll('.anim-ring,.anim-bar,.anim-wk');
+  if(!цели.length)return;
+
+  if(!window.IntersectionObserver){
+    /* старый браузер: показываем сразу, без анимации */
+    цели.forEach(function(e){e.classList.add('go');
+      e.querySelectorAll('animate.segan').forEach(function(a){
+        try{a.beginElement()}catch(_){}});});
+    return;
+  }
+  /* Секторы кольца пускаем по очереди, с задержкой в 90 мс: сначала
+     первый, потом следующий — так же, как в анкете. Без задержки все
+     выезжали бы разом и разбивка не читалась. */
+  function пуск(цель){
+    var ан=цель.querySelectorAll('animate.segan');
+    for(var i=0;i<ан.length;i++){
+      (function(a,i){
+        setTimeout(function(){ try{a.beginElement()}catch(e){} },i*90);
+      })(ан[i],i);
+    }
+  }
+  var наб=new IntersectionObserver(function(записи){
+    записи.forEach(function(з){
+      if(!з.isIntersecting)return;
+      з.target.classList.add('go');
+      пуск(з.target);
+      наб.unobserve(з.target);
+    });
+  },{threshold:.18,rootMargin:'0px 0px -8% 0px'});
+  цели.forEach(function(e){наб.observe(e)});
 })();
 var _p=$('dlpdf'); if(_p)_p.onclick=function(){try{document.title=window.PHR_FILENAME()}catch(e){}window.print()};
 })();

@@ -1,3 +1,18 @@
+<!DOCTYPE html>
+<html lang="ru"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Счетикс · баннер «30 сценариев» (изъят)</title>
+</head><body>
+<!-- ============================================================
+     БАННЕР «30 сценариев, которые снимают вопрос а почему так дорого»
+     ВЫНЕСЕН ИЗ ОТЧЁТА 10.08.2026 по решению заказчика.
+     Дизайн сохранён полностью, изменений нет.
+
+     Чтобы вернуть: перенесите разметку между метками БЛОК-НАЧАЛО и
+     БЛОК-КОНЕЦ в части/каркас.html перед баннером .cta.thx и увеличьте
+     ожидаемое число блоков в собрать.py (21 → 22).
+     Стили .cta остались в каркасе — их использует баннер благодарности.
+     ============================================================ -->
 <div id="phr-root">
 <style>
 #phr-root{
@@ -98,144 +113,12 @@ padding:32px 16px 80px;display:block}
 #phr-root *{box-sizing:border-box;margin:0;padding:0}
 #phr-root .wp{max-width:1080px;margin:0 auto}
 
-/* ---------- верхнее меню ----------
-   Логотип слева, кнопки справа. Подложки нет: фон тот же, что у страницы,
-   поэтому меню читается как её продолжение. Липкое — остаётся сверху
-   при прокрутке, чтобы «Редактировать данные» была под рукой. */
-/* Меню прижато к верху страницы: над ним 28 px — не вплотную, но и
-   не провисает. Считается так: отступ страницы 32 − 12 + свой 8. */
-#phr-root .tbar{display:flex;align-items:center;justify-content:space-between;
-gap:24px;padding:8px 0 16px;margin:-12px 0 26px;background:var(--c-bg)}
-#phr-root .tbar .brand{margin-top:0}
-#phr-root .tbn{display:flex;align-items:center;gap:10px;flex:none}
-/* Текстовая кнопка и значки выделяются одинаково: мягкая подложка
-   и один радиус — единый приём на всё меню. */
-#phr-root .tbar .fbl{font-size:14px;font-weight:600;color:var(--c-gr);
-text-decoration:none;white-space:nowrap;padding:7px 12px;border-radius:11px;
-transition:background .18s,color .18s,transform .12s}
-#phr-root .tbar .fbl:hover{background:var(--c-white);color:var(--c-ink2)}
-#phr-root .tbar .fbl:active{transform:translateY(1px)}
-#phr-root .tbar .fbi{display:inline-flex;align-items:center;justify-content:center;
-width:34px;height:34px;border:0;border-radius:11px;background:transparent;
-color:var(--c-gr);cursor:pointer;padding:0;position:relative;
-transition:background .18s,color .18s,transform .12s}
-#phr-root .tbar .fbi svg{width:20px;height:20px}
-#phr-root .tbar .fbi:hover{background:var(--c-white);color:var(--c-ink2)}
-#phr-root .tbar .fbi:active{transform:translateY(1px)}
-/* Пометка о пробном режиме. Не кнопка — нажимать нечего, только
-   подсказка при наведении. Цвет янтарный: внимание, но не тревога. */
-#phr-root .tbar .fbt{color:var(--c-a-500);text-decoration:none}
-#phr-root .tbar .fbt:hover{background:var(--c-a-50);color:var(--c-a-700)}
-#phr-root .tbar .fbt:active{transform:translateY(1px)}
-#phr-root .tbar .fbh{color:var(--c-ig-3)}
-#phr-root .tbar .fbh:hover{background:#FDF4FB;color:var(--c-ig-2)}
-/* Подсказка оформлена как .segtip — плашка на диаграмме блока 01:
-   белый фон, светлая рамка, тот же радиус и тень. */
-#phr-root .tbar .fbi:after{content:attr(data-tip);position:absolute;
-top:calc(100% + 9px);left:50%;padding:10px 14px;border-radius:12px;
-background:var(--c-white);color:var(--c-ink);border:1px solid var(--c-ln);
-font-size:12.5px;font-weight:600;white-space:nowrap;opacity:0;pointer-events:none;
-transform:translateX(-50%) translateY(-4px);
-transition:opacity .16s,transform .16s;box-shadow:0 8px 28px rgba(16,24,40,.16)}
-#phr-root .tbar .fbi:hover:after{opacity:1;transform:translateX(-50%)}
-#phr-root .tbar .fbi.done:after{content:'\0421\0441\044b\043b\043a\0430 \0441\043a\043e\043f\0438\0440\043e\0432\0430\043d\0430';
-opacity:1;transform:translateX(-50%)}
-@media(max-width:700px){#phr-root .tbar{gap:12px;padding:6px 0 12px;margin-top:-8px}
-#phr-root .tbar .fbl{font-size:13px;padding:6px 9px}
-#phr-root .tbar .brand .bx{width:46px;height:46px}
-#phr-root .tbar .brand .bt{font-size:16px}}
-@media print{#phr-root .tbar{position:static;border-bottom:0}
-#phr-root .tbn{display:none}}
-
-/* ---------- плавающая плашка ----------
-   Меню выше прокручивается со страницей. Эта плашка появляется после
-   500 px, висит по центру сверху и содержит только действия.
-   Подложка полупрозрачная, углы как у блоков. */
-#phr-root .fbar{position:fixed;top:16px;left:50%;z-index:60;
-display:flex;align-items:center;gap:10px;padding:12px 18px;
-border-radius:var(--r);background:rgba(255,255,255,.62);
-backdrop-filter:blur(14px) saturate(140%);-webkit-backdrop-filter:blur(14px) saturate(140%);
-border:1px solid rgba(255,255,255,.55);box-shadow:0 8px 28px rgba(16,24,40,.12);
-opacity:0;visibility:hidden;transform:translateX(-50%) translateY(-14px);
-transition:opacity .28s ease,transform .28s ease,visibility .28s}
-#phr-root .fbar.on{opacity:1;visibility:visible;transform:translateX(-50%)}
-/* кнопки те же, что в меню: подложка и радиус при наведении */
-#phr-root .fbar .fbl{font-size:14px;font-weight:600;color:var(--c-gr);
-text-decoration:none;white-space:nowrap;padding:7px 12px;border-radius:11px;
-transition:background .18s,color .18s,transform .12s}
-#phr-root .fbar .fbl:hover{background:var(--c-white);color:var(--c-ink2)}
-#phr-root .fbar .fbl:active{transform:translateY(1px)}
-#phr-root .fbar .fbi{display:inline-flex;align-items:center;justify-content:center;
-width:34px;height:34px;border:0;border-radius:11px;background:transparent;
-color:var(--c-gr);cursor:pointer;padding:0;position:relative;
-transition:background .18s,color .18s,transform .12s}
-#phr-root .fbar .fbi svg{width:20px;height:20px}
-#phr-root .fbar .fbi:hover{background:var(--c-white);color:var(--c-ink2)}
-#phr-root .fbar .fbi:active{transform:translateY(1px)}
-#phr-root .fbar .fbt{color:var(--c-a-500);cursor:default}
-#phr-root .fbar .fbt:hover{background:var(--c-a-50);color:var(--c-a-700)}
-#phr-root .fbar .fbt:active{transform:none}
-#phr-root .fbar .fbh{color:var(--c-ig-3)}
-#phr-root .fbar .fbh:hover{background:#FDF4FB;color:var(--c-ig-2)}
-/* подсказка — как .segtip на диаграмме блока 01 */
-#phr-root .fbar .fbi:after{content:attr(data-tip);position:absolute;
-top:calc(100% + 9px);left:50%;padding:10px 14px;border-radius:12px;
-background:var(--c-white);color:var(--c-ink);border:1px solid var(--c-ln);
-font-size:12.5px;font-weight:600;white-space:nowrap;opacity:0;pointer-events:none;
-transform:translateX(-50%) translateY(-4px);
-transition:opacity .16s,transform .16s;box-shadow:0 8px 28px rgba(16,24,40,.16)}
-#phr-root .fbar .fbi:hover:after{opacity:1;transform:translateX(-50%)}
-#phr-root .fbar .fbi.done:after{content:'\0421\0441\044b\043b\043a\0430 \0441\043a\043e\043f\0438\0440\043e\0432\0430\043d\0430';
-opacity:1;transform:translateX(-50%)}
-@media(max-width:700px){#phr-root .fbar{top:10px;gap:8px;padding:10px 12px;
-max-width:calc(100vw - 20px)}
-#phr-root .fbar .fbl{font-size:13px;padding:6px 9px}}
-@media print{#phr-root .fbar{display:none!important}}
-
-/* ---------- появление диаграмм ----------
-   Диаграмма оживает, когда доезжает до экрана: кольца проявляются
-   поворотом, полосы наливаются слева направо. Приём тот же, что
-   в анкете, но кольца отчёта нарисованы секторами-path, а не обводкой,
-   поэтому вместо stroke-dasharray крутим сам рисунок.
-   Пока блок не показан, .anim держит его в исходном состоянии;
-   класс .go снимает ограничение и запускает переход. */
-
-/* Кольца: каждый сектор выезжает отдельно — это делает <animate>
-   внутри маски, запуск из скрипта. Здесь только подписи процентов:
-   они проступают, когда секторы уже на местах. */
-#phr-root .anim-ring text{opacity:0;transition:opacity .4s ease .55s}
-#phr-root .anim-ring.go text{opacity:1}
-
-/* полосы: наливаются слева направо */
-#phr-root .anim-bar .fill,
-#phr-root .anim-bar .bl > i,
-#phr-root .anim-bar .dfill{width:0!important;
-transition:width .9s cubic-bezier(.22,1,.36,1)}
-#phr-root .anim-bar.go .fill,
-#phr-root .anim-bar.go .bl > i,
-#phr-root .anim-bar.go .dfill{width:var(--w)!important}
-
-/* сетка недели: плашки дней проявляются волной */
-#phr-root .anim-wk i{opacity:0;transform:scale(.9);
-transition:opacity .45s ease,transform .45s ease}
-#phr-root .anim-wk.go i{opacity:1;transform:none}
-
-@media(prefers-reduced-motion:reduce){
-#phr-root .anim-ring text,#phr-root .anim-wk i{opacity:1;transform:none;transition:none}
-#phr-root .anim-bar .fill,#phr-root .anim-bar .bl > i,
-#phr-root .anim-bar .dfill{width:var(--w)!important;transition:none}}
-@media print{
-#phr-root .anim-ring text,#phr-root .anim-wk i{opacity:1!important;transform:none!important}
-#phr-root .anim-bar .fill,#phr-root .anim-bar .bl > i,
-#phr-root .anim-bar .dfill{width:var(--w)!important}}
-
 /* ---------- шапка ---------- */
-#phr-root .hdr{margin:0 0 30px}
-#phr-root .htx{min-width:0;padding-top:0}
+#phr-root .hdr{display:flex;align-items:flex-start;justify-content:space-between;
+gap:28px;margin:0 0 30px}
+#phr-root .htx{flex:1;min-width:0;padding-top:34px}
 #phr-root h1{font-size:34px;font-weight:700;letter-spacing:-.02em;margin-bottom:8px}
-/* Ширина не ограничена: логотип теперь в меню, шапка занимает всю
-   колонку. Раньше max-width:660px рвал строку посередине. */
-#phr-root .sub{color:var(--gr);font-size:16px}
+#phr-root .sub{color:var(--gr);font-size:16px;max-width:660px}
 #phr-root .sub2{font-size:14.5px;line-height:1.65;margin-top:10px;color:var(--c-gr2)}
 #phr-root .brand{display:flex;align-items:center;gap:12px;flex:none;line-height:1;margin-top:-4px}
 #phr-root .brand .btx{display:flex;flex-direction:column;align-items:stretch;gap:5px}
@@ -244,8 +127,7 @@ transition:opacity .45s ease,transform .45s ease}
 #phr-root .brand .bd{font-size:9px;color:var(--c-gr2);white-space:nowrap;display:flex;justify-content:space-between;text-transform:lowercase}
 #phr-root .brand .bd i{font-style:normal}
 #phr-root .brand .bx{display:block;flex:none;width:62px;height:62px}
-/* дата — цветом заголовков, а не блёклой серой */
-#phr-root .meta{font-size:12.5px;color:var(--c-ink);margin-top:10px}
+#phr-root .meta{font-size:12.5px;color:var(--c-gr2);margin-top:10px}
 
 /* ---------- карточки ---------- */
 #phr-root .card{background:#fff;border-radius:var(--r);padding:26px 28px;box-shadow:var(--sh);
@@ -714,10 +596,8 @@ font-variant-numeric:tabular-nums}
 /* ---------- контент-план ---------- */
 /* Кнопки во всех документах ведут себя одинаково: при наведении темнеют,
    при нажатии слегка утапливаются. Никаких подпрыгиваний. */
-/* Баннер: заливка, радиус и отступы. Правило основное — на узких
-   экранах отступы ужимаются медиазапросом ниже. */
-#phr-root .cta{background:linear-gradient(135deg,var(--c-g-800),var(--c-g-500));border-radius:22px;
-padding:40px 44px;color:#fff;position:relative;overflow:hidden;margin-top:20px}
+@media(max-width:700px){#phr-root .cta{padding:30px 24px}
+#phr-root .cal{gap:4px}}
 
 /* ---------- лучший режим ---------- */
 /* Блок про налоги — в синей ведомственной гамме, а не в зелёной фирменной:
@@ -853,10 +733,6 @@ margin-bottom:3px;font-size:13.5px}
 display:flex;align-items:flex-start;gap:7px}
 #phr-root .npd .warn b{color:var(--ink);font-weight:700}
 /* ---------- справочник-памятка ---------- */
-/* Скрытые элементы: остаются в разметке, но не показываются.
-   Так проще вернуть — не нужно искать код по архиву. */
-#phr-root .hide{display:none!important}
-
 /* Общая форма баннера. Её использует .cta.thx; баннер «30 сценариев»
    вынесен в части/09_баннер_сценарии.html, но правила нужны здесь. */
 
@@ -873,17 +749,10 @@ font-weight:700;text-decoration:none;transition:.16s;box-shadow:0 6px 20px rgba(
 #phr-root .cta .btn2:hover{background:var(--c-g-50)}
 #phr-root .cta .btn2:active{background:var(--c-g-100);transform:translateY(1px)}
 #phr-root .cta .sm{font-size:13px;opacity:.8;margin-top:16px}
-@media(max-width:700px){#phr-root .cta{padding:30px 24px}
-#phr-root .cta h3{font-size:24px}
-#phr-root .cal{gap:4px}}
 
 /* Баннер благодарности — в одной гамме с кнопками .thxb: тот же
    инста-градиент, те же сердечки в декоре. */
-/* та же крутящаяся заливка, что на кнопках, только медленнее */
 #phr-root .cta.thx{background:linear-gradient(140deg,var(--c-ig-1),var(--c-ig-2) 42%,var(--c-ig-4))}
-
-#phr-root .cta.thx .in{position:relative;z-index:2}
-
 #phr-root .cta.thx .btn2{color:var(--c-ig-2)}
 #phr-root .cta.thx .btn2:hover{background:#FDF4FB}
 #phr-root .cta.thx .btn2:active{background:#FBE9F6}
@@ -908,18 +777,12 @@ z-index:0;pointer-events:none}
 #phr-root .thxb .thxd2{position:absolute;left:26px;top:50%;
 transform:translateY(-50%);width:34px;height:34px;opacity:.22;
 z-index:0;pointer-events:none}
-
 #phr-root .thxb span,#phr-root .thxb svg{position:relative;z-index:1}
 #phr-root .thxb:hover{filter:brightness(1.06)}
 #phr-root .thxb:active{transform:translateY(1px);filter:brightness(.97)}
 #phr-root .thxb svg{flex:none}
 /* обёртка повторяет .savebar: тот же отступ, ширина во всю колонку */
 #phr-root .thxbar{margin:16px 0;text-align:center}
-/* Пояснение под кнопкой: почему проект просит поддержки. Тон спокойный,
-   кегль как у примечаний, ширина ограничена — читается одним взглядом. */
-#phr-root .thxn{max-width:720px;margin:14px auto 0;font-size:13px;line-height:1.7;
-color:var(--c-gr);text-align:center}
-#phr-root .thxn br{content:"";display:block;margin-bottom:9px}
 
 /* Ссылка на пункт справочника: не выделяется цветом — наследует шрифт,
    кегль, начертание и цвет того описания, вместо которого стоит.
@@ -927,9 +790,8 @@ color:var(--c-gr);text-align:center}
 #phr-root .refl{color:inherit;font:inherit;text-decoration:none;
 border-bottom:1px solid currentColor;opacity:.9;white-space:nowrap}
 #phr-root .refl:hover{opacity:1}
-/* Без подложки: фон тот же, что у страницы и меню. Отступы по бокам
-   убраны — текст выравнивается по общей колонке. */
-#phr-root .pmknote{margin-top:26px;padding:22px 0;background:none;border:0}
+#phr-root .pmknote{margin-top:26px;padding:22px 26px;background:var(--c-surf);border-radius:16px;
+border:1px solid var(--c-bg)}
 #phr-root .pmknote .pnh{font-size:13px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;
 color:var(--c-gr2);margin-bottom:14px}
 #phr-root .pmknote .pi2{font-size:12.5px;line-height:1.7;color:var(--c-gr);margin-bottom:9px;
@@ -1397,15 +1259,6 @@ border-radius:13px;padding:12px 15px;background:var(--c-surf);position:relative;
 /* предупреждение внутри строки легенды: вид из .note.warn,
    здесь только раскладка в гриде */
 #phr-root .lgi .note.warn{grid-column:1/-1;z-index:2;margin-top:10px}
-/* Кнопка внутри предупреждения: ведёт к нужному полю анкеты.
-   Гамма предупреждения, чтобы не спорить с плашкой. */
-#phr-root .lgwb{display:table;margin-top:12px;
-padding:8px 15px;border-radius:11px;border:1px solid var(--c-a-300);
-background:var(--c-white);color:var(--c-a-800);font-size:12.5px;font-weight:700;
-text-decoration:none;transition:background .18s,border-color .18s,transform .12s}
-#phr-root .lgwb:hover{background:var(--c-a-50);border-color:var(--c-a-400)}
-#phr-root .lgwb:active{transform:translateY(1px)}
-@media print{#phr-root .lgwb{display:none}}
 #phr-root .lgi.zero .lvv .a{font-size:12.5px;font-weight:600;color:var(--c-a-700)}
 #phr-root .lgi .ltx{position:relative;z-index:2;display:flex;align-items:center;gap:10px;min-width:0}
 #phr-root .lgi .ltx i{width:10px;height:10px;border-radius:3px;flex:none}
@@ -1839,27 +1692,8 @@ background:var(--c-bg);border-radius:10px;padding:7px 13px}
 #phr-root .wk i{height:30px;border-radius:9px}
 #phr-root .wk .hr{line-height:30px;font-size:10px}}
 
-/* ---------- пробный режим: объяснение ----------
-   Перед подвалом. Подложки нет: это сноска ко всему отчёту, а не блок
-   с данными. Отделена сверху чертой. Копия того, что в анкете. */
-#phr-root .trb{padding:22px 4px 0;margin:14px 0 4px;
-border-top:1px solid var(--c-ln)}
-#phr-root .trb .trh{display:flex;align-items:center;gap:11px;
-font-size:17px;font-weight:700;letter-spacing:-.02em;
-color:var(--c-ink);margin-bottom:11px}
-#phr-root .trb .tri{width:21px;height:21px;flex:none;display:block;color:var(--c-gr)}
-#phr-root .trb p{font-size:13.5px;line-height:1.6;color:var(--c-gr);margin:0 0 9px}
-#phr-root .trb p:last-child{margin-bottom:0}
-#phr-root .trb b{font-weight:700;color:var(--c-ink2)}
-#phr-root .trb:target{animation:phrtr 2.4s ease}
-@keyframes phrtr{0%,42%{background:var(--c-a-50)}100%{background:transparent}}
-@media print{#phr-root .trb{display:none}}
-
 /* ---------- подвал ---------- */
-#phr-root .foot{display:flex;flex-direction:column;align-items:center;gap:12px;
-padding:30px 0 10px}
-/* реквизиты под знаком: мелко и тихо, это не часть логотипа */
-#phr-root .fcop{font-size:11.5px;color:var(--c-gr2);text-align:center;line-height:1.5}
+#phr-root .foot{display:flex;justify-content:center;padding:30px 0 10px}
 /* подвальный знак — точная копия шапки, уменьшенная. Пропорции те же:
    надпись слева, знак справа, «твоя юнит-экономика» растянута под словом */
 #phr-root .lgs{display:flex;align-items:center;gap:9px;line-height:1}
@@ -1896,6 +1730,7 @@ margin-top:12px;line-height:1.5}
 @media(max-width:820px){
 #phr-root .three{grid-template-columns:1fr;gap:28px}
 #phr-root .scmp{grid-template-columns:1fr}
+#phr-root .hdr{flex-direction:column-reverse;align-items:flex-start;gap:14px}
 #phr-root .htx{padding-top:4px}
 #phr-root h1{font-size:26px}
 #phr-root .hero .big{font-size:40px}
@@ -1915,335 +1750,37 @@ margin-top:12px;line-height:1.5}
 #phr-root .card,#phr-root .hero{box-shadow:none;border:1px solid var(--c-ln);
 break-inside:avoid;page-break-inside:avoid;margin-bottom:12px}
 #phr-root *{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+
+/* ---- стили вынесенного баннера ---- */
+#phr-root .cta{background:linear-gradient(135deg,var(--c-g-800),var(--c-g-500));border-radius:22px;
+padding:40px 44px;color:#fff;position:relative;overflow:hidden;margin-top:20px}
+#phr-root .cta .dec{position:absolute;pointer-events:none;opacity:.13}
+#phr-root .cta .in{position:relative;z-index:2;max-width:620px}
+#phr-root .cta .kick{font-size:12px;font-weight:700;letter-spacing:.14em;
+text-transform:uppercase;opacity:.75;margin-bottom:12px}
+#phr-root .cta h3{font-size:32px;font-weight:700;letter-spacing:-.025em;line-height:1.12;
+margin-bottom:14px}
+#phr-root .cta p{font-size:15.5px;line-height:1.65;opacity:.93;margin-bottom:26px}
+#phr-root .cta .btn2{display:inline-flex;align-items:center;gap:11px;background:#fff;
+color:var(--gd);border-radius:14px;padding:0 30px;height:56px;font-size:16px;
+font-weight:700;text-decoration:none;transition:.16s;box-shadow:0 6px 20px rgba(0,0,0,.16)}
+#phr-root .cta .btn2:hover{background:var(--c-g-50)}
+#phr-root .cta .btn2:active{background:var(--c-g-100);transform:translateY(1px)}
+#phr-root .cta .sm{font-size:13px;opacity:.8;margin-top:16px}
+#phr-root .cta{padding:30px 24px}
+#phr-root .cta h3{font-size:24px}
 </style>
-
 <div class="wp">
-
-<!-- Верхнее меню: логотип слева, кнопки справа. Подложки нет —
-     фон тот же, что у страницы. Липкое: остаётся сверху при прокрутке. -->
-<div class="tbar" id="topbar">
-<nav class="tbn">
-<a class="fbl" id="editLink" href="#edit">Редактировать данные</a>
-<a class="fbi fbt" href="#trial" data-tip="Сервис работает в пробном режиме" aria-label="Пробный режим">
-<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 4.2L2.8 20h18.4z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M12 10v4.4" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/><circle cx="12" cy="17.4" r="1.05" fill="currentColor"/></svg></a>
-<button class="fbi" id="dlBtn" type="button" data-tip="Скачать отчёт" aria-label="Скачать отчёт">
-<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0l-4.5-4.5M12 15l4.5-4.5" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg></button>
-<button class="fbi" id="shareBtn" type="button" data-tip="Поделиться" aria-label="Поделиться">
-<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="18" cy="5" r="2.6" stroke="currentColor" stroke-width="1.8"/><circle cx="6" cy="12" r="2.6" stroke="currentColor" stroke-width="1.8"/><circle cx="18" cy="19" r="2.6" stroke="currentColor" stroke-width="1.8"/><path d="M8.4 10.8l7.2-4.2M8.4 13.2l7.2 4.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
-<a class="fbi fbh" href="#thanks" data-thx data-tip="Поблагодарить проект" aria-label="Поблагодарить проект">
-<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 00-7.8 0l-1 1-1-1a5.5 5.5 0 00-7.8 7.8l1 1 7.8 7.8 7.8-7.8 1-1a5.5 5.5 0 000-7.8z" fill="none" stroke="currentColor" stroke-width="2"/></svg></a>
-</nav>
-<div class="brand" title="Счетикс — твоя юнит-экономика"><span class="btx"><span class="bt">счетикс</span><span class="bd" data-t="bt_02"><i>т</i><i>в</i><i>о</i><i>я</i><i>&nbsp;</i><i>ю</i><i>н</i><i>и</i><i>т</i><i>-</i><i>э</i><i>к</i><i>о</i><i>н</i><i>о</i><i>м</i><i>и</i><i>к</i><i>а</i></span></span><svg class="bx" viewBox="0 0 32 32" fill="none" aria-hidden="true"><rect x="10.95" y="2.09" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 7.14)" fill="var(--c-gr3)"/><rect x="19.81" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 24.86 16)" fill="var(--c-g-500)"/><rect x="10.95" y="19.81" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 24.86)" fill="var(--c-gr3)"/><rect x="2.09" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 7.14 16)" fill="var(--c-gr3)"/></svg></div>
-<!-- Плавающая плашка. Меню выше прокручивается вместе со страницей,
-     а эта появляется после 500 px и висит по центру сверху. Логотипа
-     в ней нет — только действия. -->
-<div class="fbar" id="fbar">
-<a class="fbl" id="editLink2" href="#edit">Редактировать данные</a>
-<span class="fbi fbt" aria-label="Пробный режим">
-<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 4.2L2.8 20h18.4z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M12 10v4.4" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/><circle cx="12" cy="17.4" r="1.05" fill="currentColor"/></svg></span>
-<button class="fbi" id="dlBtn2" type="button" data-tip="Скачать отчёт" aria-label="Скачать отчёт">
-<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0l-4.5-4.5M12 15l4.5-4.5" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg></button>
-<button class="fbi" id="shareBtn2" type="button" data-tip="Поделиться" aria-label="Поделиться">
-<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="18" cy="5" r="2.6" stroke="currentColor" stroke-width="1.8"/><circle cx="6" cy="12" r="2.6" stroke="currentColor" stroke-width="1.8"/><circle cx="18" cy="19" r="2.6" stroke="currentColor" stroke-width="1.8"/><path d="M8.4 10.8l7.2-4.2M8.4 13.2l7.2 4.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
-<a class="fbi fbh" href="#thanks" data-thx data-tip="Поблагодарить проект" aria-label="Поблагодарить проект">
-<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 00-7.8 0l-1 1-1-1a5.5 5.5 0 00-7.8 7.8l1 1 7.8 7.8 7.8-7.8 1-1a5.5 5.5 0 000-7.8z" fill="none" stroke="currentColor" stroke-width="2"/></svg></a>
-</div>
-
-</div>
-
-<div class="hdr">
-<div class="htx">
-<h1 data-t="rh_01">Юнит-экономика фотографа</h1>
-<p class="sub" data-t="rh_02">Создано фотографами для фотографов на основе реального опыта.</p>
-<p class="sub sub2" data-t="rh_03">Быть независимым автором не значит работать больше, чем в найме, и постоянно уходить в минус.</p>
-<div class="meta" id="rMeta">Расчёт от 2 августа 2026</div>
-</div>
-
-</div>
-
-<div class="hero">
-<div class="hdeco" aria-hidden="true">
-<svg class="h1" viewBox="0 0 32 32" fill="none">
-<rect x="10.95" y="2.09" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 7.14)" fill="#fff"/>
-<rect x="19.81" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 24.86 16)" fill="#fff"/>
-<rect x="10.95" y="19.81" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 24.86)" fill="#fff"/>
-<rect x="2.09" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 7.14 16)" fill="#fff"/></svg>
-<svg class="h2i" viewBox="0 0 24 24" fill="none">
-<rect x="2.2" y="6.4" width="19.6" height="13.4" rx="3.2" stroke="#fff" stroke-width="1"/>
-<path d="M8.4 6.4l1.3-2.3h4.6l1.3 2.3" stroke="#fff" stroke-width="1" stroke-linejoin="round"/>
-<circle cx="12" cy="13.1" r="4.1" stroke="#fff" stroke-width="1"/>
-<circle cx="12" cy="13.1" r="1.7" stroke="#fff" stroke-width=".8"/></svg>
-</div>
-<div class="lb" data-t="rlb_01">Ваша ставка за час съёмки</div>
-<div class="big" id="hRate">—</div>
-<div class="un" id="hRateEx"></div>
-<div class="fact" id="hFact"></div>
-<div class="rw">
-<div><div class="v" id="hInc">—</div><div class="k" data-t="rk_03">Ваш доход на руки</div></div>
-<div><div class="v" id="hExp">—</div><div class="k" data-t="rk_01">Всего расходов</div></div>
-<div><div class="v" id="hMon">—</div><div class="k" data-t="rk_02">Общая выручка</div></div>
-</div></div>
-
-<div class="hero2" id="hero2">
-<svg class="h2deco" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-<circle cx="12" cy="13" r="9" stroke="#fff" stroke-width="1.3"/>
-<path d="M12 8.2V13l3.1 1.9" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M9 2.2h6M12 2.2v1.9" stroke="#fff" stroke-width="1.3" stroke-linecap="round"/>
-<path d="M19.2 5.6l1.5 1.5" stroke="#fff" stroke-width="1.3" stroke-linecap="round"/>
-</svg>
-<div class="lb" data-t="rlb_02">Ваш рабочий месяц</div>
-<div class="h2g">
-  <div class="h2c">
-    <span class="h2t" data-t="rk_04">Съёмок в месяц</span>
-    <b class="h2v" id="h2Cnt">—</b>
-    <i class="h2s" id="h2Sh">—</i>
-  </div>
-  <div class="h2c">
-    <span class="h2t" data-t="rk_05">Часов на работу с заказом</span>
-    <b class="h2v" id="h2Wk">—</b>
-    <i class="h2s" id="h2WkS">—</i>
-  </div>
-  <div class="h2c">
-    <span class="h2t" data-t="rk_06">Продвижение и прочее</span>
-    <b class="h2v" id="h2Ot">—</b>
-    <i class="h2s" id="h2OtS">—</i>
-  </div>
-</div>
-<div class="un" id="h2Sub"></div>
-</div>
-
-<div class="savebar top">
-<button class="savebtn" id="dlpdf">
-<svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-<path d="M12 3v12m0 0l-4.5-4.5M12 15l4.5-4.5" stroke="var(--c-g-700)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2" stroke="var(--c-g-700)" stroke-width="2.2" stroke-linecap="round"/></svg>
-<span data-t="rsv_01">Сохранить отчёт в PDF</span></button>
-</div>
-<div class="thxbar"><a class="thxb" href="#thanks" data-thx><svg class="thxd" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 00-7.8 0l-1 1-1-1a5.5 5.5 0 00-7.8 7.8l1 1 7.8 7.8 7.8-7.8 1-1a5.5 5.5 0 000-7.8z" fill="#fff"/></svg><svg class="thxd2" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 00-7.8 0l-1 1-1-1a5.5 5.5 0 00-7.8 7.8l1 1 7.8 7.8 7.8-7.8 1-1a5.5 5.5 0 000-7.8z" fill="#fff"/></svg><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M20.8 4.6a5.5 5.5 0 00-7.8 0l-1 1-1-1a5.5 5.5 0 00-7.8 7.8l1 1 7.8 7.8 7.8-7.8 1-1a5.5 5.5 0 000-7.8z" fill="none" stroke="#fff" stroke-width="2.2" stroke-linejoin="round"/></svg><span data-t="rthx_01">Поблагодарить проект</span></a>
-<p class="thxn" data-t="rthx_05">Так мы будем знать, что сервис вам нужен, и сможем развивать его и сохранять бесплатным для всех специалистов креативной индустрии.</p></div>
-
-<div class="cond">
-<div class="ch2" data-t="rcd_01">Ваши условия труда по ТК РФ</div>
-<div class="chd" data-t="rcd_03">В расчёт заложены те же гарантии, что закон даёт наёмному работнику</div>
-<div class="cnd">
-<div class="cn a"><div class="tp" data-t="rcd_t1">График работы</div>
-<div><div class="bg">5 / 2</div>
-<div class="sm" data-t="rcd_s1">Выходные и государственные праздники — вы не работаете</div></div></div>
-<div class="cn b"><div class="tp" data-t="rcd_t2">Право на отдых</div>
-<div><div class="bg">Отпуск<br>28 дней</div>
-<div class="sm" data-t="rcd_s2">Плюс 10 дней больничного — без потери дохода</div></div></div>
-<div class="cn c"><div class="tp" data-t="rcd_t3">Рабочий день</div>
-<div><div class="bg">8 часов</div>
-<div class="sm" data-t="rcd_s3">С перерывом на обед, а не «сколько получится»</div></div></div>
-</div>
-<div class="cnote" data-t="rcd_02">Работая на себя, вы сами являетесь для себя работодателем. Если не заложить отпуск, больничные и выходные в стоимость часа, вы фактически будете оплачивать их из собственного кармана — работая в дни отдыха или жертвуя своим здоровьем ради сохранения дохода.</div>
-</div>
-
-<div class="logi">
-<div class="logii" aria-hidden="true">
-<svg viewBox="0 0 64 64">
-  <circle cx="32" cy="32" r="29" fill="var(--c-ln2)"/>
-  <g fill="var(--c-gr3)">
-    <path d="M14 41V29.5a3.5 3.5 0 0 1 3.5-3.5h15a3.5 3.5 0 0 1 3.5 3.5V41z"/>
-    <path d="M36 32h7.6a3.5 3.5 0 0 1 2.9 1.55L50 38.5V41H36z"/>
-    <rect x="20.5" y="18.5" width="9" height="5" rx="1.4"/>
-  </g>
-  <g fill="var(--c-gr2)">
-    <circle cx="22" cy="43" r="4.6"/>
-    <circle cx="43" cy="43" r="4.6"/>
-  </g>
-  <path d="M13 51L51 13" stroke="var(--c-r-500)" stroke-width="5.5"
-        stroke-linecap="round"/>
-</svg>
-</div>
-<div class="logit">
-<b data-t="rlg_01">Логистика в расчёт не входит</b>
-<span data-t="rlg_02">Дорога, бензин, такси и парковка по закону ложатся на исполнителя. Определите зону, куда выезжаете по базовой цене, например в пределах города. За её границы добавляйте к смете стоимость дороги в обе стороны и время в пути. Час за рулём — это тоже рабочий час.</span>
-</div>
-</div>
-
-<div class="wnote">
-<div class="wnh" data-t="rbd_nh">Из чего складывается ваша цена</div>
-<div class="wnkey" data-t="rbd_h2a">Клиент готов оплачивать только время, проведённое вами на съёмочной площадке, зачастую не подозревая о колоссальном объёме закулисной работы.</div>
-<div class="wnsub" data-t="rbd_h2b">Именно поэтому в стоимость съёмочного часа необходимо закладывать абсолютно все сопутствующие затраты.</div>
-
-<div class="appleg">
-  <div class="ac ac-l">
-    <div class="an" data-t="rbd_h2c1">Временные затраты</div>
-    <div class="ad" data-t="rbd_h2c">Часы на сам заказ и на работу, без которой заказов просто не будет.</div>
-  </div>
-
-  <div class="apple" aria-hidden="true">
-<img alt="" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAScAAAFACAMAAADJdUqRAAACWFBMVEXRnVxlXBqvpZWXamCal2RiMBTo6dnh39kmIgrUzaZwYU7D0DDVqJzDKCTi58rR1LLi4cienpXIsyvKyWR2eYO6xZ/MsrD//wCemZh0nw8zUgl4ilmZHCOdm5x1eoHPzrj/AADOurdzioqewQPfcmjDWR6jpXS3PUC6xZhydnx4e4EA/wDIzbbEPkFjaXE/Pz/Ktrt9goZ9gYWPbm68w6v//39/fwC0tOmyxHvjseAqKlUAAP8A//9/f/9VqlWFcmC0wny/yLa/////AP/cf4EAAACrxwyyNzFIeQiuyDBVhg6xyEyatCmxRjGXtgnG2W650zCqBQyQqQ1tli6tdzSsZzKuKiquVzH+/v7a56q7002jujLU45N4e3zK2Y2rhjSVqSnD2FLReHD19veuFxSqljNolRU3agKuJxWWBAXERjbUlo6zR0WluwjUhXaJp1LUiYXi7LQ8cgPGSEVzd32uNxanpzO2yG2oZw6qdwyXNyvIV091mkmKqmipukqxV1DDOjOpVxJzd31oiivs88uWVwnimI+WKCWVRi2WOAm10RXKZVKVRwpmihPMaWWWZwirRxR7ok6TJwqTFwfPtLBzd32uhg7IVjKXVymSmAmTmSt3ozHPqqeWhwnlpJe90WzP2aaYZiurpghqaWyWdwlzd33Md0/TpJiYdiqsmAvJZzGyeEesuWrKdjK0ZU+1h0awqExchyWxlpKtGyO6yYf6+/eUsnCZhipVVVXO4XVvRgrJhy/nqqMKBgFdkRG1l0fqt6/Kly+waGXKpzDl8LtLagfi6seWs08+AuX3AAAAyHRSTlP+/vf+9f5ZJf/v/f/n/5ue66T//iLspQFi/v/9/xRRZwFtDP///6z/oaSWASb/CgQrVKIHaQICBZgSBgEBAgOuyhwEAf8A///+//7+//////////7/////BP7///4M/v/+//7////+//////7////+/v7//y7///7//////v7//v//T/7//v/////////+//7/////+27///7//v79////+f7/Cf6O//7+/////v/+/v7+/v/+L/7+A//+/////v////7///71/g65XUQAAH4CSURBVHja7b2JQ5RXtvVdSImXiEM06cxJD0k6bw/3nadver9JqoqiKKAmpIgMXSAzKo0iIEMTFCwmwSuIMYbEiwgKGqO22ldjEuO/9a219zlPFaiJoibp936PUBSlbZqfe6+z9j77POXa8Xd8lZSU7CjRryUrXl3x/TO5XH+3hBwWJVeztnzwwdUSe9k/8q+cE0GkCOHa4nb3j/Rnb96y5b+9/9/e/+AdpfW/Ptu4+nvjVKKfIHS15Orm7PuhAy0jeSN5eRUH7tfU1OTljdSEtmz5AL+yDKFXSv41ciqReCq5uuX/7HJvdodGvHmhmtt5r9XwA09IqubUSA1ed2/OyvrXGk+klLXlxawsd8jrDbWASU2IDzWv1dy+nQdMr+GBl9frrbhw4cD7728hrR3/+elxuf6+MF3d4u7P2NVCJqdCp2pCp0aIqeY2fr0GXHk1hIQ85GfeCDIyVOF+R9Ov5F8LJ+Rb1geIn9ApsDlVMyJPkWn4dSqftCTtgEZh6cOIdyQbUvavJ56Yc5uvIUxuk4tSQTiF8OQUFInf3r5d40Uieg2kfUjJkZq80P0WN9Lvaon6rf+pOfEH/N+vbpnBj89oAaVTSLOaCgmnUEiTL++2N+8UpcmQwiv8MiIyVuHeskHy739mTmIGsl4GJke3QaqioqLmtduILWVHOiNer6abV1/g9ZroV03NiDvr6tWfcTyVlDy9hSkpydrcMqIalJcn+lRRc+r2qVOaghQkxWL48NeIF2ufF4zyqPF5tFgvv7wla8PaFP25c3rl6f+KDVlbtuytkEwSrcavihpZ5k4Jqdu3TxEPoFCTmHdePudrRHhbv4q9GnFftZ7+Z8WJS3kWNXTtIfXKf8162TtS4cVPHIIwEwgp5Z3iosdnoVCIaUU2eTbrxBfodVvMAuULf2bkwpYslfSfFacSxkJOpjtr7WVpyY6rL4949afX+KAZEG8QquFTeS5ERka8Gk55XpWmvBplBFi35UteaKa/5drLWVd/VvEk9tntcs1mvvDOWiPqlR1XP2B0hBg/qFFqRk6dCqGKQ8IhjESq8m6HRKMUptdIuTdvny57xqHnmd/nN6HszVdLXvm5cGIdlpXt2u6azXjhhRdL1hpNH/SHsMgZx5RXkT+C50i1YyGSqqgJSfHrrHICat++3SE8P3XqtvxGjQhbyJLy0lS9fxXVzM8lnhBMy+CU+cILGWsDBUxb+mtC3tu3Q/qznpKkC4koARRCKyS557Vlnde7GzBCpypCxkOEUODIIugV12lWRm9LVskTyflz4/RL2GdXOOLKdk0jnDIlokrWgKmFgRCSJOMyR1QAlBcSUKekQRCSn3+3d/fu3aDRH6I7z7Pph/DZ7dVLzILG3ciFl53Oy0/MqSQrxzWAaBJMbkTUr3Z8WPLEmEKyVoW06L0v0q3PhdYp8edioLx5FXgphJjxGkkyKu7IUo1X1YvGCs9D95+ElOu5iVOWC1e2KyNj/T9kIJxeyPgfT7gcS9J5Q95QSLDk3a+Ailcw0So0mPpD4sXZXPF6QxUjISgZfn5viKLFRc6bVhAbWlbKaaZC7qzHrvienz69ipXOtZixHpjcL2RmZr6Q8eITLcew8Zu7Ll++PCLRBMlmIEGR7HUKUh7Cz3v7NpfD+zQMoa5jDBtgqrHF8G1dA/OMWYB8efPyjLG/nUfXWfJTc8pcXs5cv359Bi+Cysxc9+oThBTCye3t728RKMiSUJ7kWqiFmScXORGAIFTJOjZCMxqC7I9wnQOTfVj+8kL79sGgA9Q+xppcp2i4DmT91PHEnzIT0pRhL3Jyu1/MelxSr+wo2YIUygvpBw0A/UCNRBQ/LzPKvKRUYSKOnKQ7BT9Qk1djXIB2ELx5u6XVErI2XUxrqMW9+fGC/PlxKnkn04F004LKdD9uSL2yI+uQhEgLfiaEy20iwhpfEzomGXfMAJRoO3Us1FLDx2OhPKn1QtZX7tNqb7dZ/0KsAE0jQT18yL3hcf7/PLe8Q0C9n5HxD6SE1Ls5D0qLmZnTmY8ZUuC8pQvCfFkwhNi9PIUKzXBqCXUx56BKyLNjXf2kBmbHjiE7Q1649lBot+oT4sgWM7eJyZpzI1J43r+l5DGK9eenT7/ckZXKuoyM2VlwWnRPT7vd75DSh9+vDFgvr/V3ZYROXUZiMf/yxF7eRnod6wod68dD/315tatLJaxCFSt0CkUNiNB+j1C2d0v6Ecm+kKHEhktIW3hwnDs3X93xk3IqeVVA9QunsdnZZffi4vL6jEX3+6YQ/b5VuWRz/+V+KVnun8p77TX+WKdol/K6DnV1McFaWkbYfQK2rmP9FKh+EXjRqRHRIzjw3fSfJueASXB5uULWUODVfHpnsn/YSD3f+o6grpuAGptfdgPU4vqMzGX3undsb/Hhm7bI2nX9/fgh9nnv50nqsS/ODOzvaunqQjC14Ke+Td3GNy0Cp0UYMayc3MqTfpQUKrc1hNSDekf0d0ZGtA368g+Cer79gpKs91eCWl5cnL6pkr5uC1k5u7arZil2ZLkvs1i73IJFXpoot7V8gQgdC3UhmMR/Hgv1n5J0ew2ydarlWEtohMjUh4ecFU8UXb8FIG+ebaHvttXN+z9kOJ93P1NI4ZoHp7F5hFNmJmR9lh4BF1ixbeb8f3zllVfMVMDVLV2Xd3tf996nlWQggBF8dz8YHTsGZfKaqo+hdAx4QqdayEukCpJmOlBer+khaGTxyT5dA22LysvGp9e9+YeKzx+hP/6qgrqZMTAQXlycnaZdmL9+3X0JoFrch9zrXiStdFw7dlzdzC3f3Ui627fzQtb0ICKOXe461nI/T13la5fFIuAVrIsARoGHpPVfxkLpNbCYu/sYN6Hd+/iLbRcvK+Pbto0OPa/48odAPfd4kvaKOqibNwcWZxen3Vvd1Pd5YLp0iR8tiuv9F995h8BkBqUlAz/KvfuhfbcZAXkaUv1041Am/vwMHaEEPFzyLiMfoVRg1MWIoohL9u2jLxiBxN9vCUndspuNBdP1tAWfd6Rly/eD+hHiSUHNA9PszenFpdnp7/70p63r3G51Df2A5L5wqaUFtFoOud2HDuGhHz/P66/3t+RJ0y1v325qFX/8y4IJ1G6LdN+nS8CCB/tAPYeTEnAAOiJSJH6+Ih+Q2C4+VQGR70eVQ1D77GpnzHlLVslPm3cCigGFcJq9ObsYmXb/Sa/vtmZ/uc79RkbGvXsZ/eB1yX3hwIULF9wt/bhAcMa7GymDf/593v7d+/Ik/8SeY/VDLHXBf5/qOiSoNKq6qF5YEbuQhmw8hSruV6CSs8ZKvGi/KDz/IbymcQCbL82D791d/zH2OQHqRa53GeuHZ4ch5bNb/5R+fffpy4iuN+iz+vtnEFYXsr9suXThwnYEWP+913cjsi7vprDc9nor7nslB/ljX2b1cugQVz+C4Ncuc4ET676KCuSaZOcxEurX8jmPiEb6+5mEGkt5HHfpf2fHhz8tJ1PDUKCmZ6cByv2nh1wSXUi6N/qvAxLCARF2geHV771HVUHJ761ANLEZkPcay+DQ5ZZr5NSCKOtqAaeu/kO0Vl0odu5XkOa1lmNMV2TjMe9lqYGo8NpfQRz160YDd0Jr8u5nfZ9C/Tj75iWmhoFERegNtv7p0dd3nyIZP21hAO3efS+j68KB7VAvN0Jt5n6Fad8yfoAq1HLo2qFjzClEknxAy4/hZaFUQ5t1qB/OKq//ch44IaLEs8rmHt2UFznpZepxtqPGveXqTxxP9JFZknnDw5HIowJqxfUl20ZYrLg8tbTc84bc3Rd2XeqX7/flwYizER7qQjhhBewiEXBiCYNQul8xwg7L7f6WQ8euAQR9AgUbNTNoEbPTLvDW5NfoxiDdwfeA+tHmMEreAacBaDlBzW79IU4fAQlqtH28dof6CexeRkt3i9sri5W0SJBoh7paLqOSaTnWdU3VKdR1HxIGa36NQXfoWFcLAF2WrkMeE897LGQsqNkoxst267gm9Ghb/mNxQu6/D0c+MDw8DVCRHw6oC/d271Ynjag6FdpNowBCoZbuCggWIeJXiNF0DFHVdewQPMEx60HvI7zgqIixpYt/B2rFUN5l4xkMHxNRefs48qLe3P1Iifrx4mnHVXfG2bGBgeHZyNJjBNSnjButZRFCIZiD3Xp5QzOAAFSv76an8naRzrFj167hSct96g3TsetQy+VjGeIVumC7Lnd5+8WqQ9RDZo1LsZJOVI32gX/qvONsDgQKnIaZeD8cUG6QYafWKyoFUKw3mIjIQG8LbHzG7te9l70UJ7qDdde6Dl1rka2qYy2Io0MtLGLEJbToKse6D5BCeadGOHqXGtpg8Sdbpd68lkf1on5ETnRRY2MZNwemZx9HoQ7IzgizYZ933+ve0G7x5uS0TwqPme7ulhaSY2sFpK5dO8D679rlEMUKaoW8E82CgnF9RNZdloZDS7/tvFC+vbqZzJ4ev7Y8otD7EefpkHmZyDxI+fDs8vS6H+K0leJ0mzZgH2051io4qH0SXV5NQKC60CLuynu569ABKPYp8KI/R0BJ9wWuqr/lGEu+Y2bbJgTNZ+Plts4lmk3S1LSi9xHt8h+VE9e8sxk31w9ML0YyfzCgWrw69iVWAKDYORJquwWcV+qZlgPdLTOQHkgWfr/l2hvU85Y3EFDHKOMAha+MLEV17Ji2iWXI06vtX23k8R+Cf/2hrJ+ak6551+fXr+eiN53zQ5x26r+yFqzItxqCEvcpIcUKjbhaGCMXtlfwe1FwXgQHJHBXshK24OW8lvtd4rFauPLl2V45V03pHYyMsFscyv7pOUmXcmxsPUANzs5m/qCS79J9NzNFwVkdSTudtwAzWnZ8nOKf6G+530+3QBDHjmGtg6gfEn2CZQcrGIgWWKxDxzQDj52ylZ1XNRDcdGNmJPvqw0D9uPO+v0TmQcnXr5+eXp49/oOgru22TTUG0j5oLSPJK8ZKu7a7xRtIMsJaQdZfx/p/qMsLTlgDD3VdPiRP6KtaGF182iVSxXFz4w+8zn4oTXtoS8mO3//EnMREQcmHBwYiiz8cUB/d99pg2icSFZIkZN92N+NpN50nQI2YCievIpQBN9oFu3SIV0v/sWvHriGg4BKAil8PtUhtE0pLO+mkO5zypBNV8tNyoomaR0ANDw9AoX44oP7klszaJ5+ILKQJgXFXbp/6TtnyDdWIYdgH58mRFQQV0u3QNUQTrmv60MJHuE8YdEZUP0di7aSizvvU6NReDaczfnJOUr4MANT0bOSHA+pPWy9bedotdIyu50nT2+GEWk+/B6J7eW73ZSgV/ACk6Q2lFEJcwWBdYzRp4vXr/sJu04DQiWDZc6+5n/3Tc6KUs3q5OTQwOzud/cOgvjsQEkqyAaDKpE/Mq/u0MclyRTvf+4AqhLrmcv9lhtA6GtCuLhC6RmSAx/UPhbEXdV6/7FXk2ZEDmea8XVPx8kOmWH58TiXvj3HNG1gMT5/702Nc3/U7EiVewEaB15R78qqkm7gFffXyKWj6vS5iOnQNKqX59walHaYhhNWxhdf9+5At7QA7FR9KGveD3sD1HKXoYdd//pAKNTa8fjg8m+F+HE5/2qqg1DBxXGC3yTK1mrvFT4VMiElE7aN7YFCFDiGSIOoIKUF2iJ2Y+/QILZe7ZLtUOlf9ot81piDOqwl98MBohut5Efqe336fibceeZe5det33323deWVzUuf4rckolqkyBO/BA79ykL2lnarKu3mq3mp7BSb5Q1VEEiIwnTt0LprCCeWx0ADFyp+nfaTFotbViNywuMUJ0Dx8UCV53r2iF5ZGU5Xr17dsOLKyj5LD3VzOiMjJzvneE5OzrnU1dDQwAd5fvz4cUW2kxq1+55EjCTJbrUHXqGlGegNSRxpVaNL5G5vTcX9frZZ1lGo3sAaiDjSCQXjQfHCIdhSSUEZo+ZhIzhz9/PkZKMIXzdkZW3evEWu7E/TLvlm1/WxDJjymxk33Tk5Lny4XCTT3LynYU+zXA3mEmwfHz/+aQV75SZyxB7QJ2gGqiCBS2hfngq+aNg+s9qfqgj1o+IDp2vXWBd30Rvgk2MKx8ip5Rh/HQudQqRxckrm1F9cnXiuZ8tICW3ZIlB2rb6yt2/fno2vlzIGbvJaP09GuKqa8QA+Vby+rhJW+kqzBNi57BAo3bundZ3UxCaOmGT3FNVIjWknSGCZGQLQ5M4dMuwaPYEkGlXKiBUs+jG2FVgNcspshNP5IyMXNj8PHf+9YYSU2qzhY8FsP7B9+4ED+oBHfPH7/QeCLrVQN9dnKCbXUrOrea65KtnT07PUs1RVRUrNzYtLmXi2R6GFVLhlglAiandqwdNEk2pGt3r36SCB2C4+CXUfCGX0d4mZYjwZ+8lKBsFFFZOtGlTUI1Igj1zIetZ590oqkDZvNYhEig/IBSx4IJ54HA/+7nh+ftxffWdgXgLqjms/MEVic3ORyFJPwOMJdARigLU4t7i4hK9LmV/zyszMdCGi7jnlhTyxabibXprP80ao9Xl5QmffPvtn87j6hfpDXeoNjEXnl2Ok1HLNbilzp0vmYKTIK3l2nFS0VY2yBVL2l19+CTIXDuhDN64DQcFUwCs/no/H+P75gWUI1Pr18/vPlp8Ij49fDEdiMc/EUGBoKBCIBYZjkUgMxObmlnoaQYvkXCFJOmuevHkC6XKe9tHVHmgjd58GUeoSy6XbWJpxNJ9S7B0S1y6bo2YyoT8kPRZ31rOLJw2kq4ijnZJsZCSUOCWAi5C6GT5+Px58xcUFxQKrwBfPGMgQThnVZ8+eKO/ri4QBamIoGWkjpvFIJDI8MRwBpcHBnp7MwZ4lhJSrRQndk/3h13ebE2SSaarlXOHUKtBBmZrZYJWOQpdaTlJSYtxQvqbqxNMMus/Avzb08srixbX2UDLJlr1zhWZ/qZiEUUtLRUUxr3hBcbEvzmcFeFbs850dG7vJJe9m9Wfnq6vb+8Ll4XBsIjYXCQT6YkORMDDFwsuxoY5AzzQoLS0h99zn3P2MpnuOFZB5uNes6+Sip20EaRCb7tQKWHJk4dC6ddec3GsxEkUXxcS73I/VUWY4Vmaea+2hJJA+3blTIX355ctf7sre9bJw6u6+BEYzFRX5FcUswYuLX6spLhBk8hg/naHW4OZMfH/13UjYBU6BQCQSiEXCfZH29thQrHx5eqIjNtgxvUROmTANDedyEE33NPN2e/eZIna37R3IHNg+HdXZJ1ukKuR25lc6nsgwLfpMWLFBda1Lh1306g+dgoMaef/pORlKW3fySgVTes6xfqqYqanIzy+usZdwKn4NV0Gx7A1DyM/Gz+8vj7jAKTIcozCFI33hg5GhSHl4emJisGO9RhOWvT0E5b4HTvfuyY+8W8pijSMhJZzwWo2VK52ksx0GM4h4CqFzbR27UteuOX0X9s9TF9zByKF3nlbH9W4CyDdCWmmQvlRM9/HZ0uKemZkZgb8FqGLa3NdeI6Ri3gelOI7EG2DmZezfXx2OLWPRC0fCMYbUQHl5+cBAeXh4/dD0dMdgDLHkbmhodrvhOD8+7r63WxLP8U8GkLMXQ23K8xq3ad36PSei2JS7jzr4msk7o+bGFnDzql9Psn2Z9XQ6LrcVytqskZRG6Esr4hJO1yiOABUaGfGOzNQUVxATPvjJpwWnUQvfvJlBTvvDsfI7d0BqLhaIhcPl1eXhgTAwDS4tDQ7GepZgNWk3P/7q+HGCykiv9XbbTQbd1ZOSWCYNOYaXZ6aBZMNUNV9bKKeYfdfWSftORLyrq59tBI52cF6YG3tPqU8lvJ3A1hXpZq+XHVaCCpxCElFeLwIq38m+1yQBTzKeZt0311/ff6k8TK95x7UYi4XLy6v3l8/OhgeGY4uLg0w6WNDmhnPHQYmcPj5+zn3B9u327TZ7nmKXuKLlGaUKqeVURXcyz+skYIjaLR1OKe7sxQlQ3giIxcvKQUTXk1PabCmJPDmYPnXCysZUCwpzoFJQxUjBYsMpHx4BtfD6jEwkXjcI8cPlWo5FXHcu7a++Pl8+Ox12LU7TaDY3uxuOG0Yfs1DGpzt0b582nnSHmJXxPq1V9umyJ0Bs+8C7ahiTuyxezt9p7hlGnHrhgHWeOXm2MqBcT4apZMPmrQqnbOfOMkuIr1itssl3gKDc8G0tBOUdYRVekc96/LXX8v3x4rPlszdpoTJc3XfuSNq5FgcXXd2XAAoBtXxneQmWHJhc54joHDEdRzQJrXUzqQ0GU7yIRuXJC5KG4q/27faa5oEO95pZct0ARnV8rYUCoYVMi3BquU9SvNNGzQqr6XrSlNsqQMpWl7hgI7GUnRKqA8y9GQV1T7YRFVTBa8V+f8XZS/PKqRsBdelSNzktuS5149el5fCdS8uLy8uLi0JJ+iwMKSoUIuqLL75wu1M7ewZU6mJoOS/u3pfuy/elQouk7ndxKEiXvBbVKqCSudbbNaH0k9+Pz+kVLnIPUAoGASR4Jmgi69P07PvyS5BCSM3MeO/JWg5QCCtoVdyff3psAAsenMGl7SBziQKFVY/u9NKd8kuuZVyg5DonzSmEkvSi8MjulIC64x7RqWkltU/m6o1pMq263XY/OU8bUqnikPUOr1CL6R0YO9UiHRbRp7VyAiYE06eScAZU8MyBMyl9MmYqjdUFgDrU0p/R309QZEUDN1JBcw4hpzO4ud4NTnfA6dLyHWSdcLqk0YRkzJFYAqavvqKQfyyNvIYv3Hr126VfVUqPHphNrH3mIT2KHFKge9m8wHNp9FLGJYg74N02alZuDLseW5kQTHvBYWdKl4LBYCqwyvRl25Bj0+BL6jn+ifozvBn3lBQLAjrOgt8Unz2onK4Lpwsul1vDidF1h5zu8CC2djaNhkvDcw+slJvHYzIz3ddDcuzXpJrdBN3nFCtGm/IcRDqGtzu1/ElItVhKLexNCagambxfg45nbf1O1jeH0i5DKXggjdbOT61H/zRbWgfiD/ozYHruZXCgHpxCWPgKCuKntfu7fp6cXNspUOCEgNqu4STS7mowwfTVuU8YS3u0z7nHnWmuF9zuClXnfQ4Uy8kczPA6t8qwZV565uFP9d9vOebYTpn7kbtJhF68+sR5t+FBTAynIJRJHs+sEPVPTQ5+uY6YuKHRj4gCpgzNvBCbK+SUwePo4OTartUOQunSBWALL8oKiPD56qtsUvoq5xNeLu14VjWT0wtyZWRkunUSdd8+R7Wl35mXKlbsoSkHVJ5iRPbleV/L42gC5xCuqUE4JqXLyEi6g3I9bs6tpmQ4IeHKCGvV8seAElTZX0pEZSCcnMQLzUCh8mfICSUeOV26AFTbXaLowHQdOZeTkwPh/uqrTz7R3YUG0/psnksmO3uWenoyM1lJ88p4IdPd318RSnUG0qySuXuIDhLo79vgyjMnsTgDJTIlIxumHubrW1IB5Xqche7q5u+2rqa0y1JSXuZajcuUN19eQO4x8V5n4s2gPKioQOUyJpxEkS5d2L49O9vFZ5fuuM/JRkv2V5+c+wRoEEjSMZ9TUihvAvgIDHUMDhpQGQgsBJicxbAMVl3ONo1tnTt/yCu4vCHuGR/rajGYZLbuCTjhD2Zt/o5JV7Yq5UDFgXTgwBkkn+WEddBcaXn4qRz5eR2kMjIYUzNj1zlbdzPjkusSc247cg+C7nblSNv4b+fOCR/XnFydjYATS+IZQCUXAm2BqanxoaEhCypDkpDyDsPGUlY2mLglNyIDFysUyuwxpEBxGsp7uUvLYZ6O4ZnbUP+6x+f0iij4dw+JpbTrjKhUqZ+g8J1frgPyoNeXgmrvXoUlyTdzfWyeZ/bXr3d3C6fs7BwlBM1uaDjcUFWVBJZkcmoqgF9TAU9tdMKDJwsLCxcvLky1jY/jxYmJifX2ekFvuvHFF+vWHWpxu7e4W2ZmKqCGNZz7sUMp3rQij4udgrp8LCQOXdpQ/aDUxSN8I08UT8C0Na2Me5CSXoCChzOA5PP5+BCPg5tlhsDKxocGVvaBC90VJ0+ePXs2I2N+fh7LvwLK5mYwIMkOVbKquWou2ZnsnJryeEBnKlnvwcU4WrgIVlNtbW0Ln8xNTKZAmbuTZH6xDqZ0c1bW1azNm190t7hfzsZCMuLcGcObOp+4T0BxPqGfRxtl1kxnzrt4MrQ/VeK5ftCDS85Zk/RQTLvKgkKHgEpLfQW5vlysZ8W+0jMH/L6CgqaCOED5u010cY+qO649u/h2kXwyQlGCVQ2R9MlhESMgYrrV19cjkgCqniGFyMI1tTCHgJqaeq8tNhdrQ0gNOSGloNYhpNblZP1X7iryNoJXs975QA4/2vYKjwLJzQv2cVKfnkL6TjK/2PLGsRYOSHEsvyXrsTiVOJgEkMm91ZjKblQSUW6uT78A029kt8DnKzD7Bj7ZbcknKyx1fr++Fvf5t3Prc7tsndsVDYqEhEsGhEggWgtStZO1vZ623npeUKb6wPjFuYWpwPh4bW1boA0PDwEF9571h7Qf5WrWFnc/4Vx2jlfflsMOl3XMoz9kNOxYix78l32Fdx7LF5QYd1lmHPcKTIgicyGKComnlJQKfIW5vxFQTQVNTYqpMFe/Bg/4mwqKCxB8ubmlzNTtJOffbgDJHjBkeio25amdaJtqm6idnEwk2qYW2hK1vfWbanun6gP1iC5PPWKKnNoAqVY+hyZWgHID1Mc5WRs27CjhEfbfKyqQQoJdvqwxJWt/qurr7zdWK4OTB6YDvNnun7u+/zBYOqayXbq+GVRlwcrKUnwW+korhVNhaSkwNYHBb/BdbgF/FRTwN3J/8xsQ85UGz5Tia5PEnigaEtUHWVNQc0vJJXmyMDW3MDFZWx+orU3UJhKJ2qn36vEwVVurIdUGUEi7QNv4VH3bZKK2VkANDQ2ngaKcf/GLLVkbStJ2GhFUL/YLjzx1T3ZrTwsYex8tJB/PGpOT01txfV80bUhhKlNboAG0fTuF21fo81f6kG1Y6gqPllYCGemYq4CwwEmY/aaAgQYmzMQm+X1J0qZKpCwMpisSi4gvitz9BpxiF11zkOkpgCKnRG29y9UGNLUJgArU13ui9fgOfyLQVi/R1IYPLIAxksrItLmHmMresHInjWe63f2O/8Tyf7nfFjJ8mmd8Z8jYqJD76u9Lvp8TxGmzwVQmmIylvFFJTJWlwITAwENlEIDwWFpYaCEx/3ILGWa/+U0uXha9KtDsU0y5hYZWE67z4dhcJLJwMRKI3frm7nvjUwsu18W2tvqFAAJqE1DV4gUE01SiiLjqGVgeyFabB0lJfWoTUuMxgrKcCOqL41s2rCJVcvUDN0NK17/+yxmXL6dslQ6MyZ3N7yuorqwd/+WH4mnzd3sVU5nEUpkRpMpKBJAyyj2KZGMY+Qrl0XLi81L80UKTg0zBJoMJauVzOOUSU9Nn5bcQUhFa7chd163xcWBxIV4W5lxTTKqixJTrIpDV99ZSqOrbNvVGe3sh6W21ibZ6T5snIEE13tcXG1i/PjPjhbSI2rLyvIrcT+HFN/rzLmsdfLmfnBx7rn4qFLqdx9xj6m0p+d68Q9I50aQ5Z7x3KROstFBXNnAy2lQo35qIKhSdxp/NdS7gapJganJizudwatp/Nxy+ePFi+OLCRQrU1Di+XFyoDVxEWCWKSGdqoT6R6K2tR+4lEEm9iaJNzEEPSWEJDExOto0LqOnBwUwbU/QHx1dNnkhMiaCrEQApZwE0U7/Cyzsi9sAqlOvR/pLRtFMx2TqOiOCQfKWlyqnwKAA52ZZbuB25V6jhBI335a64uOJVOuh8wbJSJUtQ1XdvXeQVi5HTxfeE00Lb1EXXOPKuvrYIhOpF0pF1ANSLGEvQVUHUJ9tgrJihbW19uGKxxcz1g6mI+sWGBysxqJRd+S575T5QDqg8ucOr3AApJP5ADwa5Hm3DtfK1SbcrWOn3M5iIiYIEBceXQoIhqaP4xW8K8eSogChcjampEOJm4RXCTyC4KvkCAmrbtm/u3rp1a6ENoQQTybiCTLUtuBZqe2tr6aDqN/UmmGaIrl4yKyrCVyx49OXQc4+seuO4AGowBWrd8QdAiS8UN0VUdOJ55vbSer9WqXPyGHEyaf4+qxfXo85XbN0rpW+ZchKb5CuEUcKPD00SjeHP6FMiR0nraO5GIUZUBFd4NDdds5mLN4JOPFVWgg/+Dv1u4/ZtUKZbt/raUJUgsG5RoBYWUMNtSmyamnK5PLW9vb2bNlGjmIa9tZsSAFUPM9rWNrcgXwQUUcWWOtYvOQGFiCr55YMhdfWDLqae2qm0G9bVjMixsxEB5aYx502cXd+71OklNa4kXKlPfn6sdWDgs7GxkZxyNbQE01HNPiegEGDyvLAyuJF/Qdq1Uf9Q5faNG7d9A1AL77HOvXWLNmr8vYtIvXen6lGnYL0TGU/0InC47NUmopuQegEYz0kPQGF5ZGiNtw2NjwdisY7BJb3L1BcaUSUPJt/VLJAa6Q9pdyHtzn4yYhDCb/W73W6V8kdwYtahuk9h8hXCTCLffMwq4WSoSGRQpqDoG5lq+G08ZZgUputToaEiOVlYuTIljyKsyGk7Uq8vtnCLAQUyU5CpBSl54SqZgPW10URRFIEl7jzay4jyeHpr6+pdC+oM4KomxgPMvcHMry0oVDAbHrhVX4kjU9qUG1kBinVLqL+LmxWhft4+3fUIg7lzZwoTRbsQGYe0KQURilRhIRe9wkKg0ScUbpEqIQbFT6VbKq4A8ehREbWVnAqPbtwo8fTNrbsL4xdvLfQx91yIrYsXIdVQpvq29xY2JXqRWkVFUTHlvb2eXmpUtDZam6ibcgXEbcZibbUTC0lwiulwWSYq4i9gNx96bzck3396cZ2bUwUKSorjvBG9E4vb/eI7LwqoFx+qT5p1Vp6ClVTsUgoTlnpgucFVD7SgTvjAV2FCXpXqEHIFXYoP/udMU0Di/66Q0Wez0cQjsxGctn3zDcT8vYu3LrbfwpoHoXoPOv5ePawmxJwyXo9UK6oVizkFTrX8LirFDe25eCj8CrjmxmMRoFoiKZqDnHc2lDy8B8mGwotvdMn92qDrI6ERyjtiyb1lC9+u4OqL77sZUA/llGX2DAgqyPqCq5z8iD4sWUHWc4UbN0ri+W7cuFHYxFQisKMiTQrASUx8LdWEpGcXSIUpbYc23QhulGvbCYC6dfHWXV63pt577yKkfG6KcGDLGUyJ2ij8QIKgUL1sAiAEVDRaFI3WwiCwkAmwmIklIVEABY36mpnnXveLR9xMVEcns17N+uCa+8tDLXJ/QPeFQ4fWrctyhuGzPnjjxYfoEx3mToeTYGLs+JhqeBqkoJdaGnBBiC8iqQzaJ4W6zsmqSE2C3BeqCh3dSI40p4WpxRB/oFIxffYNzMHFBZQu2wDqYm3bpvracciTgAKpTbV1CfFNzDtYzcSm2k1QqN5oEZKxttZT2xaQdW9qHMRiMcm9zK/dbqTegy5qRdW3Q45NXM3avOXFzZs/YMPqqnlnNKkJX/1PD3J6BZj2Wkq7gv4mn+iRLOQ+VaGNtOQqMz6tZG4gmghMNErDSDJTlj2fIBVbJdbhaOFG5uVRm3cwBfjrtvuatm1zuW4tgJNkoJYs9Jf14JUQG15Ul0jU1dUGPL2bkIlFVPQi/hZ0SrsGUhAHpEQmp0BHrIcBte6Ljzdv+N5R0/SzJuab35umCRsND+RdySsbbNYRU2mTRFCuqeB8lRoyFOpCjaJdwHPDFMmiWxpOhdI/YPCQjo/L/1FdJCsLiYXs0iIKlTX1iZzeu3j3GwrVXeFEOogQVMC9bVP1RXVF4JSopamkLnk8WABpOHslopB6tZMwCEy+QCC2BFCDgwpqXc6Gksc9u7T6HFPJQ+oWtuYcbTpD700kVm2EEx/5kyK+SoPITPxBI/llNyBSpSrn/CNIOBGsQrEJ/MIlslJys/CoBpRA3bhte3A70Nxl0XIRoGAQLo4LJ5Yj4NRWtKm2bWEqUYcggpATVHNVbcJDu1lU1BtVep6AB9knMRWgiwoEOlDuZa5rgIv61YYfvt3xo9+q0vXgXt1eQ6mMOgQU/MERHrKQ0ROxkcJcDPqJqIx/eu9O4yPYdiEeWf2YmaRB6+0UOSamuOwJKQkqxNL27XfDt27ddTGSlBNLXiz5dW319VIFI/PenaIUgRKMQtucq74XXjMKdszGoqLaAEAFUBl7xEsFkHYd+OhpFlDHvyfzfvhyPVj+WkxBqXhljWdXoNTolIZKIdMRBQ3xWFL4n93AaljoM4mpBR8eWa0UGk5HnbgCJWi8av22/a4gyxbE0zd3v9kGKceC15YQAHX13G4hs9r6JBKsyBPoZQu4fgHVC+WcLgq/EomoxxNg467NU2tBBTwdHUvNbgmokmfGiVlnjdONUrbi2CFgNMlyh590o1DgdaMS4WQiae+3O50oDLKFAFzEq+uipuzGwo3KCRkr4cnfEaWHd9r4zTdIPOHkuvvNifa7Lix4iAxQgXbDZi/UFnHVm5pC8ER76z3sbMKlexIeD1BGYRgSdYg/gGqbRE7icwK51wOZ6ugYrGrec+6LL36x4Snevcm1uje31dZ1Qa7/qFUKJRbgmSShKsUBYH1DwATLBNFeVDh793707V7DSrIyqApGTTfFXqEuAkcVV6E6C2nv5aoZ3/5NWDltu9VOD4VaBO67rggLXFuiforGCcKNV+o8na0emINAsrMzAK1K1CWg53israutV+1C7NVKuwWoOjw9Vc0cLnuagHI9qk0QVE6ygMkar4s+cN2gUwreEExCSUB9x0ew2rmrjMEknWHJ06OFKVmqlHByLiyGsKsbyWmjC5xuhV2s6+7ebe+7iIhCSSd5B9OdqKVaIZLwUFcUTSY7W5O85pL19a31MJ8evo48Zc61ten2Q1ubx4wijPI0wxc5Wc8qnkqy9u61mLhRUMjCrtRxArLQaev3RjDIUPoWYfTtXv3YqcQYUTfK2GkqFENB43RUcIsd2Li90KI6KlonNYtw2oaAugifice2Pnbq5sap43U0R/AHoj+eaNQT9YzKxXN6zclAZzIZrevlkgd3hT85KTtVYqjahFIAASWDU79Y+/umuR6ofzV3sMwV2o4ug4hrnHhu8xEs26ucPvroWxNTe4WXzErTTlUKVf7P1WjhE/mqNZ55lZx8hFS5ERbTtQ1FC30Blr3I+AKsFJY82CT+/LX1+GkBq7WzMznamDzcXFU1ykGowznNydbOdwMJWCgSrUUFM4lVD9JWR1PRJhIV8CwxoBrOvfNs3k9xQ5Zi2qVNAjEBoisqN6XwkzdYqNwQTDuVz0ffplB9+61KlFgEhmCl/DUC2kc7SnmTMGVBXUgDUWhqO+F0NwynCW365uK4TltAn2HC6yZlw64+CkydVcnkaNWe5ioJp5zmnJyqns4k1rt6pl7UMwkXlZyDMS9KwHTWBjolojSgzq1dyl0PCSdmXaVi4jZboU8xFQYlH2XXBZiARyJIQsrRqZ3yQS8VlIqvUnoyCEY6iTLr4iWSbohJMLUdZHz7N+QETOUnbrWPa09FdCY6mfBMJalJASYZE24PLjzmcBLhMMghKes7o546Tz3FPjmFYpgCVZsIdKqaA9SehnMf/2rDGt/g0ZVmMf+78U67aC19uoXiK1TDBJUqFd26waQL7tz5kVzffitfTDCZtBOrgJgsY2dB+gxa9om1Z39GFjnz72DSjkaTVbDr7i2sd7cuvseAmpsSofF0NlK1gQPRlDPaycHDPXvk1HVDDh5dVZ2dUZoFKFeUix87B+TEPfZ6WHRPT0/PKM9bfZyz1oByrWg7mcVOtlN0pEINOJOvNGgwMff2fmQ46aOm3Ecm7SSoyoyj9ymq0kI1XrrqyV8vnDYqp43K6dZ7t2jF795aGJ+qD4ATdTvR+RWRNFd1UpQASCY0edBsT/Oew3v4nWvUI66KhR+FiQUxEq8+OckegmeiJxmoYuZ9fPydDTueOp6sFQ86mKzYcjkvJaNKgeVgsrQYSXz41iwD1nMSlAkijUutWQqdvvFR+FbxBdu2ubZtu/veewyoWxcXYljT2xYWZOQpCnWRpY1RtOfwYaBRSnrxQLrL1Rm9gj8JfUJ5XFSrFqqozRVI1AYCUc9EoCNZ1fw0AeVaHU67ynb5acQ1UwpTaVOqO8FS0q3E9NF3336kq52toO2Xskq/uAjh5CutdLyTL9V/2bixaRv9OFJv262+dhd38sbbWHqg+oWNbIV491QdljsZMIAaDjfs2ZNzGMAamqt0vWestUZxwZCzKGTCca+4dqoeViHgiU5EjwToNcHpD0/NacNW2SYvCxpO7DWx+WRaJLSW+Cwr27trVTjpRf+Uiib15tyowSJHzj7ptZRaP1Bo9/d8PnDathGa9A1qu/YFLHh9EHAGEltPAVAaJaQ9zQ2IJND55BOAqpLIgpaTE4DtGe3sjV6J9lKgijgs1VbL/ieKmqI6NhHgvJJVvL8Glfwp9cmoU1B3fKX49fmC2gqXjQM1mSjlHoVpr62HdxpmyLsgzZiOFPhKSwtXbyHkbvTFP9u2/xt4TDZV2iMwUOPJuank4U5PAHY72QgBP4xIAicAamjgGDlTL4egGvbIcVj8dk5Vay8CqlfaCmx3ypBGr4elNNa7I1FPY7KZnNaYeK7VJcuuSr8WdqK3Ii7GFhATJfy7h2IyXtwRcoFWVuq/Ia5VhltAfNVWugr59u3l5dy7Q8ot9N2Cv5ybS87J4CFne6voApoZToKIlMCJeXfYgNrTQDVPMgQ97AtH6+vZXKmXfh6bCQioCSx6CKiPEVBPlXdm84C2h1uasnmAR1a82h6Q1QqeYO9Do+mjvY4lEExGqpB2u3aKPaiUXZfCQhtWKVC+jdtd5Ui6u+FbYSgTHPlcZI6k5jhgJ4ub2iThpBf4gFEDOTUrKPjOVk9rgHMs3Aud5Lyih7ULfAKMQgcCCtaAnNbmNV2rxlO0TQArID8W5+WCZiOqsHI75enhmEw8GQXfaTdJIXViWjnfYkcOfJUyV5bGCWl3F4lX7gKo8YjeRmQuxmhyfaKTvyhPEFEW1N/ICWwYW8YcUKo8nqrGek+0k4lHRB5+9LIxXOs5gqtxtLmBBx7f2fHLp+B0lbNztp0iHUj6Ju5D3bhhzQ9cwd6HxdN3H2lvZWda4kk/GJEkD5xwkRpItmhWDPzk5m777DNwghe/5YosjI+74ArmOMtapVOtzUm9fw/PADmgPmkQh4CvVboC4pscT1VVazRRz/jhyAYiC+UMe1gJxtORQLJKA2ot1bBrVdrtqpSsq/Q15coQDuOplKWYGCh2Usq+XY0Jwr7XKvfevVq5yEBQmTgJzkpXBnVPS3vsleky1URDwI279sitCHzTxYuIJ5cr2ZPkCWqQgrlkBlKNQAZs/oaLIQU+CKgq0SkG1Ojo4cZEglMHvdSp2vpadlqEE0CBEwPq3Lk1KbnLMU9bjTzhp2IZL1uXpFPKD6nKpBku9dxHq4Pq253p5R3rO5kH5l6fn+HEbpbhlGs8LDVcMTWR0932vsiCcOJMAUSqEwouqJpHKU6qR3gUTLgg5oyvw+IQIPJ7UPb9zcW9vCJPb5QCzp5wQjZkagNH4A162NfEkpe1hsRzpaedcvLJzE1u4XZtzFWqL6SIk9PD5ckpgx11QnUHYfOxISo77tKAKDRj5rnO0OHGbRJPKFn62i8ujAcCbRzCQN4toOJtlkBywYzr4qacNKCQe4flkTL+N47nQ+/3VNXLrkIv+ysSS4lNtSQXkMVwlCf8G85tWUPiuZy005osKDkhzV4t7mU5V28g/fC9TlW3WsXTNGovK0FpOnCho8oFdXPY5zxoym3cZi7EU3v4Yt94oG2KBfBcJBajQjHfjOv+RK2ACBRP5P3NBBaV6m/MyKrG0ZzO1k3sFEOW2H3aJKTwgYBij69HOa0l8YTT71OrXWWpzhNKVScL+UbdRmI7CaBYxn3Lgk56BRbYXm1AOR3NndJ8qdTg0WGWla6piWOaG5vi27djrTvB/XLKk3AKLMRAipyqYA0hS6zrCEiUG5p0mISE0ycNeAJQh6lXnxweHUU9fOUKO+gcOkAscWyDe8VFRZPkFJAa79zxrDVySks7HaqUDcjCFdttlaU3bqhAGSiycWB0au9HHzmYWOfpZHCljh/6tApeOeLTpLS2ucCp/eA3J8LgdPHi1Ph42/hUoC0WubgQ6Ek2eqqkihNOh/dI3uH66m/E85VkHb58grwDsgYo1LujHDaoqyvibFRRUa9sWgEUXkpEo0y8PfTk76yR0ysldrVTpTU7/xsrbfufDSgYhDJrIm2LN+US5DvtlO/9Vtyq2RfmGIeDZ1XV0tRkMu7uwfaLfX0X23kWYzwWmBi/SE4BT2Pn4ZxPpFEgIv6JPMg5WFI6rJz+RhX/Gz1U1Whnays3aK4kWj1c6zYpJtCqm0SIocZr5v0T4Qx+uQZOqTHDoOGkIwKyw1JZqasdB3p0u86GjXkikHQj4Vt9VUxYYalfd+1Mo+lhV1N82/5t+8v72u/eLUfOLfT1jTOg2ibbIpEI29qexuavPmE/gLW+tAiQX19tzVZORqA+4Roo6lVV1cnKl1e0U75sIilqObt3R1C6VLGruQaBcqXMuHR1/brXdlTmkiTfgrIh7JPazi5ne539lW81C7VSsQ0DKaWlOklPupUjdFj0mpo+2//N/m8Ojvfddd26GBsfn2IwsRfZBo/Qhjo/GkhifTusLvMwtRzfZmebs9VUKYkrKfooXzmjHs+VIiEVlTjq3aQBVQfJ8ng6pVsHq5m1prwzu8C62gkn0afSGz7OJsGOiz/QtBOF2mnCyWwf2P4AljkGXHbQxz12GQ3OXTFfnlbU0Ws2fXbiRPU33xzs6yuHjI8LJwYUx1Ej4VgbOHk6mz+RKq6ZGtVwjjYz+yuHU/ZXDKfD0jEgqGYY8mjRlSJ7JSjhsuRxLyJQ1cPE+9tanIFrxXSvrN5HzVBXodmvkz2SUm5rSovSIHFomWJFBGuXFCw+GXT1+cz0k88c+1nByR/c7mv67PzBE9+cP9HefuvuRYQSP9qUU1skPDfHBlsAFKogQOTU0CBLnEKSixXMYRYuNOSH2REGpyuJoqiqd9EmKtQV3X2vozxp4q1h3yXFSUYKzE9zVKduCg0mseQ3zJS0NppSWWa95S66S/xG0Ccz+NLCkhze+AAlvLA9GP/sM+F04mB7e3k5girSJ9E0AVoTbZGLruw5esMq+kxiYH0Hvf7kb9k2msRdHs7ZI06daYcSZxQVXqJokxNPCfuUm4ABbmaRU87aOG2waeczJws2alhJK6VUkqjSTDqRkw5fpOy3BFnZLv2NMt34YzRpODnLXIoVTMH27Z99hng6/xnD6eCJE3fD7Tx0MT40MTkeicTG+y7eWuTOGz0PKmEx43LHX6xwX2VvFU5S7uWwB6x9czrSzk6PjScYTjafbA5yQCopGxHcTliDjjs1cJlzIkWn3Th3E7xRacNp742g4WRJ7dTxpzI5KaRCvle6xoVyKsrZVdmYsuFiMJv4yHNSMpHZ3ner+kR1eXvfeASgaif4BSbhYmxigkveKFx51Z5mMQZStHwCedqqduCwxJPZeTnMxOts/CMUKnFFIohy3mscFJFhvTOcnligVnCqtAe+jtqLvSJWeDoSVmbnwkTPnUF887K8tMt/g83LXLNJ+oAlaLJnpJTTtm+q75a3H6yuPgFOfWHl1DdOTgsB9rejgc5k8+EqcQaffEKBomcy0UR0OTlsljc35zDvkHi/7U0YThJEvVoZb4pySMETGE3KfufxJxYoV9p5RHuAiT7zaKGKFOfDGRrBVZhsp8l5GSa1DOSCxtFvNJwKfamTZCaeDCRi+uyb/efPn+B1/m77ePutdnJq6+vDR3ukrXYCoDo8roaqqtE9eyTtyKpBGlDqBBBMOXtk3zMHEUVOUQqU2HAazrrEu6rp+OKZrPVAwJrX5KBcjnvaJWlXWmn8+FEdGizUblGhVndlNtE098rSMcmLu+DAUs6b8cRGli/dipOQmCfIE0BBx09AziFT4wdvHQz3tU0M9bWP9yG6xicmJzmPWvVJA29N3vCJfpimAdMsR00Td9BlU0849bZGrxRJkSdXVH1nMopnk9EkA4r7nWvjtNfhVOkcPeFAF82B7EtynBXSlMqwnamDHQ4nnfl1TiHoHotoUa4errLHEpvkZcYTlBzxdP5g+4kT7X0H7969FR4Hp762SHs7lr+JuslYYCHZ/EmD3rqdUs7muPhKtuYQTg0cNKjCM8FUNUpjEE1cuaJrXB0cuVn6kHiJaGfVEougj48/aQ/KZccvOIJa2pR7o9Spg4+ak08++bDhJCfy7Dam84IMKgZtW8ac/PHlFiCczIlgWnSLyVygZDidwJKHRa+8ury8fWiovW9938H2SCwwWTfZFluILfE+K7JPJ/t3hEVlMtvBzc5WA7+Otm7i+K96JpFyAwoGgQJVlRxdk5C7HBkP7ipjPPmO2sTb6IyW6KHyFVK+QsNNLKWvmLmqTD7ngLl0MZscbUoLp3ZwOojM2wZ3Xn03PD7c3jfUDlmPDE1OTsT6YgvJOVeyytWge1DS2Gxo5rbdHtmxam7+f81XYhrthB5tYjRtskueE1B1tZ5G/An8JefWwOn3JVnaKygrg5ZosVF51PRVZM5U1ne5s0NKyNM42XhiOJWmFXD2sGtBQe4KbUpx2u9yfSM5B0xyVSOg+sYPQp8OIqCGYAx4L5W5ueZk0tV8uFl3oPSOYrL1afg0c0pDw2m0tbdIlrtNqznxSFq0MSmzLg1PvOC5zFwBjwAHrS0ovCHnCHjwRGXGp61bM12wsyxtoTP2kwdj5WxVWkDJMfMCqebSONlQwlXtcrmqSUk4HQSmEwdvIZja+9oPlof7hiYn+iIXF2IRlDA9DCjeMwOcDpuFjzNQshWzp8q5Olt57mVTkYKSvEvYGqYuOuGxnHLWwuk7w8kuS5XCSRa7jXKLAp8IeamIedkqTOZkbJkZwkOyNRWk2W8FlfJNyuk8c+7Eif2uu9WkdJCW/ODBW0jAW+1D7cOw6AfD7W21bX2RSB/vOxNomwOiBn2DCfYP9kjDt1k56d3YDucw7VqjSDtRp00q5EWmdInW1tVGo7K9vIa5FXCSEwi81wU3D0r1fCpn4PXIRa6p+rmzZECVlT0gTuYIcSmceOpWDurAeaMV65v0isclmuAGqhlL7ScMp3amHoSclA7eCkfGa1EO8xxdWzJZ28lNF0myZumY0303V6kZUCU/vGe0sbO1E3l3ZZNNNkk81XQeUfd4OmUbfg2cPhQZFx0uZUHnM6dUxY7LlIk5fMiJL39lupynY9JOr59BxPvPAApolUqzXW5Go1+Vkz/ogCKidvk8cbBvgN+fODiMLASn8r6hiSGEU18sNhFIBgKy3SmDUIctoGYd0aySodY9zaOdneDUar24TTz7bW1RXTRqOcEY/G9Pymmr4SR9I1+u7ayYWrjQ9u1yg8FCHjmXMdZVwWTuvMJNX70VTS7vrIJSz9xlpUDJqTTFt8dZBJMTlztiAqL2iWHhhKw7eOLuCVjOPrryyPhEWyy2wNlmUqkyIaSDY1X2TV84s8lRaZKy6xsru7p0UIkiDxY8h9OOJ+dkPKK/srIw/dSucGIc6S0KKoPSYCtlUN1IjyXnBjW8tQyyjD24gt+k1jtNxTRp0ovO6fx5CSgSmhhuF6kawmK3DS+2s4MwzEoGqTeFjGlWUM327pBVwklGEsno3VF8SabiKVHkcKpTTnXv9gSkyOGeyxP68ZI0TlqbFWog8UAhvlTKTGupPfDr4xbvDc41ldnzHRZSqZ9ngFjqNkmSWVNgbz4jlKxrOu9wOtFOUOA05HAScmFwGh+a6BvnDWbakrEevXMmBftwlRkfr3LCafTdd9/FY3I0xakojRMfa2sTnez8SkAd3/zEdctm7Yw4O0laurAHVWjrDT1ZIPebKZSRS58cvVNKDiYOJhQe/Q3Q6IrnBBNvGKIm8zODyfnKKvigGoOBAZGpdhTCiCTQI6ehvhi3YKBPjZp1dEoNVSuud0dTV7JT91istbR5x6kV+nGNp7VxknkcmQwXGpp7wsk0y4+mnYkulXvQ8Fye+M5gmbmxWCnvKkJ3+ZsC45qMgptbifmscTp/3nKSb044/mmAegRQ4xPjB5Fv5DTEDgvMQVusU3Zzm6uSc81pVgBRNVr1rnKS3Bvt7E38MRVO3D+oU7FCeRft9dQ3Opx2rCmelJMvZaTZVilMjSmZp75CM1bux9J3Rhw4D7PQW8mt/Ap9GkS/MbFkQyrXbxpOn0kP87z9el6MAfOuurxveHy8b+zgwWF2VoTTMEriobah8YW2WLLW0zOHn5HTY5p9Ojfe2SnFSmcnM2+0M9kKk2n3WJhw69fXOTKeSNS29pi8+3jLGuLJ3M9BOPk2pu7J8OCOks9snxRW+rHy+eVYFGd6GU1+aaPkGheg93vSiCq2jsCJofOadOfpAzTtXHf7eOu0g2MHh4cmxiXx+sCNIYUnSDxPQG4VWSV+yZxvGW30JDs7G1tb/9gKRljreq8UqRsv2vRH4VQ3WZfafCmqBU/T0tzyZAbKJV0Vc0LKVrE8a2kjSm1CoeMbC+2wFx2oHPekMJUKJqlaGE1c7JrS5KnANjCFD+mc1+uEWAEp7U70tbUNDQBb3yRbUAgpJt142/h7F9tRDHd6epKANGdNgbUCnY3A5In+thWwop4rmxLRRFG6kKdzSoAqM5ScfvGk8bRhs3OSzDZFOFhvDtJbToWpWzfIskcvJZsqeiGcfClOCCgpYFJ5x/uIpeTphGI6oQXwQXONI8VgCQ4O1U1M0DtJww6LXXv7RQQU42lO8i6ZVGUCpXermHKdnitX/tjqQcVypTcafffKCk7r2YNKaDSBk56OaXjiMU1w+s7hVGr3bvWE89GjD9nHlRs9KaFcczsHCafSdEy8d6YULCklp8vE6mb8wMGD2u6Fbosfh8+sbof/BqeBCY0n3fOsnWjTxAsEenjj0bmlKnKiJLWi/OfBzlZPHfcLeqMAFI22vltUtNIY1Em5h2ysjbamOOWshdMuwynXV+o06TZWPmIqwN4Gq5ARQ2Q6Sb2CU4Fzj9G0zPvss5Mn1V8SjFS/4AQ3MNbefqKanCBMWOQmkHDtfcOwmJOTk3WT0jBHPEHHeb9frHlwCaNJnlj0yMz4FaM+CU6obIqu5qS1Hn4z6pGs4/Ghp+VUWmkTD4Vv4cp4UmVyLIIWubL2ST/Bt8oyqZ6LjBsd551qta7jGmcum3UnToQRT1Tu8YlhQKIZb4O6QInFaULKBVMy2dPTGIjWRxOeVh4y7+XuypWiOki4jFysUKeVhUvC0ynhxBMca+KkrTbmnWmPFwZ5rDC9iDlqDENp6YqbhDXl+vSInpkieCCI5J6sAMVwKlZQxgvIvuYAOZ1lZFGYkHBDCCqo07huegqnujbSawvEmud6gKkRStUZSCQmeX7aNniLEqP1UqisVPFEqhLmqGarE09PvCVMTjwsJ3d99Pu45CGveGMdvTmRQEu7U5+5uYzPGinZI0/tixesBqWvMaAUE0AxnMpZukmdIgpFF3CwfRjKNC6c+AIcwQSSDqSQh7yv01SMZ4H53pSBVoTTFRikuiKbZdFP6lNV3cqASmyynBhOo3I4bY2cypQTKzRzAoyTvsZxVgZ9BWldbyLhzoLZbUobSs2VXYNi34rEU3sgWUdSn4HT2XZJu4FhUfCxE2MDA8NQqb6JSQZUG0zUQQRa+9DQZF2HK4aAmuiLgFMg1oZ1neODAWhTHYqSRFFq0TeBpAN0RZuc36mr09meTcopKfG05+OP18RppxT9vDcmVi5zxyJO2WvESIVnRIl7nk2O35TzZrm64YTY8aept9zbl3wACXyamk6edOJpbED7csQEQR9rh2YPwwhAtMcpUaLwsJ1164eE0+R433gtb28R6PToTSBrdROzjl9kTeMdatLy7d1EnZN3rVcS0U3wVdH6QFIOg66NU5bZDJb77XCUoNQisbFSmLZNKbtNTdrV1XtC+gynpgLeMFrNk026Ar1ltPI5aUiR05j6pnaUJ+SE0BoewEI3OUlP3idrIUBNrp8YnhBO43If0cBUG+81wzuS12nlZihJeze6aYUw2dZvtBeeoLMzEa3vbOTBWeX0xHnnbJrv0hsT8C4qzo5Javz0aOo2qk1NBasmBppYpjQ5ZqCpaYVEGU5Nnykn6PjYGOtdCRkQQ/AMDDCkqOG87/O4dO4Ab2KybYgQJtvkZiC1tQEe1GzzeNoUlOWUvk+34iKnKxyw413HPLSkknY85/LEnEw82bvSljoB5VR36XVeYamvqWnlXQy1dFO1fuhl8k18QfHJk4ing7rKDQ8PDQ9AnQ4O9IFKHwo76NP4xIRQwgP8VBvjqRZ+c3JSbliU0BuOJ0yvUigKp0Qi8SCnhIiYeCtwau1xOJ1rWJN/MpxkANVvOT1sqrJQG8O5hekbBblNsKcF1ik5UaTf2rcvLRAlp9U8PzbGimUA4gROwEENp08YFiFvIyeSQlaODw+1ad4hfhKTvHWD3Iyntk7GLNRtX6lLN0kPBBTUKXGFtyT1tPJQvxSHa/UFOyXrzgTNzWfSjNPRFTdU5XGXtIwTc5la1ppsSMWdSLLBVKxqLuF0/izi6QQDZnhYvMFYX9+QgCKnCZgD6akMCLrxtknNuzq5LUYboypRW6ut3LpoVMXpoZzoBxhPVzhskOh9t1VupvFUnNj13QVOvIMMb71a+ahJ5pUDhKXB0lynzDUhxAfejl3eVTneZN4JV7MPVcvp0ydZ2fFNuNoHhghqDE/7yAbxBUaoVCbwdAx5KHazDQmHfMPLdTxxP1mbgO9s07Sra+1M6fmDsdQqeg4vysKmvpOYOg2nho/XyMnuLMmgriPlDymEU+JUgCrHl5ZnTQ+IUr4/buNJogmxdPr0+ZOnT58AG3LC4sasax/GQtdHRzU8zPChMcBzaBWHe5CI4JNgRCUAbbKuLRAwQzuJ6IOcEpu0xKvrHVWvgHiidxJOo0af1sDp6lazba47lewjlQaDtoXiW03IPB615nJFJbeCEt+D2ldgYsnXJEl3doycoE5jYwe5xLWPYe1rbx9nwg0jiAYGhlD7DnMJBKa24XGourARvaZhmpRxYMvJk1BM3Me0Or6p97DT0eRMdC/vr1kvnEYV1Nr6KjJeULaKE48i+NJv0WvusA4uvzEh1ZR6R42CgqbchyxxRp7M9ydPnj6L6/Tp02fpmchJyrux9rFh9gVE0ocZWu3l8AzghIBiHVOroPDJO8vw3o+1hpNnLuoY74TZgEL09DrTT1jmeMgFa11nq5XxqjX26XTYN6jGQE5zlpqvZrxSJ7xyfRxONW+hwddSO0+5ssWSnnhWloSPgVZ88uzA2RNnx04AF+BIlgEU42mA7RMGF6Jo/YRspA9YTnSf1HEknt7ZyWATTq5o3cpiTguX6BXOrNB8XolybszTCEqtNu1sf3wteWfv6l8ZrPT7tO9tbx6Sa1Sdt/n1Ncm0QK5PFNxUvmaIIK17WVzgsGEcFavDPMlgGhvTgKIZh80EJ2YbKt6hgQEa86GJITalBBPs1DAnpWtrKe80UrwjK2EZTkVqndIXOQml3laUyQk9OOVp9XgQTLwlUjJZ1czbITU8PadSeV+VSrnTjulZpnTJFyzzOXZTNqCEkFZ36Zxs4hWsCKiTJEROZ8nphEhQHyqYsWFymgAuVsST5MRmAYV8CJiGEE4TdaLjajKReJaTpJqpgJ1+HEsYEXCay14O63cKJstpj8TTWvalLKczpeKh/KX6Ngg+M0hh53JyS8vSDCaTTbJNypaHWfDiVFyJPp0kp7PCSQq84eEJFi7CyehT+/D6IelFERJsKHR8aIKcpBWVaNPMq02oetvBXj34wyadzoxvimqpEo1yj8HT2NnY2MjlLjla5XAqWRunMn2DtlLrNfXuIUG/3vDDl1uw8khBrk4QFNi6xfHg6ZRSNlMhMZ74QO8ET97OJBtm3rVPrAcnBNRAe9/6IS3uhpl3DKcJ3qQe4kTHUGt8ZsIGTsLZ841e0R2pRGJTdFNvNJroZWcYnDx4AKdOa5+q9lTtObd2Tiaggg6mUjkmrk3MwqaCdEgm1WxcrfZOqfXOQmLSjY2dpYjDQeHLwbPnT3DjAJpEUNRx4TQ2vH5Y6uIBLHjsHqDCY39zoo7iPcl3SUrUTfJ+hlK11Sa0q2LSTL5EExAlgBJOAqoRH41c7oQTpzw/ftKzry7nEJB5X1KHEo/Tsx3Fvc9Svy/96FyuvnWbz+8P+h6ses1ytyrlTjLlxtQYwI6fOHsCuoQFj28jPDDGcEHejQknrIB9AwN9cFKy3HEbhoseONWqltfRHLDArZN7jMp54ATqk8QVVCkwAnzjkqgndTGc0jk1r2FO7JWS1PzTGadjwNkduYuFuTtapdPd1OSTfSefH2tj08oWSoEhVFAaT4XUybOnAUpTjqBoDoCJ2TWA9Q6ec9jq09jA+iEse4gmOHHtlrOHMM7yZVLWuQQVKjAX4/2wogm5Xy2liNEU9Vy5whuwART1m9LERw8ptTa2Jke1bFkTJzMn5rzVpuUk98Vw9psqZVc8/Y18bLW3ohmeyrp8vy8VUMpJdVxoQchpycfISbosqOwmh6X/O7B++KBwGqqr47YCzUEbsm9ygiZTi+HatphrycO7s/KNJVSxSYiXh/GEgLKhRH2iOrU2Ip60DH6KucOdzrtHpeSJLRZ95x+feRMg+zZjuQXqO5t8Td/TcEop1ElD6WQK0xi9AUFJB+VgO7QoLMYTa1x5Od24WHBo+MREG9c8uChpQcmbboFTRO45yvti8T5iqOGgR/KCpx7qlM4p0Ii866SQm3uTrnHeV44jrI4nR8r9wFWo1Uyp86aJ+qTJqVqoSfF4QVo8Fb+2Up2ceFJOYwMwUowjOE3RdyRZ+UG27QBr4KCcbpGajtLE0sXoEygFPAFP24IrEvPUItEklKJvApNHOeErQYmGezx/hMFs9FhObNM1yBT6V2vhtDmtoRkU62RnBoROZWUqpmRD02dmCZpWlCnQddty4vev1TiYTtOQ89NgIqez5HQCfrJdplYHUAiPtbNtNzY0LJsvcATgxAEoOvK6SfVPk7V80602eZeIQC2oTAqmN98ElnrDqb6VN0OWq7e1HvWKVC095NQjt7RZ45y94WQw6c1j5AYyXOb8Zk881+HEdyv1rQJl3ZJt1NmAOqkuPBVNUrUIJ5Hvg0MTw2NsAQ+wsTI2AE59ME59MknH7TvZ72ybUOuEImXSI7eh5Ucs4Kmvj6qbBKZofb3Ju17eTLqXwOpbW9knYNHi6jScJO/OPekYq55v2bqCU9BRJ/n0s97jVqY/6IDy6dkVX7pyFzuGICVQ+TbtPhNMWPbHpF8wwLSDQrVP0F2OSTwhspBjwzQBfYgsvMBtTzoDXNQlwgrEEEkBubt/IFYvpDT3opQl0SvJN3mOaOLdEoXTaA+qYOYdZ8/3PPmtQ+w5oPT3da/UBY+M5Bb/dmhHFj1fqW7/6jE6xz7F84tN4qXFl9+X4sQoGh4WTmexrCGi2COfoPnmwjcxoYOGfTwuhWtItqhg1xFZkXAE610t39I0EHO5kHGy18nAimquyW5Kq7mZNDH1ElSrZB3NOGqWxs5RhJNZ79Z2/i6N0xnbXCm9wfcE9lu9ct4cWMQproBy+VXZ+OS9bldXwfF8fXJaVrqzYxDtAbYMGELcTDg4JH5cbDj3Vwb6+g4e7JMziqxZhsfHh9n9DQsnrHYB6BLv5BPQu4pP8Z06PRpQnoArafJOONE74RVyavSIfepM9pBT85qOI5hzinpM0b4fMBMPj9pfkXAynCrTEo9Jh4CKm7e+9fseYQwsJ9Jh6+SsqBSzDl/Fj0u5MnaQ/V/uDrfzmDAbBUg5Uurri0XkLN6ExxMTRnpNdU5NGU68P2Z9q8djjUGrNAka323tZc791iOYhBOPLayhm5k69+oYTSmEUZDs4iEMunK/1W2/zyq5fokDU4FvVcXyMEy2bJEy5awx5SdO0B0MU54YX2DUZ6xUX2S4b4ijPUOQ9cjAAE+4LAQQTuRkUs4joDoDeuN2KXgh4/XOIqfPWhlYrR7OJNJlpjgd3/x/r+E8p1R4uzSg/KVmxlnrFn2zMvuu3KX6jXzXpAuez+yzxOPppJwSmE/NYgc14iXxdJA+UzBxw2UsLIk4rFM+dAfy9pH4GolE8CQ2HIsEJuQGTnJzGtIJ1Nfz7aqtPHGFq+9sVU71lO9W8ZgSUY2iUVjtlJPcAeqXrzzpemfeY1I3Es6U6oLn5xvWKCe+j7sdU5VAUk4FTXEa8njcEfIV+5xprSf6J7oDyDcqtzHJO8k0Nuqkl3K2HAnHbQXT5iQmSNT4cF84MgxOQ+AEOrVRCSZNMw/lKeCJWk2q95ggYtoRWVQhEZOxmT092vNdy01ZnfsXmPe9LfU7ppx8Ku3Es7x3tB3qZdLlKibknS9/Re45O8EF6Yl3ml0CrmzSLhiWdspBxhNkvH0sHG6XoRXZ9OS8fV8kBo0ajoRjw4FxUSVmXK3BJIsa8q7e+YaftlbpFDvgYYtOOTXqitfZ0zlqOK35/iqWk8YT2ylimyjhYjdFoypNyknqFcRl2UNgxZ2YkmjKX9Ujj8d1q0V3o06c0EadGHJpkLPXxE28AWBiv4C7wAyiGAIKnAKxIcAZElESPKZwQ3J18t3OAyn5VinvpRWo79S0E0rSpmM8mUNlDce3rPH+Kpt3Wmdw5ow5qiKgjBopJ3+w1ApVGjB/PD+en59v98t9aVsJAirujyPxTp4/ff48O3XcbDl9ohwShfBiKcd8i0RkR2ogEhnj/guSLtYXGA8EIsthdQEpPAG+bXeAb19KTgDVWh+wPry3t/6PTLt6KVbIiTr120ZNPHXjymnzWjjtSOeU3tFMMVJkwVK78BmNIiY/JCrfBJEvbbTAWffi+6Hi55l550+cPk91Ol1dTmtwEMtbOHwwHBsIh8PckYJch8vxjNrdFxseD4Rdy+K+Aybd8KSTjIgKFznp6yaeTJdXTDg59Qqn34JTK8s7DtM1874/x7NK1nbfNa1cdvFoz5lSuW1xpRGoFA5/0NYtrI7TQTHZRMbteicWsyDV0zxZfL66+nR1dbUM158tLyeXgXB5eyQCRGF5jHHfAM8ikWHEUIRxFON3AMW3iQoYTrw7PUBxuZuiQKkB17KuVfsp1KR6tuk6JfNgCxobe5h4yR7ltJYbHpr7023ducuM9gT1ttpBE1ASO3Kg1S/vy+X32xfTpIqY4sy9fEfS8+NpEnWy4iQgVe+vrj5Zff70dXCanY5MI3bCAiZGTtNDQ4OxaZCiCwAn3qDO8AKkmF3nRKQC8q5J1Cdjk2TJ41ub/lHCCXTopjpl507adFWjpq1SBU7H13x/Ogh56hyd6WdKDaxyLgc1JZDitAr+9KaBxlMcmp6fDy3SsMrXBHTWu4r91eXV9iovL49MT4NQuYDSmAoz7YBoGqwsJ4+0T7DQHZHugAaUkXKJKXktoD7TrnxUqF5jn4yHYsvXtlWqGhoavvrF2jjRQVGfTHknXQIthsUJpNmBOMOqLGhWOtEm8CkmJ2h5frc/Ho/np9vzfK3wKqrnrwsgPlwHpth0JCYBFbacYhI808vh6cGYpBu9gKnkJmw8CSf9ROZNdSo12yRwtg1aHU6NyVbdRWjsQeGSSU6Qp1+t8T7IECjl5Gy5VAYdh2lDx7IqtXIunHyIm3hxgax5CCd/t+Rfao7Ocqq+BERj8+UaToMAMTgYIaXpGEHNApR8u7zMYFokqA55K1KVcV30PFrZqR1HTiXtKghMjT0BpzeHJe+32hpPugylxh4zPK5nqEuehhNnxXg6U062Btkw8Jf6V1sBhlKcYSRrnsSPDai434+IEk7OXnlFXPMO2lQ+P6sBVR6eloQiGGJSMZ+OMKjCGkuxJdfghMMnYI2msQjaqfNMdXqsPnk8zS5VsF6PduroCcAp2ejx/FbDaVTaBWvoZaZz2kpO5gQrzx9y2fNLM9Op7Uqd3Mu3nOIFxMNMy+erfsk+YIOx1F2Xior9FRXkVDEzc312dj4cLpeAIieagPAsImpaEm82vCycAG4Qa9wS3zPSw+Nkng6PDSytga1M1auoa73SKO+qwWJF0ekGZ2dr42+JCR5T5cncTGytebdhs3LaJaUw5wu04VvqiJMTWOLB8/kKBN1Sys9nbCknmCm+LIlXcfJkBde7CmTedQo3TIEj3+X4BUrTjCR8LOvLmm2DgY6ODgSSR6Ipou0UQSOIOiWwaAuQgfWelerU6+xIBdh98phN856v1552zv3ss3Z+uktu13AmaNu9QVnu/CvXN1MEx/W5kW36JV6iUvnFlCpygjZVSDRJ5s1cF0bKCUhiIuPhwcGY+CRgUlwGVIzvrAlOEx56h5jJOVniokfUnrNNF+gMOIR6e7VdIGmXxkn3EDrN0bs1FC3p9x/XxCMna51UyP3BG6UrfYAuc/JhjBI4WUDqosx3kngVxfIxM1NtMZVPS9iof0Lo4FuGlPEIIl3SmqM+eSYC8ofTAiZ6xHBi3zfpCmiTVznRXkrPCUHkMdaAzYKeTp31pTxteWvN70sim3if6u0/EFD49Kcuu9XpLHJc5lTBCyRytK0CA27UKZ1TvEIvgyk8OxuGLRB9Ev8UxrpnpLxcPIJ4p4AYzJjR74CtW6KBgOGk4QROPVjzemV4hx0oeZMlo02siiXYjCvoGf1a5emdtb8viThNy0laKxpLpU4p59gC0SlJO+aZ9UuUp3wTTgTFpLOc9hcrqOvz8+HpAXCaVRUS9SaniCacUJPlDj7K6lQgNjeHssXaTP7ghhMLPfWcvZJwbM/1igGXtoqxUCpP2qRTecp+mvdv+b1xBrsE0RnltFK7HU7EFBdrQH3SBgGe+M1qZ+o6sU8V+ZJ41PEZ+oJwxJrLGLKtXGIIwQUnNe1ElJFydQwIqcXmVETJlyOad9JGEc3i0AUp1Xts44kWyvNbmVSRDHQ4NTR8vPlp3+fGiSfap9JKqeJMo7c0VdH5Rb2tQDnNAix4fjHl0lCxjd+KuOpTxaX91QgnuEnknZCatj7c2ic+MCMlnAYjy8agm5XOUtJwOiLtFSecZMVj6UuDyWGVVtPBg47/VtyTcMJy19zQsKbVLi2eSpTTGTXkHNQstV1M/5ldwZTl9PuUk7ooU/2yoPODGr8rSO1x5ndXVDCY9l/Ccnd9njxmhY7mmJTBYXtBrihOMQjWYMQVhjgtWQk3nOihjiin+qlkp3oEaRL0audOil+2felAG42HEkyNPUuw43ue+n24XkHi2fVOFrygDLQqJ/EG6s4dS55vfTkiyXoo46YUUT4pxY2Iz0gBLIlHJeI1K1ULc810VtRWTcdidAqQpg4VczyxPTr84hsgHaG7nGu2mmXsElY0xFMyyXhKJlv1NxvNkBiUPKnyBJP5y6fghMTL/pRG84xmnv9M2S61UYwn46E0ovyCyRimuIQVI8pwcppOFRXdBxBOM4JpRvoE81DtWGxWOQklW7BEVKogWggmFSZuajIpF5cCR2xhF5DtlSMSW0l5kzzZLxdOCKJ67naSk8ulc0+tnhSnJXI69/Gv1oQpnZNJPIq47OClvIFu5imnuHASJPlCSmrguMST9AfynWYKfx+QuNQh6YBmno2C6dnwvFrxiNCJSUFsWgYSSNKnIyd+v7gY6ZH1zsqU9C75vD6tChavRB1nFcN3GRYBbzXFHRt1S0s8Z/7xuayn4ySWPGU0dZvlgaacWifNuAINJCNRKlKElJ+GKd+kHTDNzzOEBrHiW0eunUzRI7Hk0rEzdoAWSsCokFOkQCWmvSZ2NKem2NqMRmmUosZO9bJHx807Z0hMY6oVRnNUB+wbnsH7c27INgveGdPKNJgc5+RT5yTrHLvhwgnLn9PHLBanaUS8giGnJnM/Peb16zDigwgeduzmRc4jsxH6p4BE1GI4zRWk9scFk0sUPODs/3p075fHeyDjOqciZUsrH7Tg4x4xHEGA4wVQJy3uGn7xDDht1h7UmQNnzvjTL6vdtrFC8S5giUcFx6u65Im9zM/vjlfkF0tVZ6/9+2EKyq9LQ2V2OIKkg1aJPZBiJUBQsUXtYUYk54w+OZyWXDFbp1hOsgclVbAd6KE36JXixRbGjTISLZw6eyTtGhp+9bTvR22av5AncKI0Kaxg8IA/1QtnCDnc/Oos6aCK1V8SlN+fL/VvvsNpBvFkO75c69jaREDNivtmXg0GOgZj/DQ+fVmK4Q4ZBtPAitkmnax4UWPGozpWoOUv008Trtc0DMwMqyegVYumXdZTv8/yK2rJz/AiJ24p+P0H+OjsTpFT6Rmr6UEysRsIpqKDKlWIK4C9nDk5w/bTjHTpqsvZ+TW1ML5l50naT7HBDlxmdTMVsd22S/UxPdrV5Ip3RIRc1z7tExh1qpfRTP2e72pDk2mqOx0tWHvarXw/6i0Op6DlxGUvntb5zTcFXlxTkuGk5a94AiNN+RJNjKr9+2fwIbbg+nWziSCYqrHQyT5LONYhnAYji6JP0+zYGV8gmwhmneN3U+rH7UBB1LZTomLHZX7VBJfHaRiIzezR0YIGuIIdT5l3tgl15sCBA/wEIatS8XhaHazZJ/5J8g4Ln9NVqZB1TqSJr6g2kdN1yTVNPDrK6uo75TSU05HFiIQTLlPGSHk8Lbt3Zs/F5B4nxGSEDokXqBeFilpBl6649lUcTq4e1s2U8s5RDac9a17tVnDiikdrIJjSldx4gdQlhVxclMlpObE3kG+64kAkgo76rjtOTggmjabwrHKSEkXsQKxj0OEEy8AmcHk5sxHSHok5EgVTwInDmOQdv09rY2rzqbVTUy6tuxmogiP4rWe0ufFp024lJ93G23VAwym4csXzpQ1CmR5KvvXhpoeiAVXMrMvv9nfnFzu9p2pNNpFu4TQdURewKOsdMA3SFpSHwYl/cpml8LLhJE0CcJrTLnlUF7RAqycNFO9OIFlXb0fE+KZLVdok7ml00u6XzyLvdmj3V9POv2sFKP+KePI5mOJ+WesYO36gyZeUYwXc3Z1f4VR3cAYSTkJnnvEUZrhMawPKcJJAioh+3YkMxcCJW5zSres40hFQsaIZCFgHJWHV6eEh4KgRqt761GZea8DYgh5p0T1F2q3iZPaFNaDOrOSUGn2Syi7flC7+A35pZRZzW0oFXBY7KpfhdJ0ipXXwNNczqJTsJYiQL8KPBwCK7U2GU0TsVXiwgwzVFJgt4YDDqV63W3TayRUQmxno5DC0DLDSLkS1CFZMNu3Wap5WcaKSSzydUVD+VZz8/rih5HCSdU9Dq0IspixzJqpSForOAIUL91amZ5cvlUuHRctcEAmQEzAx3gYHw4gmqpZs7znuCZx6ZOEjMLaXAEvipjMpJzfY7e01g75RT6tT9RlOmnZZaw6nlZxKdlzd8imF/MwqTBpLwTNGw1XG2ZrTWlh0W41BvoRUPjIwRWq/bY9zsy42PX/nDku96Zj2oGK0mVDtco2n6cidau4YD8qCF5CtO3FDuo3OpJrqnEoNRNnDGlFzTqre2KqonE7U9lPj13LPzLWr+Op4+r0EFB2UA0qzT+TpwBnjwePGYNqNTbNxYDQcdLrP+ElL67v9Ffu7L1GfwCkWUaEuNz0n5h0wdQR015NdFQqUKyy7CJGlQCAZcUYwOLd65Iinfqre1Hl0lb3KSRos9WKfdNxAvCiiqQcfPfIuQA1rNk8P5t2OrGwR8uAZXe7OwJDv0ieaengZcXQmKEJu91w0lmyjgK93+1WjpP8ETt3CCdEyaNp087bvGw5w49fsuUSkTjbdqZg2VpLKKda5lJTJuYCM8wRsnUdiV8wxqV4ZcI2aXossiEmsdT069/Q04fQApxKTeMEDu0xEyZNg2Rm/dMP95MSSJZ4CpalYrCJVbOy52s390qerUDc+Px2JdUCg5qWdKXXL8jI4sWEQk9Z4ZBr6pDIfMc2o2JK2d2OxpbkVi50EkJ5GuKLTYuTU+a7DieMqHBDrYYuOaVfyzOLJBhRJrdjDk86vbLPIQKaOZbIf7ovr5q+Rcq3thBK/43zBjNhMcZmzkekOeHC26UiJbRVd79hYQd0yy27UYrnYB+kbLAVic0lTt0wFUpdwisopoGjaVA+eVPUcSU33GBFPfs1wynmacHqQkwSUmHJryU3vl748X3dY8oWWL+6XzkpqK1g1Shc9E1WmN14uH9Xlsls3Gza+XNq6uvvLJoGYKfHjKk/Qp8jckkxodmhJPMX7jMam6p2ZX9N6st2WqDNOzrTTgZ7G0WcQTqs5cSNP27+s8tIXPFP+GlOgewiQ87i2C4RLhTZXDKLubuRdHPFUPaOF73z5nfJlCBS3hLXOYzhJ4CwuIwGlFTwYI6dlMyZGdYrMxUS+Y50Q9eRCrDnZ2enRUQNuq0QpT7Jx3uvxOCNjknYBZwNhz9OG0wOcNKCyZdE78LBendlF4PZB3KceQdu9Rp3SOBHcfjYztQjWzq/pipuhQ5S80xpOOpxBt6C/o5vBMgqVJKdAp6yAU4G00To5mign7Xp1hYvakIpqQ0Uw8Z23njacHuAkCvWp9MkPmHRLc1Bxn32en3LkcanyCkxnvCCfI3XMPQm8OJt0+/c7s5nh2VlZ7sLliKBIxEynTIfhqTQRYxEXf2MJfKQnJWWL50iHVMPJZtOQimq5W296mb290ajNvFTiKafR0aoGcMpac2n3KE6qUMZClaZx4laL7SDoUieouo1ESZuuuCB+wJ9mquJxOHEzmsnrTlg4iTfQGRXhtHzJZTnFFqUrJQftZBeBkYW0S/Jp0gxBUcPre1XOyUke7KlFT5XYUBNPo1/vaVjHcHqm+iR9TQYU+7/+FX1y3UAQVjqwou0CO1hgpTvu7zZFnmKSUV/hdJ2Pap/CjkRx/Hl6ernazBYwucLLLsMvxqFLGvIOSLjp0+kxzvqUbEvaRXWSXE92yjxiY1IwoQRWddrxbPNOqmHxUMEDfmfNO+O3cyp+mSU3gz28/AeCftvQNF+c6i7ftlWkryJdX8F0p3zesGLXF6TKpVWgq18k7HJFuK9ghwt6Aqa9on0ombU3Yq3H8nvtgXyTdlqz9NjtTVWnZ6xPVqFePsO2gZnvsRvnMm14hvbJZys7NVMiSX5d88hGflPGxOIczWQV7PQzyenSHcF0aZntzMFB2T6PcAcBSr4syhVZWloSc4DP5pjHGifKuAwfmjOvV668+aYRpl6Dy5wRtmkntzF6SnV6BCcTUNyfsgG164wDylEov1Uos/GCx9RuVKoKlq6K6BNbAuBz5xL7vrBQ1ZfucBsBnMSAD8q5n+lF2AJE0pL1BuAkIwbyzdQUHUF9wJzCJ6do4N361I1nrJkymITTuqcOp4dxsrMGEKhgyhqYgJLRi7jh5LctTW0ES6fXxpPd5dx/vfpSt3Iy0xd3LnVfQt6Fh6nvMSae1HRc6pYXaciXy6laSzEzau9Jmt073qld3EAg1SnQOzyoWiU7o/YUrOGkffF1T+mdHsXJ6UOtbJPb01Fx2/olHTsdJjt3fkeTVKu0S3d9/yVymp/XcZ7Z5e5LdnuKoxdsj0dkKkPWv9igzEdrVzxi9hAsp2T66Sk98XrF2oBo1E49MfmccMrcs47h9Mvnwalkx1VpGwTPHPA/DJQZFSMMtjMrlJR27CTjIEumKcV9KVz0mPMcfQap+TvwnGEduI/EpOlLTkg4MQYBmE6d5wnAjZu5cR2PnopxrEBu1m7aTBJP0dQNHow2HbHhlFlVlfkswulR8eQE1ENAmSlW9eLqnvTgBucuTFk3E+dplwP+bhqD/cZnzkZ0kdNNz3LLCbKkLZZl3SGGLYiIc4rNRSTv5AdXeeK0ZkDXfc2wN6+oFTCorMskpcwemgJw+lXJc+OkZjP4UFBxnwmn/Hg8Vf5aY2kUHB9x5aSg5OAGlzUecYFB53GXeekWdERcd2bD0zpnx3ovvEiXLgMHsfTNgwDiKZZMBpy9KKxvvJ/RFb5LosdSUlCdPcY7NWc+AxF/JCedXsneFYSSrwAlq133mQNpoOI2oLqZhd1OSIk56IYtkK3O69WwUfPl8AM8h0dO4jbBaRqLYESjSQIMaMJzEVYvnIgyExmad7IlbISpM8B3tiEn036SV7lXXGXaKT09S183Z7rXPbUn+B5OKuXZweCZXWmcoOrQJiyCQb+mHQ+SyW6UhI8/3u3IuuFko4ntTLC6tL2bCch9Ksk7DkCHOSjNwwhwn+XL3GIJ63cuST9EF1tQAmoq4HAK8NgPOE1e0XamZiFnNBr5ll2C6WvJumcg4t/HSTLv5TMHdgUfSDyhJB/sbsatD+9Wn6B2gOD4JxBO5fPVJLUfEaVKNVOt45qgQkyzWhrLAnhnORaImKlWbnPKCILLFdONPOmRp6pgRNKbb8JATdqdg+iRqFPZEVPmnmcj4t/H6RWnVX7A7CekBZbOHLIN7s/nuLhZ8OJGmvLN7p087L8+DwPlXKjyqtPHfMKzMmonm1Ll3AgOLC6yMeVy6WT0YnhxbkkaK7EpZ/QwUGVU+01rDjrNQYVG/hEtWL7+utm9bt2TH5l+wnh6RTJvl6PkTmA5O52SchXOdov1nXHtqcSlSycRJJwkquzSZ84D4XMZlECq+k51ZNDMHaiiuyJmFiMijZUjPQsxuVHICvc0mZJuHWRRSJp2cJhc6543J9NgObB601PPSfnEZPqK8501z1n+4vJcN+5IRsOJqxzclJk0MEOa5bY25p7ddDnEe4kdFR7oXJRxzfDcnGxMHTnCnspUYMqcLFNObx4RdTpSxcr4Te4Kc9AQqJaWepB1e57NWvf9nJzy5cBDzEFc3abTr6M85ae6BrLXMqPFHUS7O25AVVfbiQw74mP6K8IpBuleps+UToGMIC6GXYsR2ec8wp0EvfdM6qYFb1Ki+FtMQ3kilHp6qijie/bkZJU8G0zfx4luUzdfVmHiKWCudWf8Zgc9rq6yO60/xx0EGehJU6Z5arkjTZHy5bBpRk2H9bTZnUt3IN7iDjqUU9gVlsN3elaD1nxKpwtQyx2JioKDj2TekSNvUp0k55aWKOJ7OFDw/zx/Tr+nOSApw6mbu3lQqW7dTWBzJe70neLdfiei/N2cZS0+STqIJfUG7NKldQ7K6QOE07Ic7aQXl8Zwubwk7nuJMo5aRjGZ9U6LmCnK0Ztv0o4bLacnsBqOpENd1/DMsu77Oaktz87elfJQB/wo+Q4c6JbxC1vj6eHN1O5U/MwBc5TTaaxwEGM5LB4TSKrLZ8vZ/62mY2KnYFkDC2JO50SIkKalOd0jjsR4ViPWnNTT+J5AUhb/aADx9OabRsk9Rzpko1wxIZzc6/bkbHhWWfcDnJxtT1MPHwg6Bko0yhgE3XTJlwnWAmukePLczKrMzAgrDkRr/SKcloVTeHkxYg0TI002YRhd9APKKdZBdUrGPM5dVuRzLuk58iZ+MQm52CU9PUlPo3WYmevWPc0YzxNyoouClH9p9qj40G32XCT9BJTfyJR/e3exnE+U8QyZi8qPw1vyU0bF0i4gkkIP4RPToCGsO5J1sp+OVxbndKws0HHkyMQR51yZ3cnsDEQnEVCsWQJHpBTu0aF65eRueFaW4HE4SW/zSxnZVDbd3XGLiTIlrPyyn+f07dRXqWr5udlZEUd9N+N4J7PkSeMO4RTTthN8wLLrTrmM/MiWJ1Wcey5zknbmlnQxnYbWwJp4kxqui6EGm97RAWmXiXplw44fL55s/ZLmDbpXmIN4/EzQb3fy8s3Yvd2C4ZRm3On9ioiH5QiQNlequWm3NCjdlOnFyDRsAUBRoZbD9tx5LLAUOHKkY04OnEcWpmIyBqY9hCN2SFpg6X7dkkTT14Lp2UXTY3DScy9frgIlcSWLXrzb7NfZhhRf7NY9F9NiAaf4dTUI1XfCmmZiplwy2BuRLid+uTiqsWwODkdi9m49niOTHWKaYq7IgnBKM5qTpkEXsNuaBlND1jPF9DjxJC5qpdkEJp1YkWMaacNiuu5pAmpnk/0WcKIlj7Odou04Knq12UaP2JlyScTyiHMbA9NT6TDmySM9YE07W6kcSc1AG0egix3E6Zc/MqdXtMXCiPJ32/0XcDpzprs77uyca0RBlwqKzVyUzPVwtm477TjqGHCqLr8ETpGwY8kjEdcdsU6y2tm7QJSzatHxAilZJo7Ykxtziig6IRsrFhN/r0NWOulhZmZ+8Qyd0+Nyot18x4IyO59nDnQz/bq7HULCir+b+s5uw/i7oeHm3BRZ3Cmno9xfHWHzMkJBkntBjZnCWMejw/bGRh2BIyrTvJb47spHWKDMSTB1pnxCwAQTMTU8Y3F6PE6mIs5WjTpgHEI3k89ycvY8u/NTgKSvolvn+9mHoteUKu9S+SzDCZBQ9BKKyxUuN1lXDmslK57MP8U6JjoCExO6Wa62AMEFUAFwenOyJ8CA6gnwpkZCqefrJYPpWV+Pw2nHh5wDzv7yS20ddCsikqIVKMi3U79IOfoAB5QqVFyyTgRKPBQeL9FvXgoPsxl+R8cMy6svVZu58nJ7qIOnXz2eDjjtDiSc3Z4yqgRek+xeMpp6ejSYWNdl7nkemB6PE7QcoL78UkmZUOqWivgMSrnUHl5F3K9sUoMG8Zn9QhSf1bN3qs196nTpW5TBJ22wVNsp4DuyCupyFxF5Qk3CDWEJqVgPfJMYgo7JIzykbw5HLWk4UcKfB6bH5IRrQwoUU6/bLHlyBsEaTFZ1xfbQi557zY/vv6SWFCo+O3+pfF4splhOOY8YsY2o8mrXnYj0xflqYEhvZ4RwOiIhZc+XDQk58plINpISzxAN9lhMmQ3P1l8+MScZwTeYuF0lIdXNWk7XtnyxVRV69wIp9lgW6w6fes1qPbsRvoOHS5co6VKe8L49MkWHai8SkQkEIBqUux3CXXYgeo5MdAikCc+Q3MGnBznHNVBubHAEnBxDkNmQk/UcKD0JJ0aUgrogcq6gdGBMaxS+iFiS2Wgql3EIRszjsm8HES+/c+mS69I8cHHlk5HxSMy0NCN3WAkPac2H1Os4Qltg5npUz6MTsYBUMrw/VEDCKbOx52sTTeeeD6Yn4PRKClRKzGkO4vnmYEK8uzt1QAFPC+wGu14qS/sRStXO8JiUuR2xsBmuj8mOcawjtigNKWCCy6RO2ztqyw0xooqJ6r6ElDTR9HWmwfRTx1NaRBmBut+t2aY9A0PK9lqYiw4n5l18v+4kdMfT9hIii4GOwfBiDG5gnpOIlPJAh/ZW4AqO8F4Y0CRnbnxCOgcQdsoU5B2x1KFJB0zs8z5r47QWTrxnRnY6KOYd+5gpZ3ngTHdqti7u3DbDbAvv7+5eteeyvIjo4SBP2O4smIMI4AUJn5zo0BscGk4CyMOzUx1UeAaTCafMzMw9v3hOSfeknF7RVS8dVJze0tlEl+PmRsCL2YLirdnyTdZdR5Xn354CxQCajSwODsYo6WI0OQgVi7mWtVmAAhjS1GEG6Tpicxz77ZHb0wWEU4dHNFzT7ut1OVk7dvwsOLEdlZW9EhSTq9uGU0WF3hxLx8f0Pn9WzLWzEr80w+w7K/F0h9sGgxTxajMOpfddc3GOdYkNFU+Ph70C5Jct8aQq7ljq6aBhaLTihHhq+MUz2tJ8BpwE1KdfpsTcSDl1O24GwwhL75Mlx2KdInm/bURxD0Ya5Tzfyr2WcMw2fSOLeqMsMwmMvDqiaxqVGxnYkRROFG98NgZMMLGo++IXG0p2/FziyURU9gpQ9wWR6je3gv1p8+Pm3n75nGgtVhfFlU5wiQcvL3fdKY+JPFWXmyaLkIpMKxLprJhL8AgwD2+u2RhI5dzzceFr58RV9+oWC4om6r6Jl25plct5asccxCvMkTweRRdQp69Xz0vLjp0maZG7UKdwugeXHlbU2/hMx4QT53s7qEY9zL1BcU4dHYpJxwjY5V2X887zWujWyomg2DMXTBfoou6b0yxmPEzu8lBh4eWrYsGpizmAedp//bpsgJZXD8zqAH55ZLhDjt3Zo4uRZVeYg5tIMI6HCZfBJd44Y1AzkA7T2dGUXvhzsk1PwWmFml/oPoC8u3+fu8FmeDVfFzwdspNahpGUXxHnH6AvkEp4Bl8knObD8zw+zZtnhSOL9p7I4eVpwIh1aNoRTM8SB4M1F8nJafKCEjegni+mNXFycu/CBYC6wNwjqRVqbu9FY24mUqz3OQKmCpooaULhMncfvXMHCcd5YN55TfZapmPTgx2x2BEO4as2yZceSrtga+xpzMzsyTQ7Bs8359bMSXIvy4C6IFp+v+V+tzbD7alXBFNcjws7qIplhEVOKNA9cWLM3vG3/DpvnWXuHT0biQ2j7BukjMdExfVWD1Txnh56gQ7YykwGk0yp/rJkx8+Tk+TeBoTUBV7IPP/9ihaZHOcB6ni3ua1vd1w4+fPtndgqilO3yKiekWiS03nhWd7BbjYCQgir+TAPD0OK1vO+UIMMoCU5vd+hOdfYM0hKknM5WRt2PH9Ka+cEb75jQ5aCEhMFUPfvg8R93S03RzgMILPqdefbDOTN/eTufvPVckO2cuXE43m8STnnfgcnlIpkHGkRmCRiplQpSLrML47/4lf/ruRnzYkh9Yfsl9e5D93n1XK/hdd96ftyxevW2EnlXHGaTpES39GFiOav4+tZIpvlpV+mIU8dE9Y30RgMBkShkI2Z9nJ/8fHHx3N+teNnz+kdcFrndrtbzFWx4qrh25RVVJw8qe/sZj4rugHp9HV5P1NEVPnswPzps4YT1EkwgdLQUM+0iLiolMQQOWWmcVr3xRfr1h0//qu3dvy8OaEoJqdDb7zwwhuCigN0gGXuLIpvTtbohag6ebJGmMnbCPO3988IqPnhgfmzZ69XXz87PzA4HZkNzw7Mzg4C1KBgGhxcQrINEhIXvsy0aBJOHx8/nvPv3vrrz5yTxNM69xsvZGRk9COu+PPPIKrAKhQKzczU2GtGiJHVyZGR0ydPzhAV0+767PAwQmie99ccm40M8z41s7xtBqkM4kvP4HoTVnKlKGW61yGcwOn4L/77h3/98GevT0w8gnodrN7omiEguUbSr9DMyMhMDZ7UjAip0/jIyDhN7Z4GlpuziKJ5Jh7QTAum9QZMx/r1lpHB9ELGCy+8YNMOnKDkOwDqw59vPO34g4I65H5DSL1OVv3mysggIHkY4fN+/JLrpPPi2bPzhDN8c3B6dmBAdGl2ev3N6YzB9eszgIoXOIGPxFTGYIa8JJjcDqZ/96u3QOmvzzmknorTjregUEoKMUVU//AP/wBY9+7d83rxwSsjg4985R6eP3jNZtzMmMaXWX5DOPh+/fdcJphEnD4mp7fe+vDDz/Hr+UbU03Ha8c6WLS87pATVP5jrdb1WMLnHazWomzdv4lOfEsTNh+LhX2khuUnJYAKnfwSiDz///PmK1FNy2rDhD++8o6RSqBxWD1yruCklgkIQZazGsvKykCSUvoBzUkw5r/76JQTTr583KNfT/xUlf8C6l4ZKWb1uf8B/Sb9W/+yrwPzLyj9t/hfIRcNII4nCpJQQTq/+GZA+5Ofn//Y5pt7Tciph1VCy4Z13tjyEVQrWA8DSqP3Lwy9L8gXDyASSgWQwHX/x1Vffeuull0AK6ffXD3/O8aR1wx9UqgQVPTpRGVivv746if7l+9g4ocYochiZQDKQDCXmHUC99OFLL7311udvPUdQrmfyt5SU4P/ghv/rD3/4Tx84rAhLI8sCI7J/+J5LMzBD8RhATLXVjJRSKqBefRXx9NZb//j5z54Trv/yf+Dhf/n8rbfeElSGldJK42WJPXC9kLqs4XYbQqsC6WOHkcMJ1uAlSvnfAacdXJ3f+vAf/xGoXn3xg5WwHF4G2gurr1Q14nY7EaR8LKJ0OJbRL178BSn9+c8fyvX3wYkC8SEy4M+4/j3/lV/EhZ/y5dXIHry+SLucF1cK0XF5ipdfzFmXczwnh385/yOv8j9HTr8Ws/n3wulD5fTnP/9Frn//6r8XXIaXPH4fsJXxot/Lb7xoLtKXf4NX33777b/85dVX/6KcXuK/0N8fp5de+kvq+qe3/+ltE14CzIEiH2nfrb74x+V/9Lvf/fM//e7Ft/H3/BOvtL/77bf5X/u7iqe/fs4i63PlJPH0tkMqdf3ud7/7Dy8++vo3vyOV//Affve7fwM4//zP/JQr7a9wOPHvfwn/LYmnvxt9+qsUoxpQL5nEexipf37g+jerrwf+xCMg/eUvQklk/O9lvSv5q1l0jEBZiXoIqYex+p7rYaGkF/9BXlJOkvN/D5xM4n3+eQrUn18SsXX+8f/pnx6E9bvHJWQhvf22/qVvv/SSBi4xMZL/EQXejr8LThpQ1hvY62396R4WVrje/qfHAPRAuv0l9U9hzdOHP/v6ziYeAkoTL+UO/vxADj40sr7/cv6Xb6chesn+zfY/+PnPul+wMqD++vmHqevPf34Uq0eI1iMiaIUepcfRnx0f/vwbdc+Sk4L6/D8i86TTgQQ0P9BLL6XTMpL19ooF8aHX2/oH3k4n9JL96wyilz7//Nc/+37mAzXeXyX5fm3/mV8iM/PDPUZ4fW8E/dn5e176c1rYfvjrt37+/fGHgdL/07/+UL3fI9PwAW6Pd60gpP8g/A/+vPdbHp58//bzfySqz38tCaEL4OePVK0/r8rLl1566dF8XrJ/Ef5q+evVD4DSz3FO7IdlClH1lrAyHxbT9+r8QyLtw1XXyr/yrc9pL//63Dc5nxMn6UXx/z3DiV8///Dzz82qZPyVCBe1Sz/lVb3Mc/P5YSp7TfX4uf5lf1VMPw6k58bJoiIjFF2f/8e/rg6mFLFHXZ+n6Ky4/vofP9eX5a//USA9T062xak/zef68z74Uz/+pX+F+YvkL/2xGD13Tumw9CdLAft8JbNf//rXK746bFJ/fuVftOPHvVw/0n/H5Ezq51QGuN56663VoYOX7O8++L/b8ZNcrh/5v5cuNM71gAQ97Hd2/KSX6yf9r+PHLyl5mBjJqzt+Rpdrx/9/Pc71/wGxfH3J5W1jCQAAAABJRU5ErkJggg==">
-</div>
-
-  <div class="ac ac-r">
-    <div class="an" data-t="rbd_h2d1">Финансовые вложения</div>
-    <div class="ad" data-t="rbd_h2d">Это деньги, которые уже инвестированы в технику, обучение, программы, и те, что ежемесячно уходят на поддержание вашего рабочего процесса.</div>
-  </div>
-</div>
-</div>
-
-<div class="card" id="card01"><div class="bn">01</div>
-
-<div class="ddeco" aria-hidden="true">
-<svg style="left:-90px;top:70px" width="320" height="320" viewBox="0 0 320 320" fill="none">
-<circle cx="160" cy="160" r="160" fill="var(--c-g-50)"/></svg>
-<svg style="right:-110px;top:20px" width="340" height="340" viewBox="0 0 340 340" fill="none">
-<circle cx="170" cy="170" r="170" fill="var(--c-b-50)"/></svg>
-<svg style="right:150px;top:120px" width="92" height="92" viewBox="0 0 24 24" fill="none" opacity=".42">
-<rect x="2.2" y="6.4" width="19.6" height="13.4" rx="3.2" stroke="var(--c-g-300)" stroke-width="1.1"/>
-<path d="M8.4 6.4l1.3-2.3h4.6l1.3 2.3" stroke="var(--c-g-300)" stroke-width="1.1" stroke-linejoin="round"/>
-<circle cx="12" cy="13.1" r="4.1" stroke="var(--c-g-300)" stroke-width="1.1"/>
-<circle cx="12" cy="13.1" r="1.7" stroke="var(--c-g-300)" stroke-width=".9"/>
-<circle cx="18.4" cy="9.4" r=".8" fill="var(--c-g-300)"/></svg>
-<svg style="left:52px;top:150px" width="120" height="120" viewBox="0 0 32 32" fill="none" opacity=".5">
-<rect x="10.95" y="2.09" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 7.14)" fill="var(--c-ln)"/>
-<rect x="19.81" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 24.86 16)" fill="var(--c-g-200)"/>
-<rect x="10.95" y="19.81" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 24.86)" fill="var(--c-ln)"/>
-<rect x="2.09" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 7.14 16)" fill="var(--c-ln)"/></svg>
-<svg style="left:300px;top:96px" width="20" height="20" viewBox="0 0 24 24" fill="none" opacity=".5">
-<rect x="7" y="7" width="10" height="10" rx="2" transform="rotate(45 12 12)" fill="var(--c-g-200)"/></svg>
-<svg style="right:250px;top:150px" width="15" height="15" viewBox="0 0 24 24" fill="none" opacity=".45">
-<rect x="7" y="7" width="10" height="10" rx="2" transform="rotate(45 12 12)" fill="var(--c-a-200)"/></svg>
-</div>
-<h2 class="big-h" data-t="rh2_01">Как распределяется бюджет</h2>
-<p class="hint ctr" data-t="rhi_01">Наглядная структура расходов, отчислений и вашей чистой прибыли на основе введённых данных</p>
-<div class="dnwrap"><div class="dn big" id="dn1"></div></div>
-<div class="dnsum" id="dnSum"></div>
-<div class="lgd" id="lg1"></div>
-<div class="dnsum exp" id="dnExp"></div>
-<div class="lgd" id="lg2"></div>
-</div>
-
-<div class="card" id="card02"><div class="bn">02</div>
-<h2 class="big-h" data-t="rh2_09">Как распределяется ваше время</h2>
-<p class="hint ctr" data-t="rhi_09">Реальная структура рабочей недели: чтобы провести несколько часов на площадке, вы работаете полную пятидневку</p>
-
-<div class="wk" id="wk"></div>
-<div class="slg" id="wklg"></div>
-<div class="wknote" id="wknote"></div>
-</div>
-
-<div class="card" id="card06"><div class="bn">03</div>
-<div class="saletag" data-t="rh2_21">Скидка</div>
-<h2 class="big-h" data-t="rh2_18">Как формировать скидку, чтобы не уйти в минус</h2>
-<div class="dst" id="dst"></div>
-
-<div class="pgb p1" id="pgb1">
-<div class="pgh"><i>1</i>Скидка за объём</div>
-<div class="pgd" data-t="rgn_10">Даёт клиенту повод заказывать более продолжительные съёмки — и сразу видеть свою выгоду. Суммируется со скидкой постоянного клиента.</div>
-<div class="dmap" id="dmap"></div>
-<div class="ex" style="--exb:var(--c-g-300);--exg:var(--c-g-50);margin-top:20px" data-t="rgn_02">
-<b>За счёт чего формируется скидка за объём</b>Вся суть — в накладных расходах. Подготовка, созвоны и согласования отнимают одинаковое время как для короткой, так и для более продолжительной съёмки.<br>В многочасовом проекте это время «размазывается», поэтому каждый час обходится клиенту дешевле, а ваш личный доход остаётся прежним.<span class="exm" id="dmapex"></span></div>
-</div>
-
-<div id="zapbox"></div>
-
-<div class="pgb p2" id="pgb2">
-<div class="pgh n2"><i>2</i>Скидка постоянному клиенту</div>
-<div class="pgd" data-t="rgn_11">Даёт стабильный поток клиентов, которых не нужно каждый раз завоёвывать заново и тратить деньги на привлечение. Суммируется со скидкой за объём.</div>
-<div class="loy" id="loy"></div>
-<div class="ex" style="--exb:var(--c-p-300);--exg:var(--c-p-50);margin-top:22px;margin-bottom:0" data-t="rgn_12">
-Постоянный клиент экономит вам самое ценное — время на поиск новых заказчиков, долгие созвоны и согласования. Его не нужно заново убеждать в качестве, он уже знает все правила и приходит с готовой задачей.<span class="exm">Вы сэкономите:</span><span class="exl"><b>от 30% вашего бюджета</b> — сможете увеличить личный доход или направить его на развитие;</span><span class="exl"><b>до 20% вашего рабочего времени</b> — которое вы можете потратить на отдых, семью или взять ещё одну коммерческую съёмку.</span></div>
-</div>
-
-<div class="pgb p3" id="pgb3">
-<div class="pgh n3"><i>3</i>Специальные предложения</div>
-<div class="pgd" data-t="rgn_13">Будут полезны, чтобы уверенно загружать съёмками несезон и создавать ажиотаж вокруг своего продукта в условиях высокой конкуренции.</div>
-<div class="spc" id="spc"></div>
-<div class="ex" style="--exb:var(--c-r-300);--exg:var(--c-r-50);margin-top:22px;margin-bottom:0" data-t="rgn_14">
-<b>Комплект сертификатов на год: готовая система без риска для бюджета</b>Мы уже заложили в расчёт готовый годовой комплект подарочных сертификатов, опираясь на ваш фонд программы лояльности. Это конкретные инструменты для работы, которые идеально сбалансированы под ваши цифры.<br>Вы можете в любой момент изменить их состав или заменить на другие акции под свои задачи. Главное — помните: если будете менять условия или увеличивать номиналы, обязательно пересчитайте общий бюджет программы.<span class="exm">Текущий комплект просчитан так, что при реализации сертификатов вы остаётесь полностью при своих деньгах — они работают на привлечение клиентов и продажи, но абсолютно не задевают вашу маржинальность и не создают лишних расходов.</span></div>
-</div>
-
-<div class="fnd" id="fnd"></div>
-</div>
-
-<div class="thxbar"><a class="thxb" href="#thanks" data-thx><svg class="thxd" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 00-7.8 0l-1 1-1-1a5.5 5.5 0 00-7.8 7.8l1 1 7.8 7.8 7.8-7.8 1-1a5.5 5.5 0 000-7.8z" fill="#fff"/></svg><svg class="thxd2" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 00-7.8 0l-1 1-1-1a5.5 5.5 0 00-7.8 7.8l1 1 7.8 7.8 7.8-7.8 1-1a5.5 5.5 0 000-7.8z" fill="#fff"/></svg><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M20.8 4.6a5.5 5.5 0 00-7.8 0l-1 1-1-1a5.5 5.5 0 00-7.8 7.8l1 1 7.8 7.8 7.8-7.8 1-1a5.5 5.5 0 000-7.8z" fill="none" stroke="#fff" stroke-width="2.2" stroke-linejoin="round"/></svg><span data-t="rthx_01">Поблагодарить проект</span></a></div>
-
-<div class="card" id="card07"><div class="bn">04</div>
-<h2 class="big-h" data-t="rh2_12">Ваш идеальный налоговый режим</h2>
-<p class="hint ctr" data-t="rhi_12">Посчитали все режимы на ваших цифрах и показали самый выгодный</p>
-<div class="bestbox" id="bestBox"></div>
-<div class="npd" id="npdBox"></div>
-<div class="txh" data-t="rth_hd">Сравнение режимов налогообложения на ваших цифрах</div>
-<div class="txhs" data-t="rth_hs">Посмотрите, какой вариант действительно приносит максимальную чистую прибыль и на каких условиях вам будет комфортнее работать.</div>
-<div class="txbox"><div class="txw"><table class="tx"><thead><tr>
-<th class="cnm srt" data-sort="имя" data-t="rth_10">Налоговый режим</th>
-<th class="num srt on" data-sort="нагрузка" data-t="rth_13">Нагрузка</th>
-<th class="num srt" data-sort="сумма" data-t="rth_14b">Всего за год</th>
-<th class="num srt" data-sort="ставка" data-t="rth_st">Ставка</th>
-<th class="num srt" data-sort="налог" data-t="rth_tx">Налог / год</th>
-<th class="num srt" data-sort="фикс" data-t="rth_fx">Взносы фикс. / год</th>
-<th class="num srt" data-sort="доп" data-t="rth_dp">Взносы&nbsp;+1% / год</th>
-<th class="num srt" data-sort="бух" data-t="rth_ac">Бухгалтерия / год</th>
-<th class="num srt" data-sort="порог" data-t="rth_lm">Порог (макс. ₽/год)</th>
-<th class="srt" data-sort="дек" data-t="rth_r1">Декларация / год</th>
-<th class="srt" data-sort="кв" data-t="rth_r2">Отчёты / квартал</th>
-<th class="srt" data-sort="куд" data-t="rth_r3">КУДиР</th>
-<th class="srt" data-sort="касса" data-t="rth_r4">Касса</th>
-<th class="srt" data-sort="сотр" data-t="rth_r5">Сотрудники</th>
-</tr></thead><tbody id="txrows"></tbody></table></div><div class="txfoot"></div></div>
-<div class="pmknote txnote" id="txNote"></div>
-</div>
-
-<div class="card" id="card04"><div class="bn">05</div>
-<h2 class="big-h" data-t="rh2_02">Три сценария вашей работы</h2>
-<p class="hint ctr" data-t="rhi_02">Одна и та же загрузка при разной ставке часа. Разница только в цене — и в том, что остаётся вам</p>
-<div class="three" id="dns"></div>
-<div class="minb" style="margin-top:24px">
-<div class="t" data-t="rmb_01">Точка безубыточности / Съёмка в ноль</div>
-<div class="ts" data-t="rmb_05">Это та самая черта, за которой начинается работа в минус. Если стоимость будет ниже этой границы, вы не просто остаётесь без прибыли — вы буквально сами доплачиваете своим клиентам за то, что выполняете для них работу.</div>
-<div class="mbl">
-<div class="y"><i>✓</i><span data-t="rmb_06">Сюда входят все обязательные расходы, которые вам придётся оплачивать в любом случае: аренда, подписки на софт, амортизация камер и света, реклама, налоги, страховые взносы и банковские комиссии. Полный список — в блоке <a href="#cardTab">«Все цифры расчёта в одной таблице»</a>, раздел «Расходы за год».</span></div>
-<div class="n"><i>✕</i><span data-t="rmb_07">Чего здесь нет — вас! Ни секунды вашего времени. Вся съёмка, многочасовая обработка, бесконечные переписки с клиентами остаются полностью бесплатными, а проезд до съёмочной площадки вы оплачиваете из своего кармана.</span></div>
-</div>
-<div class="mbf" data-t="rmb_04"><b>Главная ловушка</b> в том, что эти расходы капают каждый месяц независимо от того, есть у вас заказы или нет. Из-за этого математика работает безжалостно: чем меньше съёмок удаётся найти, тем выше поднимается эта точка безубыточности, потому что вся аренда и подписки раскидываются на жалкие пару заказов.</div>
-</div>
-<div class="note warn" data-t="rlg_01"><b>Логистика в расчёт не входит.</b> Дорога, бензин, такси и парковка по закону ложатся на исполнителя — значит, на третьей ставке вы не выходите в ноль, а работаете в минус на сумму поездок.</div>
-</div>
-
-<div class="card" id="card05"><div class="bn">06</div>
-<h2 data-t="rh2_11">А если просто брать больше заказов?</h2>
-<p class="hint" data-t="rhi_11">Проверим: можно ли выйти на желаемый доход, не поднимая цену для заказчика, — только за счёт объёма работ</p>
-<div class="scn" id="scn"></div>
-<div class="note info">
-<p data-t="rsc_01">Всё ещё хотите просто работать больше? Задайтесь вопросом — зачем.</p>
-<p data-t="rsc_02">Объёмом этот разрыв уже не закрыть. Единственный рычаг, который меняет реальность, — это честная цена часа вашей работы.</p>
-</div>
-</div>
-
-<div class="card" id="card09"><div class="bn">07</div>
-<h2 class="big-h" data-t="rh2_20">Четыре цифры, которые стоит запомнить</h2>
-<p class="hint ctr" data-t="rhi_20">Они выведены из вашего расчёта и пригодятся в любом разговоре о деньгах</p>
-<div class="fg" id="factGrid"></div>
-</div>
-
-<div class="card" id="card10"><div class="bn">08</div>
-<h2 class="big-h" data-t="rh2_13">Объясняйте клиенту, из чего складывается стоимость</h2>
-<p class="hint ctr" data-t="rpm_16">Когда за ценой виден расчёт, торг сменяется пониманием. Это не мнение — это измеренный эффект</p>
-
-<div class="cnd st4">
-<div class="cn s1"><div class="tp" data-t="rpm_17">Больше клиентов</div>
-<div><div class="bg">+21%</div>
-<div class="sm" data-t="rpm_18">чаще покупают, когда видят, из чего складывается цена</div></div></div>
-<div class="cn s2"><div class="tp" data-t="rpm_19b">Меньше торга</div>
-<div><div class="bg">+34%</div>
-<div class="sm" data-t="rpm_20">чаще соглашаются, когда названа причина цены</div></div></div>
-<div class="cn s3"><div class="tp" data-t="rpm_22b">Выше ценник</div>
-<div><div class="bg">87%</div>
-<div class="sm" data-t="rpm_22">покупателей готовы платить больше тем, кому доверяют</div></div></div>
-</div>
-
-<div class="note" data-t="rpm_24">Источники: Гарвардская школа бизнеса и Университет Сан-Франциско, шесть экспериментов с раскрытием себестоимости, «Marketing Science», 2020 · эксперимент Эллен Лангер, Гарвард, 1978 · исследование доверия к брендам Salsify.</div>
-
-<div class="note info" data-t="rpm_25">Вы посчитали свою юнит-экономику! Теперь у вас есть железобетонные цифры, которых нет у большинства коллег, — и полный карт-бланш говорить о стоимости без оправданий.</div>
-</div>
-
-<!-- СКРЫТ 10.08.2026 по решению заказчика: баннер «30 сценариев».
-     НЕ УДАЛЁН — чтобы вернуть, снимите класс hide у .cta ниже.
-     Копия для просмотра: части/09_баннер_сценарии.html -->
-<div class="cta hide">
+<div style="max-width:1080px;margin:0 auto 18px;padding:14px 18px;
+border:1px solid #E5E7EB;border-radius:14px;background:#FFF6F6;
+font:600 13px/1.5 system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;color:#991B1B">
+<span style="display:block;font-size:11px;letter-spacing:.07em;text-transform:uppercase;
+color:#C43D51;margin-bottom:8px">Баннер изъят из отчёта 10.08.2026</span>
+<span style="font-weight:400;font-size:12.5px;color:#6B7280;display:block">
+Страница для просмотра. В <b>report.html</b> баннера нет, дизайн сохранён без изменений.
+</span></div>
+<!--БЛОК-НАЧАЛО-->
+<div class="cta">
 <svg class="dec" style="right:-60px;top:-50px" width="280" height="280" viewBox="0 0 100 100" fill="none">
 <circle cx="50" cy="50" r="50" fill="#fff"/></svg>
 <svg class="dec" style="right:90px;bottom:-70px" width="180" height="180" viewBox="0 0 100 100" fill="none">
@@ -2266,54 +1803,14 @@ break-inside:avoid;page-break-inside:avoid;margin-bottom:12px}
 Забрать сценарии</a>
 </div>
 </div>
-
-<div class="cta thx">
-<svg class="dec" style="right:-60px;top:-50px" width="280" height="280" viewBox="0 0 100 100" fill="none">
-<circle cx="50" cy="50" r="50" fill="#fff"/></svg>
-<svg class="dec" style="right:90px;bottom:-70px" width="180" height="180" viewBox="0 0 100 100" fill="none">
-<circle cx="50" cy="50" r="50" fill="#fff"/></svg>
-<svg class="dec" style="right:214px;top:24px;opacity:.22" width="54" height="54" viewBox="0 0 24 24" fill="none">
-<path d="M20.8 4.6a5.5 5.5 0 00-7.8 0l-1 1-1-1a5.5 5.5 0 00-7.8 7.8l1 1 7.8 7.8 7.8-7.8 1-1a5.5 5.5 0 000-7.8z" fill="#fff"/></svg>
-<svg class="dec" style="right:52px;top:56px;opacity:.3" width="132" height="132" viewBox="0 0 24 24" fill="none">
-<path d="M20.8 4.6a5.5 5.5 0 00-7.8 0l-1 1-1-1a5.5 5.5 0 00-7.8 7.8l1 1 7.8 7.8 7.8-7.8 1-1a5.5 5.5 0 000-7.8z"
- fill="var(--c-a-700)" stroke="#fff" stroke-width="1.3"/></svg>
-<div class="in">
-<div class="kick" data-t="rthx_02">Если расчёт оказался полезным</div>
-<h3 data-t="rthx_03">Поблагодарить проект</h3>
-<p data-t="rthx_04">Так мы будем знать, что сервис вам нужен, и сможем развивать его и сохранять бесплатным для всех специалистов креативной индустрии.</p>
-<a class="btn2" href="#thanks" data-thx>
-<svg width="19" height="19" viewBox="0 0 24 24" fill="none">
-<path d="M20.8 4.6a5.5 5.5 0 00-7.8 0l-1 1-1-1a5.5 5.5 0 00-7.8 7.8l1 1 7.8 7.8 7.8-7.8 1-1a5.5 5.5 0 000-7.8z"
- fill="none" stroke="var(--c-a-700)" stroke-width="2"/></svg>
-Поблагодарить</a>
+<!--БЛОК-КОНЕЦ-->
 </div>
 </div>
-
-<div class="pmknote">
-<div class="pnh" data-t="rrf_01">Справочник: термины и определения</div>
-<div id="refList"></div>
-<div class="pnf" data-t="rrf_02">Эти же пояснения есть в форме под каждым вопросом — разверните «что сюда входит», если захотите пересчитать точнее.</div>
-</div>
-
-<div class="card" id="cardTab">
-<h2 class="big-h" data-t="rtb_01">Все цифры расчёта в одной таблице</h2>
-<p class="hint ctr" data-t="rtb_02">Полная выгрузка: время, проект, доход, расходы, налоги и ставки</p>
-<div class="tabw"><table class="ftab"><tbody id="fullTab"></tbody></table></div>
-</div>
-
-<div class="trb" id="trial">
-<div class="trh"><svg class="tri" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 4.2L2.8 20h18.4z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M12 10v4.4" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/><circle cx="12" cy="17.4" r="1.05" fill="currentColor"/></svg><span data-t="rt_01">Что значит пробный режим</span></div>
-<p data-t="rt_02">Сервис уже работает и считает по открытой методике: производственный календарь, нормы Трудового кодекса и налоговые правила 2026 года. Результатом можно пользоваться.</p>
-<p data-t="rt_03">Но мы всё ещё тестируем: где-то может встретиться ошибка в расчёте или неточная формулировка. <b>Если заметите — напишите нам</b>, будем благодарны. Так сервис станет точнее.</p>
-<p data-t="rt_04">Оплата отчёта тоже пока в пробном режиме — сейчас это скорее способ поддержать проект, чем цена. Ваши цифры остаются в браузере и никуда не отправляются.</p>
-</div>
-
-<div class="foot"><span class="lgs" title="Счетикс — твоя юнит-экономика"><span class="btx"><span class="bt">счетикс</span><span class="bd" data-t="bt_02"><i>т</i><i>в</i><i>о</i><i>я</i><i>&nbsp;</i><i>ю</i><i>н</i><i>и</i><i>т</i><i>-</i><i>э</i><i>к</i><i>о</i><i>н</i><i>о</i><i>м</i><i>и</i><i>к</i><i>а</i></span></span><svg class="lx" viewBox="0 0 32 32" fill="none" aria-hidden="true"><rect x="10.95" y="2.09" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 7.14)" fill="var(--c-gr3)"/><rect x="19.81" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 24.86 16)" fill="var(--c-g-500)"/><rect x="10.95" y="19.81" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 24.86)" fill="var(--c-gr3)"/><rect x="2.09" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 7.14 16)" fill="var(--c-gr3)"/></svg></span>
-<div class="fcop" data-t="rfc_01">ООО «Центр маркетинговых услуг Гет Маркетинг» © 2026</div>
-</div>
-
-</div>
-</div>
+<script>
+/* На странице один блок — заглушка для остальных элементов. */
+(function(){var р=document.getElementById.bind(document);
+document.getElementById=function(id){return р(id)||(function(){var e=document.createElement("div");e.style.display="none";return e})()}})();
+</script>
 <script>
 (function(){
 var R=document.getElementById('phr-root');
@@ -2355,7 +1852,7 @@ var LB=['\u041a\u0430\u043a \u0444\u043e\u0442\u043e\u0433\u0440\u0430\u0444 \u2
 '\u0417\u0430\u043f\u043b\u0430\u0442\u0438\u0442\u0435 \u043f\u043e \u0442\u0435\u043a\u0443\u0449\u0438\u043c \u0441\u0447\u0435\u0442\u0430\u043c',
 '\u0417\u0430\u043f\u043b\u0430\u0442\u0438\u0442\u0435 \u043d\u0430\u043b\u043e\u0433\u043e\u0432 \u0438 \u0432\u0437\u043d\u043e\u0441\u043e\u0432',
 '\u041e\u0442\u0434\u0430\u0434\u0438\u0442\u0435 \u0431\u0430\u043d\u043a\u0443 \u0437\u0430 \u044d\u043a\u0432\u0430\u0439\u0440\u0438\u043d\u0433',
-'\u041e\u0442\u043b\u043e\u0436\u0438\u0442\u0435 \u0437\u0430\u043f\u0430\u0441 \u0441\u0440\u0435\u0434\u0441\u0442\u0432 \u0432 \u0444\u043e\u043d\u0434 \u0440\u0430\u0437\u0432\u0438\u0442\u0438\u044f',
+'\u041e\u0442\u043b\u043e\u0436\u0438\u0442\u0435 \u0432 \u0444\u043e\u043d\u0434 \u0440\u0430\u0437\u0432\u0438\u0442\u0438\u044f',
 '\u0417\u0430\u043b\u043e\u0436\u0438\u0442\u0435 \u0437\u0430\u043f\u0430\u0441 \u043d\u0430 \u0441\u043a\u0438\u0434\u043a\u0443'];
 
 /* ДЕМО-ДАННЫЕ. Реальные приходят из калькулятора: localStorage 'phc_report' или ?data= */
@@ -2382,10 +1879,6 @@ function loadData(){
    страницы благодарности (боости, ЮMoney и т.п.) — подставится во все
    четыре кнопки сразу. */
 var THANKS_URL='#thanks';
-/* Куда ведёт «Редактировать данные»: обратно в анкету. Отчёт открывается
-   отдельной страницей, поэтому нужен полный путь, а не якорь. */
-var EDIT_URL='calc.html';
-
 var d=loadData();
 
 function parts(x){
@@ -2499,27 +1992,7 @@ function donut(vals,cols,cx,big,idx,labels){
     /* fixed — сегменты, которые нечего разбирать: не ловят наведение.
        Список приходит снаружи, через donut.FIXED. */
     var isFx=donut.FIXED&&donut.FIXED.indexOf(k)>=0;
-    /* Появление: каждый сектор выезжает отдельно, как в анкете. Там кольцо
-       нарисовано обводкой и растёт через stroke-dasharray; здесь секторы —
-       это фигуры, поэтому тот же приём применяем к МАСКЕ: дуга-обводка
-       внутри маски удлиняется и открывает сектор от начала к концу.
-       Дуга идёт по средней линии кольца, толщина W перекрывает сектор. */
-    var mid0=pt(RR,b0), mid1=pt(RR,b1);
-    var mBig=(b1-b0)>180?1:0;
-    var дуга=(sw>=359.999)
-      ? 'M'+(C-RR)+' '+C+'A'+RR+' '+RR+' 0 1 1 '+(C+RR)+' '+C+
-        'A'+RR+' '+RR+' 0 1 1 '+(C-RR)+' '+C
-      : 'M'+mid0[0]+' '+mid0[1]+'A'+RR+' '+RR+' 0 '+mBig+' 1 '+mid1[0]+' '+mid1[1];
-    var дл=(sw/360)*2*Math.PI*RR;            /* длина дуги сектора */
-    var мид='sgm'+(donut._n=(donut._n||0)+1);
-    s+='<mask id="'+мид+'" maskUnits="userSpaceOnUse">'+
-       '<path d="'+дуга+'" fill="none" stroke="#fff" stroke-width="'+(W+2)+'" '+
-       'stroke-dasharray="0 '+(дл+1).toFixed(2)+'">'+
-       '<animate class="segan" attributeName="stroke-dasharray" '+
-       'from="0 '+(дл+1).toFixed(2)+'" to="'+дл.toFixed(2)+' 0" '+
-       'dur="0.9s" begin="indefinite" fill="freeze"/></path></mask>';
     s+='<path class="seg'+(isFx?' fixed':'')+'" d="'+d+'" fill="'+cols[k]+'" fill-rule="evenodd"'+
-       ' mask="url(#'+мид+')"'+
        (nm?' data-nm="'+nm.replace(/"/g,'&quot;')+'" data-pc="'+pct.toFixed(pct<1?1:0)+'"':'')+'/>';
     if(big&&pct>=3.2){
       var mid=(b0+b1)/2, tp=pt(RR,mid);
@@ -2570,55 +2043,6 @@ function render(){
   $('hInc').textContent=f0(d.Ny/12)+MO;
   $('hExp').textContent=f0(expMo)+MO;
   $('hMon').textContent=f0(d.R/12)+MO;
-
-  /* --- меню и плавающая плашка ---
-     Меню прокручивается вместе со страницей. Плашка появляется после
-     500 px и висит по центру сверху. Кнопки в обеих делают одно и то же,
-     поэтому обработчики вешаем сразу на пары. */
-  (function(){
-    var порог=500, виден=false, bar=$('fbar');
-
-    ['editLink','editLink2'].forEach(function(id){
-      var e=$(id); if(e)e.setAttribute('href',EDIT_URL);
-    });
-
-    /* печать в PDF: имя файла подставляется перед открытием окна */
-    ['dlBtn','dlBtn2'].forEach(function(id){
-      var b=$(id); if(!b)return;
-      b.onclick=function(){
-        try{document.title=window.PHR_FILENAME()}catch(e){}
-        window.print();
-      };
-    });
-
-    /* поделиться: системное окно на телефонах, буфер на остальном */
-    ['shareBtn','shareBtn2'].forEach(function(id){
-      var sh=$(id); if(!sh)return;
-      sh.onclick=function(){
-        var url=location.href, ttl=document.title;
-        if(navigator.share){navigator.share({title:ttl,url:url}).catch(function(){});return}
-        var ok=function(){sh.classList.add('done');
-          setTimeout(function(){sh.classList.remove('done')},1800)};
-        if(navigator.clipboard&&navigator.clipboard.writeText){
-          navigator.clipboard.writeText(url).then(ok,function(){});
-        }else{
-          var t=document.createElement('textarea');
-          t.value=url; document.body.appendChild(t); t.select();
-          try{document.execCommand('copy');ok()}catch(_){}
-          document.body.removeChild(t);
-        }
-      };
-    });
-
-    if(!bar)return;
-    function проверить(){
-      var y=window.pageYOffset||document.documentElement.scrollTop||0;
-      var надо=y>порог;
-      if(надо!==виден){виден=надо; bar.classList.toggle('on',надо)}
-    }
-    window.addEventListener('scroll',проверить,{passive:true});
-    проверить();
-  })();
 
   /* адрес благодарности — во все кнопки разом */
   (function(){
@@ -2729,17 +2153,12 @@ var REFD=[
   var HRS=[d.sh,d.post,d.clT,d.promo,d.accT,d.fmT+d.idle].map(function(h){return h/d.sh});
   /* если параметр не заложен — показываем, чем это обернётся */
   var ZW=[];
-  /* Куда ведёт кнопка в предупреждении: якорь поля в анкете
-     и надпись. Ключи те же, что id полей в calc.html. */
-  var ZWA=[];
-  ZWA[11]=['fund_on','\u0417\u0430\u043b\u043e\u0436\u0438\u0442\u044c \u0444\u043e\u043d\u0434 \u0440\u0430\u0437\u0432\u0438\u0442\u0438\u044f'];
-  ZWA[12]=['disc_on','\u0417\u0430\u043b\u043e\u0436\u0438\u0442\u044c \u0437\u0430\u043f\u0430\u0441 \u043d\u0430 \u0441\u043a\u0438\u0434\u043a\u0443'];
   ZW[11]='\u0422\u0435\u0445\u043d\u0438\u043a\u0443 \u043f\u0440\u0438\u0434\u0451\u0442\u0441\u044f \u043c\u0435\u043d\u044f\u0442\u044c \u0438\u0437 \u0441\u0432\u043e\u0435\u0433\u043e \u043a\u0430\u0440\u043c\u0430\u043d\u0430 \u0438\u043b\u0438 \u0432 \u043a\u0440\u0435\u0434\u0438\u0442. \u0410\u043c\u043e\u0440\u0442\u0438\u0437\u0430\u0446\u0438\u044f \u043f\u043e\u043a\u0440\u044b\u0432\u0430\u0435\u0442 \u0442\u043e\u043b\u044c\u043a\u043e \u0437\u0430\u043c\u0435\u043d\u0443 \u0442\u043e\u0433\u043e, \u0447\u0442\u043e \u0443\u0436\u0435 \u0435\u0441\u0442\u044c, \u2014 \u043d\u0430 \u043d\u043e\u0432\u043e\u0435 \u0441\u0442\u0435\u043a\u043b\u043e, \u0432\u0442\u043e\u0440\u043e\u0439 \u043a\u043e\u0440\u043f\u0443\u0441 \u0438 \u043e\u0431\u0443\u0447\u0435\u043d\u0438\u0435 \u0434\u0435\u043d\u0435\u0433 \u0432 \u0440\u0430\u0441\u0447\u0451\u0442\u0435 \u043d\u0435\u0442.';
   ZW[12]='\u041b\u044e\u0431\u0430\u044f \u0441\u043a\u0438\u0434\u043a\u0430 \u00ab\u043f\u0440\u043e\u0441\u0442\u043e \u0442\u0430\u043a\u00bb \u0431\u0443\u0434\u0435\u0442 \u0432\u044b\u0447\u0442\u0435\u043d\u0430 \u0438\u0437 \u0432\u0430\u0448\u0435\u0433\u043e \u0434\u043e\u0445\u043e\u0434\u0430. \u041e\u0441\u0442\u0430\u043d\u0435\u0442\u0441\u044f \u0442\u043e\u043b\u044c\u043a\u043e \u0441\u043a\u0438\u0434\u043a\u0430 \u0437\u0430 \u043e\u0431\u044a\u0451\u043c \u2014 \u043e\u043d\u0430 \u043f\u043e\u0441\u0447\u0438\u0442\u0430\u043d\u0430 \u043d\u0438\u0436\u0435 \u0438 \u0431\u0435\u0440\u0451\u0442\u0441\u044f \u0438\u0437 \u043d\u0430\u043a\u043b\u0430\u0434\u043d\u044b\u0445 \u0440\u0430\u0441\u0445\u043e\u0434\u043e\u0432.';
   function lgRow(i){
     var w=mx>0?P[i]/mx*100:0, zero=P[i]<0.5;
     return '<div class="lgi'+(zero?' zero':'')+'">'+
-    '<div class="fill" style="--w:'+w.toFixed(1)+'%;width:'+w.toFixed(1)+'%;background:'+CO[i]+'"></div>'+
+    '<div class="fill" style="width:'+w.toFixed(1)+'%;background:'+CO[i]+'"></div>'+
     '<div class="ltx"><i style="background:'+CO[i]+'"></i><div><b>'+LB[i]+'</b>'+
     (function(){
       /* Вместо пересказа состава — ссылка на пункт справочника.
@@ -2753,11 +2172,7 @@ var REFD=[
     '<div class="lvv"><div class="a">'+(zero?'\u043d\u0435 \u0437\u0430\u043b\u043e\u0436\u0435\u043d\u043e':f0(P[i]/d.sh))+'</div>'+
     (HRS[i]!==undefined?'<div class="b2">\u0437\u0430 '+f1(HRS[i])+' \u0447</div>':'')+
     '</div>'+
-    (zero&&ZW[i]?'<div class="note warn lgw">'+ZW[i]+
-      /* Кнопка ведёт прямо к нужному полю анкеты — человек может
-         сразу исправить, не разыскивая вопрос вручную. */
-      (ZWA[i]?'<a class="lgwb" href="'+EDIT_URL+'#'+ZWA[i][0]+'">'+ZWA[i][1]+'</a>':'')+
-      '</div>':'')+
+    (zero&&ZW[i]?'<div class="note warn lgw">'+ZW[i]+'</div>':'')+
     '</div>';
   }
   var gProf=VI.filter(function(i){return i<=1});      /* по специальности */
@@ -3072,9 +2487,7 @@ var REFD=[
     else{
       zb.className='note warn';
       zb.setAttribute('style','margin-top:20px');
-      /* Кнопка ведёт прямо к полю анкеты — как в предупреждениях блока 01. */
-      zb.innerHTML='Если хотите иметь возможность сформировать программу лояльности и давать скидки своим клиентам не только за объём — вернитесь в анкету и включите «Резерв на скидку».'+
-        '<a class="lgwb" href="'+EDIT_URL+'#disc_on">Заложить резерв на скидку</a>';
+      zb.innerHTML='Если хотите иметь возможность сформировать программу лояльности и давать скидки своим клиентам не только за объём — вернитесь в анкету и включите «Резерв на скидку».';
     }
   }
 
@@ -3090,13 +2503,8 @@ var REFD=[
       var C=2*Math.PI*62, off=0, дуги='', подписи='';
       НАПР.forEach(function(x,i){
         var доля=фонд>0?x.v/фонд:0, a=C*доля;
-        /* Кольцо фонда нарисовано обводкой, поэтому сектор растёт
-           напрямую через stroke-dasharray — тот же приём, что в анкете. */
         дуги+='<circle cx="80" cy="80" r="62" fill="none" stroke="url(#fg'+(i+1)+')" stroke-width="26" '+
-              'stroke-dasharray="'+a.toFixed(2)+' '+(C-a).toFixed(2)+'" stroke-dashoffset="'+(-off).toFixed(2)+'">'+
-              '<animate class="segan" attributeName="stroke-dasharray" '+
-              'from="0 '+C.toFixed(2)+'" to="'+a.toFixed(2)+' '+(C-a).toFixed(2)+'" '+
-              'dur="0.9s" begin="indefinite" fill="freeze"/></circle>';
+              'stroke-dasharray="'+a.toFixed(2)+' '+(C-a).toFixed(2)+'" stroke-dashoffset="'+(-off).toFixed(2)+'"/>';
         var mid=(off/C)+доля/2, ang=(-90+360*mid)*Math.PI/180;
         подписи+='<text class="fpc" x="'+(80+62*Math.cos(ang)).toFixed(1)+'" y="'+
                  (80+62*Math.sin(ang)).toFixed(1)+'">'+Math.round(доля*100)+'%</text>';
@@ -3126,7 +2534,7 @@ var REFD=[
       '<div>'+
       НАПР.map(function(x,i){
         return '<div class="bar b'+(i+1)+'"><div class="bt"><i>'+x.t+'</i><b>'+f0(x.v)+'</b></div>'+
-        '<div class="bl"><i style="--w:'+(фонд>0?(x.v/фонд*100).toFixed(1):0)+'%;width:'+(фонд>0?(x.v/фонд*100).toFixed(1):0)+'%"></i></div></div>';
+        '<div class="bl"><i style="width:'+(фонд>0?(x.v/фонд*100).toFixed(1):0)+'%"></i></div></div>';
       }).join('')+
       '<div class="fnn">Мы распределили бюджет между тремя ключевыми направлениями в качестве примера. Вы можете легко перераспределить их под свои текущие задачи или использовать как есть в качестве готовой модели. Хотите — усильте постоянных клиентов или сделайте глубже скидку на долгие съёмки.</div>'+
       '</div></div>'+
@@ -3144,7 +2552,7 @@ var REFD=[
         '<b>'+f0(x.sum)+'<em>'+x.n+' '+скл(x.n,'клиент','клиента','клиентов')+
         ' × '+x.s+' '+скл(x.s,'съёмка','съёмки','съёмок')+' = '+x.z+' '+
         скл(x.z,'заказ','заказа','заказов')+'</em></b></div>'+
-        '<div class="bl"><i style="--w:'+(постЗак>0?(x.z/постЗак*100).toFixed(0):0)+'%;width:'+(постЗак>0?(x.z/постЗак*100).toFixed(0):0)+'%"></i></div></div>';
+        '<div class="bl"><i style="width:'+(постЗак>0?(x.z/постЗак*100).toFixed(0):0)+'%"></i></div></div>';
       }).join('')+
       '<div class="s3t">'+
         '<div><span>Сверх того сэкономите на привлечении</span><b>'+f0(годЭк)+' / год</b></div>'+
@@ -3935,63 +3343,7 @@ render();
   window.addEventListener('afterprint',after);
   window.PHR_FILENAME=fname;
 })();
-/* ===== ПОЯВЛЕНИЕ ДИАГРАММ =====
-   Диаграмма оживает, когда доезжает до экрана. Помечаем контейнеры
-   классом по типу рисунка, потом наблюдатель вешает .go — переход
-   запускается сам. Срабатывает один раз: при обратной прокрутке
-   диаграмма не «схлопывается». */
-(function(){
-  var корень=document.getElementById('phr-root');
-  if(!корень)return;
-
-  /* кольца: контейнеры, внутри которых есть svg с секторами */
-  var кольца=['#dn1','#dnB','.dn','.fring','.scn3 .dn'];
-  /* полосы: легенда блока 01, полосы фонда и сценария, расшифровка недели */
-  var полосы=['.lgd','.fnw','.sc3','.drow'];
-
-  function пометить(селекторы,класс){
-    корень.querySelectorAll(селекторы.join(',')).forEach(function(e){
-      /* пустые контейнеры не трогаем — им нечего показывать */
-      if(!e.children.length)return;
-      e.classList.add(класс);
-    });
-  }
-  пометить(кольца,'anim-ring');
-  пометить(полосы,'anim-bar');
-  var wk=document.getElementById('wk');
-  if(wk&&wk.children.length)wk.classList.add('anim-wk');
-
-  var цели=корень.querySelectorAll('.anim-ring,.anim-bar,.anim-wk');
-  if(!цели.length)return;
-
-  if(!window.IntersectionObserver){
-    /* старый браузер: показываем сразу, без анимации */
-    цели.forEach(function(e){e.classList.add('go');
-      e.querySelectorAll('animate.segan').forEach(function(a){
-        try{a.beginElement()}catch(_){}});});
-    return;
-  }
-  /* Секторы кольца пускаем по очереди, с задержкой в 90 мс: сначала
-     первый, потом следующий — так же, как в анкете. Без задержки все
-     выезжали бы разом и разбивка не читалась. */
-  function пуск(цель){
-    var ан=цель.querySelectorAll('animate.segan');
-    for(var i=0;i<ан.length;i++){
-      (function(a,i){
-        setTimeout(function(){ try{a.beginElement()}catch(e){} },i*90);
-      })(ан[i],i);
-    }
-  }
-  var наб=new IntersectionObserver(function(записи){
-    записи.forEach(function(з){
-      if(!з.isIntersecting)return;
-      з.target.classList.add('go');
-      пуск(з.target);
-      наб.unobserve(з.target);
-    });
-  },{threshold:.18,rootMargin:'0px 0px -8% 0px'});
-  цели.forEach(function(e){наб.observe(e)});
-})();
 var _p=$('dlpdf'); if(_p)_p.onclick=function(){try{document.title=window.PHR_FILENAME()}catch(e){}window.print()};
 })();
 </script>
+</body></html>
