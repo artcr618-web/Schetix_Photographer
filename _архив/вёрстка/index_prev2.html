@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="ru"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Счетикс — юнит-экономика для фотографов</title>
+</head><body>
+<!-- ============================================================
+     ВХОД В КАЛЬКУЛЯТОР. Зелёное полотно во весь экран, без шапки
+     и без подписей по краям: знак, кнопка, шесть преимуществ,
+     реквизиты по низу. Дальше человек проваливается в анкету.
+     ============================================================ -->
+<div id="phw-root">
+<style>
+/* Полотно на весь экран: заливка лежит на самой странице, чтобы
+   на длинном экране не оставалось белых краёв. */
+html,body{margin:0;padding:0;background:#0B3F1B}
+#phw-root{
+/* ===== ПАЛИТРА · единая с отчётом, см. лист 09c_Палитра =====
+   Единственное исключение: фирменные цвета Visa / Mastercard / МИР
+   в иконках оплаты — их менять нельзя по правилам платёжных систем. */
+--c-ink:#1A1A1A;
+--c-ink2:#374151;
+--c-ink3:#4B5563;
+--c-gr:#6B7280;
+--c-gr2:#9CA3AF;
+--c-gr3:#B6BCC4;
+--c-ln:#E5E7EB;
+--c-ln2:#F0F2F5;
+--c-bg:#F5F6F8;
+--c-surf:#FAFBFC;
+--c-white:#FFFFFF;
+--c-g-50:#F5FBF7;
+--c-g-100:#EAF6EE;
+--c-g-200:#D8EEDF;
+--c-g-300:#A9DDB8;
+--c-g-350:#6FD183;
+--c-g-400:#4FC26A;
+--c-g-500:#21A038;
+--c-g-600:#1B9331;
+--c-g-700:#158026;
+--c-g-800:#0B6B22;
+--c-g-900:#14532D;
+--c-g-mut:#5C9C6C;
+--c-r-50:#FFF6F6;
+--c-r-100:#FDE8E8;
+--c-r-200:#F7D3D3;
+--c-r-300:#E4A9A9;
+--c-r-400:#E8828E;
+--c-r-500:#EF4444;
+--c-r-550:#D6566A;
+--c-r-600:#C43D51;
+--c-r-650:#D0342F;
+--c-r-700:#B91C1C;
+--c-r-800:#991B1B;
+--c-r-900:#7F1D1D;
+--c-a-50:#FFFBEF;
+--c-a-100:#FEF3D6;
+--c-a-200:#FBE3AE;
+--c-a-300:#F2C48A;
+--c-a-350:#E8A05C;
+--c-a-400:#F5B301;
+--c-a-500:#D9762E;
+--c-a-600:#C4551F;
+--c-a-700:#B45309;
+--c-a-800:#92400E;
+--c-a-900:#7A5309;
+--c-a-br:#8A5C4A;
+--c-a-br2:#5F3B2E;
+--c-b-50:#F6FAFE;
+--c-b-100:#E7F0FA;
+--c-b-200:#CFE0F3;
+--c-b-250:#B7C9E8;
+--c-b-300:#8FC7E8;
+--c-b-400:#5CA8E0;
+--c-b-500:#3B82F6;
+--c-b-600:#2F80C4;
+--c-b-700:#2A6FAB;
+--c-b-800:#1D4ED8;
+--c-b-900:#3B6398;
+--c-b-mut:#7189AE;
+--c-v-50:#F8F5FE;
+--c-v-300:#C7B9EC;
+--c-v-500:#8B5CF6;
+--c-v-700:#6D3FD4;
+--c-p-50:#FFF7FB;
+--c-p-100:#FCE7F3;
+--c-p-500:#EC4899;
+--c-p-700:#9D174D;
+/* алиасы */
+--g:var(--c-g-500);--gd:var(--c-g-700);--gl:var(--c-g-100);--ink:var(--c-ink);
+--gr:var(--c-gr);--ln:var(--c-ln);--bg:var(--c-bg);
+--c1:var(--c-g-500);--c2:var(--c-r-500);--c3:var(--c-a-400);--c4:var(--c-v-500);--c5:var(--c-b-500);--r:20px;
+font-family:-apple-system,BlinkMacSystemFont,'SB Sans Text','Segoe UI',Roboto,Arial,sans-serif;
+color:var(--c-white);line-height:1.45;
+min-height:100vh;min-height:100dvh;
+display:flex;flex-direction:column;align-items:center;
+padding:56px 32px 26px;box-sizing:border-box;
+background:linear-gradient(150deg,var(--c-g-900) 0%,var(--c-g-800) 34%,
+var(--c-g-600) 68%,var(--c-g-500) 100%);
+position:relative;overflow:hidden;
+-webkit-font-smoothing:antialiased}
+#phw-root *{box-sizing:border-box}
+
+/* Фоновые ромбы — приём .hdeco из шапки отчёта, те же прозрачности */
+#phw-root .deco{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+#phw-root .deco svg{position:absolute;display:block}
+#phw-root .deco .d1{left:-120px;top:-96px;width:400px;height:400px;opacity:.06}
+#phw-root .deco .d2{right:-104px;bottom:-120px;width:360px;height:360px;opacity:.05}
+#phw-root .deco .d3{right:11%;top:9%;width:74px;height:74px;opacity:.09}
+#phw-root .deco .d4{left:9%;bottom:20%;width:50px;height:50px;opacity:.08}
+#phw-root .in{position:relative;z-index:1;width:100%;max-width:1080px;
+flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+text-align:center}
+
+/* ---------- знак ----------
+   Крупный ромб, под ним слово и растянутая подпись — те же пропорции,
+   что в шапке отчёта, только столбиком и в белом. */
+#phw-root .brand{display:flex;flex-direction:column;align-items:center;gap:16px;line-height:1}
+#phw-root .brand .bx{display:block;width:104px;height:104px}
+#phw-root .brand .btx{display:flex;flex-direction:column;align-items:stretch;gap:7px}
+#phw-root .brand .bt{font-size:40px;font-weight:800;letter-spacing:.11em;
+text-transform:lowercase;color:var(--c-white);display:block}
+#phw-root .brand .bd{font-size:12px;color:rgba(255,255,255,.66);white-space:nowrap;
+display:flex;justify-content:space-between;text-transform:lowercase}
+#phw-root .brand .bd i{font-style:normal}
+
+/* ---------- для кого ---------- */
+#phw-root .who{font-size:clamp(30px,4.6vw,58px);font-weight:800;letter-spacing:-.035em;
+line-height:1.05;margin:26px 0 0}
+#phw-root .who em{font-style:normal;color:var(--c-g-350)}
+#phw-root .made{font-size:15px;line-height:1.55;color:rgba(255,255,255,.72);
+max-width:560px;margin:16px auto 0}
+
+/* ---------- кнопка ----------
+   Прозрачная в рамке, при наведении заливается белым. Высота и радиус
+   те же, что у кнопок отчёта. */
+#phw-root .cta{display:inline-flex;align-items:center;justify-content:center;gap:12px;
+background:transparent;color:var(--c-white);border:2px solid rgba(255,255,255,.55);
+border-radius:var(--r);height:72px;padding:0 46px;margin:34px 0 0;
+font-family:inherit;font-size:18px;font-weight:700;letter-spacing:-.015em;
+text-decoration:none;cursor:pointer;transition:.18s}
+#phw-root .cta:hover{background:var(--c-white);color:var(--c-g-800);
+border-color:var(--c-white);box-shadow:0 12px 34px rgba(0,0,0,.24)}
+#phw-root .cta:active{background:var(--c-g-50);transform:translateY(1px);
+box-shadow:0 6px 18px rgba(0,0,0,.2)}
+#phw-root .cta svg{flex:none}
+#phw-root .undr{font-size:13.5px;color:rgba(255,255,255,.58);margin-top:13px}
+
+/* ---------- шесть плашек ----------
+   Зелёные, светлее полотна: подложка своим тоном, светлая грань. */
+#phw-root .adv{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;
+margin:44px auto 0;width:100%;text-align:left}
+#phw-root .ad{display:flex;gap:13px;align-items:flex-start;
+background:linear-gradient(140deg,rgba(255,255,255,.13),rgba(255,255,255,.06));
+border:1px solid rgba(255,255,255,.16);border-radius:16px;padding:17px 18px}
+#phw-root .ad .ai{width:42px;height:42px;border-radius:12px;flex:none;
+display:flex;align-items:center;justify-content:center;color:var(--c-g-350);
+background:rgba(255,255,255,.11);border:1px solid rgba(255,255,255,.14)}
+#phw-root .ad .an{font-size:15px;font-weight:700;letter-spacing:-.015em;
+margin-bottom:4px;line-height:1.3}
+#phw-root .ad .ax{font-size:12.5px;line-height:1.5;color:rgba(255,255,255,.7)}
+
+/* ---------- реквизиты по низу ---------- */
+#phw-root .fcop{position:relative;z-index:1;flex:none;
+font-size:11.5px;color:rgba(255,255,255,.45);text-align:center;
+line-height:1.5;padding-top:30px}
+
+/* ---------- узкий экран ---------- */
+@media(max-width:900px){
+#phw-root{padding:38px 18px 20px;min-height:auto}
+#phw-root .adv{grid-template-columns:1fr 1fr;gap:11px;margin-top:34px}
+#phw-root .brand .bx{width:78px;height:78px}
+#phw-root .brand .bt{font-size:30px}
+#phw-root .cta{width:100%;padding:0 22px;font-size:17px}
+#phw-root .deco .d3,#phw-root .deco .d4{display:none}}
+@media(max-width:560px){
+#phw-root .adv{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){#phw-root .cta{transition:none}}
+</style>
+
+<div class="deco" aria-hidden="true">
+<svg class="d1" viewBox="0 0 32 32" fill="none"><rect x="10.95" y="2.09" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 7.14)" fill="#fff"/><rect x="19.81" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 24.86 16)" fill="#fff"/><rect x="10.95" y="19.81" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 24.86)" fill="#fff"/><rect x="2.09" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 7.14 16)" fill="#fff"/></svg>
+<svg class="d2" viewBox="0 0 32 32" fill="none"><rect x="10.95" y="2.09" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 7.14)" fill="#fff"/><rect x="19.81" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 24.86 16)" fill="#fff"/><rect x="10.95" y="19.81" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 24.86)" fill="#fff"/><rect x="2.09" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 7.14 16)" fill="#fff"/></svg>
+<svg class="d3" viewBox="0 0 32 32" fill="none"><rect x="10.95" y="2.09" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 7.14)" fill="#fff"/><rect x="19.81" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 24.86 16)" fill="#fff"/><rect x="10.95" y="19.81" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 24.86)" fill="#fff"/><rect x="2.09" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 7.14 16)" fill="#fff"/></svg>
+<svg class="d4" viewBox="0 0 32 32" fill="none"><rect x="10.95" y="2.09" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 7.14)" fill="#fff"/><rect x="19.81" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 24.86 16)" fill="#fff"/><rect x="10.95" y="19.81" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 24.86)" fill="#fff"/><rect x="2.09" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 7.14 16)" fill="#fff"/></svg>
+</div>
+
+<div class="in">
+
+<div class="brand" title="Счетикс — твоя юнит-экономика">
+<svg class="bx" viewBox="0 0 32 32" fill="none" aria-hidden="true"><rect x="10.95" y="2.09" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 7.14)" fill="#fff"/><rect x="19.81" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 24.86 16)" fill="var(--c-g-350)"/><rect x="10.95" y="19.81" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 24.86)" fill="#fff"/><rect x="2.09" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 7.14 16)" fill="#fff"/></svg>
+<span class="btx"><span class="bt">счетикс</span>
+<span class="bd" data-t="bt_02"><i>т</i><i>в</i><i>о</i><i>я</i><i>&nbsp;</i><i>ю</i><i>н</i><i>и</i><i>т</i><i>-</i><i>э</i><i>к</i><i>о</i><i>н</i><i>о</i><i>м</i><i>и</i><i>к</i><i>а</i></span></span>
+</div>
+
+<h1 class="who" data-t="wh_01">Юнит-экономика<br><em>для фотографа</em></h1>
+<p class="made" data-t="wl_01">Создано фотографами для фотографов на основе реального опыта. Быть независимым автором не значит работать больше, чем в найме, и постоянно уходить в минус.</p>
+
+<a class="cta" id="start" href="calc.html">
+<svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+<rect x="4" y="2.5" width="16" height="19" rx="3" stroke="currentColor" stroke-width="2"/>
+<path d="M8 7h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+<path d="M8.5 12h.01M12 12h.01M15.5 12h.01M8.5 16.5h.01M12 16.5h.01M15.5 16.5h.01"
+stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>
+Просчитать юнит-экономику</a>
+<div class="undr" data-t="wu_01">Бесплатно, без регистрации. Двадцать вопросов, пять минут</div>
+
+<div class="adv">
+<div class="ad">
+<div class="ai"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 18h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M7 18V9.5M12 18V5.5M17 18v-5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
+<div><div class="an" data-t="wa_01">Актуальная стоимость часа</div>
+<div class="ax" data-t="wax_01">С учётом расходов, налогов и всего времени вокруг съёмки</div></div>
+</div>
+<div class="ad">
+<div class="ai"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M5 21V6.5L12 3l7 3.5V21" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/><path d="M3 21h18" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/><path d="M9.5 21v-5h5v5" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/></svg></div>
+<div><div class="an" data-t="wa_02">Идеальный налоговый режим</div>
+<div class="ax" data-t="wax_02">Посчитаем все режимы на ваших цифрах и покажем самый выгодный</div></div>
+</div>
+<div class="ad">
+<div class="ai"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M8.5 15.5l7-7" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/><circle cx="9" cy="9" r="2.1" stroke="currentColor" stroke-width="1.7"/><circle cx="15" cy="15" r="2.1" stroke="currentColor" stroke-width="1.7"/><rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" stroke-width="1.5" opacity=".55"/></svg></div>
+<div><div class="an" data-t="wa_03">Скидки, которые не съедят доход</div>
+<div class="ax" data-t="wax_03">Программа лояльности за счёт накладных расходов, а не вашего кармана</div></div>
+</div>
+<div class="ad">
+<div class="ai"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="3" y="4.5" width="18" height="16" rx="3" stroke="currentColor" stroke-width="1.9"/><path d="M3 9.5h18M8 2.6v4M16 2.6v4" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/><rect x="6.4" y="12.4" width="3.4" height="3.4" rx="1" fill="currentColor"/></svg></div>
+<div><div class="an" data-t="wa_04">Ваша неделя по часам</div>
+<div class="ax" data-t="wax_04">Сколько съёмок брать и остаётся ли время на жизнь</div></div>
+</div>
+<div class="ad">
+<div class="ai"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.9"/><path d="M8 12h8" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></div>
+<div><div class="an" data-t="wa_05">Минимальная цена часа</div>
+<div class="ax" data-t="wax_05">Точка безубыточности — спокойный ответ на просьбу о скидке</div></div>
+</div>
+<div class="ad">
+<div class="ai"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="4" y="2.5" width="16" height="19" rx="3" stroke="currentColor" stroke-width="1.9"/><path d="M8 7h8" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/><path d="M8.5 12h.01M12 12h.01M15.5 12h.01M8.5 16.5h.01M12 16.5h.01M15.5 16.5h.01" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg></div>
+<div><div class="an" data-t="wa_06">Готовые цифры для прайса</div>
+<div class="ax" data-t="wax_06">Цена съёмки на 2, 3, 5 часов — можно копировать и отправлять клиенту</div></div>
+</div>
+</div>
+
+</div>
+
+<div class="fcop" data-t="rfc_01">ООО «Центр маркетинговых услуг Гет Маркетинг» © 2026</div>
+</div>
+
+<script>
+(function(){
+var $=function(id){return document.getElementById(id)};
+
+/* Куда ведём. Отдельной переменной, чтобы при переезде на домен
+   правился один адрес. */
+var CALC_URL='calc.html';
+
+/* Реферальная метка. Человек приходит по ссылке index.html?ref=blog —
+   метку нужно донести до анкеты и дальше до блока оплаты, иначе цена
+   по реферальной ссылке не сработает. Переносим строку запроса целиком. */
+function адрес(){ return CALC_URL+(location.search||''); }
+var s=$('start');
+if(s)s.setAttribute('href',адрес());
+
+/* Кто уже начинал — сразу в анкету, страницу входа второй раз не
+   показываем. Метку ставим по нажатию, а не при загрузке: иначе
+   человек, закрывший вкладку не начав, больше сюда не попадёт.
+   Показ можно навязать: index.html?hello=1 */
+var КЛЮЧ='phc_seen';
+if(s)s.addEventListener('click',function(){
+  try{localStorage.setItem(КЛЮЧ,'1')}catch(e){}
+});
+var был=false;
+try{был=localStorage.getItem(КЛЮЧ)==='1'}catch(e){}
+if(был&&!/[?&]hello=1/.test(location.search)) location.replace(адрес());
+})();
+</script>
+</body></html>
