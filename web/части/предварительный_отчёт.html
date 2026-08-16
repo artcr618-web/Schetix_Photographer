@@ -853,7 +853,7 @@ fill="var(--c-r-550)"/></svg>
    падает, а расчёт даёт нули. Значения взяты те же, что стоят
    в анкете при первом открытии. */
 var ПОУМ={
-  acc_cost_month:'0',
+  acc_cost_month:'10000',
   acc_per_quarter:'3',
   acq_rate:'2.7',
   acq_share:'100',
@@ -1081,7 +1081,7 @@ function calc(){
   if(etb&&!eduEx)etb.querySelectorAll('tr').forEach(function(tr){
     eduSum+=parseFloat(tr.querySelector('.c2').value)||0;
     eduMon+=parseFloat(tr.querySelector('.c3').value)||0;});
-  var eduOpp=(!eduEx&&!$('edu_no_opp').checked)?eduMon*V('income_month'):0;
+  var eduOpp=!eduEx?eduMon*V('income_month'):0;
   var eduY=eduEx?0:(eduL>0?(eduSum+eduOpp)/eduL:0);
 
   var siteEx=EXC['Form014'], siteSelf=rad('site_mode')==='self';
