@@ -1,0 +1,194 @@
+1	01 · ГЛОССАРИЙ — понятия, типы, обозначения
+3	A · МАРКЕРЫ ТИПОВ
+4	Наименование	ID	Тип	Описание	Формула / значение
+5	Константа	const	meta	Аксиома из достоверного источника: закон, производственный календарь. Пользователь не меняет	247 дня, 57 390 ₽
+6	Значение по умолчанию	default	meta	Предзаполнено нами, пользователь может изменить	доход 108 999 ₽
+7	Формула	calc	meta	Вычисляется из других величин, ввод недоступен	net_time-side_time
+8	Переключатель	switch	meta	Выпадающий список. Меняет ВЕТКУ расчёта, а не только число	«Работаю из дома» / «Арендую»
+9	Служебное понятие	meta	meta	Описывает устройство реестра, а не предметную область	block, form, section
+10	Тип поля интерфейса	ui	meta	Способ ввода в калькуляторе	input_number, dropdown
+11	B · ВРЕМЯ — иерархия по вашему определению (ГЛАВНОЕ)
+12	Наименование	ID	Тип	Описание	Формула / значение
+13	Рабочее время	work_time	calc	Производственный календарь без выходных и праздников. Справочно, в расчёте не участвует	247 × 8 = 1 976 ч/год
+14	ЧИСТОЕ время	net_time	calc	Рабочее минус отпуск, больничный и час в день на перерывы. ВЕРХНИЙ УРОВЕНЬ — всё доступное время	(247−20−8) × 7 = 1 533 ч/год
+15	ОПЕРАЦИОННОЕ время	side_time	calc	Второстепенные операции: продвижение и учёт. Клиенту напрямую не продаётся	438 + 12 = 450 ч/год
+16	Время на заказы до резерва	pool_gross	calc	Чистое минус операционное. Промежуточная величина перед вычетом резерва	1 533 − 450 = 1 083 ч/год
+17	Резерв на форс-мажоры	fm_time	calc	Перенос и отмена съёмок, срывы по вине клиента, повторные выезды. Процент от времени на заказы	5% × 1 083 = 54,15 ч/год
+18	ПРОЕКТНОЕ время за год	project_pool	calc	Всё, что реально остаётся на выполнение проектов. После вычета резерва	1 083 − 54,15 = 1 028,85 ч/год
+19	Проектное время на 1 проект	project_time	calc	Реализация одного заказа: S × (1+коэф.) + 1 час клиента	6×4 + 1 = 25 ч/проект
+20	ПРОФИЛЬНОЕ время	core_time	calc	Работа по профилю: съёмка и обработка ВМЕСТЕ. Равно S × (1+коэф.). БЕЗ клиента	262,80 + 788,40 = 1 051,20 ч/год
+21	СЪЁМОЧНОЕ время (S)	shooting_time	calc	Работа на площадке. Обозначается S. ЦЕЛЬ РАСЧЁТА и знаменатель ставки	43,80 × 6 = 262,80 ч/год
+22	Постпродакшн	post_time	calc	Обработка материала. S × коэффициент на каждый проект	262,80 × 3 = 788,40 ч/год
+23	Работа с клиентом	client_total	calc	Продажа, согласования, организация. 1 час НА КАЖДЫЙ проект: чем короче съёмки, тем больше проектов и тем больше суммарных клиентских часов	проектов × 1 ч
+24	Продвижение	promo_time	calc	Часы на поиск заказов: соцсети, отклики	2 × 219 = 438 ч/год
+25	Учёт и планирование	accounting_time	calc	Часы на бухгалтерию, если ведёте сами. При найме бухгалтера = 0	3 × 4 = 12 ч/год
+26	Коэффициент обработки	post_ratio	default	Часов обработки на 1 час съёмки. По умолчанию 3, пользователь меняет под свой жанр	3 (свадьба больше, репортаж меньше)
+27	Резерв на форс-мажоры	fm_on	switch	Включён по умолчанию, 5%. Поле процента редактируется пользователем	Заложить / Не закладывать
+28	Множитель профильного	profile_multiplier	calc	1 + коэффициент обработки. Во столько раз профильное время больше съёмочного	1 + 3 = 4
+29	Проектов в год	projects_year	calc	Сколько проектов помещается в проектное время	1 095 / 25 = 43,80 = число недель
+30	C · ПРОВЕРКА ИЕРАРХИИ — три равенства, которые всегда верны
+31	Наименование	ID	Тип	Описание	Формула / значение
+32	Первый уровень	—	meta	ОПЕРАЦИОННОЕ + РЕЗЕРВ + ПРОЕКТНОЕ = ЧИСТОЕ	450 + 54,15 + 1 028,85 = 1 533 ✓
+33	Второй уровень	—	meta	ПРОФИЛЬНОЕ + работа с клиентом = ПРОЕКТНОЕ	985,05 + 43,80 = 1 028,85 ✓
+34	Третий уровень	—	meta	СЪЁМОЧНОЕ + постпродакшн = ПРОФИЛЬНОЕ	246,26 + 738,79 = 985,05 ✓
+35	D · ПЕРЕКЛЮЧАТЕЛИ — шесть точек выбора пользователя
+36	Наименование	ID	Тип	Описание	Формула / значение
+37	Режим налогообложения	regime	switch	Семь вариантов. По умолчанию НПД средняя 5%	Form015 · Block4
+38	Час проектного времени	hour_pool	calc	Выручка / проектное время. ПОСТОЯННАЯ величина: база для сетки объёмных скидок	2 138 693 / 1 028,85 = 2 079 ₽
+39	Рабочее место	ws_mode	switch	Дома — аренда по доле метров плюс коммуналка целиком. Аренда — помещение целиком	Form005 · Block9
+40	Живу в своём	own_home	switch	Если жильё своё и ипотеки нет — плата за жильё обнуляется, коммуналка остаётся	Form005 · Block9
+41	Учёт и планирование	acc_mode	switch	Нанимаю специалиста — расход 120 000 ₽, время 0. Веду самостоятельно — расход 0, время 12 ч	Form011 · Block14
+42	Создание сайта	site_mode	switch	Нанимал — цена подрядчика. Делал сам — часы × полная ставка рабочего часа	Form014 · Block12
+44	Период платежа	—	switch	Год / Квартал / Месяц. Множитель платежей в год: 1 / 4 / 12	03_Каталоги, столбец «Период»
+45	E · ДЕНЬГИ
+46	Наименование	ID	Тип	Описание	Формула / значение
+47	Желаемый доход	target_income	calc	Сумма на руки за год. Точка отсчёта всего расчёта	108 999 × 12 = 1 307 988 ₽
+48	Выручка	revenue	calc	Сколько выставить клиентам за год. Главный результат	04_Расчёт, строка 4
+49	Всего расходов	total_costs	calc	Амортизация плюс переменные. Без эквайринга	C = 786 026 ₽/год
+50	Амортизация	investment	calc	Разовые покупки, распределённые по сроку службы	308 126 ₽/год
+51	Переменные расходы	variable_costs	calc	Регулярные платежи за год	477 900 ₽/год
+52	Эквайринг	acquiring	calc	Процент С ОБОРОТА. Не расход — идёт в знаменатель формулы выручки	2,7%
+53	База для выручки	revenue_base	calc	Расходы плюс желаемый доход. Получить ПОСЛЕ всех платежей	N + C = 2 094 014 ₽
+54	F · НАЛОГИ 2026
+55	Наименование	ID	Тип	Описание	Формула / значение
+56	НПД	rate_npd_avg	default	Средняя ставка 5% — базовый вариант, работа и с физлицами, и с юрлицами. Взносов нет, лимит 2,4 млн	4% физлица · 6% юрлица
+57	УСН «Доходы»	rate_usn_inc	default	Налог с выручки. Взносы ВЫЧИТАЮТСЯ из налога до нуля	6%
+58	УСН «Д−Р»	rate_usn_prof	default	Налог с прибыли. Взносы уменьшают базу. Минимальный налог 1%	15%
+59	АУСН	rate_ausn_inc	const	Взносы ИП за себя НЕ платятся. Лимит 60 млн	8% · 20%, мин. налог 3%
+60	Фиксированные взносы	fixed_contrib	const	Платит каждый ИП. Срок — 28 декабря	57 390 ₽/год
+61	Дополнительный взнос	extra_contrib	const	1% с дохода свыше порога. Срок — 1 июля следующего года	1% × (база − 300 000)
+62	Предельная величина	contrib_threshold	const	Порог для допвзноса. ЗА ГОД, не за месяц	300 000 ₽
+63	Вычет взносов из налога	—	meta	На УСН «Доходы» взносы уменьшают налог до нуля. Платёж = MAX(налог; взносы), а НЕ сумма	ключевая механика
+64	G · СТАВКИ ЧАСА (все на съёмочный час)
+65	Наименование	ID	Тип	Описание	Формула / значение
+66	Наивная ставка	naive_rate	calc	Доход / съёмочные часы. Без расходов и налогов. Демонстрация ошибки	4 977 ₽/ч
+67	Базовая ставка	base_rate	calc	Доход / чистое время. ТОЛЬКО личный доход, без налогов и расходов	1 307 988 / 1 533 = 853 ₽/ч
+68	Текущая ставка	current_rate	default	По которой работаете сейчас. Для блока «Сколько теряете»	6 000 ₽/ч
+69	Операционная ставка	ops_rate	calc	Покрывает доход и расходы, но БЕЗ налога	(N+C) / 261,41 = 8 011 ₽/ч
+70	ПОЛНАЯ ставка	real_rate	calc	Покрывает доход, расходы, налог и эквайринг. ЦЕНА ДЛЯ КЛИЕНТА	05_Итог, строка 5
+71	Точка безубыточности	breakeven	calc	Минимальная выручка при нулевом личном доходе	подставить N = 0
+72	H · ПОЛНЫЙ ПЕРЕЧЕНЬ ПАРАМЕТРОВ — все величины книги, автоматически из 02_Параметры
+73	Наименование	ID	Тип	Описание	Формула / значение
+74	1 · Календарь
+75	Всего дней в году	days_year	const	ед.: дн	365
+76	Рабочих дней в году	work_days	const	ед.: дн	247
+77	Рабочих дней в неделю	days_week	const	ед.: дн	5
+78	Месяцев в году	months	const	ед.: мес	12
+79	Кварталов в году	quarters	const	ед.: кв	4
+80	Всего недель в году	weeks_year	calc	ед.: нед · зависит от: days_year	days_year/7
+81	Номинальных часов в дне	nominal_hours	const	ед.: ч	8
+82	Рабочих месяцев в году	work_months	const	ед.: мес	11
+83	Отпуск, календарных дней	vacation_cal	const	ед.: дн	28
+84	Отпуск, рабочих дней	vacation_work	const	ед.: дн	20
+85	Больничный, календарных дней	sick_cal	const	ед.: дн	10
+86	Больничный, рабочих дней	sick_work	const	ед.: дн	8
+87	Чистых (эффективных) часов в дне	eff_hours	const	ед.: ч	7
+88	2 · Время
+89	Рабочее время по календарю	work_time	calc	ед.: ч/год · зависит от: work_days, nominal_hours	work_days*nominal_hours
+90	Чистое рабочее время, дней	net_days	calc	ед.: дн/год · зависит от: work_days, vacation_work, sick_work	work_days-vacation_work-sick_work
+91	ЧИСТОЕ время	net_time	calc	ед.: ч/год · зависит от: net_days, eff_hours	net_days*eff_hours
+92	Чистое время, недель	net_weeks	calc	ед.: нед · зависит от: net_days, days_week	net_days/days_week
+93	Продвижение, часов в день	promo_per_day	default	ед.: ч/дн	2
+94	Продвижение за год	promo_time	calc	ед.: ч/год · зависит от: promo_per_day, net_days	promo_per_day*net_days
+95	ПЕРЕКЛЮЧАТЕЛЬ · учёт и планирование	acc_mode	switch		Веду самостоятельно
+96	Учёт: часов в квартал, если веду сам	acc_per_quarter	default	ед.: ч/кв	3
+97	Учёт и планирование, время	accounting_time	calc	ед.: ч/год · зависит от: acc_mode, acc_per_quarter, quarters	IF(acc_mode="Веду самостоятельно",acc_per_quarter*quarters,0)
+98	ОПЕРАЦИОННОЕ время	side_time	calc	ед.: ч/год · зависит от: promo_time, accounting_time	promo_time+accounting_time
+99	ПРОЕКТНОЕ время за год	project_pool	calc	ед.: ч/год · зависит от: pool_gross, fm_time	pool_gross-fm_time
+100	3 · Проект
+101	Коэффициент обработки	post_ratio	default	ед.: ×	3
+102	Множитель профильного времени	profile_multiplier	calc	ед.: × · зависит от: post_ratio	1+post_ratio
+103	Работа с клиентом на проект	client_time	default	ед.: ч/проект	1
+104	Целевых проектов в неделю	week_target	default	ед.: шт/нед	1
+105	Максимальная съёмка при целевом темпе	shoot_auto	calc	ед.: ч · зависит от: project_pool, net_weeks, week_target, client_time, profile_multiplier	IF(profile_multiplier*week_target=0,0,(project_pool/net_weeks/week_target-client_time)/profile_multiplier)
+106	ТИПОВАЯ продолжительность съёмки (S)	shoot_duration	default	ед.: ч	2
+107	Стоимость часа проектного времени	hour_pool	calc	ед.: ₽/ч · зависит от: выручка, project_pool	IF(project_pool=0,0,CHOOSE(regime_no,'05_Расчёт'!B4,'05_Расчёт'!C4,'05_Расчёт'!D4,'05_Расчёт'!E4,'05_Расчёт'!F4,'05_Расчёт'!G4,'05_Расчёт'!H4)/project_pool)
+108	ПРОЕКТНОЕ время на 1 проект	project_time	calc	ед.: ч/проект · зависит от: shoot_duration, profile_multiplier, client_time	shoot_duration*profile_multiplier+client_time
+109	Проектов в год	projects_year	calc	ед.: шт/год · зависит от: project_pool, project_time	IF(project_time=0,0,project_pool/project_time)
+110	Проектов в месяц	projects_month	calc	ед.: шт/мес · зависит от: projects_year, months	projects_year/months
+111	Проектов в неделю	projects_week	calc	ед.: шт/нед · зависит от: projects_year, net_weeks	projects_year/net_weeks
+112	СЪЁМОЧНОЕ время	shooting_time	calc	ед.: ч/год · зависит от: projects_year, shoot_duration	projects_year*shoot_duration
+113	Съёмочное время в месяц	shooting_month	calc	ед.: ч/мес · зависит от: shooting_time, months	shooting_time/months
+114	Съёмочное время в неделю	shooting_week	calc	ед.: ч/нед · зависит от: shooting_time, net_weeks	shooting_time/net_weeks
+115	Постпродакшн за год	post_time	calc	ед.: ч/год · зависит от: shooting_time, post_ratio	shooting_time*post_ratio
+116	ПРОФИЛЬНОЕ время	core_time	calc	ед.: ч/год · зависит от: shooting_time, profile_multiplier	shooting_time*profile_multiplier
+117	Работа с клиентом за год	client_total	calc	ед.: ч/год · зависит от: projects_year, client_time	projects_year*client_time
+118	Операционных часов на час съёмки	ops_per_shoot	calc	ед.: ч · зависит от: side_time, shooting_time	IF(shooting_time=0,0,side_time/shooting_time)
+119	4 · Доход
+120	Желаемый доход на руки	income_month	default	ед.: ₽/мес	108999
+121	Желаемый доход за год	target_income	calc	ед.: ₽/год · зависит от: income_month, months	income_month*months
+122	Текущая ставка часа	current_rate	default	ед.: ₽/ч	6000
+123	5 · Рабочее место
+124	ПЕРЕКЛЮЧАТЕЛЬ · рабочее место	ws_mode	switch		Работаю из дома
+125	ДОМА · живу в своём, ипотеки нет	own_home	switch		нет
+126	ДОМА · аренда или ипотека	home_rent	default	ед.: ₽/мес	40000
+127	ДОМА · коммунальные и связь	home_util	default	ед.: ₽/мес	7000
+128	ДОМА · общая площадь жилья	home_area	default	ед.: м²	50
+129	ДОМА · площадь под кабинет	cab_area	default	ед.: м²	6
+130	ДОМА · доля кабинета	cab_share	calc	ед.: % · зависит от: cab_area, home_area	IF(home_area=0,0,cab_area/home_area)
+131	АРЕНДА · стоимость помещения	office_rent	default	ед.: ₽/мес	15000
+132	АРЕНДА · коммунальные и связь	office_util	default	ед.: ₽/мес	7000
+133	Содержание рабочего места	var_workspace	calc	ед.: ₽/год · зависит от: ws_mode, home_rent, cab_share, home_util, office_rent, office_util	IF(ws_mode="Работаю из дома",(home_rent+home_util)*cab_share*months,(office_rent+office_util)*months)
+134	6 · Обучение и сайт
+135	Обучение · стоимость курса	edu_cost	default	ед.: ₽	80000
+136	Обучение · месяцев без дохода	edu_months	default	ед.: мес	4
+137	Обучение · срок амортизации	edu_life	default	ед.: лет	7
+139	Обучение · упущенная выгода	edu_opportunity	calc	ед.: ₽ · зависит от: edu_months, income_month	edu_months*income_month
+140	Амортизация · обучение	dep_education	calc	ед.: ₽/год · зависит от: edu_cost, edu_opportunity, edu_life	IF(edu_life=0,0,(edu_cost+edu_opportunity)/edu_life)
+141	ПЕРЕКЛЮЧАТЕЛЬ · создание сайта	site_mode	switch		Нанимал (а) специалиста
+142	Сайт · стоимость подрядчика	site_cost	default	ед.: ₽	70000
+143	Сайт · часов своими руками	site_hours	default	ед.: ч	0
+144	Сайт · срок амортизации	site_life	default	ед.: лет	7
+145	Амортизация · сайт	dep_website	calc	ед.: ₽/год · зависит от: site_mode, site_cost, site_life	IF(site_mode="Нанимал (а) специалиста",IF(site_life=0,0,site_cost/site_life),0)
+146	Сайт · поправка знаменателя	site_divisor	calc	 · зависит от: site_mode, site_hours, site_life, net_time	IF(site_mode="Нанимал (а) специалиста",0,IF(site_life*net_time=0,0,site_hours/(site_life*net_time)))
+147	7 · Расходы
+148	Амортизация · съёмочное оборудование	dep_shoot	calc	ед.: ₽/год · зависит от: Form001	SUMIF(cat_form,"Form001",cat_year)
+149	Амортизация · офисное оборудование	dep_office	calc	ед.: ₽/год · зависит от: Form002	SUMIF(cat_form,"Form002",cat_year)
+150	Амортизация · ПО разовые покупки	dep_software	calc	ед.: ₽/год · зависит от: Form004	SUMIF(cat_form,"Form004",cat_year)
+151	Амортизация · обустройство места	dep_workspace	calc	ед.: ₽/год · зависит от: Form013	SUMIF(cat_form,"Form013",cat_year)
+152	ИТОГО амортизация	investment	calc	ед.: ₽/год · зависит от: dep_*	dep_shoot+dep_office+dep_software+dep_workspace+dep_education+dep_website
+153	Переменные · подписки ПО	var_software	calc	ед.: ₽/год · зависит от: Form003	SUMIF(cat_form,"Form003",cat_year)
+154	Переменные · реклама и продвижение	var_ads	calc	ед.: ₽/год · зависит от: Form010	SUMIF(cat_form,"Form010",cat_year)
+155	Переменные · банк РКО и СМС	var_bank	calc	ед.: ₽/год · зависит от: Form007	SUMIF(cat_form,"Form007",cat_year)
+156	Специалист по учёту · стоимость в месяц	acc_cost_month	default	ед.: ₽/мес	10000
+157	Переменные · специалист по учёту	var_accounting	calc	ед.: ₽/год · зависит от: acc_mode, acc_cost_month, months	IF(acc_mode="Нанимаю специалиста",acc_cost_month*months,0)
+158	ИТОГО переменные	variable_costs	calc	ед.: ₽/год · зависит от: var_*	var_software+var_ads+var_bank+var_accounting+var_workspace
+159	ВСЕГО РАСХОДОВ (C)	total_costs	calc	ед.: ₽/год · зависит от: investment, variable_costs	investment+variable_costs
+160	База для выручки	revenue_base	calc	ед.: ₽/год · зависит от: target_income, total_costs	target_income+total_costs
+161	8 · Налоги
+162	ПЕРЕКЛЮЧАТЕЛЬ · режим налогообложения	regime	switch		Самозанятый (НПД), средняя ставка
+163	НПД · средняя ставка	rate_npd_avg	default	ед.: %	0.05
+164	НПД · физлица	rate_npd_fiz	const	ед.: %	0.04
+165	НПД · юрлица	rate_npd_ur	const	ед.: %	0.06
+166	УСН доходы	rate_usn_inc	default	ед.: %	0.06
+167	УСН доходы минус расходы	rate_usn_prof	default	ед.: %	0.15
+168	АУСН доходы	rate_ausn_inc	const	ед.: %	0.08
+169	АУСН доходы минус расходы	rate_ausn_prof	const	ед.: %	0.2
+170	Номер режима (1–7)	regime_no	calc	ед.: № · зависит от: regime	MATCH(regime,{"Самозанятый (НПД), средняя ставка";"Самозанятый (НПД), Физ. лица";"Самозанятый (НПД), Юр. лица";"УСН доходы";"УСН доходы минус расходы";"АУСН доходы";"АУСН доходы минус расходы"},0)
+171	Ставка выбранного режима	rate_current	calc	ед.: % · зависит от: regime_no	CHOOSE(regime_no,rate_npd_avg,rate_npd_fiz,rate_npd_ur,rate_usn_inc,rate_usn_prof,rate_ausn_inc,rate_ausn_prof)
+172	Фиксированные взносы ИП	fixed_contrib	const	ед.: ₽/год	57390
+173	Дополнительный взнос	extra_contrib	const	ед.: %	0.01
+174	Предельная величина дохода	contrib_threshold	const	ед.: ₽/год	300000
+175	Максимум допвзноса	contrib_cap	const	ед.: ₽/год	321818
+176	Поправка на порог	threshold_credit	calc	ед.: ₽ · зависит от: contrib_threshold, extra_contrib	contrib_threshold*extra_contrib
+177	Минимальный налог УСН Д−Р	min_tax_usn	const	ед.: %	0.01
+178	Минимальный налог АУСН Д−Р	min_tax_ausn	const	ед.: %	0.03
+179	Взнос на травматизм (АУСН)	injury_contrib	default	ед.: ₽/год	0
+180	Эквайринг · ставка	acq_rate	default	ед.: %	0.027
+181	Эквайринг · доля безналичных оплат	acq_share	default	ед.: %	1.0
+182	Эквайринг · эффективно	acquiring	calc	ед.: % · зависит от: acq_rate, acq_share	acq_rate*acq_share
+183	Порог освобождения от НДС	vat_threshold	const	ед.: ₽/год	20000000
+184	Лимит НПД	limit_npd	const	ед.: ₽/год	2400000
+185	Лимит АУСН	limit_ausn	const	ед.: ₽/год	60000000
+186	9 · Справочные ставки
+187	Наивная ставка	naive_rate	calc	ед.: ₽/ч · зависит от: target_income, shooting_time	IF(shooting_time=0,0,target_income/shooting_time)
+188	Базовая ставка часа	base_rate	calc	ед.: ₽/ч · зависит от: target_income, net_time	target_income/net_time
+189	Операционная ставка часа	ops_rate	calc	ед.: ₽/ч · зависит от: revenue_base, shooting_time	IF(shooting_time=0,0,revenue_base/shooting_time)
+190	ПОЛНАЯ ставка рабочего часа	full_hour_rate	calc	ед.: ₽/ч · зависит от: выручка, net_time	IF(net_time=0,0,CHOOSE(regime_no,'05_Расчёт'!B4,'05_Расчёт'!C4,'05_Расчёт'!D4,'05_Расчёт'!E4,'05_Расчёт'!F4,'05_Расчёт'!G4,'05_Расчёт'!H4)/net_time)
+191	Сайт · оценка своего труда	site_value	calc	ед.: ₽ · зависит от: site_mode, site_cost, site_hours, full_hour_rate	IF(site_mode="Нанимал (а) специалиста",site_cost,site_hours*full_hour_rate)
+192	Прочие
+193	Время на заказы до резерва	pool_gross	calc	ч/год	net_time-side_time
+194	ПЕРЕКЛЮЧАТЕЛЬ · резерв на форс-мажоры	fm_on	default		Заложить резерв
+195	Резерв на форс-мажоры, %	fm_pct	default	%	0.05
+196	Резерв на форс-мажоры, часов	fm_time	calc	ч/год	IF(fm_on="Заложить резерв",pool_gross*fm_pct,0)
+197	Резерв, часов в неделю	fm_week	calc	ч/нед	IF(net_weeks=0,0,fm_time/net_weeks)
