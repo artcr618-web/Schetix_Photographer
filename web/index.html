@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="ru"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Счётикс — юнит-экономика для фотографа</title>
+</head><body>
+<!-- ============================================================
+     ВХОД В КАЛЬКУЛЯТОР. Зелёное полотно во весь экран.
+     Первый экран — один огромный знак в рамке, он же кнопка:
+     нажатие в любом месте рамки ведёт в анкету.
+     Плашки с преимуществами лежат ниже, под сгибом.
+     ============================================================ -->
+<div id="phw-root">
+<style>
+html,body{margin:0;padding:0;background:#0B3F1B}
+#phw-root{
+/* ===== ПАЛИТРА · единая с отчётом, см. лист 09c_Палитра =====
+   Единственное исключение: фирменные цвета Visa / Mastercard / МИР
+   в иконках оплаты — их менять нельзя по правилам платёжных систем. */
+--c-ink:#1A1A1A;
+--c-ink2:#374151;
+--c-ink3:#4B5563;
+--c-gr:#6B7280;
+--c-gr2:#9CA3AF;
+--c-gr3:#B6BCC4;
+--c-ln:#E5E7EB;
+--c-ln2:#F0F2F5;
+--c-bg:#F5F6F8;
+--c-surf:#FAFBFC;
+--c-white:#FFFFFF;
+--c-g-50:#F5FBF7;
+--c-g-100:#EAF6EE;
+--c-g-200:#D8EEDF;
+--c-g-300:#A9DDB8;
+--c-g-350:#6FD183;
+--c-g-400:#4FC26A;
+--c-g-500:#21A038;
+--c-g-600:#1B9331;
+--c-g-700:#158026;
+--c-g-800:#0B6B22;
+--c-g-900:#14532D;
+--c-g-mut:#5C9C6C;
+--c-r-50:#FFF6F6;
+--c-r-100:#FDE8E8;
+--c-r-200:#F7D3D3;
+--c-r-300:#E4A9A9;
+--c-r-400:#E8828E;
+--c-r-500:#EF4444;
+--c-r-550:#D6566A;
+--c-r-600:#C43D51;
+--c-r-650:#D0342F;
+--c-r-700:#B91C1C;
+--c-r-800:#991B1B;
+--c-r-900:#7F1D1D;
+--c-a-50:#FFFBEF;
+--c-a-100:#FEF3D6;
+--c-a-200:#FBE3AE;
+--c-a-300:#F2C48A;
+--c-a-350:#E8A05C;
+--c-a-400:#F5B301;
+--c-a-500:#D9762E;
+--c-a-600:#C4551F;
+--c-a-700:#B45309;
+--c-a-800:#92400E;
+--c-a-900:#7A5309;
+--c-a-br:#8A5C4A;
+--c-a-br2:#5F3B2E;
+--c-b-50:#F6FAFE;
+--c-b-100:#E7F0FA;
+--c-b-200:#CFE0F3;
+--c-b-250:#B7C9E8;
+--c-b-300:#8FC7E8;
+--c-b-400:#5CA8E0;
+--c-b-500:#3B82F6;
+--c-b-600:#2F80C4;
+--c-b-700:#2A6FAB;
+--c-b-800:#1D4ED8;
+--c-b-900:#3B6398;
+--c-b-mut:#7189AE;
+--c-v-50:#F8F5FE;
+--c-v-300:#C7B9EC;
+--c-v-500:#8B5CF6;
+--c-v-700:#6D3FD4;
+--c-p-50:#FFF7FB;
+--c-p-100:#FCE7F3;
+--c-p-500:#EC4899;
+--c-p-700:#9D174D;
+/* алиасы */
+--g:var(--c-g-500);--gd:var(--c-g-700);--gl:var(--c-g-100);--ink:var(--c-ink);
+--gr:var(--c-gr);--ln:var(--c-ln);--bg:var(--c-bg);
+--c1:var(--c-g-500);--c2:var(--c-r-500);--c3:var(--c-a-400);--c4:var(--c-v-500);--c5:var(--c-b-500);--r:20px;
+font-family:-apple-system,BlinkMacSystemFont,'SB Sans Text','Segoe UI',Roboto,Arial,sans-serif;
+color:var(--c-white);line-height:1.45;
+min-height:100vh;min-height:100dvh;
+display:flex;flex-direction:column;align-items:center;
+padding:32px 32px 26px;box-sizing:border-box;
+background:linear-gradient(150deg,var(--c-g-900) 0%,var(--c-g-800) 34%,
+var(--c-g-600) 68%,var(--c-g-500) 100%);
+position:relative;overflow:hidden;
+-webkit-font-smoothing:antialiased}
+#phw-root *{box-sizing:border-box}
+
+/* Фоновые ромбы — приём .hdeco из шапки отчёта */
+#phw-root .deco{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:0}
+#phw-root .deco svg{position:absolute;display:block}
+#phw-root .deco .d1{left:-140px;top:-110px;width:440px;height:440px;opacity:.05}
+#phw-root .deco .d2{right:-120px;bottom:-140px;width:400px;height:400px;opacity:.045}
+#phw-root .in{position:relative;z-index:1;width:100%;max-width:1180px;
+flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center}
+
+/* ---------- первый экран: знак-кнопка ----------
+   Вся рамка кликабельна. Внутри — только знак, надпись и приглашение.
+   Высота считается от экрана, чтобы плашки ушли под сгиб. */
+#phw-root .gate{display:flex;flex-direction:column;align-items:center;justify-content:center;
+gap:clamp(34px,5vh,66px);width:100%;
+min-height:calc(100vh - 120px);min-height:calc(100dvh - 120px);
+border:2px solid rgba(255,255,255,.28);border-radius:34px;
+padding:clamp(48px,8vh,104px) clamp(32px,5vw,72px);text-decoration:none;color:inherit;
+cursor:pointer;transition:border-color .2s,background .2s,box-shadow .2s}
+#phw-root .gate:hover{border-color:rgba(255,255,255,.6);
+background:rgba(255,255,255,.05);box-shadow:0 20px 60px rgba(0,0,0,.22)}
+#phw-root .gate:active{background:rgba(255,255,255,.09);transform:translateY(1px)}
+
+/* ---------- знак ----------
+   Ромб во весь рост экрана, под ним слово и растянутая подпись.
+   Размеры вяжутся к высоте окна, иначе на ноутбуке знак не влезет. */
+#phw-root .brand{display:flex;flex-direction:column;align-items:center;
+gap:clamp(20px,3.2vh,40px);line-height:1}
+#phw-root .brand .bx{display:block;
+width:clamp(170px,38vh,370px);height:clamp(170px,38vh,370px);overflow:visible}
+/* Четыре лепестка — четыре части юнит-экономики. По умолчанию знак
+   выглядит как везде: три белые грани и одна светло-зелёная.
+   При наведении лепесток заливается своим цветом из палитры отчёта —
+   теми же, что в диаграмме «Куда уходит каждый рубль клиента». */
+/* ВАЖНО: не трогать transform у лепестков. Поворот ромбов задан
+   атрибутом rotate(45 …) прямо в разметке; CSS-transform и
+   transform-box перебивают его точку отсчёта — знак разваливается.
+   Отклик на наведение даём только цветом и прозрачностью. */
+#phw-root .pet{fill:#fff;cursor:pointer;transition:fill .18s,opacity .18s}
+#phw-root .pet.p2{fill:var(--c-g-350)}
+#phw-root .pet.p1.hot{fill:var(--c-a-400)}
+#phw-root .pet.p2.hot{fill:var(--c-g-500)}
+#phw-root .pet.p3.hot{fill:var(--c-v-500)}
+#phw-root .pet.p4.hot{fill:var(--c-b-500)}
+/* Пока наводят на один лепесток, остальные притухают. Класс вешает
+   скрипт: правило .bx:hover на SVG срабатывает не во всех браузерах. */
+#phw-root .bx.dim .pet{opacity:.4}
+#phw-root .bx.dim .pet.hot{opacity:1}
+/* Подсказка. Образец — .segtip из отчёта: белая плашка, светлая рамка,
+   тот же радиус и тень. Цветная метка слева повторяет цвет лепестка. */
+#phw-root .brand .btx{display:flex;flex-direction:column;align-items:stretch;
+gap:clamp(6px,1vh,12px)}
+#phw-root .brand .bt{font-size:clamp(58px,13vh,126px);font-weight:800;letter-spacing:.1em;
+text-transform:lowercase;color:var(--c-white);display:block;line-height:1}
+/* подпись растянута ровно по ширине слова — приём из шапки отчёта */
+#phw-root .brand .bd{font-size:clamp(12px,1.7vh,18px);color:rgba(255,255,255,.72);
+white-space:nowrap;display:flex;justify-content:space-between;text-transform:lowercase}
+#phw-root .brand .bd i{font-style:normal}
+
+#phw-root .made{font-size:clamp(14px,1.8vh,17px);line-height:1.55;
+color:rgba(255,255,255,.68);max-width:600px;margin:0;text-align:center}
+
+/* Приглашение внизу рамки. Не отдельная кнопка — часть полотна,
+   но выглядит нажимаемым: подчёркнуто рамкой снизу. */
+#phw-root .goin{display:inline-flex;align-items:center;gap:11px;
+font-size:clamp(15px,2vh,19px);font-weight:700;letter-spacing:-.01em;
+color:var(--c-white);transition:.2s}
+#phw-root .gate:hover .goin{gap:15px}
+#phw-root .goin svg{flex:none;transition:transform .2s}
+#phw-root .gate:hover .goin svg{transform:translateX(4px)}
+
+/* ---------- пробный режим ----------
+   Строка над первым экраном. Приглушённая: предупреждение должно
+   читаться, но не спорить со знаком. Знак в кружке — тот же приём,
+   что у значков в плашках преимуществ. */
+/* Пометка о пробном режиме — просто строка, без подложки и рамки.
+   Сообщение, а не предупреждение: должно читаться, но не отвлекать. */
+#phw-root .trial{display:inline-flex;align-items:center;gap:9px;
+align-self:center;flex:none;margin-bottom:20px;
+font-size:14px;line-height:1.4;color:rgba(255,255,255,.62);
+text-decoration:none;transition:color .18s}
+#phw-root .trial:hover{color:rgba(255,255,255,.9)}
+#phw-root .tri{width:17px;height:17px;flex:none;display:block}
+
+/* Блок с объяснением. Подложки тоже нет: это сноска ко всей странице,
+   с рамкой он читался бы как ещё одно преимущество. */
+#phw-root .trb{width:100%;max-width:1180px;margin:clamp(34px,5vh,58px) auto 0;
+padding:0 8px}
+#phw-root .trb .trh{display:flex;align-items:center;gap:11px;
+font-size:19px;font-weight:700;letter-spacing:-.02em;margin-bottom:12px;
+color:rgba(255,255,255,.9)}
+#phw-root .trb .trh .tri{width:22px;height:22px;color:rgba(255,255,255,.62)}
+#phw-root .trb p{font-size:14px;line-height:1.6;color:rgba(255,255,255,.62);
+margin:0 0 9px;max-width:900px}
+#phw-root .trb p:last-child{margin-bottom:0}
+#phw-root .trb b{color:rgba(255,255,255,.85);font-weight:700}
+/* Кнопка под объяснением: человек дочитал — дальше ему нужен путь
+   к расчёту, возвращаться наверх незачем. Форма от кнопок отчёта. */
+#phw-root .savebtn{display:inline-flex;align-items:center;justify-content:center;gap:11px;
+margin-top:26px;height:72px;padding:0 40px;border-radius:var(--r);
+background:transparent;color:var(--c-white);border:2px solid rgba(255,255,255,.55);
+font-family:inherit;font-size:17px;font-weight:700;letter-spacing:-.01em;
+text-decoration:none;cursor:pointer;transition:.18s}
+#phw-root .savebtn:hover{background:var(--c-white);color:var(--c-g-800);
+border-color:var(--c-white)}
+#phw-root .savebtn:active{background:var(--c-g-50);transform:translateY(1px)}
+@media(max-width:640px){#phw-root .savebtn{width:100%;padding:0 20px;font-size:16px}}
+
+/* ---------- главная мысль ----------
+   Между первым экраном и плашками. Ничем не выделена: ни подложки,
+   ни рамки — крупный текст прямо по полотну. Шире колонки с плашками,
+   чтобы читалась как самостоятельное высказывание, а не подпись. */
+#phw-root .creed{font-size:clamp(26px,3.4vw,48px);font-weight:700;
+letter-spacing:-.03em;line-height:1.18;text-align:center;
+color:var(--c-white);max-width:1180px;margin:clamp(56px,9vh,110px) auto 0;padding:0 8px}
+
+/* Заголовок над плашками. Тише главной мысли, но крупнее самих плашек:
+   это подпись к списку, а не второе высказывание. */
+#phw-root .advh{font-size:clamp(20px,2.4vw,30px);font-weight:700;
+letter-spacing:-.025em;line-height:1.2;text-align:center;
+color:rgba(255,255,255,.82);max-width:1180px;
+margin:clamp(44px,7vh,84px) auto 0;padding:0 8px}
+
+/* ---------- шесть плашек ----------
+   Крупные, почти квадратные, три в ряд. Лежат под первым экраном. */
+#phw-root .adv{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;
+margin:clamp(22px,3vh,34px) auto 0;width:100%;max-width:1180px}
+#phw-root .ad{display:flex;flex-direction:column;align-items:flex-start;
+min-height:230px;
+background:linear-gradient(140deg,rgba(255,255,255,.14),rgba(255,255,255,.06));
+border:1px solid rgba(255,255,255,.17);border-radius:22px;padding:28px 26px}
+#phw-root .ad .ai{width:58px;height:58px;border-radius:16px;flex:none;
+display:flex;align-items:center;justify-content:center;color:var(--c-g-350);
+background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.15);
+margin-bottom:auto}
+#phw-root .ad .an{font-size:21px;font-weight:700;letter-spacing:-.02em;
+line-height:1.25;margin:24px 0 8px}
+#phw-root .ad .ax{font-size:14px;line-height:1.55;color:rgba(255,255,255,.7)}
+
+/* ---------- подвал ----------
+   Тот же, что в анкете и отчёте: знак с растянутой подписью, под ним
+   реквизиты. Пропорции и размеры один в один, разошлись только цвета —
+   на тёмном полотне серый не читается, поэтому белый с прозрачностью. */
+#phw-root .foot{position:relative;z-index:1;flex:none;
+display:flex;flex-direction:column;align-items:center;gap:12px;
+padding:56px 0 4px}
+#phw-root .fcop{font-size:11.5px;color:rgba(255,255,255,.45);
+text-align:center;line-height:1.5}
+#phw-root .lgs{display:flex;align-items:center;gap:9px;line-height:1}
+#phw-root .lgs .btx{display:flex;flex-direction:column;align-items:stretch;gap:4px}
+#phw-root .lgs .bt{font-size:14px;font-weight:700;letter-spacing:.11em;
+text-transform:lowercase;color:rgba(255,255,255,.82);display:block}
+#phw-root .lgs .bd{font-size:6.6px;color:rgba(255,255,255,.45);white-space:nowrap;
+display:flex;justify-content:space-between;text-transform:lowercase}
+#phw-root .lgs .bd i{font-style:normal}
+#phw-root .lgs .lx{display:block;flex:none;width:46px;height:46px}
+
+/* ---------- узкий экран ---------- */
+@media(max-width:1000px){
+#phw-root .adv{grid-template-columns:1fr 1fr;gap:14px}
+#phw-root .ad{min-height:200px;padding:24px 22px}
+#phw-root .ad .an{font-size:19px}}
+@media(max-width:640px){
+#phw-root{padding:18px 16px 20px}
+#phw-root .gate{border-radius:26px;padding:44px 20px;
+min-height:calc(100vh - 110px);min-height:calc(100dvh - 110px)}
+#phw-root .adv{grid-template-columns:1fr}
+#phw-root .creed{font-size:clamp(22px,6.4vw,30px);margin-top:48px}
+#phw-root .trial{font-size:13px}
+#phw-root .advh{font-size:clamp(18px,5vw,22px);margin-top:38px}
+#phw-root .ad{min-height:0}
+#phw-root .brand .bt{font-size:clamp(44px,15vw,70px)}
+#phw-root .brand .bx{width:clamp(140px,38vw,200px);height:clamp(140px,38vw,200px)}}
+@media(prefers-reduced-motion:reduce){
+#phw-root .gate,#phw-root .goin,#phw-root .goin svg,#phw-root .pet{transition:none}
+#phw-root .gate:hover .goin{gap:11px}
+#phw-root .gate:hover .goin svg{transform:none}}
+</style>
+
+<div class="deco" aria-hidden="true">
+<svg class="d1" viewBox="0 0 32 32" fill="none"><rect x="10.95" y="2.09" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 7.14)" fill="#fff"/><rect x="19.81" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 24.86 16)" fill="#fff"/><rect x="10.95" y="19.81" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 24.86)" fill="#fff"/><rect x="2.09" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 7.14 16)" fill="#fff"/></svg>
+<svg class="d2" viewBox="0 0 32 32" fill="none"><rect x="10.95" y="2.09" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 7.14)" fill="#fff"/><rect x="19.81" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 24.86 16)" fill="#fff"/><rect x="10.95" y="19.81" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 24.86)" fill="#fff"/><rect x="2.09" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 7.14 16)" fill="#fff"/></svg>
+</div>
+
+<div class="in">
+
+<a class="trial" href="#trial" data-t="wt_01"><svg class="tri" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 4.2L2.8 20h18.4z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M12 10v4.4" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/><circle cx="12" cy="17.4" r="1.05" fill="currentColor"/></svg><span>Сервис работает в пробном режиме</span></a>
+
+<a class="gate" id="start" href="calc.html">
+<div class="brand">
+<svg class="bx" viewBox="0 0 32 32" fill="none" role="img" aria-label="Счётикс">
+<rect class="pet p1" x="10.95" y="2.09" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 7.14)"/>
+<rect class="pet p2" x="19.81" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 24.86 16)"/>
+<rect class="pet p3" x="10.95" y="19.81" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 24.86)"/>
+<rect class="pet p4" x="2.09" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 7.14 16)"/>
+</svg>
+
+<span class="btx"><span class="bt">счётикс</span>
+<span class="bd" data-t="bt_03"><i>ю</i><i>н</i><i>и</i><i>т</i><i>-</i><i>э</i><i>к</i><i>о</i><i>н</i><i>о</i><i>м</i><i>и</i><i>к</i><i>а</i><i>&nbsp;</i><i>д</i><i>л</i><i>я</i><i>&nbsp;</i><i>ф</i><i>о</i><i>т</i><i>о</i><i>г</i><i>р</i><i>а</i><i>ф</i><i>а</i></span></span>
+</div>
+
+<p class="made" data-t="wl_01">Создано фотографами для фотографов на основе реального опыта</p>
+
+<span class="goin" data-t="wg_01">Перейти к расчёту
+<svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+<path d="M5 12h13M13 6.5l5.5 5.5L13 17.5" stroke="currentColor" stroke-width="2"
+stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+</a>
+
+<p class="creed" data-t="wc_01">Быть независимым автором не значит работать больше,
+чем в найме, и постоянно уходить в минус</p>
+
+<h2 class="advh" data-t="wah_01">Что вы получите в отчёте</h2>
+
+<div class="adv">
+<div class="ad">
+<div class="ai"><svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M4 18h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M7 18V9.5M12 18V5.5M17 18v-5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
+<div class="an" data-t="wa_01">Актуальная стоимость часа</div>
+<div class="ax" data-t="wax_01">С учётом расходов, налогов и всего времени вокруг съёмки</div>
+</div>
+<div class="ad">
+<div class="ai"><svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M5 21V6.5L12 3l7 3.5V21" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/><path d="M3 21h18" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/><path d="M9.5 21v-5h5v5" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/></svg></div>
+<div class="an" data-t="wa_02">Идеальный налоговый режим</div>
+<div class="ax" data-t="wax_02">Посчитаем все режимы на ваших цифрах и покажем самый выгодный</div>
+</div>
+<div class="ad">
+<div class="ai"><svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M8.5 15.5l7-7" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/><circle cx="9" cy="9" r="2.1" stroke="currentColor" stroke-width="1.7"/><circle cx="15" cy="15" r="2.1" stroke="currentColor" stroke-width="1.7"/><rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" stroke-width="1.5" opacity=".55"/></svg></div>
+<div class="an" data-t="wa_03">Скидки, которые не съедят доход</div>
+<div class="ax" data-t="wax_03">Программа лояльности за счёт накладных расходов, а не вашего кармана</div>
+</div>
+<div class="ad">
+<div class="ai"><svg width="26" height="26" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8.4" stroke="currentColor" stroke-width="3.2" opacity=".45"/><path d="M12 3.6a8.4 8.4 0 018.4 8.4" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"/><path d="M20.4 12a8.4 8.4 0 01-4.2 7.3" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" opacity=".75"/></svg></div>
+<div class="an" data-t="wa_04">Куда уходит каждый рубль клиента</div>
+<div class="ax" data-t="wax_04">Подробная разбивка часа: сколько заберут техника, реклама, аренда и налоги, а сколько останется вам</div>
+</div>
+<div class="ad">
+<div class="ai"><svg width="26" height="26" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.9"/><path d="M8 12h8" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></div>
+<div class="an" data-t="wa_05">Точка безубыточности</div>
+<div class="ax" data-t="wax_05">Цена часа, ниже которой вы работаете себе в убыток — спокойный ответ на просьбу о скидке</div>
+</div>
+<div class="ad">
+<div class="ai"><svg width="26" height="26" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.9"/><path d="M12 6.6V12l3.9 2.4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+<div class="an" data-t="wa_06">Как распределяется ваше время</div>
+<div class="ax" data-t="wax_06">Сколько часов уходит на съёмку, обработку, переговоры и продвижение — и за что вам платят на самом деле</div>
+</div>
+</div>
+
+<div class="trb" id="trial">
+<div class="trh"><svg class="tri" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 4.2L2.8 20h18.4z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M12 10v4.4" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/><circle cx="12" cy="17.4" r="1.05" fill="currentColor"/></svg><span data-t="wt_02">Что значит пробный режим</span></div>
+<p data-t="wt_03">Сервис уже работает и считает по открытой методике: производственный календарь, нормы Трудового кодекса и налоговые правила 2026 года. Результатом можно пользоваться.</p>
+<p data-t="wt_04">Но мы всё ещё тестируем: где-то может встретиться ошибка в расчёте или неточная формулировка. <b>Если заметите — напишите нам</b>, будем благодарны. Так сервис станет точнее.</p>
+<p data-t="wt_05">Оплата отчёта тоже пока в пробном режиме — сейчас это скорее способ поддержать проект, чем цена. Ваши цифры остаются в браузере и никуда не отправляются.</p>
+<a class="savebtn" id="start2" href="calc.html">
+<svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+<rect x="4" y="2.5" width="16" height="19" rx="3" stroke="currentColor" stroke-width="2"/>
+<path d="M8 7h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+<path d="M8.5 12h.01M12 12h.01M15.5 12h.01M8.5 16.5h.01M12 16.5h.01M15.5 16.5h.01"
+stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>
+Перейти к расчёту</a>
+</div>
+
+</div>
+
+<div class="foot"><span class="lgs" title="Счётикс — твоя юнит-экономика"><span class="btx"><span class="bt">счётикс</span><span class="bd" data-t="bt_02"><i>т</i><i>в</i><i>о</i><i>я</i><i>&nbsp;</i><i>ю</i><i>н</i><i>и</i><i>т</i><i>-</i><i>э</i><i>к</i><i>о</i><i>н</i><i>о</i><i>м</i><i>и</i><i>к</i><i>а</i></span></span><svg class="lx" viewBox="0 0 32 32" fill="none" aria-hidden="true"><rect x="10.95" y="2.09" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 7.14)" fill="rgba(255,255,255,.62)"/><rect x="19.81" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 24.86 16)" fill="var(--c-g-350)"/><rect x="10.95" y="19.81" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 24.86)" fill="rgba(255,255,255,.62)"/><rect x="2.09" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 7.14 16)" fill="rgba(255,255,255,.62)"/></svg></span>
+<div class="fcop" data-t="rfc_01">ООО «Центр маркетинговых услуг Гет Маркетинг» © 2026</div>
+</div>
+</div>
+
+<script>
+(function(){
+var $=function(id){return document.getElementById(id)};
+
+/* ---- Подсветка лепестков знака ----
+   Четыре лепестка — четыре части юнит-экономики: доход, время,
+   расходы, налоги. При наведении лепесток заливается своим цветом
+   из диаграммы отчёта, остальные притухают. Классы вешает скрипт:
+   правило .bx:hover на SVG срабатывает не во всех браузерах. */
+(function(){
+  document.querySelectorAll('.bx .pet').forEach(function(el){
+    var знак=el.ownerSVGElement;
+    el.addEventListener('mouseenter',function(){
+      el.classList.add('hot'); if(знак)знак.classList.add('dim');
+    });
+    el.addEventListener('mouseleave',function(){
+      el.classList.remove('hot'); if(знак)знак.classList.remove('dim');
+    });
+  });
+})();
+
+/* Куда ведём. Отдельной переменной, чтобы при переезде на домен
+   правился один адрес. */
+var CALC_URL='calc.html';
+
+/* Реферальная метка. Человек приходит по ссылке index.html?ref=blog —
+   метку нужно донести до анкеты и дальше до блока оплаты, иначе цена
+   по реферальной ссылке не сработает. Переносим строку запроса целиком. */
+function адрес(){ return CALC_URL+(location.search||''); }
+var s=$('start'), s2=$('start2');
+if(s)s.setAttribute('href',адрес());
+if(s2)s2.setAttribute('href',адрес());
+
+/* Кто уже начинал — сразу в анкету, страницу входа второй раз не
+   показываем. Метку ставим по нажатию, а не при загрузке: иначе
+   человек, закрывший вкладку не начав, больше сюда не попадёт.
+   Показ можно навязать: index.html?hello=1 */
+var КЛЮЧ='phc_seen';
+[s,s2].forEach(function(el){ if(!el)return;
+  el.addEventListener('click',function(){
+    try{localStorage.setItem(КЛЮЧ,'1')}catch(e){}
+  });
+});
+var был=false;
+try{был=localStorage.getItem(КЛЮЧ)==='1'}catch(e){}
+if(был&&!/[?&]hello=1/.test(location.search)) location.replace(адрес());
+})();
+</script>
+</body></html>

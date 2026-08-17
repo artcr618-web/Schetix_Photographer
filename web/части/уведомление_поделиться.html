@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ru"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Счётикс · уведомление кнопки «Поделиться»</title>
+<!-- Черновик для просмотра и правок. В отчёт и анкету идёт только то,
+     что между метками БЛОК-НАЧАЛО и БЛОК-КОНЕЦ. Всё остальное —
+     обвязка, чтобы файл открывался отдельной страницей. -->
+<style>
+:root{
+--c-ink:#1A1A1A;--c-ink2:#374151;--c-ink3:#4B5563;--c-gr:#6B7280;--c-gr2:#9CA3AF;
+--c-ln:#E5E7EB;--c-bg:#F5F6F8;--c-surf:#FAFBFC;--c-white:#fff;
+--c-g-50:#F5FBF7;--c-g-100:#EAF6EE;--c-g-500:#21A038;--c-g-700:#158026;
+--c-a-50:#FFFBEF;--c-a-200:#FBE3AE;--c-a-400:#F5B301;--c-a-800:#92400E;
+--c-b-50:#F6FAFE;--c-b-200:#CFE0F3;--c-b-500:#3B82F6;--c-b-800:#1D4ED8;
+--c-ig-1:#833AB4;--c-ig-2:#C13584;--c-ig-3:#E1306C;--c-ig-4:#F56040;
+--r:20px;--sh:0 2px 12px rgba(16,24,40,.06)}
+body{font:14px/1.5 -apple-system,BlinkMacSystemFont,'SB Sans Text','Segoe UI',Roboto,Arial,sans-serif;
+background:var(--c-bg);color:var(--c-ink);margin:0;padding:40px 16px 80px}
+.wp{max-width:1080px;margin:0 auto}
+h1{font-size:34px;font-weight:700;letter-spacing:-.02em;margin:0 0 8px}
+.sub{color:var(--c-gr);font-size:16px;margin:0 0 30px}
+.card{background:#fff;border-radius:var(--r);padding:26px 28px;box-shadow:var(--sh);margin-bottom:16px}
+h2{font-size:20px;font-weight:600;margin:0 0 5px}
+.hint{color:var(--c-gr);font-size:14px;margin:0 0 20px;line-height:1.55}
+.demo{display:flex;align-items:flex-start;gap:44px;flex-wrap:wrap;
+padding:34px 28px 64px;background:var(--c-surf);border-radius:16px;margin-top:18px}
+.demo>div{text-align:center}
+.demo .lbl{font-size:12px;color:var(--c-gr2);margin-top:16px;letter-spacing:.03em}
+.note{font-size:13px;line-height:1.6;color:var(--c-gr);margin-top:10px}
+.note.info{position:relative;padding:12px 16px 12px 44px;border-radius:13px;
+background:var(--c-b-50);border:1px solid var(--c-b-200);color:var(--c-b-800)}
+.note.info:before{content:'i';position:absolute;left:16px;top:12px;width:18px;height:18px;
+border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;
+font-weight:700;color:#fff;background:#5CA8E0}
+table.rt{width:100%;border-collapse:collapse;font-size:14px;margin-top:8px}
+table.rt th{text-align:left;font-weight:600;color:var(--c-gr);font-size:12.5px;
+padding:9px 10px;border-bottom:1.5px solid var(--c-ln)}
+table.rt td{padding:11px 10px;border-bottom:1px solid var(--c-bg);vertical-align:top}
+table.rt tr:last-child td{border-bottom:0}
+code{font:12.5px/1.5 ui-monospace,Menlo,Consolas,monospace;background:var(--c-bg);
+padding:2px 6px;border-radius:6px}
+</style></head><body>
+<div class="wp">
+<h1>Уведомление кнопки «Поделиться»</h1>
+<p class="sub">Как это выглядит сейчас и что происходит при нажатии.<br>С августа 2026 подтверждение показывается общей плашкой снизу, а не подсказкой на кнопке.</p>
+
+<!--БЛОК-НАЧАЛО-->
+<div class="card">
+<h2>Кнопка и подсказка</h2>
+<p class="hint">Сама кнопка живёт в строке меню — и в анкете, и в отчёте. Подсказка появляется
+при наведении, а после нажатия на секунду с небольшим подменяется на «Ссылка скопирована».</p>
+
+<div class="demo">
+  <div>
+    <button class="fbi" data-tip="Поделиться" aria-label="Поделиться">
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="18" cy="5" r="2.6" stroke="currentColor" stroke-width="1.8"/><circle cx="6" cy="12" r="2.6" stroke="currentColor" stroke-width="1.8"/><circle cx="18" cy="19" r="2.6" stroke="currentColor" stroke-width="1.8"/><path d="M8.4 10.8l7.2-4.2M8.4 13.2l7.2 4.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+    </button>
+    <div class="lbl">обычное состояние</div>
+  </div>
+  <div>
+    <button class="fbi показать" data-tip="Поделиться" aria-label="Поделиться">
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="18" cy="5" r="2.6" stroke="currentColor" stroke-width="1.8"/><circle cx="6" cy="12" r="2.6" stroke="currentColor" stroke-width="1.8"/><circle cx="18" cy="19" r="2.6" stroke="currentColor" stroke-width="1.8"/><path d="M8.4 10.8l7.2-4.2M8.4 13.2l7.2 4.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+    </button>
+    <div class="lbl">наведение</div>
+  </div>
+  <div>
+    <button class="fbi done показать" aria-label="Поделиться">
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="18" cy="5" r="2.6" stroke="currentColor" stroke-width="1.8"/><circle cx="6" cy="12" r="2.6" stroke="currentColor" stroke-width="1.8"/><circle cx="18" cy="19" r="2.6" stroke="currentColor" stroke-width="1.8"/><path d="M8.4 10.8l7.2-4.2M8.4 13.2l7.2 4.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+    </button>
+    <div class="lbl">после нажатия, 1,8 секунды</div>
+  </div>
+  <div>
+    <button class="fbi живая" data-tip="Поделиться" aria-label="Поделиться">
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="18" cy="5" r="2.6" stroke="currentColor" stroke-width="1.8"/><circle cx="6" cy="12" r="2.6" stroke="currentColor" stroke-width="1.8"/><circle cx="18" cy="19" r="2.6" stroke="currentColor" stroke-width="1.8"/><path d="M8.4 10.8l7.2-4.2M8.4 13.2l7.2 4.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+    </button>
+    <div class="lbl">нажмите — сработает по-настоящему</div>
+  </div>
+</div>
+
+<div class="note info">На телефоне подсказки не будет вовсе: там открывается системное окно
+выбора приложения, и уведомление не нужно — человек и так видит, что произошло.</div>
+</div>
+
+<div class="card">
+<h2>Что происходит при нажатии</h2>
+<p class="hint">Один и тот же код ведёт себя по-разному в зависимости от устройства.
+Список мессенджеров задаёт не сайт, а сама система — там будет то, что установлено у человека.</p>
+<table class="rt">
+<tr><th style="width:26%">Где открыли</th><th style="width:37%">Что произойдёт</th><th>Что увидит человек</th></tr>
+<tr><td><b>Телефон</b><br><span style="color:#6B7280;font-size:12.5px">iPhone, Android</span></td>
+    <td>Системное окно «Поделиться» — <code>navigator.share</code></td>
+    <td>Шторка снизу со списком приложений: WhatsApp, Telegram, почта, заметки, AirDrop — что установлено, то и покажет</td></tr>
+<tr><td><b>Ноутбук, Safari</b></td>
+    <td>Тоже системное окно</td>
+    <td>Панель «Поделиться» macOS с теми же приложениями</td></tr>
+<tr><td><b>Ноутбук, Chrome и Firefox</b></td>
+    <td>Ссылка копируется в буфер — <code>navigator.clipboard</code></td>
+    <td>Плашка снизу по центру: «Ссылка скопирована», исчезает через 2,6 секунды. Дальше человек вставляет ссылку сам</td></tr>
+<tr><td><b>Старый браузер</b></td>
+    <td>Запасной способ через скрытое поле</td>
+    <td>Та же плашка о копировании, а если не вышло — красная «Не получилось скопировать»</td></tr>
+</table>
+<div class="note">Выбрать заранее конкретные мессенджеры нельзя и не нужно: браузер не даёт
+сайту такой власти. Либо системное окно со всем, что есть у человека, либо копирование ссылки.</div>
+</div>
+<!--БЛОК-КОНЕЦ-->
+
+<div class="card">
+<h2>Стили кнопки — как в проекте</h2>
+<p class="hint">Скопированы из отчёта дословно, менять надо там.</p>
+</div>
+</div>
+
+<style>
+/* ——— стили кнопки, перенесены из report.html без изменений ——— */
+.fbi{display:inline-flex;align-items:center;justify-content:center;
+width:34px;height:34px;border:0;border-radius:11px;background:transparent;
+color:var(--c-gr);cursor:pointer;padding:0;position:relative;
+transition:background .18s,color .18s,transform .12s}
+.fbi svg{width:20px;height:20px}
+.fbi:hover{background:var(--c-white);color:var(--c-ink2)}
+.fbi:active{transform:translateY(1px)}
+.fbi:after{content:attr(data-tip);position:absolute;
+top:calc(100% + 9px);left:50%;padding:10px 14px;border-radius:12px;
+background:var(--c-white);color:var(--c-ink);border:1px solid var(--c-ln);
+font-size:12.5px;font-weight:600;white-space:nowrap;opacity:0;pointer-events:none;
+transform:translateX(-50%) translateY(-4px);
+transition:opacity .16s,transform .16s;box-shadow:0 8px 28px rgba(16,24,40,.16)}
+.fbi:hover:after{opacity:1;transform:translateX(-50%)}
+.fbi.done:after{content:'Ссылка скопирована';opacity:1;transform:translateX(-50%)}
+/* только для этой страницы: показать подсказку без наведения */
+.fbi.показать:after{opacity:1;transform:translateX(-50%)}
+.fbi.показать{background:var(--c-white);color:var(--c-ink2)}
+</style>
+<script>
+/* Живая кнопка: тот же код, что в анкете и отчёте. */
+(function(){
+  var sh=document.querySelector('.fbi.живая');
+  if(!sh)return;
+  sh.onclick=function(){
+    var url=location.href, ttl=document.title;
+    if(navigator.share){navigator.share({title:ttl,url:url}).catch(function(){});return}
+    var ok=function(){sh.classList.add('done');
+      setTimeout(function(){sh.classList.remove('done')},1800)};
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(url).then(ok,function(){});
+    }else{
+      var t=document.createElement('textarea');
+      t.value=url; document.body.appendChild(t); t.select();
+      try{document.execCommand('copy');ok()}catch(_){}
+      document.body.removeChild(t);
+    }
+  };
+})();
+</script>
+</body></html>
