@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="ru"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Счётикс · окно благодарности</title>
+<!-- Черновик для просмотра и правок. В отчёт и анкету идёт только то,
+     что между метками БЛОК-НАЧАЛО и БЛОК-КОНЕЦ. Всё остальное —
+     обвязка, чтобы файл открывался отдельной страницей.
+     Тексты и суммы правятся прямо здесь. -->
+<style>
+:root{
+--c-ink:#1A1A1A;--c-ink3:#4B5563;--c-gr:#6B7280;--c-gr2:#9CA3AF;--c-gr3:#B6BCC4;
+--c-ln:#E5E7EB;--c-bg:#F5F6F8;--c-white:#fff;
+--c-g-500:#21A038;
+--c-b-300:#8FC7E8;--c-b-400:#5CA8E0;--c-b-600:#2F80C4;--c-b-700:#2A6FAB;
+--c-ig-3:#E1306C;
+--r:20px;--sh:0 2px 12px rgba(16,24,40,.06)}
+body{font:14px/1.5 -apple-system,BlinkMacSystemFont,'SB Sans Text','Segoe UI',Roboto,Arial,sans-serif;
+background:var(--c-bg);color:var(--c-ink);margin:0;padding:40px 16px 80px}
+.wp{max-width:1080px;margin:0 auto}
+h1{font-size:34px;font-weight:700;letter-spacing:-.02em;margin:0 0 8px}
+.sub{color:var(--c-gr);font-size:16px;margin:0 0 30px}
+/* обвязка демо: так сердечко выглядит в меню анкеты */
+.демо{display:flex;align-items:center;gap:14px;margin:0 0 34px}
+.демо-подпись{color:var(--c-gr);font-size:14px}
+.fbi{display:flex;width:46px;height:46px;align-items:center;justify-content:center;
+border:1px solid var(--c-ln);border-radius:14px;background:var(--c-white);
+color:var(--c-ink3);box-shadow:var(--sh)}
+.fbi svg{width:22px;height:22px}
+</style></head><body>
+<div class="wp">
+<h1>Окно благодарности</h1>
+<p class="sub">Открывается по клику на сердечко и само — когда человек дочитал отчёт
+до блока с пометкой <b>data-thx-авто</b>. Тексты и суммы правятся в этом файле</p>
+<div class="демо">
+  <a class="fbi fbh" href="#thanks" data-thx="demo" data-tip="Поблагодарить проект" aria-label="Поблагодарить проект">
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0l-1 1-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1 7.8 7.8 7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8Z" stroke="currentColor" stroke-width="2"/></svg>
+  </a>
+  <span class="демо-подпись">← нажмите сердечко</span>
+</div>
+
+<!--БЛОК-НАЧАЛО-->
+<div class="thxm" id="thxModal">
+  <div class="thxm-фон" data-закрыть></div>
+  <div class="thxm-окно" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="thxmЗаголовок">
+    <button class="thxm-крестик" type="button" data-закрыть aria-label="Закрыть">×</button>
+
+    <div class="thxm-шапка">
+      <div class="thxm-медаль" id="thxmСчёт">
+        <div class="thxm-кружок" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0l-1 1-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1 7.8 7.8 7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8Z" stroke="currentColor" stroke-width="2"/></svg>
+        
+          <svg class="thxm-смайл" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="#FFCC33"/><circle cx="7.5" cy="13.7" r="1.7" fill="#FF8FA6" opacity=".75"/><circle cx="16.5" cy="13.7" r="1.7" fill="#FF8FA6" opacity=".75"/><path d="M7.4 10.7q1.2-1.7 2.4 0" stroke="#4A3A00" stroke-width="1.6" stroke-linecap="round" fill="none"/><path d="M14.2 10.7q1.2-1.7 2.4 0" stroke="#4A3A00" stroke-width="1.6" stroke-linecap="round" fill="none"/><path d="M9.7 14.7q2.3 2 4.6 0" stroke="#4A3A00" stroke-width="1.6" stroke-linecap="round" fill="none"/></svg>
+        </div>
+        <div class="thxm-число">
+          <span class="thxm-строка"><b id="thxmЧисло">1 780</b><i class="thxm-плюс">+1</i></span>
+          <span>уже поблагодарили</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="thxm-главное">
+      <div class="thxm-заголовок" id="thxmЗаголовок"><span class="до">Поддержите проект</span><span class="после">Спасибо за поддержку!</span><span class="оплата">Оплата прошла, спасибо!</span></div>
+      <p>Ваша поддержка помогает нам развивать проект, добавлять новые возможности и сохранять его доступным для всех специалистов, которые работают на себя.</p>
+    </div>
+
+    <div class="thxm-суммы" id="thxmСуммы">
+      <button type="button" class="thxm-сумма" data-сумма="200">200 ₽</button>
+      <button type="button" class="thxm-сумма выбрана" data-сумма="500">500 ₽</button>
+      <button type="button" class="thxm-сумма" data-сумма="1000">1000 ₽</button>
+    </div>
+
+    <button type="button" class="thxm-оплатить" id="thxmОплатить">
+      <svg viewBox="0 0 24 24" fill="none" width="22" height="22" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0l-1 1-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1 7.8 7.8 7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8Z" fill="#fff"/></svg>
+      <span>Поддержать Счётикс — <b id="thxmИтог">500</b></span>
+    </button>
+
+    <div class="thxm-оплачено" aria-hidden="true"></div>
+
+    <div class="thxm-низ">
+      <i>**</i> Платёж осуществляется на защищённой странице банка.
+      Реквизиты карты Счётикс не анализирует и не хранит.
+    </div>
+
+    <div class="thxm-знакниз">
+      <svg viewBox="0 0 32 32" fill="none" aria-hidden="true"><rect x="10.95" y="2.09" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 7.14)" fill="var(--c-gr3)"/><rect x="19.81" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 24.86 16)" fill="var(--c-g-500)"/><rect x="10.95" y="19.81" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 24.86)" fill="var(--c-gr3)"/><rect x="2.09" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 7.14 16)" fill="var(--c-gr3)"/></svg>
+      <span>счётикс</span>
+    </div>
+
+  </div>
+</div>
+<!--БЛОК-КОНЕЦ-->
+
+</div>
+
+<style>
+/* ═══════════ ОКНО БЛАГОДАРНОСТИ ═══════════════════════════════════
+   Открывается по клику на любое сердечко [data-thx].
+   Гамма — голубой ряд анкеты (раздел «Время», плашки «Отпуск»,
+   «График 5/2», «Условия труда по ТК РФ»). Заливка кнопки продолжает
+   заливку баннера, а не повторяет её. Прокрутки внутри окна нет:
+   на низком экране прокручивается вся подложка целиком.
+   Порядок правил: подложка → окно → баннер → текст → суммы →
+   кнопка → низ → мобильные → сердечко и салют. */
+
+/* ── подложка и окно ── */
+.thxm{position:fixed;inset:0;z-index:90;display:none;
+align-items:center;justify-content:center;padding:20px;overflow-y:auto}
+.thxm.on{display:flex}
+/* Пока окно открыто, страница под ним не прокручивается */
+html.thxm-стоп,html.thxm-стоп body{overflow:hidden}
+.thxm-фон{position:fixed;inset:0;background:rgba(26,26,26,.55);
+backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.thxm-окно{position:relative;z-index:1;width:100%;max-width:500px;margin:auto;
+background:var(--c-white);border-radius:var(--r);padding:0 0 44px;
+box-shadow:0 18px 60px rgba(16,24,40,.28)}
+.thxm-крестик{position:absolute;top:14px;right:16px;z-index:2;width:34px;height:34px;
+border:0;border-radius:11px;background:rgba(255,255,255,.18);color:var(--c-white);
+font-size:22px;line-height:1;cursor:pointer;transition:background .18s}
+.thxm-крестик:hover{background:rgba(255,255,255,.3)}
+.thxm-окно:focus{outline:none}
+.thxm-крестик:focus{outline:none}
+.thxm-крестик:focus-visible{outline:2px solid var(--c-white);outline-offset:2px}
+
+/* ── баннер: заливка, веер сердечек фоном, сердечко со счётчиком ──
+   Фон — один SVG в data-URI: веер от левого нижнего угла, крупные
+   сердца у устья, мелкие на разлёте, знак «Счётикс» летит вместе с ними.
+   Центральная полоса оставлена пустой, чтобы не мешать тексту. */
+.thxm-шапка{position:relative;overflow:hidden;text-align:center;
+padding:20px 30px 22px;border-radius:var(--r) var(--r) 0 0;color:var(--c-white);
+background:
+url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22520%22%20height%3D%22200%22%20viewBox%3D%220%200%20520%20200%22%3E%3Cg%20transform%3D%22translate%28134%2046%29%20rotate%282%29%20scale%281.34%29%22%20opacity%3D%220.103%22%3E%3Cpath%20d%3D%22M20.8%204.6a5.5%205.5%200%200%200-7.8%200l-1%201-1-1a5.5%205.5%200%200%200-7.8%207.8l1%201%207.8%207.8%207.8-7.8%201-1a5.5%205.5%200%200%200%200-7.8Z%22%20fill%3D%22white%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2826%20179%29%20rotate%28-18%29%20scale%282.40%29%22%20opacity%3D%220.143%22%3E%3Cpath%20d%3D%22M20.8%204.6a5.5%205.5%200%200%200-7.8%200l-1%201-1-1a5.5%205.5%200%200%200-7.8%207.8l1%201%207.8%207.8%207.8-7.8%201-1a5.5%205.5%200%200%200%200-7.8Z%22%20fill%3D%22white%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28112%2015%29%20rotate%28-2%29%20scale%281.29%29%22%20opacity%3D%220.098%22%3E%3Cpath%20d%3D%22M20.8%204.6a5.5%205.5%200%200%200-7.8%200l-1%201-1-1a5.5%205.5%200%200%200-7.8%207.8l1%201%207.8%207.8%207.8-7.8%201-1a5.5%205.5%200%200%200%200-7.8Z%22%20fill%3D%22white%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2878%20184%29%20rotate%281%29%20scale%282.29%29%22%20opacity%3D%220.140%22%3E%3Cpath%20d%3D%22M20.8%204.6a5.5%205.5%200%200%200-7.8%200l-1%201-1-1a5.5%205.5%200%200%200-7.8%207.8l1%201%207.8%207.8%207.8-7.8%201-1a5.5%205.5%200%200%200%200-7.8Z%22%20fill%3D%22white%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2839%20146%29%20rotate%2823%29%20scale%282.03%29%22%20opacity%3D%220.138%22%3E%3Cpath%20d%3D%22M20.8%204.6a5.5%205.5%200%200%200-7.8%200l-1%201-1-1a5.5%205.5%200%200%200-7.8%207.8l1%201%207.8%207.8%207.8-7.8%201-1a5.5%205.5%200%200%200%200-7.8Z%22%20fill%3D%22white%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28500%20117%29%20rotate%28-24%29%20scale%280.61%29%22%20opacity%3D%220.066%22%3E%3Cpath%20d%3D%22M20.8%204.6a5.5%205.5%200%200%200-7.8%200l-1%201-1-1a5.5%205.5%200%200%200-7.8%207.8l1%201%207.8%207.8%207.8-7.8%201-1a5.5%205.5%200%200%200%200-7.8Z%22%20fill%3D%22white%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28478%20164%29%20rotate%288%29%20scale%280.74%29%22%20opacity%3D%220.052%22%3E%3Cpath%20d%3D%22M20.8%204.6a5.5%205.5%200%200%200-7.8%200l-1%201-1-1a5.5%205.5%200%200%200-7.8%207.8l1%201%207.8%207.8%207.8-7.8%201-1a5.5%205.5%200%200%200%200-7.8Z%22%20fill%3D%22white%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28100%20200%29%20rotate%28-9%29%20scale%282.26%29%22%20opacity%3D%220.133%22%3E%3Cpath%20d%3D%22M20.8%204.6a5.5%205.5%200%200%200-7.8%200l-1%201-1-1a5.5%205.5%200%200%200-7.8%207.8l1%201%207.8%207.8%207.8-7.8%201-1a5.5%205.5%200%200%200%200-7.8Z%22%20fill%3D%22white%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2868%20-14%29%20rotate%2818%29%20scale%281.01%29%22%20opacity%3D%220.098%22%3E%3Cpath%20d%3D%22M20.8%204.6a5.5%205.5%200%200%200-7.8%200l-1%201-1-1a5.5%205.5%200%200%200-7.8%207.8l1%201%207.8%207.8%207.8-7.8%201-1a5.5%205.5%200%200%200%200-7.8Z%22%20fill%3D%22white%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2833%20128%29%20rotate%282%29%20scale%281.97%29%22%20opacity%3D%220.122%22%3E%3Cpath%20d%3D%22M20.8%204.6a5.5%205.5%200%200%200-7.8%200l-1%201-1-1a5.5%205.5%200%200%200-7.8%207.8l1%201%207.8%207.8%207.8-7.8%201-1a5.5%205.5%200%200%200%200-7.8Z%22%20fill%3D%22white%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%282%20146%29%20rotate%28-22%29%20scale%282.60%29%22%20opacity%3D%220.170%22%3E%3Cpath%20d%3D%22M20.8%204.6a5.5%205.5%200%200%200-7.8%200l-1%201-1-1a5.5%205.5%200%200%200-7.8%207.8l1%201%207.8%207.8%207.8-7.8%201-1a5.5%205.5%200%200%200%200-7.8Z%22%20fill%3D%22white%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2858%20178%29%20rotate%2810%29%20scale%282.10%29%22%20opacity%3D%220.140%22%3E%3Cpath%20d%3D%22M20.8%204.6a5.5%205.5%200%200%200-7.8%200l-1%201-1-1a5.5%205.5%200%200%200-7.8%207.8l1%201%207.8%207.8%207.8-7.8%201-1a5.5%205.5%200%200%200%200-7.8Z%22%20fill%3D%22white%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28112%20150%29%20rotate%28-8%29%20scale%281.50%29%22%20opacity%3D%220.110%22%3E%3Cpath%20d%3D%22M20.8%204.6a5.5%205.5%200%200%200-7.8%200l-1%201-1-1a5.5%205.5%200%200%200-7.8%207.8l1%201%207.8%207.8%207.8-7.8%201-1a5.5%205.5%200%200%200%200-7.8Z%22%20fill%3D%22white%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28432%20120%29%20rotate%2820%29%20scale%280.90%29%22%20opacity%3D%220.075%22%3E%3Cpath%20d%3D%22M20.8%204.6a5.5%205.5%200%200%200-7.8%200l-1%201-1-1a5.5%205.5%200%200%200-7.8%207.8l1%201%207.8%207.8%207.8-7.8%201-1a5.5%205.5%200%200%200%200-7.8Z%22%20fill%3D%22white%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28470%20158%29%20rotate%28-6%29%20scale%281.20%29%22%20opacity%3D%220.080%22%3E%3Cpath%20d%3D%22M20.8%204.6a5.5%205.5%200%200%200-7.8%200l-1%201-1-1a5.5%205.5%200%200%200-7.8%207.8l1%201%207.8%207.8%207.8-7.8%201-1a5.5%205.5%200%200%200%200-7.8Z%22%20fill%3D%22white%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%2896%2096%29%20rotate%28-14%29%20scale%281.90%29%22%20opacity%3D%220.120%22%3E%3Crect%20x%3D%2210.95%22%20y%3D%222.09%22%20width%3D%2210.10%22%20height%3D%2210.10%22%20rx%3D%221.90%22%20transform%3D%22rotate%2845%2016%207.14%29%22%20fill%3D%22white%22%20opacity%3D%220.5%22%2F%3E%3Crect%20x%3D%2219.81%22%20y%3D%2210.95%22%20width%3D%2210.10%22%20height%3D%2210.10%22%20rx%3D%221.90%22%20transform%3D%22rotate%2845%2024.86%2016%29%22%20fill%3D%22white%22%2F%3E%3Crect%20x%3D%2210.95%22%20y%3D%2219.81%22%20width%3D%2210.10%22%20height%3D%2210.10%22%20rx%3D%221.90%22%20transform%3D%22rotate%2845%2016%2024.86%29%22%20fill%3D%22white%22%20opacity%3D%220.5%22%2F%3E%3Crect%20x%3D%222.09%22%20y%3D%2210.95%22%20width%3D%2210.10%22%20height%3D%2210.10%22%20rx%3D%221.90%22%20transform%3D%22rotate%2845%207.14%2016%29%22%20fill%3D%22white%22%20opacity%3D%220.5%22%2F%3E%3C%2Fg%3E%3Cg%20transform%3D%22translate%28446%20116%29%20rotate%2816%29%20scale%281.10%29%22%20opacity%3D%220.080%22%3E%3Crect%20x%3D%2210.95%22%20y%3D%222.09%22%20width%3D%2210.10%22%20height%3D%2210.10%22%20rx%3D%221.90%22%20transform%3D%22rotate%2845%2016%207.14%29%22%20fill%3D%22white%22%20opacity%3D%220.5%22%2F%3E%3Crect%20x%3D%2219.81%22%20y%3D%2210.95%22%20width%3D%2210.10%22%20height%3D%2210.10%22%20rx%3D%221.90%22%20transform%3D%22rotate%2845%2024.86%2016%29%22%20fill%3D%22white%22%2F%3E%3Crect%20x%3D%2210.95%22%20y%3D%2219.81%22%20width%3D%2210.10%22%20height%3D%2210.10%22%20rx%3D%221.90%22%20transform%3D%22rotate%2845%2016%2024.86%29%22%20fill%3D%22white%22%20opacity%3D%220.5%22%2F%3E%3Crect%20x%3D%222.09%22%20y%3D%2210.95%22%20width%3D%2210.10%22%20height%3D%2210.10%22%20rx%3D%221.90%22%20transform%3D%22rotate%2845%207.14%2016%29%22%20fill%3D%22white%22%20opacity%3D%220.5%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E") no-repeat left bottom / 100% 100%,
+radial-gradient(circle at 86% 0%,rgba(255,255,255,.18) 0%,rgba(255,255,255,0) 38%),
+linear-gradient(135deg,var(--c-b-700) 0%,var(--c-b-400) 55%,var(--c-b-300) 100%);
+box-shadow:0 8px 24px rgba(47,128,196,.18)}
+.thxm-шапка>*{position:relative;z-index:1}
+.thxm-медаль{margin-top:9px;display:flex;flex-direction:column;
+align-items:center;gap:9px;white-space:nowrap}
+/* До поддержки сердечко — только контур. После нажатия «Поддержать»
+   окно получает класс .спасибо: сердце заливается, появляется «+1»
+   и подпись меняется на благодарность. */
+.thxm-кружок{width:66px;height:66px;border-radius:50%;border:3px solid var(--c-white);
+display:flex;align-items:center;justify-content:center;
+background:var(--c-white);color:var(--c-ig-3)}
+.thxm-кружок svg path{transition:fill .3s}
+.thxm.лайк .thxm-кружок svg path,
+.thxm.спасибо .thxm-кружок svg path{fill:currentColor}
+.thxm.спасибо .thxm-кружок{animation:thx-стук .5s ease}
+@keyframes thx-стук{0%{transform:scale(1)}38%{transform:scale(1.16)}100%{transform:scale(1)}}
+.thxm-кружок svg{width:32px;height:32px}
+.thxm-смайл{display:none}
+/* После оплаты сердечко уступает место улыбке, а кружок растёт:
+   это уже не призыв, а ответ — и он должен читаться первым. */
+.thxm.оплачено .thxm-кружок{width:88px;height:88px}
+.thxm.оплачено .thxm-кружок svg{width:44px;height:44px}
+.thxm.оплачено .thxm-кружок svg:not(.thxm-смайл){display:none}
+.thxm.оплачено .thxm-смайл{display:block}
+.thxm.оплачено .thxm-число{display:none}
+.thxm-число{display:flex;flex-direction:column;align-items:center;gap:2px;
+font-size:12px;line-height:1.35;text-align:center;color:rgba(255,255,255,.80)}
+.thxm-строка{display:flex;align-items:baseline;gap:5px}
+.thxm-число b{display:inline-block;font-size:14px;font-weight:400;
+color:rgba(255,255,255,.80);font-variant-numeric:tabular-nums}
+/* «+1» — персональная прибавка этого человека, поэтому акцент на ней */
+.thxm-плюс{display:none;font-style:normal;font-size:13px;font-weight:700;
+color:var(--c-white);padding:2px 7px;border-radius:999px;
+background:rgba(255,255,255,.20)}
+.thxm.спасибо .thxm-плюс{display:inline-block;animation:thx-тик .5s ease}
+
+.thxm-медаль.тик .thxm-число b{animation:thx-тик .5s ease}
+@keyframes thx-тик{0%{transform:scale(1)}35%{transform:scale(1.22)}100%{transform:scale(1)}}
+
+/* ── белое поле: заголовок и единственная мысль, шрифт окна.
+   Подложка чистая, без акцентов. ── */
+.thxm-главное{position:relative;margin:34px 34px 0;text-align:center}
+/* После нажатия «Поддержать» окно получает класс .спасибо и заголовок
+   меняется на благодарность. Текст под ним подходит обоим состояниям. */
+.thxm-заголовок .после{display:none}
+.thxm.спасибо .thxm-заголовок .до{display:none}
+.thxm.спасибо .thxm-заголовок .после{display:inline}
+.thxm-заголовок .оплата{display:none}
+.thxm.оплачено .thxm-заголовок .после{display:none}
+.thxm.оплачено .thxm-заголовок .оплата{display:inline}
+.thxm-заголовок{max-width:15em;margin:0 auto 12px;font-family:inherit;
+font-size:21px;font-weight:600;letter-spacing:-.02em;line-height:1.25;
+color:var(--c-ink3)}
+.thxm-главное p{max-width:23em;margin:0 auto;font-size:16.5px;font-weight:400;
+line-height:1.65;color:var(--c-gr);text-align:center}
+
+/* ── суммы: одна зелёная гамма. Рамка градиентная приёмом двух фонов:
+   светлая заливка по padding-box, градиент по border-box.
+   Цвет цифры и подписи при выделении намеренно не меняется. ── */
+.thxm-суммы{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:42px 30px 0}
+.thxm-сумма{--г1:#A9DDB8;--г2:#21A038;--г3:#158026;
+display:flex;align-items:center;justify-content:center;
+padding:17px 8px;border:1.5px solid transparent;border-radius:14px;
+background:linear-gradient(var(--c-white),var(--c-white)) padding-box,
+linear-gradient(135deg,var(--c-ln),var(--c-ln)) border-box;
+font-family:inherit;font-size:18px;font-weight:600;color:var(--c-ink3);
+cursor:pointer;transition:background .18s}
+/* Подписей и черты у сумм нет — только цена. */
+.thxm-сумма:hover{background:
+linear-gradient(var(--c-white),var(--c-white)) padding-box,
+linear-gradient(135deg,var(--г1),var(--г2) 55%,var(--г3)) border-box}
+.thxm-сумма.выбрана{background:
+linear-gradient(140deg,color-mix(in srgb,var(--г1) 9%,#fff),
+color-mix(in srgb,var(--г2) 6%,#fff) 60%,
+color-mix(in srgb,var(--г3) 4%,#fff)) padding-box,
+linear-gradient(135deg,var(--г1),var(--г2) 55%,var(--г3)) border-box}
+
+/* ── кнопка: продолжение заливки баннера. Тот кончается светлым
+   небесным справа внизу — кнопка подхватывает этот тон слева
+   и снова уходит в глубокий синий. ── */
+.thxm-оплатить{display:flex;width:calc(100% - 60px);margin:18px 30px 0;height:58px;
+align-items:center;justify-content:center;gap:9px;border:0;border-radius:15px;
+background:
+radial-gradient(circle at 10% 0%,rgba(255,255,255,.20) 0%,rgba(255,255,255,0) 46%),
+linear-gradient(135deg,var(--c-b-300) 0%,var(--c-b-400) 34%,var(--c-b-600) 76%,var(--c-b-700) 100%);
+color:var(--c-white);font-family:inherit;font-size:16.5px;font-weight:600;
+letter-spacing:-.01em;cursor:pointer;transition:.16s;
+box-shadow:0 6px 20px rgba(47,128,196,.28)}
+.thxm-оплатить b{font-weight:700}
+.thxm-оплатить:hover{filter:brightness(1.05);box-shadow:0 8px 26px rgba(47,128,196,.34)}
+.thxm-оплатить:active{filter:brightness(.96);transform:translateY(1px);
+box-shadow:0 4px 14px rgba(47,128,196,.3)}
+
+/* ── низ: сноска про банк и маленький знак «Счётикс» ── */
+/* Возврат с оплаты: сумм и кнопки больше нет, вместо них спокойная
+   строка подтверждения. Состояние включается классом .оплачено. */
+.thxm-оплачено{display:none;margin:26px 30px 0;padding-top:22px;
+border-top:1px solid var(--c-ln)}
+.thxm.оплачено .thxm-оплачено{display:block}
+.thxm.оплачено .thxm-низ,
+.thxm.оплачено .thxm-суммы,
+.thxm.оплачено .thxm-оплатить{display:none}
+.thxm-низ{margin:22px 34px 0;font-size:12px;line-height:1.55;
+color:var(--c-gr2);text-align:center}
+.thxm-низ i{font-style:normal;font-weight:400;letter-spacing:.06em}
+.thxm-знакниз{display:flex;align-items:center;justify-content:center;gap:6px;
+margin:18px 30px 0;line-height:1}
+.thxm-знакниз svg{width:14px;height:14px;flex:none}
+.thxm-знакниз span{font-size:10px;font-weight:700;letter-spacing:.11em;
+text-transform:lowercase;color:var(--c-gr2)}
+
+@media(max-width:600px){
+.thxm{padding:14px}
+.thxm-шапка{padding:18px 20px 18px}
+.thxm-кружок{width:56px;height:56px}
+.thxm-кружок svg{width:27px;height:27px}
+.thxm-главное{margin:28px 20px 0}
+.thxm-заголовок{font-size:19px}
+.thxm-суммы{grid-template-columns:1fr 1fr;padding:34px 20px 0}
+.thxm-сумма:nth-child(3){grid-column:1/-1}
+.thxm-оплатить{width:calc(100% - 40px);margin:16px 20px 0}
+.thxm-низ,.thxm-знакниз{margin-left:20px;margin-right:20px}}
+
+/* ═══ ЗАГОРЕВШЕЕСЯ СЕРДЕЧКО И САЛЮТ ═══
+   .thx-горит вешается скриптом на любую кнопку [data-thx] после нажатия
+   и восстанавливается при следующем визите из localStorage.
+   .thx-искра — разлетающиеся сердечки кнопки оплаты, живут до 1,6 с
+   и удаляются сами. Разметку кнопок оба класса не требуют. */
+[data-thx]{transition:color .2s}
+[data-thx].thx-горит{color:var(--c-ig-3)}
+[data-thx].thx-горит svg path{fill:currentColor;stroke:currentColor}
+.thx-искра{--dx:0px;--dy:0px;--rot:0deg;--s:1;--t:1.05s;
+position:fixed;z-index:120;pointer-events:none;width:22px;height:22px;
+margin:-11px 0 0 -11px;color:var(--c-ig-3,#E1306C);will-change:transform,opacity;
+animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
+.thx-искра svg{width:100%;height:100%;display:block}
+@keyframes thx-полёт{
+0%{transform:translate(0,0) scale(.4) rotate(0deg);opacity:0}
+14%{opacity:1}
+100%{transform:translate(var(--dx),var(--dy)) scale(var(--s,1)) rotate(var(--rot,0deg));opacity:0}}
+@media(prefers-reduced-motion:reduce){.thx-искра{display:none}}
+
+/* ── Только для этого черновика: окно раскрыто сразу и подложка светлее,
+   чтобы макет было видно даже там, где не выполняются скрипты.
+   При переносе блока в анкету эти два правила НЕ копируем. ── */
+#thxModal{display:flex}
+#thxModal .thxm-фон{background:rgba(26,26,26,.35)}
+</style>
+<script>
+/* Заглушка поведения: выбор суммы, закрытие, салют сердечек.
+   Настоящая отправка на оплату подставляется переменной PAY_URL.
+   Порядок важен: сначала вешаем обработчики интерфейса, и только потом
+   трогаем сеть и localStorage — чтобы отказ в песочнице не сломал клики. */
+(function(){
+  var окно=document.getElementById('thxModal'); if(!окно)return;
+  var PAY_URL='#order';                 /* ← сюда ссылку страницы оплаты */
+  var сумма=500;
+  var итог=document.getElementById('thxmИтог');
+
+  /* ── салют сердечек ── */
+  var СЕРДЦЕ='<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" '+
+    'd="M20.8 4.6a5.5 5.5 0 0 0-7.8 0l-1 1-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1 7.8 7.8 7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8Z"/></svg>';
+  var ГАММА=['#E1306C','#FF3B5C','#C13584','#F56040','#FF7AB0','#E0245E'];
+  function искра(x,y){
+    var и=document.createElement('span');
+    и.className='thx-искра'; и.innerHTML=СЕРДЦЕ;
+    var угол=(-170+Math.random()*180)*Math.PI/180;
+    var путь=120+Math.random()*230;
+    и.style.left=x+'px'; и.style.top=y+'px';
+    и.style.color=ГАММА[(Math.random()*ГАММА.length)|0];
+    и.style.opacity=(0.75+Math.random()*0.25).toFixed(2);
+    и.style.setProperty('--dx',(Math.cos(угол)*путь).toFixed(0)+'px');
+    и.style.setProperty('--dy',(Math.sin(угол)*путь).toFixed(0)+'px');
+    и.style.setProperty('--s',(0.6+Math.random()*1.6).toFixed(2));
+    и.style.setProperty('--rot',((Math.random()*140-70)|0)+'deg');
+    и.style.setProperty('--t',(0.9+Math.random()*0.7).toFixed(2)+'s');
+    document.body.appendChild(и);
+    setTimeout(function(){и.remove()},1800);
+  }
+  function салют(x,y,сколько){
+    сколько=сколько||34;
+    [[Math.ceil(сколько*0.5),0],[Math.ceil(сколько*0.3),90],[Math.ceil(сколько*0.2),190]]
+      .forEach(function(в){setTimeout(function(){for(var i=0;i<в[0];i++)искра(x,y)},в[1])});
+  }
+  window.салютСердечек=салют;
+
+  /* ── открытие и закрытие: одно место, чтобы не разъезжалось поведение ── */
+  var ктоОткрыл=null;
+  function открыть(откуда,элемент){
+    ктоОткрыл=элемент||null;
+    окно.setAttribute('data-откуда',откуда||'—');
+    окно.classList.add('on');
+    document.documentElement.classList.add('thxm-стоп');
+    /* Фокус уводим на само окно, а не на крестик: при программном
+       фокусе браузер рисует вокруг кнопки чёрное кольцо, и крестик
+       выглядел обведённым. Окну кольцо отключено стилем ниже. */
+    var о=окно.querySelector('.thxm-окно');
+    if(о)setTimeout(function(){try{о.focus({preventScroll:true})}catch(e){}},60);
+  }
+  function закрыть(){
+    окно.classList.remove('on');
+    document.documentElement.classList.remove('thxm-стоп');
+    if(ктоОткрыл){try{ктоОткрыл.focus()}catch(e){} ктоОткрыл=null}
+  }
+
+  /* ── выбор суммы: делегирование, поэтому работает при любой перевёрстке ── */
+  var суммы=document.getElementById('thxmСуммы');
+  if(суммы)суммы.addEventListener('click',function(e){
+    var б=e.target.closest('.thxm-сумма'); if(!б)return;
+    var сп=суммы.querySelectorAll('.thxm-сумма');
+    for(var i=0;i<сп.length;i++)сп[i].classList.remove('выбрана');
+    б.classList.add('выбрана');
+    сумма=parseInt(б.getAttribute('data-сумма'),10)||0;
+    if(итог)итог.textContent=сумма;
+  });
+
+  /* ── закрытие ── */
+  окно.querySelectorAll('[data-закрыть]').forEach(function(e){e.onclick=закрыть});
+  document.addEventListener('keydown',function(e){
+    if(e.key==='Escape'&&окно.classList.contains('on'))закрыть();
+  });
+
+  /* ── кнопка оплаты: сердечки разлетаются, потом переход ── */
+  var оплатить=document.getElementById('thxmОплатить');
+  if(оплатить)оплатить.onclick=function(){
+    if(!(сумма>0))return;
+    /* Нажатие кнопки — это ещё не поддержка. Счётчик, метка
+       «поддержал» и заголовок благодарности ставятся только при
+       возврате с оплаты (?paid=1). Здесь — салют и переход;
+       салют один раз на человека, дальше без паузы. */
+    var празднуем=!окно.classList.contains('спасибо');
+    if(празднуем){
+      var к=this.getBoundingClientRect();
+      салют(к.left+к.width/2,к.top+к.height/2,44);
+    }
+    var метка=окно.getAttribute('data-откуда')||'—';
+    if(window.ym&&window.YM_ID)ym(window.YM_ID,'reachGoal','thanks_pay',{сумма:сумма,откуда:метка});
+    /* Пауза нужна только в первый раз — чтобы человек увидел салют
+       и «+1». При повторном нажатии праздника нет, значит и ждать
+       нечего: уходим на оплату сразу. */
+    var пауза=празднуем?1300:0;
+    if(PAY_URL.charAt(0)==='#'){
+      setTimeout(function(){alert('Здесь откроется оплата на '+сумма+' \u20BD\nМетка места: '+метка)},празднуем?1400:0);
+      return;
+    }
+    setTimeout(function(){
+      location.href=PAY_URL+(PAY_URL.indexOf('?')<0?'?':'&')+'sum='+сумма+'&from='+encodeURIComponent(метка);
+    },пауза);
+  };
+
+  /* ══ СЧЁТЧИК БЛАГОДАРНОСТЕЙ ══════════════════════════════════════
+     Публичный счётчик Abacus (замена закрытому CountAPI):
+       GET /hit/<пространство>/<ключ>  → +1 и возвращает новое значение
+       GET /get/<пространство>/<ключ>  → только читает
+     СЧБАЗА — точка отсчёта, прибавляется к серверному числу.
+     Один браузер учитывается один раз: отметка в localStorage. */
+  var СЧБАЗА  = 1780;
+  var СЧАДРЕС = 'https://abacus.jasoncameron.dev';
+  var СЧНС    = 'schetix';
+  var СЧКЛЮЧ  = 'thanks';
+  var СЧОТМ   = 'phc_thx_paid';     /* этот браузер уже поддерживал */
+  var СЧЛАЙК  = 'phc_thx_liked';    /* и просто ставил сердечко */
+  var СЕАНС   = 'phc_thx_показано'; /* окно уже всплывало в этом сеансе */
+  var число=document.getElementById('thxmЧисло');
+  var плашка=document.getElementById('thxmСчёт');
+
+  function красиво(n){return String(n).replace(/\B(?=(\d{3})+(?!\d))/g,'\u2009')}
+  function локально(){try{return localStorage.getItem(СЧОТМ)?1:0}catch(e){return 0}}
+  function показать(v,тик){
+    if(!число)return;
+    число.textContent=красиво(СЧБАЗА+v);
+    if(тик&&плашка){плашка.classList.remove('тик');void плашка.offsetWidth;плашка.classList.add('тик')}
+  }
+  function спросить(действие,тик){
+    if(!window.fetch)return;
+    try{
+      fetch(СЧАДРЕС+'/'+действие+'/'+СЧНС+'/'+СЧКЛЮЧ)
+        .then(function(r){return r.json()})
+        .then(function(д){if(typeof д.value==='number')показать(д.value,тик)})
+        .catch(function(){показать(локально(),тик)});
+    }catch(e){показать(локально(),тик)}
+  }
+  function засчитать(){
+    try{
+      var уже=false;
+      try{уже=!!localStorage.getItem(СЧОТМ)}catch(e){}
+      if(уже){спросить('get',true);return}
+      try{localStorage.setItem(СЧОТМ,String(Date.now()))}catch(e){}
+      спросить('hit',true);
+    }catch(e){}
+  }
+
+  /* ── сердечко открывает окно; анимации на нём нет ── */
+  function зажечь(к){
+    /* Лайк отмечаем сразу: сердечки краснеют и в анкете, и в отчёте,
+       и остаются такими при следующем визите. Счётчик при этом не
+       трогаем — он считает поддержку, а не нажатия. */
+    try{localStorage.setItem(СЧЛАЙК,String(Date.now()))}catch(e){}
+    document.querySelectorAll('[data-thx]').forEach(function(э){э.classList.add('thx-горит')});
+    окно.classList.add('лайк');
+    открыть(к.getAttribute('data-thx')||'—',к);
+    if(window.ym&&window.YM_ID)ym(window.YM_ID,'reachGoal','thanks_click',
+      {откуда:окно.getAttribute('data-откуда')});
+  }
+  document.querySelectorAll('[data-thx]').forEach(function(к){
+    к.addEventListener('click',function(e){e.preventDefault();зажечь(к)});
+  });
+  /* Уже поддерживал раньше — сердечко горит с первой секунды
+     и в окне сразу стоит состояние благодарности. */
+  try{
+    var лайкал=!!localStorage.getItem(СЧЛАЙК), платил=!!localStorage.getItem(СЧОТМ);
+    if(лайкал||платил){
+      document.querySelectorAll('[data-thx]').forEach(function(к){к.classList.add('thx-горит')});
+      окно.classList.add('лайк');
+    }
+    if(платил)окно.classList.add('спасибо');
+  }catch(e){}
+
+
+  /* ══ ВОЗВРАТ С ОПЛАТЫ ═══════════════════════════════════════════
+     Платёжная страница возвращает человека по адресу вида
+     report.html?paid=1 — показываем окно с подтверждением и убираем
+     метку из адреса, чтобы при обновлении страницы оно не всплывало
+     повторно. */
+  try{
+    if(/[?&]paid=1(?:&|$)/.test(location.search)){
+      засчитать();
+      окно.classList.add('лайк','спасибо','оплачено');
+      document.querySelectorAll('[data-thx]').forEach(function(к){к.classList.add('thx-горит')});
+      setTimeout(function(){открыть('return-paid',null)},350);
+      if(history.replaceState)history.replaceState(null,'',location.pathname+location.hash);
+    }
+  }catch(e){}
+  /* ══ АВТОПОКАЗ В ОТЧЁТЕ ═══════════════════════════════════════════
+     Окно всплывает само, когда человек дочитал до блока, помеченного
+     атрибутом data-thx-авто (в отчёте это блок 07 «Четыре цифры,
+     которые стоит запомнить»). Один раз за сеанс и никогда — тем,
+     кто уже поддержал. */
+  var якорь=document.querySelector('[data-thx-авто]');
+  if(якорь&&window.IntersectionObserver){
+    /* Ограничители, чтобы окно не надоедало: один раз за сеанс,
+       не чаще раза в сутки и не больше двух раз всего. Тем, кто уже
+       поддержал, не показываем никогда. */
+    var СУТКИ=86400000, ПРЕДЕЛ=2;
+    var показывать=true;
+    try{
+      var когда=parseInt(localStorage.getItem('phc_thx_когда')||'0',10);
+      var сколько=parseInt(localStorage.getItem('phc_thx_сколько')||'0',10);
+      if(localStorage.getItem(СЧОТМ)||sessionStorage.getItem(СЕАНС))показывать=false;
+      if(сколько>=ПРЕДЕЛ)показывать=false;
+      if(когда&&Date.now()-когда<СУТКИ)показывать=false;
+    }catch(e){}
+    if(показывать){
+      var наблюдатель=new IntersectionObserver(function(записи){
+        записи.forEach(function(з){
+          if(!з.isIntersecting)return;
+          наблюдатель.disconnect();
+          try{
+            sessionStorage.setItem(СЕАНС,'1');
+            localStorage.setItem('phc_thx_когда',String(Date.now()));
+            localStorage.setItem('phc_thx_сколько',
+              String(parseInt(localStorage.getItem('phc_thx_сколько')||'0',10)+1));
+          }catch(e){}
+          setTimeout(function(){открыть('report-auto-07',null)},600);
+        });
+      },{threshold:.55});
+      наблюдатель.observe(якорь);
+    }
+  }
+
+  try{спросить('get',false)}catch(e){}
+})();
+</script>
+</body></html>
