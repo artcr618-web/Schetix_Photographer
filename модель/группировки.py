@@ -7,11 +7,24 @@
 
 Запуск: python3 модель/группировки.py
 """
+import os as _os
+# Корень проекта ищем вверх от файла — по книге. Переезд папок ничего не ломает.
+def _найти_корень(старт):
+    п = _os.path.dirname(_os.path.abspath(старт))
+    while п != '/':
+        if _os.path.exists(_os.path.join(п, 'Калькулятор_ставки_часа.xlsx')): return п
+        п = _os.path.dirname(п)
+    return '/home/user/schetix'
+_КОРЕНЬ = _найти_корень(__file__)
+_ИНСТРУМЕНТЫ = next((п for п in (
+    _os.path.join(_os.path.dirname(_КОРЕНЬ), 'ДОКУМЕНТАЦИЯ', '4_инструменты'),
+    _os.path.join(_КОРЕНЬ, 'ДОКУМЕНТАЦИЯ', '4_инструменты'),
+) if _os.path.isdir(п)), '')
 import io, json, subprocess
 
 d = json.loads(subprocess.check_output(
-    ['node', 'харнесс.js', '/home/user/schetix', '{}'],
-    cwd='/home/user/ДОКУМЕНТАЦИЯ/4_инструменты').decode())
+    ['node', 'харнесс.js', _КОРЕНЬ, '{}'],
+    cwd=_ИНСТРУМЕНТЫ).decode())
 
 NB = '\u00a0'
 def ч(x, dec=0):

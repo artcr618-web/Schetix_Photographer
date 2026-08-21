@@ -5,12 +5,25 @@
 # Единый строй всех таблиц: Код · Наименование · числовые столбцы.
 # Ширины колонок одинаковые во всех таблицах, всё по левому краю.
 # Наименование — чистое, без символов. Единица стоит рядом с числом.
+import os as _os
+# Корень проекта ищем вверх от файла — по книге. Переезд папок ничего не ломает.
+def _найти_корень(старт):
+    п = _os.path.dirname(_os.path.abspath(старт))
+    while п != '/':
+        if _os.path.exists(_os.path.join(п, 'Калькулятор_ставки_часа.xlsx')): return п
+        п = _os.path.dirname(п)
+    return '/home/user/schetix'
+_КОРЕНЬ = _найти_корень(__file__)
+_ИНСТРУМЕНТЫ = next((п for п in (
+    _os.path.join(_os.path.dirname(_КОРЕНЬ), 'ДОКУМЕНТАЦИЯ', '4_инструменты'),
+    _os.path.join(_КОРЕНЬ, 'ДОКУМЕНТАЦИЯ', '4_инструменты'),
+) if _os.path.isdir(п)), '')
 import json, subprocess, io
 import re as _re
 
 d = json.loads(subprocess.check_output(
     ['node','харнесс.js','/home/user/schetix','{}'],
-    cwd='/home/user/ДОКУМЕНТАЦИЯ/4_инструменты').decode())
+    cwd=_ИНСТРУМЕНТЫ).decode())
 
 
 # ── читаем анкету, чтобы вводные данные не расходились с ней
