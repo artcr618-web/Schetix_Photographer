@@ -2642,8 +2642,7 @@ R.addEventListener('blur',function(ev){
 var V=function(id){var e=$(id);return e?число(e.value):0},
 CHK=function(id){var e=$(id);return e?!!e.checked:false},
 f0=function(n){return Math.round(n).toLocaleString('ru-RU')+' \u20BD'},
-f1=function(n){return n.toLocaleString('ru-RU',{minimumFractionDigits:1,maximumFractionDigits:1})},
-f2=function(n){return n.toLocaleString('ru-RU',{minimumFractionDigits:2,maximumFractionDigits:2})};
+f1=function(n){return n.toLocaleString('ru-RU',{minimumFractionDigits:1,maximumFractionDigits:1})};
 
 /* Склонение единиц измерения рядом с числовыми полями. Для дробных
    значений используется родительный падеж: 0,5 часа; 1,5 часа. */
@@ -3195,8 +3194,29 @@ function calc(){
      в отчёт — см. проверитьПоля(). */
   var R_=(sh>0)?выручкаПод(Ny):0;
   var taxAll=taxOf(R_), aq=R_*a;
+  /* Идеальный сценарий отдаёт готовый состав затрат. Каждый необязательный
+     параметр остаётся в единой формуле, но при отключении его эффективное
+     значение равно нулю. Так отчёт не собирает кольцо своей математикой. */
+  var goalFund=R_*fundP;
+  var goalDiscountReserve=R_*discP;
+  var goalSelfSiteCost=R_*sdiv;
+  var goalCostsTotal=C+aq+taxAll+goalFund+goalDiscountReserve+goalSelfSiteCost;
+  var goalResult=R_-goalCostsTotal;
   var cur=V('current_rate'), Rc=cur*sh, taxC=taxOf(Rc), aqC=Rc*a;
-  var leftC=Math.max(0,Rc-C-aqC-taxC);
+  /* Текущий сценарий использует те же эффективные параметры, что целевой:
+     выключенный параметр даёт ноль, включённый участвует. Отрицательный
+     результат не обрезаем — это настоящий убыток, а не ошибка расчёта. */
+  var currentFund=Rc*fundP;
+  var currentDiscountReserve=Rc*discP;
+  var currentSelfSiteCost=Rc*sdiv;
+  var currentCostsTotal=C+aqC+taxC+currentFund+currentDiscountReserve+currentSelfSiteCost;
+  var currentResult=Rc-currentCostsTotal;
+  var currentIncome=Math.max(currentResult,0);
+  var currentLoss=Math.min(currentResult,0);
+  var currentIsLoss=currentResult<0;
+  /* leftC оставляем как совместимое имя контракта, но теперь это честный
+     финансовый результат: он может быть отрицательным. */
+  var leftC=currentResult;
   var Rb=выручкаПод(0), taxB=taxOf(Rb), aqB=Rb*a;
   /* --- разбивка расходов для детализации в отчёте ---
      Отчёт строит 9 строк легенды. Без этих полей он свалит всё
@@ -3241,8 +3261,12 @@ function calc(){
      получить тот же доход. Требуемая выручка одна и та же (R_), меняется
      только ставка — значит меняются съёмки, дни и длина рабочего дня. */
   function загрузка(ставка){
-    if(!(ставка>0))return null;
-    var съёмок=R_/ставка;                        /* съёмок за год           */
+    if(!(ставка>0)||!(S>0))return null;
+    /* Ставка задана за один съёмочный час. Сначала находим съёмочные часы,
+       затем делим их на длительность одной съёмки и получаем число проектов.
+       При S=1 эти величины равны, поэтому прежняя ошибка была незаметна. */
+    var съёмочныхЧасов=R_/ставка;
+    var съёмок=съёмочныхЧасов/S;
     var часов=съёмок*pt+side+fmT;                /* всё рабочее время       */
     var дней=EFF>0?часов/EFF:0;                  /* при рабочем дне 7 часов */
     return {shoots:съёмок, hours:часов, days:дней,
@@ -3329,8 +3353,16 @@ function calc(){
     /* загрузка под желаемый доход при трёх ценах часа */
     loadGoal:загрузкаЦель,loadCur:загрузкаТек,loadZero:загрузкаНоль,sAuto:sAuto,equip:equip,promoM:promoM,current:current,side:side,promo:promo,accT:accT,fmT:fmT,pool:pool,S:S,pt:pt,py:py,sh:sh,
     post:post,core:core,clT:clT,amort:amort,vari:vari,C:C,Ny:Ny,R:R_,taxAll:taxAll,aq:aq,
-    cur:cur,Rc:Rc,leftC:leftC,taxC:taxC,aqC:aqC,Rb:Rb,taxB:taxB,aqB:aqB,wsY:wsY,siteY:siteY,eduY:eduY,
-    fundY:R_*fundP,discY:R_*discP,fundP:fundP,discP:discP,
+    goalFund:goalFund,goalDiscountReserve:goalDiscountReserve,
+    goalSelfSiteCost:goalSelfSiteCost,goalCostsTotal:goalCostsTotal,
+    goalResult:goalResult,
+    cur:cur,Rc:Rc,leftC:leftC,taxC:taxC,aqC:aqC,
+    currentFund:currentFund,currentDiscountReserve:currentDiscountReserve,
+    currentSelfSiteCost:currentSelfSiteCost,currentCostsTotal:currentCostsTotal,
+    currentResult:currentResult,currentIncome:currentIncome,currentLoss:currentLoss,
+    currentIsLoss:currentIsLoss,
+    Rb:Rb,taxB:taxB,aqB:aqB,wsY:wsY,siteY:siteY,eduY:eduY,
+    fundY:goalFund,discY:goalDiscountReserve,fundP:fundP,discP:discP,
     /* разбивка расходов */
     depShoot:depShoot,depOffice:depOffice,depSoft:depSoft,depEdu:depEdu,depSite:depSite,depWs:depWs,
     varAds:varAds,varSoft:varSoft,varBank:varBank,varRent:varRent,varAcc:varAcc,

@@ -420,6 +420,18 @@ line-height:1.3}
 #phr-root .scn3.s1 .bigsum b{color:var(--c-b-700)}
 #phr-root .scn3.s2 .bigsum b{color:var(--c-g-700)}
 #phr-root .scn3.s3 .bigsum b{color:var(--c-ig-2)}
+/* При убытке круговая пропорция неприменима: затраты больше выручки.
+   Вместо кольца показываем прямое сравнение выручки, затрат и убытка. */
+#phr-root .losscompare{display:grid;gap:8px;width:100%;margin:4px 0 2px;text-align:left}
+#phr-root .losscompare>div{display:flex;align-items:baseline;justify-content:space-between;gap:12px;
+padding:10px 12px;border-radius:12px;background:rgba(255,255,255,.62)}
+#phr-root .losscompare span{font-size:12px;color:var(--c-gr)}
+#phr-root .losscompare b{font-size:15px;font-weight:700;color:var(--c-ink);white-space:nowrap}
+#phr-root .losscompare .loss{background:var(--c-r-50);border:1px solid var(--c-r-200)}
+#phr-root .losscompare .loss span,#phr-root .losscompare .loss b{color:var(--c-r-700)}
+#phr-root .current-loss-note{font-size:12.5px;line-height:1.55;color:var(--c-r-800);
+margin:12px 0 0;padding:11px 12px;border-radius:12px;background:var(--c-r-50);
+border:1px solid var(--c-r-200);text-align:left}
 #phr-root .three .dn .mid .v{font-size:20px;letter-spacing:-.02em}
 #phr-root .three .dn .mid .k{font-size:10.5px;color:var(--c-gr2)}
 #phr-root .slg{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-top:18px;
@@ -2794,7 +2806,16 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 (function(){
 var R=document.getElementById('phr-root');
 var $=function(id){return document.getElementById(id)};
+/* Единое правило денежных результатов для пользователя: calc() хранит и
+   передаёт точные значения, а report.html округляет показ до целого рубля. */
 var f0=function(n){return Math.round(n).toLocaleString('ru-RU')+' \u20BD'};
+/* Финансовый результат может быть отрицательным. Используем настоящий
+   математический минус и не допускаем отображения «−0 ₽». */
+var f0s=function(n){
+  var v=Math.round(Number(n)||0);
+  if(v===0)return '0 \u20BD';
+  return (v<0?'\u2212':'')+Math.abs(v).toLocaleString('ru-RU')+' \u20BD';
+};
 var f1=function(n){return n.toLocaleString('ru-RU',{minimumFractionDigits:1,maximumFractionDigits:1})};
 /* Округление ТОЛЬКО для крупной цифры в шапке — чтобы час воспринимался цельно.
    Точное значение показывается рядом в скобках. Больше нигде не применяется:
@@ -2806,7 +2827,6 @@ var f1=function(n){return n.toLocaleString('ru-RU',{minimumFractionDigits:1,maxi
    скидок схлопываются в одну цену. */
 var rRate=function(n){return Math.ceil((n||0)/100)*100};
 var f0r=function(n){return f0(rRate(n))};
-var f2=function(n){return n.toLocaleString('ru-RU',{minimumFractionDigits:2,maximumFractionDigits:2})};
 var hword=function(n){
   var x=Math.round(n*10)/10, i=Math.floor(x), fr=Math.round((x-i)*10);
   if(fr>0)return '\u0447\u0430\u0441\u0430';
@@ -2848,10 +2868,12 @@ loadGoal:{"shoots": 216.60000000000002, "hours": 1533, "days": 219, "freeDays": 
 loadCur:{"shoots": 340.4224956577069, "hours": 2152.1124782885345, "days": 307.4446397555049, "freeDays": 57.55536024449509, "dayHours": 9.826997617755865, "shootsPerDay": 1.554440619441584},
 loadZero:{"shoots": 725.7342296427746, "hours": 4078.671148213873, "days": 582.6673068876961, "freeDays": -217.6673068876961, "dayHours": 18.62406916992636, "shootsPerDay": 3.313854929875683},
 sAuto:5.93151,equip:184992.92381,promoM:197500,current:180174.85714,side:450,promo:438,accT:12,fmT:0,S:1,pt:5,py:216.6,sh:216.6,post:649.8,
-core:866.4,clT:216.6,amort:278687.78095,vari:283980,C:562667.78095,Ny:1322592,R:2042534.97395,taxAll:102126.7487,aq:55148.4443,cur:6000,
-Rc:1299600,leftC:636863.01905,taxC:64980,aqC:35089.2,Rb:609607.56333,taxB:30480.37817,aqB:16459.40421,wsY:67680,siteY:10000,eduY:74409.14286,
-fundY:0,discY:0,fundP:0,discP:0,depShoot:107759.99048,depOffice:65732.93333,depSoft:11500,depEdu:74409.14286,depSite:10000,depWs:9285.71429,
-varAds:187500,varSoft:27000,varBank:1800,varRent:67680,varAcc:0,NW:43.8,K:3,cl:1,curRate:6000,
+core:866.4,clT:216.6,amort:278687.78095,vari:283980,C:562667.78095,Ny:1322592,R:2042534.97395,taxAll:102126.7487,aq:55148.4443,goalFund:0,
+goalDiscountReserve:0,goalSelfSiteCost:0,goalCostsTotal:719942.97395,goalResult:1322592,cur:6000,Rc:1299600,leftC:636863.01905,taxC:64980,
+aqC:35089.2,currentFund:0,currentDiscountReserve:0,currentSelfSiteCost:0,currentCostsTotal:662736.98095,currentResult:636863.01905,
+currentIncome:636863.01905,currentLoss:0,currentIsLoss:false,Rb:609607.56333,taxB:30480.37817,aqB:16459.40421,wsY:67680,siteY:10000,
+eduY:74409.14286,fundY:0,discY:0,fundP:0,discP:0,depShoot:107759.99048,depOffice:65732.93333,depSoft:11500,depEdu:74409.14286,depSite:10000,
+depWs:9285.71429,varAds:187500,varSoft:27000,varBank:1800,varRent:67680,varAcc:0,NW:43.8,K:3,cl:1,curRate:6000,
 regime:'\u0421\u0430\u043c\u043e\u0437\u0430\u043d\u044f\u0442\u044b\u0439 (\u041d\u041f\u0414) \u2014 5%, \u0441\u043c\u0435\u0448\u0430\u043d\u043d\u044b\u0435 \u0437\u0430\u043a\u0430\u0437\u0447\u0438\u043a\u0438',
 regimeCode:'npd5',clients:'mix',profession:'\u0444\u043e\u0442\u043e\u0433\u0440\u0430\u0444\u0430'};
 
@@ -3378,15 +3400,25 @@ var REFD=[
      занижался на 163 499 ₽ — на руки 1 307 988, а показывали 1 144 490. */
   var incM=hr0*(d.sh+d.post+d.clT+d.promo+d.accT+d.idle);
   var idlM=hr0*d.fmT;
-  var expM=costY+d.taxAll+d.aq;
+  /* Полная расходная часть идеального сценария приходит из calc().
+     Фонды и собственный сайт не исчезают из формулы: выключенная опция
+     остаётся в структуре, но её эффективное значение равно нулю. */
+  var goalFundПередан=Number(d.goalFund);
+  var goalFund=isFinite(goalFundПередан)?goalFundПередан:(Number(d.fundY)||0);
+  var goalDiscountПередан=Number(d.goalDiscountReserve);
+  var goalDiscountReserve=isFinite(goalDiscountПередан)?goalDiscountПередан:(Number(d.discY)||0);
+  var goalSelfSiteПередан=Number(d.goalSelfSiteCost);
+  var goalSelfSiteCost=isFinite(goalSelfSiteПередан)?goalSelfSiteПередан:
+      ((Number(d.Rc)>0)?(Number(d.currentSelfSiteCost)||0)*d.R/d.Rc:0);
+  var goalCostsПереданы=Number(d.goalCostsTotal);
+  var expM=isFinite(goalCostsПереданы)?goalCostsПереданы:
+      costY+d.taxAll+d.aq+goalFund+goalDiscountReserve+goalSelfSiteCost;
 
-  /* Точка безубыточности. Раньше бралось costY + taxAll + aq, то есть налог
-     и эквайринг из ЦЕЛЕВОГО сценария. Это неверно: обе величины зависят от
-     самой выручки — при меньшей выручке меньше и эквайринг, и налог, а на
-     УСН иначе отрабатывают взносы и минимальный налог. Ставка выходила
-     завышенной: 3 835 вместо 3 335 ₽/ч.
-     Теперь решаем уравнение «выручка − расходы − эквайринг − налог = 0»
-     для режима, который человек выбрал в анкете. */
+  /* Точка безубыточности. Раньше отчёт считал её самостоятельно и мог
+     расходиться с анкетой в ветках фондов, собственного сайта и отключённых
+     налогов. Теперь основной источник — готовые Rb и rateZero из calc().
+     Налоговые функции ниже остаются для текущего сценария, таблицы режимов
+     и запасного чтения старого JSON без поля Rb. */
   /* Ставка эквайринга берётся из анкеты: там человек мог поменять и её,
    и долю безналичных. Зашитые 2,8 % расходились с анкетой на 0,1 п. п. */
   var AQФАКТ=(d.R>0&&d.aq>=0)?d.aq/d.R:0.027;
@@ -3422,48 +3454,85 @@ var REFD=[
   function нетто0(V){return V-costY-V*TX0.AQ-налог0(V,код0)}
   /* Уравнение решаем делением пополам: у налога есть изломы (взносы,
      минимальный налог), аналитической формулы на все режимы нет. */
-  var Vb=(function(){
+  /* Безубыточность уже рассчитана в calc() по тем же данным, которые
+     сформировали весь отчёт. Берём готовую величину, чтобы не потерять
+     tax_off, собственный сайт, фонды, скидки и дополнительные комиссии.
+     Старый численный расчёт оставлен только как запасной путь для JSON
+     прежнего формата, где поля Rb ещё нет. */
+  var VbПередан=Number(d.Rb);
+  var Vb=(isFinite(VbПередан)&&VbПередан>=0)?VbПередан:(function(){
     var lo=0,hi=1e9,m;
     for(var i=0;i<90;i++){m=(lo+hi)/2; if(нетто0(m)<0)lo=m; else hi=m}
     return lo;
   })();
 
-  /* текущая ставка: налог и эквайринг тоже по своему режиму и своей
-     выручке, расходы те же */
-  var curR=d.curRate*d.sh;
-  var taxC=налог0(curR,код0);
-  var aqC=curR*TX0.AQ;
-  var expC=costY+taxC+aqC;
-  var leftC=Math.max(curR-expC,0);
+  /* Текущий сценарий приходит из calc() уже после применения всех
+     эффективных нулей: tax_off, фондов, скидки и собственного сайта.
+     Повторный расчёт оставлен только как запасной путь для старого JSON. */
+  var curRПередан=Number(d.Rc), curR=(isFinite(curRПередан)&&curRПередан>=0)
+      ?curRПередан:d.curRate*d.sh;
+  var taxCПередан=Number(d.taxC), taxC=isFinite(taxCПередан)?taxCПередан:налог0(curR,код0);
+  var aqCПередан=Number(d.aqC), aqC=isFinite(aqCПередан)?aqCПередан:curR*TX0.AQ;
+  var currentFund=Number(d.currentFund)||0;
+  var currentDiscountReserve=Number(d.currentDiscountReserve)||0;
+  var currentSelfSiteCost=Number(d.currentSelfSiteCost)||0;
+  var costsCПереданы=Number(d.currentCostsTotal);
+  var expC=isFinite(costsCПереданы)?costsCПереданы:
+      costY+taxC+aqC+currentFund+currentDiscountReserve+currentSelfSiteCost;
+  var resultCПередан=Number(d.currentResult);
+  var currentResult=isFinite(resultCПередан)?resultCПередан:curR-expC;
+  var currentIsLoss=currentResult<0;
+  var currentIncome=Math.max(currentResult,0);
+  var leftC=currentResult;                 /* совместимое имя для таблиц ниже */
   var shareIdle=(incM+idlM)>0?idlM/(incM+idlM):0;
-  var idlC=leftC*shareIdle, incC=leftC-idlC;
+  var idlC=currentIncome*shareIdle, incC=currentIncome-idlC;
 
-  var bRateV=Vb/d.sh, bProjV=Vb/d.py;
+  var rateGoalПередан=Number(d.rateHour);
+  var goalRateV=(isFinite(rateGoalПередан)&&rateGoalПередан>=0)?rateGoalПередан:(d.sh>0?d.R/d.sh:0);
+  var rateZeroПередан=Number(d.rateZero);
+  var bRateV=(isFinite(rateZeroПередан)&&rateZeroПередан>=0)?rateZeroПередан:(d.sh>0?Vb/d.sh:0),
+      bProjV=d.py>0?Vb/d.py:0;
 
   var CAPM='\u043d\u0430 \u0440\u0443\u043a\u0438 / \u043c\u0435\u0441';
   /* Порядок: 1 — как есть сейчас, 2 — сколько нужно, 3 — нижняя граница.
      Раньше первым стоял идеальный, и человек видел цель раньше факта. */
   var three=[
     {cls:'s1',no:'\u0440\u0435\u0430\u043b\u044c\u043d\u044b\u0439',num:'1',fill:['#5CA8E0','#2F80C4'],
-     t:'\u0412\u0430\u0448 \u0442\u0435\u043a\u0443\u0449\u0438\u0439 \u0434\u043e\u0445\u043e\u0434',
-     r:f0(d.curRate), rev:f0(curR/12), v:[incC,idlC+expC], mid:f0(leftC/12), cap:CAPM},
+     t:currentIsLoss?'\u0412\u0430\u0448 \u0443\u0431\u044b\u0442\u043e\u043a':'\u0412\u0430\u0448 \u0442\u0435\u043a\u0443\u0449\u0438\u0439 \u0434\u043e\u0445\u043e\u0434',
+     r:f0(d.curRate), rev:f0(curR/12), v:[incC,idlC+expC],
+     mid:currentIsLoss?f0s(currentResult/12):f0(currentResult/12),
+     cap:currentIsLoss?'\u0443\u0431\u044b\u0442\u043e\u043a / \u043c\u0435\u0441':CAPM,
+     loss:currentIsLoss, lossRevenue:curR/12, lossCosts:expC/12,
+     lossValue:currentResult/12},
     {cls:'s2',no:'\u0438\u0434\u0435\u0430\u043b\u044c\u043d\u044b\u0439',num:'2',fill:['#4FC26A','#1B9331'],
      t:'\u041d\u0435\u043e\u0431\u0445\u043e\u0434\u0438\u043c\u044b\u0439 \u0434\u043e\u0445\u043e\u0434',
-     r:f0r(d.R/d.sh), rev:f0(d.R/12), v:[incM,idlM+expM], mid:f0(d.Ny/12), cap:CAPM},
+     /* Все три поля относятся к одному точному сценарию calc(), но денежный
+        показ для пользователя округляется до ближайшего целого рубля. */
+     r:f0(goalRateV), rev:f0(d.R/12),
+     v:[incM,idlM+expM], mid:f0(d.Ny/12), cap:CAPM},
     {cls:'s3',no:'\u0432 \u043d\u043e\u043b\u044c',num:'3',fill:['#E1306C','#C13584'],
      t:'\u0414\u043e\u0445\u043e\u0434\u0430 \u043d\u0435\u0442',
-     r:f0r(bRateV), rev:f0(Vb/12), v:[0,Vb], mid:'0 \u20bd', cap:CAPM}];
+     /* Расчёт остаётся точным, отображение округляется до целого рубля.
+        Специальное округление вверх до 100 ₽ здесь не применяется. */
+     r:f0(bRateV), rev:f0(Vb/12),
+     v:[0,Vb], mid:f0(0), cap:CAPM}];
   var SC=[[C_INC1,C_INC2,C_INC3],[C_EXP1,C_EXP2,C_EXP3]];
   $('dns').innerHTML=three.map(function(x){
     return '<div class="scn3 '+x.cls+'"><div class="scdeco"></div>'+
     '<div class="nm3">'+x.no+'</div>'+
     '<div class="amt">'+x.t+'</div>'+
     '<div class="bigsum top"><b>'+x.mid+'</b><span>'+x.cap+'</span></div>'+
-    '<div class="dn">'+donutNum(x.v,SC,x.num,x.fill)+'</div>'+
+    '<div class="dn">'+(x.loss
+      ? '<div class="losscompare"><div><span>\u0412\u044b\u0440\u0443\u0447\u043a\u0430</span><b>'+f0(x.lossRevenue)+'</b></div>'+
+        '<div><span>\u0417\u0430\u0442\u0440\u0430\u0442\u044b</span><b>'+f0(x.lossCosts)+'</b></div>'+
+        '<div class="loss"><span>\u0423\u0431\u044b\u0442\u043e\u043a</span><b>'+f0s(x.lossValue)+'</b></div></div>'
+      : donutNum(x.v,SC,x.num,x.fill))+'</div>'+
     '<div class="ratebot"><div class="rb1"><b>'+x.r+'</b>'+
     '<span>\u0441\u0442\u043e\u0438\u043c\u043e\u0441\u0442\u044c \u0447\u0430\u0441\u0430</span></div>'+
     '<div class="rb1"><b>'+x.rev+'</b>'+
-    '<span>\u0432\u044b\u0440\u0443\u0447\u043a\u0430 / \u043c\u0435\u0441</span></div></div></div>'}).join('')+
+    '<span>\u0432\u044b\u0440\u0443\u0447\u043a\u0430 / \u043c\u0435\u0441</span></div></div>'+
+    (x.loss?'<div class="current-loss-note">\u0414\u043e\u0445\u043e\u0434\u0430 \u043d\u0435\u0442. \u041f\u0440\u0438 \u0442\u0435\u043a\u0443\u0449\u0435\u0439 \u0441\u0442\u0430\u0432\u043a\u0435 \u0432\u0430\u0448\u0438 \u0437\u0430\u0442\u0440\u0430\u0442\u044b \u043f\u0440\u0435\u0432\u044b\u0448\u0430\u044e\u0442 \u0432\u044b\u0440\u0443\u0447\u043a\u0443 \u043d\u0430 '+f0(Math.abs(x.lossValue))+' \u0432 \u043c\u0435\u0441\u044f\u0446.</div>':'')+
+    '</div>'}).join('')+
     '<div class="slg" style="grid-column:1/-1">'+
     '<span><i style="background:linear-gradient(140deg,'+C_INC1+','+C_INC3+')"></i>\u0412\u0430\u0448 \u0434\u043e\u0445\u043e\u0434 \u043d\u0430 \u0440\u0443\u043a\u0438</span>'+
     '<span><i style="background:linear-gradient(140deg,'+C_EXP1+','+C_EXP3+')"></i>\u0420\u0430\u0441\u0445\u043e\u0434\u044b \u0432 \u0441\u043e\u0432\u043e\u043a\u0443\u043f\u043d\u043e\u0441\u0442\u0438</span>'+
@@ -4597,18 +4666,28 @@ var СПР_НОМЕР = {};
 
   /* ── 05. доход и сравнение ставок */
   var СЦ = [
-    {V:d.Rc, нал:d.taxC, ком:d.aqC, наг:d.loadCur},
+    {V:d.Rc, нал:d.taxC, ком:d.aqC, наг:d.loadCur,
+     ост:d.currentResult, затраты:d.currentCostsTotal},
     {V:R,    нал:tax,    ком:aq,    наг:d.loadGoal},
     {V:Rb,   нал:d.taxB, ком:d.aqB, наг:d.loadZero}
   ];
   СЦ.forEach(function(x){
-    x.ост = x.V - C - x.нал - x.ком;
+    var остПередан=Number(x.ост), затратыПереданы=Number(x.затраты);
+    x.ост = isFinite(остПередан) ? остПередан : x.V - C - x.нал - x.ком;
     x.ст  = x.V / sh;
-    x.сб  = (C + x.нал + x.ком) / sh;
+    x.сб  = (isFinite(затратыПереданы) ? затратыПереданы : C + x.нал + x.ком) / sh;
   });
   function р3(им, f, форм){
     форм = форм || р;
     return ['Р', им].concat(СЦ.map(function(x){ return форм(f(x)) }));
+  }
+  /* При нулевой ставке получить тот же доход невозможно: загрузка=null.
+     В таблице показываем тире, а не падаем и не подставляем ложный ноль. */
+  function нг(x, ключ){
+    return x.наг && isFinite(Number(x.наг[ключ])) ? Number(x.наг[ключ]) : null;
+  }
+  function нформ(форм){
+    return function(v){ return v===null ? ТИРЕ : форм(v) };
   }
   var t05 = T([ссылка('Текущая','Текущая ставка'), ссылка('Желаемая','Желаемая ставка'),
                ссылка('В ноль','Ставка в ноль')], [
@@ -4633,18 +4712,18 @@ var СПР_НОМЕР = {};
     р3('Наценка к себестоимости', function(x){ return x.ст/x.сб - 1 }, пр),
     р3('Разница с желаемым доходом', function(x){ return x.ост - Ny }),
     ['\u00a7','Чтобы получить тот же доход при выбранной ставке часа'],
-    р3('Съёмок / год', function(x){ return x.наг.shoots }, function(v){ return шт(v,1) }),
-    р3('Съёмок / мес', function(x){ return x.наг.shoots/MO }, function(v){ return шт(v,1) }),
-    р3('Съёмок / нед', function(x){ return x.наг.shoots/NWk }, function(v){ return шт(v,1) }),
-    р3('Рабочего времени / год', function(x){ return x.наг.hours }, чс),
-    р3('Рабочих дней / год', function(x){ return x.наг.days }, function(v){ return дн(v,1) }),
-    р3('Рабочих дней / мес', function(x){ return x.наг.days/MO }, function(v){ return дн(v,1) }),
-    р3('Рабочих дней / нед', function(x){ return x.наг.days/NWk }, function(v){ return дн(v,1) }),
+    р3('Съёмок / год', function(x){ return нг(x,'shoots') }, нформ(function(v){ return шт(v,1) })),
+    р3('Съёмок / мес', function(x){ var v=нг(x,'shoots'); return v===null?null:v/MO }, нформ(function(v){ return шт(v,1) })),
+    р3('Съёмок / нед', function(x){ var v=нг(x,'shoots'); return v===null?null:v/NWk }, нформ(function(v){ return шт(v,1) })),
+    р3('Рабочего времени / год', function(x){ return нг(x,'hours') }, нформ(чс)),
+    р3('Рабочих дней / год', function(x){ return нг(x,'days') }, нформ(function(v){ return дн(v,1) })),
+    р3('Рабочих дней / мес', function(x){ var v=нг(x,'days'); return v===null?null:v/MO }, нформ(function(v){ return дн(v,1) })),
+    р3('Рабочих дней / нед', function(x){ var v=нг(x,'days'); return v===null?null:v/NWk }, нформ(function(v){ return дн(v,1) })),
     р3('Праздников, выходных и больничных / дней',
-       function(x){ return Math.max(0, x.наг.freeDays) }, function(v){ return дн(v,1) }),
+       function(x){ var v=нг(x,'freeDays'); return v===null?null:Math.max(0,v) }, нформ(function(v){ return дн(v,1) })),
     ['\u00a7','Загрузка, чтобы получить тот же доход при стандартных условиях'],
-    р3('Рабочий день / часов', function(x){ return x.наг.dayHours }, чс),
-    р3('Съёмок / рабочий день', function(x){ return x.наг.shootsPerDay }, function(v){ return шт(v,1) })
+    р3('Рабочий день / часов', function(x){ return нг(x,'dayHours') }, нформ(чс)),
+    р3('Съёмок / рабочий день', function(x){ return нг(x,'shootsPerDay') }, нформ(function(v){ return шт(v,1) }))
   ], {спр:1, связь:СВЯЗЬ_05});
 
   /* ── 06. износ камеры */

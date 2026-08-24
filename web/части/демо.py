@@ -18,7 +18,7 @@ _ИНСТРУМЕНТЫ = next((п for п in (
 import json, subprocess, re, io
 
 d = json.loads(subprocess.check_output(
-    ['node','харнесс.js','/home/user/schetix','{}'],
+    ['node','харнесс.js',_КОРЕНЬ,'{}'],
     cwd=_ИНСТРУМЕНТЫ).decode())
 d.pop('__parts', None)
 d['regime'] = 'Самозанятый (НПД) — 5%, смешанные заказчики'
@@ -49,7 +49,8 @@ for п in пары:
            '   без расчёта отчёт предлагает заполнить анкету, а не подсовывает чужие числа. */\n'
            'var DEMO={' + '\n'.join(строки) + '};')
 
-for файл in ('/home/user/schetix/web/report.html', '/home/user/schetix/web/части/каркас.html'):
+for файл in (_os.path.join(_КОРЕНЬ, 'web', 'report.html'),
+             _os.path.join(_КОРЕНЬ, 'web', 'части', 'каркас.html')):
     s = io.open(файл, encoding='utf-8').read()
     m = re.search(r"(/\* ДЕМО[^*]*\*/\n)?var DEMO=\{.*?\};", s, re.S)
     s = s.replace(m.group(0), литерал)
