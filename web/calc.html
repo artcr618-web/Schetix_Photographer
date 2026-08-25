@@ -3122,6 +3122,9 @@ function calc(){
   var current=wsY+sumF('Form007')+accM+sumF('Form003')+sumF('Form013')+eduY;
   var C=amort+vari;
   var Ny=V('income_month')*MO;
+  /* Резерв на отпуск: один месячный доход на руки. Не новый расход,
+     а доля желаемого дохода, которую нельзя считать свободными деньгами. */
+  var vacY=Ny/12;
   /* Эквайринг — особая строка: его ставка применяется только к доле
      оплат через эквайринг и может быть удалена вместе с полем доли. Остальные
      добавленные банковские проценты — самостоятельные строки от выручки. */
@@ -3251,8 +3254,12 @@ function calc(){
      включая короткие перерывы. Рабочее время = рабочих дней × 8.
      Эффективное рабочее время (NT) меньше: из него паузы уже вычтены. */
   var workHours=ND*8;
-  var rateWork=workHours>0?Ny/workHours:0;       /* доход на руки за рабочий час */
-  var rateWorkFull=workHours>0?R_/workHours:0;   /* вся выручка за рабочий час   */
+  /* Доход в час на руки — сравнение с наймом: 11 месяцев на руки
+     (отпускной уже внутри года как месяц без работы) и восьмичасовой день. */
+  var rateWork=workHours>0?(Ny*11/12)/workHours:0;
+  /* Базовая ставка часа — выручка за год / эффективное время (7 ч × дни).
+     Для услуг вне площадки. Съёмочный час (R/sh) не трогаем. */
+  var rateWorkFull=NT>0?R_/NT:0;
   /* Цена часа для услуг вне съёмки — консультации, организация.
      Делим выручку на время, которое иначе ушло бы на заказы: такой час
      вытесняет проектную работу, а не свободное время. */
@@ -3348,7 +3355,7 @@ function calc(){
     /* себестоимость и наценка */
     costHour:костHour,markup:костHour>0?rateHour/костHour-1:0,
     rateHour:rateHour,rateZero:sh>0?Rb/sh:0,
-    workHours:workHours,rateWork:rateWork,rateWorkFull:rateWorkFull,
+    workHours:workHours,rateWork:rateWork,rateWorkFull:rateWorkFull,vacY:vacY,
     rateClient:rateClient,
     /* загрузка под желаемый доход при трёх ценах часа */
     loadGoal:загрузкаЦель,loadCur:загрузкаТек,loadZero:загрузкаНоль,sAuto:sAuto,equip:equip,promoM:promoM,current:current,side:side,promo:promo,accT:accT,fmT:fmT,pool:pool,S:S,pt:pt,py:py,sh:sh,
