@@ -142,7 +142,8 @@ print('▶ идеальный сценарий')
 def идеальный_сходится(d):
     сумма = (d['C'] + d['taxAll'] + d['aq'] + d['goalFund']
              + d['goalDiscountReserve'] + d['goalSelfSiteCost'])
-    return (abs(d['goalCostsTotal']-сумма) < 0.02
+    return (abs(d['totalExpenses']-(d['C']+d['taxAll']+d['aq'])) < 0.02
+            and abs(d['goalCostsTotal']-сумма) < 0.02
             and abs(d['goalResult']-(d['R']-сумма)) < 0.02
             and abs(d['goalResult']-d['Ny']) < 0.02
             and abs(d['rateHour']*d['sh']-d['R']) < 1e-5
@@ -304,6 +305,25 @@ calc, rep, karkas = читать('Веб/calc.html'), читать('Веб/repor
 проверка('идеальное кольцо берёт полный состав затрат из calc()',
          'var goalCostsПереданы=Number(d.goalCostsTotal)' in rep
          and 'goalFund+goalDiscountReserve+goalSelfSiteCost' in rep)
+проверка('«Всего расходов» приходит готовым из calc()',
+         'var expMo=d.totalExpenses/12' in rep
+         and 'var ВСЕГО_РАСХОДОВ = d.totalExpenses;' in rep
+         and 'd.vari + tax + aq' not in rep)
+проверка('детализация: вложения и резервный фонд разделены',
+         "['Финансовые вложения (инвестиции)', t04]" in rep
+         and "['Резервный фонд', t04r]" in rep
+         and "рр('Резерв на отпуск', d.vacY||0)" in rep
+         and 'Амортизация / Резерв' not in rep)
+проверка('проектное время — годовой pool, а не длительность проекта',
+         "['Р','Проектное время', чс(pool)" in rep
+         and "['Р','Время на проекты'" not in rep)
+проверка('календарь: Выходной и Праздник разделены',
+         '"Выходные дни": "Выходной"' in rep
+         and '"Праздничные дни": "Праздник"' in rep
+         and '"Выходные и праздничные дни"' not in rep)
+проверка('лояльность: внутренние правила не выводятся пользователю',
+         "return '<h3>Фонд и его распределение</h3>' + a;" in rep
+         and '<h3>08.2 По каким правилам делится фонд</h3>' not in rep)
 
 # Карточка «В ноль» берёт точный сценарий из calc(), но денежные значения
 # для пользователя округляет до ближайшего целого рубля. Округление вверх
