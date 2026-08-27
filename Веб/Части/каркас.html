@@ -96,8 +96,21 @@ font-family:-apple-system,BlinkMacSystemFont,'SB Sans Text','Segoe UI',Roboto,Ar
 color:var(--ink);line-height:1.5;-webkit-font-smoothing:antialiased;
 /* Фон — тот же градиент, что в анкете: сверху чуть светлее. */
 background:linear-gradient(180deg,var(--c-surf) 0%,var(--c-bg) 42%,var(--c-bg) 100%);
-padding:32px 16px 80px;display:block}
+/* Боковые поля: на большом экране 16px, на мобильном ужимаются до 8px —
+   решение владельца 26.08. На узком экране каждый пиксель ширины
+   нужен содержимому, а не воздуху по краям. */
+padding:32px clamp(8px,2.5vw,16px) 80px;display:block}
 #phr-root *{box-sizing:border-box;margin:0;padding:0}
+/* НИЖНЯЯ ГРАНИЦА АДАПТИВНОСТИ — решение владельца 26.08.
+   Вёрстка рассчитана до 320px: это самый узкий реальный телефон
+   (iPhone SE первого поколения). Ниже сжимать нечего — текст
+   становится нечитаемым, а плашки схлопываются в полоски.
+   Поэтому на экранах уже 320px страница ПЕРЕСТАЁТ ужиматься
+   и фиксируется: появляется горизонтальная прокрутка, человек
+   двигает страницу вправо-влево, но видит нормальную вёрстку,
+   а не раздавленную. Одна настройка на весь отчёт: min-width
+   на контейнере .wp, прокрутка — на корне. */
+#phr-root{min-width:320px}
 #phr-root .wp{max-width:1080px;margin:0 auto}
 
 /* ---------- верхнее меню ----------
@@ -138,8 +151,10 @@ transition:background .18s,color .18s,transform .12s}
 #phr-root .tbar .fbt{color:var(--c-a-500);text-decoration:none}
 #phr-root .tbar .fbt:hover{background:var(--c-a-50);color:var(--c-a-700)}
 #phr-root .tbar .fbt:active{transform:translateY(1px)}
-#phr-root .tbar .fbh{color:var(--c-ig-3)}
-#phr-root .tbar .fbh:hover{background:#FDF4FB;color:var(--c-ig-2)}
+/* Сердечко в меню — такое же серое, как соседние иконки. Розовый цвет
+   остаётся только для нажатого состояния (.thx-горит) — решение 27.08. */
+#phr-root .tbar .fbh{color:var(--c-gr)}
+#phr-root .tbar .fbh:hover{background:var(--c-white);color:var(--c-ink2)}
 /* Подсказка оформлена как .segtip — плашка на диаграмме блока 01:
    белый фон, светлая рамка, тот же радиус и тень. */
 #phr-root .tbar .fbi:after{content:attr(data-tip);position:absolute;
@@ -149,10 +164,33 @@ font-size:12.5px;font-weight:600;white-space:nowrap;opacity:0;pointer-events:non
 transform:translateX(-50%) translateY(-4px);
 transition:opacity .16s,transform .16s;box-shadow:0 8px 28px rgba(16,24,40,.16)}
 #phr-root .tbar .fbi:hover:after{opacity:1;transform:translateX(-50%)}
+/* Иконка «Редактировать» — дублёр текстовой ссылки. На широком экране
+   скрыта (там текст), на мобильном подменяет его. Так верхнее меню
+   становится таким же, как плавающее: только иконки, без подписей. */
+#phr-root .tbar .fbedit{display:none}
 @media(max-width:700px){#phr-root .tbar{gap:12px;padding:6px 0 12px;margin-top:-8px}
 #phr-root .tbar .fbl{font-size:13px;padding:6px 9px}
 #phr-root .tbar .brand .bx{width:46px;height:46px}
 #phr-root .tbar .brand .bt{font-size:16px}}
+/* МОБИЛЬНОЕ МЕНЮ — решение владельца 26.08.
+   Ниже 620px оба меню выглядят одинаково: только иконки.
+   В верхнем текст «Редактировать данные» заменяется карандашом,
+   в плавающем убирается надпись «счётикс» — остаётся один знак.
+   Причина: на узком экране подписи не помещаются и выдавливают
+   логотип за край (замер: .tbn занимал 453px при экране 375px). */
+@media(max-width:620px){
+#phr-root .tbar .fbl{display:none}
+#phr-root .tbar .fbedit{display:inline-flex;margin-right:auto}
+#phr-root .tbar{gap:8px}
+#phr-root .tbar .brand{gap:8px}
+#phr-root .tbar .brand .bt{font-size:15px}}
+/* На 320px кнопки (166px) плюс логотип (147px) плюс зазор не влезали
+   в 320px ровно на 9px. Уменьшаем знак и подпись — замок остаётся
+   читаемым, но перестаёт выдавливаться за край. */
+@media(max-width:400px){
+#phr-root .tbar .brand .bx{width:38px;height:38px}
+#phr-root .tbar .brand .bt{font-size:13.5px}
+#phr-root .tbar .brand .bd{font-size:7.4px}}
 @media print{#phr-root .tbar{position:static;border-bottom:0}
 #phr-root .tbn{display:none}}
 
@@ -183,9 +221,12 @@ width:34px;height:34px;border:0;border-radius:12px;background:transparent;
 color:var(--c-gr2);font-size:20px;line-height:1;cursor:pointer;
 transition:background .18s,color .18s}
 #phr-root .fbclose:hover{background:var(--c-white);color:var(--c-ink2)}
-@media(max-width:620px){#phr-root .fbrand{gap:5px;height:38px;margin-right:1px}
+/* Ниже 620px плавающее меню — только иконки: надпись «счётикс» убрана,
+   остаётся один знак. Решение владельца 26.08: оба меню на мобильном
+   выглядят одинаково, подписей нет нигде. */
+@media(max-width:620px){#phr-root .fbrand{gap:0;height:38px;margin-right:8px;padding-right:8px}
 #phr-root .fbmark{width:38px;height:38px}
-#phr-root .fbname{height:38px;font-size:12.5px}
+#phr-root .fbname{display:none}
 #phr-root .fbclose{width:30px;height:30px}}
 /* кнопки те же, что в меню: подложка и радиус при наведении */
 #phr-root .fbar .fbl{font-size:14px;font-weight:600;color:var(--c-gr);
@@ -203,8 +244,9 @@ transition:background .18s,color .18s,transform .12s}
 #phr-root .fbar .fbt{color:var(--c-a-500);cursor:default}
 #phr-root .fbar .fbt:hover{background:var(--c-a-50);color:var(--c-a-700)}
 #phr-root .fbar .fbt:active{transform:none}
-#phr-root .fbar .fbh{color:var(--c-ig-3)}
-#phr-root .fbar .fbh:hover{background:#FDF4FB;color:var(--c-ig-2)}
+/* То же и в плавающей плашке: до нажатия сердечко серое. */
+#phr-root .fbar .fbh{color:var(--c-gr)}
+#phr-root .fbar .fbh:hover{background:var(--c-white);color:var(--c-ink2)}
 /* подсказка — как .segtip на диаграмме блока 01 */
 #phr-root .fbar .fbi:after{content:attr(data-tip);position:absolute;
 top:calc(100% + 9px);left:50%;padding:10px 14px;border-radius:12px;
@@ -214,7 +256,10 @@ transform:translateX(-50%) translateY(-4px);
 transition:opacity .16s,transform .16s;box-shadow:0 8px 28px rgba(16,24,40,.16)}
 #phr-root .fbar .fbi:hover:after{opacity:1;transform:translateX(-50%)}
 @media(max-width:700px){#phr-root .fbar{top:10px;gap:8px;padding:10px 12px;
-max-width:calc(100vw - 20px)}
+/* Ширина считалась от 100vw и продолжала ужиматься ниже 320px —
+   содержимое вылезало за рамку плашки. Теперь предел тот же, что
+   у страницы: ниже 320px меню фиксируется и едет вместе со всем. */
+max-width:min(calc(100vw - 20px),calc(320px - 20px))}
 #phr-root .fbar .fbl{font-size:13px;padding:6px 9px}}
 @media print{#phr-root .fbar{display:none!important}}
 
@@ -287,6 +332,7 @@ mix-blend-mode:multiply;pointer-events:none}
 #phr-root .card{padding-bottom:66px}
 @media(max-width:700px){#phr-root .bn{left:20px;right:20px;bottom:16px}
 #phr-root .card{padding-bottom:60px}}
+
 #phr-root h2{font-size:20px;font-weight:600;margin-bottom:5px;letter-spacing:-.01em}
 #phr-root .hint{color:var(--gr);font-size:14px;margin-bottom:20px;line-height:1.55}
 #phr-root h2.big-h{font-size:27px;font-weight:700;letter-spacing:-.025em;line-height:1.18;
@@ -340,6 +386,38 @@ font-variant-numeric:tabular-nums;white-space:nowrap}
 padding:14px 16px;text-align:center;background:rgba(255,255,255,.07)}
 #phr-root .hero .rw .v{font-size:22px;font-weight:600}
 #phr-root .hero .rw .k{font-size:13px;opacity:.85;line-height:1.35;margin-top:3px}
+/* ПЛАШКИ ГЛАВНОГО ЭКРАНА НА МОБИЛЬНОМ — решение владельца 26.08.
+   Один в один с плашками под баннером (.hcard), только без иконки:
+   сумма сверху, под ней ГОРИЗОНТАЛЬНАЯ черта, под чертой подпись.
+   Те же поля 14/16px, тот же кегль 23px, тот же зазор 10px.
+   Дизайн прозрачный — на зелёном фоне, без заливки. */
+@media(max-width:640px){
+#phr-root .hero .rw{grid-template-columns:1fr;gap:10px;margin-top:18px}
+/* Выравнивание по центру — как на десктопе (решение владельца 26.08). */
+#phr-root .hero .rw>div{display:block;text-align:center;padding:14px 16px}
+/* Черта той же ширины, что у нижних плашек: там она равна ширине
+   текстовой колонки (плашка минус поля, иконка и зазор = 240px на 375px).
+   Здесь иконки нет, поэтому ужимаем черту на те же 28px и центрируем,
+   иначе она тянулась во всю ширину и строй не совпадал. */
+#phr-root .hero .rw .v{font-size:23px;font-weight:800;letter-spacing:-.03em;
+line-height:1.1;white-space:nowrap;padding-bottom:6px;
+width:calc(100% - 28px);margin:0 auto;
+border-bottom:1px solid rgba(255,255,255,.24)}
+#phr-root .hero .rw .k{margin-top:0;padding-top:5px;
+font-size:12px;line-height:1.4;opacity:.9}}
+
+/* ПЛАНШЕТ И КРУПНЫЙ ТЕЛЕФОН (480–620px) — решение владельца 27.08.
+   Раньше плашки вставали в столбик уже с 620px и занимали пол-экрана
+   каждая. Места на три в ряд хватает: замер на 480px — колонка 128px,
+   самая длинная сумма «170 211 ₽/мес» при кегле 16px занимает 105px.
+   Держим ряд, поджимая поля, зазор и кегль. */
+@media(min-width:641px) and (max-width:760px){
+#phr-root .hero .rw{grid-template-columns:repeat(3,minmax(0,1fr));
+gap:8px;margin-top:18px}
+#phr-root .hero .rw>div{padding:12px 10px}
+#phr-root .hero .rw .v{font-size:clamp(16px,3.4vw,21px);font-weight:700;
+letter-spacing:-.03em;line-height:1.15;white-space:nowrap}
+#phr-root .hero .rw .k{font-size:11.5px;line-height:1.35;margin-top:4px}}
 
 /* ---------- диаграммы ---------- */
 #phr-root .dn .seg{transition:filter .12s}
@@ -372,7 +450,12 @@ align-items:center;justify-content:center;pointer-events:none}
 /* белый диск под кольцом: фоновая графика не просвечивает в отверстие */
 #phr-root .dn.big{width:100%;max-width:560px}
 #phr-root .dn.big svg{width:100%;height:auto;display:block}
-#phr-root .dn.big .mid .v{font-size:46px}
+/* Цифра плавно едет 46→26px вместе с кольцом. Верхняя граница — как было,
+   нижняя рассчитана по семизначной ставке (1 250 000 ₽): при 26px она
+   занимает 113px и помещается в круг даже на 320px. */
+#phr-root .dn.big .mid .v{font-size:clamp(26px,4.9vw,46px)}
+/* Круг на широком экране 258px: 16.2cqw даёт 41.8px — меньше проектных 46px.
+   Поднимаем потолок container-варианта, чтобы на XL/L кегль остался прежним. */
 /* Центр кольца — круглый «медальон»: заливка светло-серая, контур —
    серый, как у кнопки «Поблагодарить проект» в покое (var(--ln)).
    Отступ круга от внутреннего края кольца — ~9px: выдержан как
@@ -381,27 +464,61 @@ align-items:center;justify-content:center;pointer-events:none}
    круга; размер соотносится с цифрой, как на плашках главного
    экрана (иконка примерно равна высоте текста). Между ценой и
    «за час съёмки» — разделительная полоса. */
+/* Серединка держит круглую форму жёстко: без min-height содержимое
+   распирало её по высоте, ширина оставалась 46% — и круг превращался
+   в овал (замер: ниже 390px нужно 146px, круг давал 139px).
+   overflow:hidden — страховка, чтобы ничто не вылезло за окружность. */
 #phr-root .dn.big .mid{inset:auto;left:50%;top:50%;transform:translate(-50%,-50%);
-width:46%;aspect-ratio:1;border-radius:50%;background:var(--c-bg);
+width:46%;aspect-ratio:1;min-height:0;overflow:hidden;
+container-type:inline-size;
+border-radius:50%;background:var(--c-bg);
 border:1.5px solid var(--ln)}
-#phr-root .dn.big .mid .mi{width:80px;height:80px;border-radius:20px;flex:none;
+/* Иконка, цифра и подпись уменьшаются ПЛАВНО вместе с кольцом, а не
+   скачком на брейкпоинте: clamp(мин, от ширины экрана, макс).
+   Лист 17_Адаптивность, раздел Г — сценарий в три ступени. */
+#phr-root .dn.big .mid .mi{width:clamp(44px,8.6vw,80px);height:clamp(44px,8.6vw,80px);
+border-radius:clamp(12px,2.2vw,20px);flex:none;
 background:none;border:1px solid var(--gr);display:flex;
-align-items:center;justify-content:center;color:var(--gr);margin-bottom:10px}
-#phr-root .dn.big .mid .mi svg{display:block;width:38px;height:38px}
-#phr-root .dn.big .mid .k{font-size:13.5px;margin-top:7px;padding-top:7px;
-border-top:1.5px solid var(--ln);width:68%;text-align:center}
-@media(max-width:700px){#phr-root .dn.big{max-width:100%}
-#phr-root .dn.big .mid .v{font-size:30px}
-#phr-root .dn.big .mid .mi{width:56px;height:56px;border-radius:14px}
-#phr-root .dn.big .mid .mi svg{width:26px;height:26px}}
-#phr-root .three{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;text-align:center}
+align-items:center;justify-content:center;color:var(--gr);
+margin-bottom:clamp(6px,1.1vw,10px)}
+#phr-root .dn.big .mid .mi svg{display:block;width:clamp(21px,4.1vw,38px);height:clamp(21px,4.1vw,38px)}
+#phr-root .dn.big .mid .k{font-size:clamp(11px,2.35vw,13.5px);margin-top:clamp(5px,.8vw,7px);
+padding-top:clamp(5px,.8vw,7px);
+border-top:1.5px solid var(--ln);width:68%;text-align:center;line-height:1.25}
+/* Ключевая цифра — всегда одна строка, никогда не переносится. */
+#phr-root .dn.big .mid .v{white-space:nowrap}
+@media(max-width:700px){#phr-root .dn.big{max-width:100%}}
+/* Ступень 3, до 479px: иконка — украшение, уходит первой. Освободившиеся
+   ~66px отдаём смыслу: цифра остаётся крупной, подпись получает две
+   строки и место под них. Решение владельца 26.08. */
+@media(max-width:640px){
+#phr-root .dn.big .mid .mi{display:none}
+#phr-root .dn.big .mid .k{width:86%;font-size:11px;margin-top:5px;padding-top:5px}}
+/* Длина ставки заранее неизвестна: «9 430 ₽» и «1 250 000 ₽» отличаются
+   в полтора раза. Кегль по ширине экрана этого не учитывает, поэтому
+   привязываем цифру к ширине САМОГО круга (container query) — так она
+   остаётся в одной строке при любой сумме. 19cqw подобрано по семи
+   знакам: 1 250 000 ₽ занимает ~86% круга и не касается окружности. */
+@supports (container-type:inline-size){
+#phr-root .dn.big .mid .v{font-size:min(clamp(17px,4.9vw,46px),17.9cqw)}}
+/* minmax(0,1fr): без нуля колонка раздувается под содержимое и карточки
+   вылезают за пределы ряда (замер 568px: ряд 500px, край карточки 534px).
+   Решение 27.08. */
+#phr-root .three{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;text-align:center}
 /* Карточки — колонки одной высоты, содержимое выстроено по одной сетке:
    заголовок, сумма, кольцо, подвал. Раньше кольца стояли на разной высоте:
    заголовки занимали то одну строку, то две, и всё съезжало. */
-#phr-root .scn3{border:0;border-radius:var(--r);padding:36px 22px 26px;
-position:relative;margin-top:15px;
+/* Тень убрана решением владельца 27.08: плашки лежат на белом фоне
+   карточки, подложки достаточно, чтобы их отделить.
+   Верхнее поле уменьшено с 36 до 22px — метка съехала внутрь плашки
+   и больше не висит над её краем. */
+/* Карточка: тёмная шапка сверху, светлое тело снизу — приём с главного
+   экрана (.hero-slab). Поля перенесены внутрь частей, сама карточка
+   обрезает углы. Решение владельца 27.08. */
+#phr-root .scn3{border:0;border-radius:var(--r);padding:0;overflow:hidden;
+position:relative;margin-top:0;
 display:flex;flex-direction:column;
-box-shadow:var(--sh)}
+box-shadow:none}
 
 /* Подложки плашек. Порядок: 1 реальный, 2 идеальный, 3 в ноль.
    Декоративный круг — вторым слоем фона, а не отдельным блоком: раньше он
@@ -425,33 +542,71 @@ pointer-events:none;z-index:0}
    на 10%. Цветной круг темнее фона выглядел грязным пятном. */
 #phr-root .scn3 .scdeco{color:rgba(255,255,255,.62)}
 #phr-root .scn3>*:not(.scdeco){position:relative;z-index:1}
-#phr-root .scn3 .nm3{position:absolute;top:-16px;left:50%;transform:translateX(-50%);
-font-size:14px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;
-white-space:nowrap;padding:10px 26px;border-radius:var(--r);color:#fff}
+/* Шапка карточки — тёмная, с градиентом в гамме сценария.
+   Внутри: название сценария, черта, показатель. Решение владельца 27.08. */
+#phr-root .scnhead{position:relative;z-index:1;padding:16px 18px 15px;text-align:center}
+/* Гамма шапок — по образцам владельца 27.08: синяя от плашки «18 съёмок»
+   (.hcard), зелёная от «9 185 ₽/мес» (в тон первой, чуть темнее исходной),
+   розовая от плашки блока 06 (.scn .g). Все три затемнены на 16% —
+   в исходном виде белый текст давал контраст 2.1–2.6 при норме 4.5. */
+#phr-root .scn3.s1 .scnhead{background:linear-gradient(140deg,#276BA4 0%,#4D8DBC 100%)}
+#phr-root .scn3.s2 .scnhead{background:linear-gradient(140deg,#1B862F 0%,#4DA763 100%)}
+#phr-root .scn3.s3 .scnhead{background:linear-gradient(140deg,#BD285A 0%,#A22C6E 100%)}
+#phr-root .scnbody{position:relative;z-index:1;padding:18px 20px 20px;
+display:flex;flex-direction:column;flex:1 1 auto}
+/* Иерархия: метка сценария — мелкое пояснение сверху, название
+   показателя — главный заголовок. Раньше оба были одного веса
+   и спорили между собой. Решение владельца 27.08. */
+#phr-root .scn3 .nm3{position:static;transform:none;
+display:block;margin:0 0 6px;padding:0;background:none;box-shadow:none;
+border:0;border-radius:0;
+font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+white-space:normal;line-height:1.3;color:rgba(255,255,255,.72)}
 /* 1 реальный — гамма «Условий труда» (.cn.b), 2 идеальный — зелёный,
    3 в ноль — гамма блока 08 (.cn.s2, «Выше ценник»). */
-#phr-root .scn3.s1 .nm3{background:linear-gradient(140deg,var(--c-b-600),var(--c-b-400));
-box-shadow:0 5px 16px rgba(47,128,196,.28)}
-#phr-root .scn3.s2 .nm3{background:linear-gradient(135deg,var(--c-g-600),var(--c-g-400));
-box-shadow:0 5px 16px rgba(33,160,56,.32)}
-#phr-root .scn3.s3 .nm3{background:linear-gradient(140deg,var(--c-ig-3),var(--c-ig-2));
-box-shadow:0 5px 16px rgba(193,53,132,.30)}
 /* Заголовок карточки — фиксированные две строки: иначе кольца съезжают. */
-#phr-root .three .amt{font-size:16px;font-weight:700;letter-spacing:-.015em;margin:6px 0 12px;
-min-height:2.6em;display:flex;align-items:center;justify-content:center}
+/* Рамка с ключевой цифрой: сверху стоимость часа максимально крупно,
+   под чертой — название сценария. Решение владельца 27.08.
+   Кегль цифры считается от ширины плашки (container query), поэтому
+   она всегда занимает доступное место и не рвёт строку. */
+/* Название сценария — под меткой, перед диаграммой. Рамки нет:
+   ключевая цифра переехала в .ratebox под кольцо. Решение 27.08. */
+@supports (container-type:inline-size){
+#phr-root .scn3{container-type:inline-size}
+#phr-root .ratebox b{font-size:clamp(19px,13cqw,30px)}}
+#phr-root .three .amt{display:flex;align-items:center;justify-content:center;
+margin:0;padding:0;border:0;background:none;text-align:center;min-height:2.2em}
+#phr-root .three .amt i{font-style:normal;display:block;
+font-size:18px;font-weight:800;letter-spacing:-.02em;
+line-height:1.2;color:var(--c-white)}
+/* Ставка — крупной строкой под кольцом, без плашки и без черты. */
+#phr-root .ratebox{margin:auto 0 0;padding:14px 0 0;text-align:center;
+border:0;background:none}
+#phr-root .ratebox b{display:block;font-size:26px;font-weight:800;
+letter-spacing:-.035em;line-height:1.05;white-space:nowrap;
+font-variant-numeric:tabular-nums}
+#phr-root .scn3.s1 .ratebox b{color:var(--c-b-700)}
+#phr-root .scn3.s2 .ratebox b{color:var(--c-g-700)}
+#phr-root .scn3.s3 .ratebox b{color:var(--c-ig-2)}
 #phr-root .three .dn .mid{display:none}
 /* обёртка кольца растягивается, подвал прижат к низу — линии совпадают */
-#phr-root .scn3>.dn{margin:0 auto}
+#phr-root .scn3>.dn{margin:0 auto;flex:1 0 auto;display:flex;align-items:center}
 #phr-root .scn3 .ratebot{margin-top:auto}
 #phr-root .bigsum.top{margin:0 0 18px;padding:0;border:0}
 #phr-root .bigsum b{display:block;font-size:30px;font-weight:700;letter-spacing:-.03em;
 line-height:1;font-variant-numeric:tabular-nums;color:var(--ink)}
 #phr-root .bigsum span{display:block;font-size:12.5px;color:var(--gr);margin-top:6px}
-#phr-root .ratebot{margin-top:18px;padding-top:16px;border-top:1px solid rgba(0,0,0,.08);
-display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%}
-#phr-root .ratebot b{display:block;font-size:17px;font-weight:700;letter-spacing:-.02em;
-font-variant-numeric:tabular-nums;color:var(--ink)}
-#phr-root .ratebot span{display:block;font-size:11.5px;color:var(--gr);margin-top:4px;
+/* Плашки убраны: подпись сверху, сумма под ней. Черта отделяет подвал
+   от ставки. Решение владельца 27.08. */
+#phr-root .ratebot{margin-top:14px;padding-top:14px;
+border-top:1px solid rgba(0,0,0,.14);
+display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;width:100%}
+#phr-root .ratebot .rb1{padding:0;text-align:center;border:0;background:none;
+display:flex;flex-direction:column-reverse}
+#phr-root .ratebot b{display:block;font-size:15px;font-weight:700;letter-spacing:-.02em;
+white-space:normal;line-height:1.2;font-variant-numeric:tabular-nums;color:var(--ink)}
+
+#phr-root .ratebot span{display:block;font-size:11.5px;color:var(--gr);margin:0 0 4px;
 line-height:1.3}
 #phr-root .scn3.s1 .ratebot b{color:var(--c-b-700)}
 #phr-root .scn3.s2 .ratebot b{color:var(--c-g-700)}
@@ -646,11 +801,33 @@ padding:15px 17px;box-shadow:var(--sh);
 background:linear-gradient(140deg,#8A94A6,#5B6577)}
 #phr-root .s3g div:nth-child(2){background:linear-gradient(140deg,#7C8698,#4E5768)}
 #phr-root .s3g div:nth-child(3){background:linear-gradient(140deg,#6E7889,#414A5A)}
+/* Круги-блики, как в блоке 04: у каждой плашки свой набор, симметрии нет.
+   Текст прижат влево, круги уходят вправо и за края. Решение 27.08. */
+#phr-root .s3g div:before,#phr-root .s3g div:after{content:'';position:absolute;
+border-radius:50%;pointer-events:none}
+#phr-root .s3g div:nth-child(1):before{right:-34px;bottom:-40px;width:104px;height:104px;
+background:rgba(255,255,255,.12)}
+#phr-root .s3g div:nth-child(1):after{right:52px;top:-22px;width:40px;height:40px;
+background:rgba(255,255,255,.06)}
+#phr-root .s3g div:nth-child(2):before{right:-20px;top:-30px;width:86px;height:86px;
+background:rgba(255,255,255,.09)}
+#phr-root .s3g div:nth-child(2):after{right:30px;bottom:-26px;width:56px;height:56px;
+background:rgba(255,255,255,.13)}
+#phr-root .s3g div:nth-child(3):before{right:-46px;bottom:-34px;width:120px;height:120px;
+background:rgba(255,255,255,.08)}
+#phr-root .s3g div:nth-child(3):after{right:74px;bottom:-14px;width:30px;height:30px;
+background:rgba(255,255,255,.15)}
 #phr-root .s3g span{display:block;font-size:11.5px;color:rgba(255,255,255,.78);
 margin-bottom:6px}
 #phr-root .s3g b{display:block;font-size:21px;font-weight:700;color:var(--c-white);
 font-variant-numeric:tabular-nums;letter-spacing:-.025em}
-@media(max-width:700px){#phr-root .s3g{grid-template-columns:1fr}}
+/* «Чтобы получать N ₽ в месяц при ставке X» — по две плашки в ряд
+   на мобильном (решение владельца 26.08). Третья занимает всю ширину:
+   нечётное число плиток, одинокая в полcolumn смотрится обрубком. */
+@media(max-width:700px){#phr-root .s3g{grid-template-columns:1fr 1fr;gap:10px}
+#phr-root .s3g div:nth-child(3){grid-column:1/-1}
+#phr-root .s3g div{padding:13px 14px}
+#phr-root .s3g b{font-size:19px}}
 #phr-root .bar.b4 .bt i:before{background:var(--c-b-400)}
 #phr-root .bar.b5 .bt i:before{background:var(--c-g-400)}
 #phr-root .bar.b6 .bt i:before{background:var(--c-gr3)}
@@ -684,7 +861,10 @@ font-variant-numeric:tabular-nums;letter-spacing:-.02em}
    Боковые поля 28px — те же, что у ряда сумм внутри баннера:
    сетки стоят на одних вертикальных линиях, читается как единая
    таблица (3 колонки, промежуток 16px у обеих сеток). */
-#phr-root .hcards{margin:0;padding:20px 28px 28px}
+/* Нижний отступ равен расстоянию от черты с номером до низа обычного
+   блока (46px): номера здесь нет, но поле должно совпадать, иначе
+   главный блок «недостаёт» до общей сетки. Решение владельца 27.08. */
+#phr-root .hcards{margin:0;padding:20px 28px 46px}
 #phr-root .hcards-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
 gap:16px;width:100%;position:relative;z-index:2}
 #phr-root .hcard{display:flex;flex-direction:column;align-items:flex-start;
@@ -712,8 +892,44 @@ margin:18px 0 12px;padding-bottom:12px;white-space:nowrap;
 color:var(--c-white);border-bottom:1px solid rgba(255,255,255,.24);
 font-variant-numeric:tabular-nums}
 #phr-root .hcard-text{font-size:12.5px;line-height:1.55;color:rgba(255,255,255,.76)}
-@media(max-width:760px){#phr-root .hcards-grid{grid-template-columns:1fr}
+@media(max-width:640px){#phr-root .hcards-grid{grid-template-columns:1fr}
 #phr-root .hcard-title{font-size:26px;min-height:0}}
+
+/* ПЛАНШЕТ И КРУПНЫЙ ТЕЛЕФОН (480–760px) — решение владельца 27.08.
+   Плашки вставали в столбик уже с 760px: три штуки давали 629px
+   высоты, каждая шириной во весь экран. Места на ряд хватает —
+   замер на 480px: колонка 137px, самая длинная строка «9 185 ₽/мес»
+   при кегле 16px занимает 83px. Держим ряд, поджимая поля и кегль.
+   Иконка над цифрой, как на широком экране. */
+@media(min-width:641px) and (max-width:760px){
+#phr-root .hcards-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+#phr-root .hcard{padding:16px 14px}
+#phr-root .hcard-icon{width:42px;height:42px;border-radius:12px}
+#phr-root .hcard-icon svg{width:21px;height:21px}
+#phr-root .hcard-title{min-height:0;font-size:clamp(16px,3vw,24px);
+margin:12px 0 8px;padding-bottom:8px}
+#phr-root .hcard-text{font-size:11.5px;line-height:1.45}}
+/* ПЛАШКИ НА МОБИЛЬНОМ — решение владельца 26.08.
+   Было: иконка сверху, под ней цифра, под ней текст — колонка высотой
+   199px, три плашки давали 597px и не влезали в экран телефона.
+   Стало: иконка слева, крупная, на две строки; справа от неё цифра
+   и подпись. Поля ужаты с 28/26px до 14/12px — на узком экране
+   пиксель нужен содержимому, а не воздуху. */
+@media(max-width:640px){
+/* Верхний отступ 22px: плашки прилипали к зелёному баннеру. */
+#phr-root .hcards{padding:22px clamp(8px,2.5vw,16px) 50px}
+#phr-root .hcards-grid{gap:10px}
+#phr-root .hcard{display:grid;grid-template-columns:auto 1fr;
+grid-template-rows:auto auto;column-gap:14px;row-gap:2px;
+align-items:center;padding:14px 16px}
+#phr-root .hcard-icon{grid-row:1/3;align-self:center;
+width:52px;height:52px;border-radius:14px}
+#phr-root .hcard-icon svg{width:26px;height:26px}
+#phr-root .hcard-title{grid-column:2;align-self:end;
+min-height:0;font-size:23px;margin:0;padding-bottom:6px;
+border-bottom:1px solid rgba(255,255,255,.24)}
+#phr-root .hcard-text{grid-column:2;align-self:start;
+font-size:12px;line-height:1.4;padding-top:5px}}
 
 #phr-root .ex .exm:before{content:'';position:absolute;left:0;top:7px;
 width:9px;height:9px;border-radius:2px;transform:rotate(45deg);
@@ -754,6 +970,14 @@ font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:c
 margin-top:2px}
 #phr-root .minb .mbl .y i{background:var(--c-g-100);color:var(--c-g-700)}
 #phr-root .minb .mbl .n i{background:var(--c-p-100);color:var(--c-p-600)}
+/* Строка-ссылка на справочник вместо прежнего пункта с галочкой,
+   и плашка-уведомление вместо крестика. Решение владельца 27.08. */
+/* Ссылка на справочник — серой сноской, без цветового выделения:
+   это отсылка, а не призыв. Решение владельца 27.08. */
+#phr-root .minb .mblink{margin-top:2px;font-size:12.5px;line-height:1.5}
+#phr-root .minb .mblink a{color:var(--c-gr2);font-weight:400;text-decoration:none;
+border-bottom:1px solid var(--c-ln)}
+#phr-root .minb .mblink a:hover{color:var(--c-gr);border-bottom-color:var(--c-gr2)}
 #phr-root .minb .mbf{font-size:13px;line-height:1.65;color:var(--c-ink3);
 padding-top:13px;border-top:1px solid var(--c-p-100)}
 #phr-root .minb .mbf b{color:var(--c-p-700);font-weight:700}
@@ -911,6 +1135,8 @@ background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000
 #phr-root .txw::-webkit-scrollbar-button:horizontal:double-button{display:none}
 #phr-root .txw::-webkit-scrollbar-corner{background:var(--c-ln)}
 
+
+
 /* ---------- налоги ----------
    Плашки цифр были белыми на почти белом фоне и проваливались.
    Теперь подложка блока — синяя ведомственная, плашки светлые с рамкой
@@ -927,8 +1153,28 @@ padding:22px 24px;margin-bottom:18px}
 box-shadow:0 4px 14px rgba(27,46,107,.20);position:relative;overflow:hidden;
 background:linear-gradient(145deg,#3B54A8 0%,var(--c-fns-2) 100%)}
 /* блик в углу — тот же приём, что у плиток «Условий труда» */
-#phr-root .npd .g div:before{content:'';position:absolute;right:-26px;top:-26px;
-width:104px;height:104px;border-radius:50%;background:rgba(255,255,255,.10)}
+/* Круги-блики: у каждой плашки свой набор — разный размер, разное
+   место, разная прозрачность. Симметрии нет нигде, ритм «крупный —
+   мелкий — средний» разный в каждой плашке. Круги живут в свободной
+   от текста зоне (текст прижат влево-вверх, они уходят вправо-вниз
+   и за края). Решение владельца 27.08. */
+#phr-root .npd .g div:before,#phr-root .npd .g div:after{content:'';position:absolute;
+border-radius:50%;pointer-events:none}
+/* 1 — крупный за правым краем, мелкий у нижней кромки */
+#phr-root .npd .g div:nth-child(1):before{right:-44px;bottom:-52px;width:128px;height:128px;
+background:rgba(255,255,255,.13)}
+#phr-root .npd .g div:nth-child(1):after{right:58px;top:-30px;width:52px;height:52px;
+background:rgba(255,255,255,.06)}
+/* 2 — средний в правом нижнем, крошечный поодаль */
+#phr-root .npd .g div:nth-child(2):before{right:-16px;bottom:-38px;width:92px;height:92px;
+background:rgba(255,255,255,.09)}
+#phr-root .npd .g div:nth-child(2):after{right:96px;bottom:-20px;width:34px;height:34px;
+background:rgba(255,255,255,.14)}
+/* 3 — крупный сверху справа, средний внизу, оба еле заметны */
+#phr-root .npd .g div:nth-child(3):before{right:-52px;top:-46px;width:142px;height:142px;
+background:rgba(255,255,255,.08)}
+#phr-root .npd .g div:nth-child(3):after{right:34px;bottom:-34px;width:70px;height:70px;
+background:rgba(255,255,255,.12)}
 #phr-root .npd .g span,#phr-root .npd .g b{position:relative;z-index:1}
 /* три плашки в одной гамме, но разной глубины: от голубой к тёмно-синей —
    так они читаются как ряд, а не как одинаковые прямоугольники */
@@ -962,29 +1208,52 @@ display:flex;align-items:flex-start;gap:7px}
 #phr-root .cta .in{position:relative;z-index:2;max-width:620px}
 #phr-root .cta .kick{font-size:12px;font-weight:700;letter-spacing:.14em;
 text-transform:uppercase;opacity:.75;margin-bottom:12px}
+/* Черта под заголовком — на всех экранах. Решение владельца 27.08. */
 #phr-root .cta h3{font-size:32px;font-weight:700;letter-spacing:-.025em;line-height:1.12;
-margin-bottom:14px}
+margin-bottom:14px;padding-bottom:14px;
+border-bottom:1px solid rgba(255,255,255,.28)}
 #phr-root .cta p{font-size:15.5px;line-height:1.65;opacity:.93;margin-bottom:26px}
 #phr-root .cta .btn2{display:inline-flex;align-items:center;gap:11px;background:#fff;
-color:var(--gd);border-radius:14px;padding:0 30px;height:56px;font-size:16px;
-font-weight:700;text-decoration:none;transition:.16s;box-shadow:0 8px 28px rgba(16,24,40,.16)}
+color:var(--gd);border-radius:14px;padding:0 clamp(12px,4vw,30px);height:56px;font-size:16px;
+font-weight:700;text-decoration:none;white-space:nowrap;transition:.16s;box-shadow:0 8px 28px rgba(16,24,40,.16)}
 #phr-root .cta .btn2:hover{background:var(--c-g-50)}
 #phr-root .cta .btn2:active{background:var(--c-g-100);transform:translateY(1px)}
 #phr-root .cta .sm{font-size:13px;opacity:.8;margin-top:16px}
 @media(max-width:700px){#phr-root .cta{padding:30px 24px}
 #phr-root .cta h3{font-size:24px}
 #phr-root .cal{gap:4px}}
+/* КРУГИ НА МОБИЛЬНОМ — решение владельца 27.08.
+   На узком экране декоративные круги (280 и 180px) наползали на текст
+   и глушили его. Уводим их за края и уменьшаем: остаётся намёк
+   в углах, текст читается по всей ширине. Сердечко убираем совсем —
+   на 375px оно ложилось прямо на заголовок. */
+/* Круги на мобильном — вразнобой, как разлетающиеся сердечки от кнопки:
+   разный размер, разная прозрачность, ни один не повторяет другой.
+   Лежат под текстом (он поверх, z-index у .in), заходят за края.
+   Решение владельца 27.08 — было симметрично по углам. */
+@media(max-width:640px){
+#phr-root .cta.thx .dec:nth-of-type(1){width:190px!important;height:190px!important;
+right:-84px!important;top:-58px!important;opacity:.10}
+#phr-root .cta.thx .dec:nth-of-type(2){width:96px!important;height:96px!important;
+right:52px!important;bottom:-40px!important;opacity:.14}
+/* сердечко остаётся, но мельче и уходит к нижнему краю — оно и даёт
+   ту самую «живость», ради которой круги разной величины */
+#phr-root .cta.thx .dec:nth-of-type(3){display:block;
+width:38px!important;height:38px!important;
+right:26px!important;top:auto!important;bottom:84px!important;opacity:.20}}
 
-/* Баннер благодарности — в одной гамме с кнопками .thxb: тот же
-   инста-градиент, те же сердечки в декоре. */
+/* Баннер благодарности — в одной гамме с кнопками .thxb и окном
+   благодарности: светло-голубой градиент, как у плашек «18 съёмок»
+   и «6 съёмок» (.hcard). Решение владельца 26.08: единое цветовое
+   решение, гамма Instagram здесь больше не используется. */
 /* та же крутящаяся заливка, что на кнопках, только медленнее */
-#phr-root .cta.thx{background:linear-gradient(140deg,var(--c-ig-1),var(--c-ig-2) 42%,var(--c-ig-4))}
+#phr-root .cta.thx{background:linear-gradient(140deg,var(--c-b-300),var(--c-b-400) 42%,var(--c-b-600))}
 
 #phr-root .cta.thx .in{position:relative;z-index:2}
 
-#phr-root .cta.thx .btn2{color:var(--c-ig-2)}
-#phr-root .cta.thx .btn2:hover{background:#FDF4FB}
-#phr-root .cta.thx .btn2:active{background:#FBE9F6}
+#phr-root .cta.thx .btn2{color:var(--c-b-700)}
+#phr-root .cta.thx .btn2:hover{background:var(--c-b-50)}
+#phr-root .cta.thx .btn2:active{background:var(--c-b-100)}
 /* ---- «Поблагодарить проект» ----
    Форма — от кнопки «Сохранить отчёт в PDF» (.savebtn): та же ширина,
    высота и кегль. Оформление — от плашек блока 08 (.cn.s1..s3):
@@ -1019,8 +1288,11 @@ color:var(--c-gr);text-align:center}
 /* Ссылка на пункт справочника: не выделяется цветом — наследует шрифт,
    кегль, начертание и цвет того описания, вместо которого стоит.
    Подчёркивание оставлено, чтобы было видно: это ссылка. */
+/* Ссылки в таблицах — без подчёркивания (решение владельца 26.08).
+   Прежняя нижняя граница создавала «полосатость» в плотных таблицах.
+   white-space снят: имена должны переноситься вместе с ячейкой. */
 #phr-root .refl{color:inherit;font:inherit;text-decoration:none;
-border-bottom:1px solid currentColor;opacity:.9;white-space:nowrap}
+opacity:.9}
 #phr-root .refl:hover{opacity:1}
 /* Без подложки: фон тот же, что у страницы и меню. Отступы по бокам
    убраны — текст выравнивается по общей колонке. */
@@ -1130,6 +1402,55 @@ border-bottom:5px solid var(--c-white);margin-top:-3px}
    ячейки возвращаем sticky, иначе её заголовок уезжает вбок. */
 #phr-root .tx thead th.cnm.srt{padding-right:26px;
 position:sticky;left:0;z-index:6}
+
+/* ═══ ТАБЛИЦЫ НА МОБИЛЬНОМ — решение владельца 26.08 ═══
+   Единый стиль для всех таблиц отчёта: таблицы режимов (.txw),
+   подробной детализации и справочника (#спрдет .wrap).
+   1. Липкие первые колонки сняты: на узком экране закреплённый
+      столбец съедал половину видимой ширины.
+   2. Полоса прокрутки убрана — листаем пальцем (свайп).
+   3. Перед таблицей — подсказка: серая полоска с едущей ладонью.
+   4. Столбец № скрыт: на узком экране порядковый номер не нужен. */
+@media(max-width:620px){
+#phr-root .tx td.cnm,#phr-root .tx thead th.cnm,#phr-root .tx td.mk{position:static}
+#phr-root .tx td.cnm:after{display:none}
+#phr-root .txw::-webkit-scrollbar,
+#phr-root #спрдет .wrap::-webkit-scrollbar{height:0;width:0;display:none}
+#phr-root .txw,#phr-root #спрдет .wrap{scrollbar-width:none;-ms-overflow-style:none}
+#phr-root .txfoot{display:none}
+#phr-root .txbox,#phr-root #спрдет .wrap{border-radius:14px}
+/* Порядковый номер на мобильном не показываем — место дороже. */
+#phr-root #спрдет table.rt th.ш-ном,
+#phr-root #спрдет table.rt td:first-child{display:none}
+/* Наименование переносится по словам и потому может быть узким:
+   142px вместо 186px. Решение владельца 27.08 — читать в две строки
+   удобнее, чем тянуть таблицу вбок ради одной длинной строки. */
+#phr-root #спрдет{--w-имя:142px;--w-знач:104px}
+/* Наименование — всегда вторая ячейка строки (первая — №, скрытый
+   на мобильном). Отдельного класса у неё нет, поэтому целимся
+   по позиции. Строки-пояснения (colspan) исключены. */
+#phr-root #спрдет table.rt tr:not(.пояснение)>td:nth-child(2),
+#phr-root #спрдет table.rt th.ш-имя{white-space:normal;
+overflow-wrap:break-word;line-height:1.35}
+/* Подсказка о прокрутке — приём Tilda: серая скруглённая полоска,
+   по ней едет схематичная ладонь. Никаких надписей. Показывается
+   только если таблица шире экрана (класс ставит скрипт). */
+#phr-root .свайп.есть-прокрутка{display:flex}}
+/* Прижата к правому краю — туда, куда таблица уезжает и куда
+   тянется палец. Решение владельца 27.08 (было по центру). */
+#phr-root .свайп{display:none;justify-content:flex-end;margin:0 0 10px}
+#phr-root .свайп-полоса{position:relative;width:104px;height:26px;
+border-radius:13px;background:var(--c-ln);overflow:hidden}
+#phr-root .свайп-рука{position:absolute;top:50%;left:0;width:19px;height:19px;
+margin-top:-9px;color:var(--c-gr);
+animation:phr-свайп 2.1s cubic-bezier(.45,0,.35,1) infinite}
+@keyframes phr-свайп{
+0%,8%{transform:translateX(14px);opacity:0}
+18%{transform:translateX(14px);opacity:1}
+62%{transform:translateX(70px);opacity:1}
+78%,100%{transform:translateX(70px);opacity:0}}
+@media(prefers-reduced-motion:reduce){
+#phr-root .свайп-рука{animation:none;transform:translateX(42px);opacity:1}}
 /* пояснение второй строкой внутри ячейки-обязанности */
 #phr-root .tx td.mk i{display:block;font-style:normal;font-size:11.5px;
 font-weight:400;color:var(--c-gr2);margin-top:2px;white-space:normal}
@@ -1231,8 +1552,70 @@ position:relative;z-index:1;box-sizing:border-box}
 #phr-root .cn .sm{display:flex;align-items:flex-start;height:68px;min-height:68px;
 padding-top:10px;box-sizing:border-box;font-size:13.5px;opacity:.92;
 line-height:1.45;position:relative;z-index:1}
-@media(max-width:760px){#phr-root .cnd{grid-template-columns:1fr}
-#phr-root .cn{height:auto;min-height:244px;padding:22px}#phr-root .cn .bg{font-size:32px}}
+/* Ряд из трёх держится до 480px — как у плашек главного экрана и блока 05.
+   Промежуточного вида «одна плашка во всю ширину» больше нет: с планшета
+   сразу в мобильный формат. Решение владельца 27.08. */
+/* Плашки не ужимаются до крошечных: держим пропорцию, близкую к квадрату
+   (min-height от ширины колонки), иначе на узком планшете содержимому
+   не хватало места и черта съезжала. Строки заданы сеткой — подпись,
+   цифра с чертой и описание всегда на одном уровне во всех трёх.
+   Решение владельца 27.08. */
+@media(min-width:641px) and (max-width:760px){
+#phr-root .cnd{gap:10px}
+#phr-root .cn{display:grid;grid-template-rows:auto auto 1fr;
+height:auto;min-height:210px;padding:16px 14px}
+#phr-root .cn .tp{height:auto;min-height:2.6em;font-size:11px;line-height:1.3;
+display:flex;align-items:flex-start}
+#phr-root .cn .bg{height:auto;min-height:0;font-size:clamp(20px,3.4vw,30px);
+margin:8px 0 0;padding-bottom:10px;align-items:flex-end}
+#phr-root .cn .sm{height:auto;min-height:0;padding-top:10px;
+align-items:flex-start;font-size:11.5px;line-height:1.4}}
+@media(max-width:640px){#phr-root .cnd{grid-template-columns:1fr}
+#phr-root .cn{height:auto;min-height:0;padding:22px}}
+/* Мобильный вид по образцу плашек самозанятости (.npd .g div):
+   компактные поля 16/18px, высота от содержимого, без жёстких
+   244px и фиксированных высот у строк. Решение владельца 26.08. */
+@media(max-width:640px){
+#phr-root .cnd{gap:14px;margin-top:16px;grid-auto-rows:1fr}
+#phr-root .cn{height:auto;min-height:0;padding:16px 18px;
+justify-content:flex-start;gap:2px}
+#phr-root .cn .tp{height:auto;min-height:0;margin-bottom:6px;font-size:12px}
+#phr-root .cn .bg{height:auto;min-height:0;font-size:26px;line-height:1.1}
+#phr-root .cn .sm{height:auto;min-height:0;margin-top:4px;
+font-size:12px;line-height:1.4}
+#phr-root .cn>div:last-child{flex:none;justify-content:flex-start}}
+
+/* БЛОК 08 НА МОБИЛЬНОМ — решение владельца 27.08.
+   Подпись («Больше клиентов») и цифра («+21%») стояли друг под другом
+   и съедали две строки на узком экране. Ставим их в одну строку:
+   подпись слева, цифра прижата вправо. Пояснение остаётся под ними.
+   Разметка не менялась: .tp — родной ребёнок .cn, а .bg и .sm лежат
+   в общей обёртке, поэтому её распускаем через display:contents. */
+@media(max-width:640px){
+/* Цифра — в собственной рамке слева, как суммы на главном экране
+   (.hero .rw>div): прозрачная подложка, обводка, тот же радиус.
+   Рамка во всю высоту плашки. Справа от неё — заголовок, под ним
+   черта и описание. Решение владельца 27.08. */
+#phr-root .cnd.st4 .cn{display:grid;grid-template-columns:auto 1fr;
+grid-template-areas:"цифра подпись" "цифра текст";
+grid-template-rows:auto 1fr;
+align-items:stretch;column-gap:12px;row-gap:0;padding:14px}
+#phr-root .cnd.st4 .cn > div:last-child{display:contents}
+#phr-root .cnd.st4 .cn .bg{grid-area:цифра;align-self:stretch;
+display:flex;align-items:center;justify-content:center;
+width:auto;min-width:86px;margin:0;padding:14px 12px;
+border:1px solid rgba(255,255,255,.22);border-radius:14px;
+background:rgba(255,255,255,.07);
+font-size:23px;line-height:1.1;white-space:nowrap}
+/* Заголовок крупнее: он ведёт строку рядом с цифрой. */
+#phr-root .cnd.st4 .cn .tp{grid-area:подпись;height:auto;min-height:0;
+margin:0 0 7px;align-self:start;
+font-size:17px;font-weight:700;letter-spacing:-.015em;
+text-transform:none;opacity:1;line-height:1.2}
+#phr-root .cnd.st4 .cn .sm{grid-area:текст;align-self:start;
+margin:0;padding-top:8px;
+border-top:1px solid rgba(255,255,255,.28);
+font-size:12px;line-height:1.4}}
 
 /* ---------- полная таблица расчёта ---------- */
 #phr-root .tabw{margin-top:10px;overflow-x:auto}
@@ -1255,9 +1638,17 @@ font-variant-numeric:tabular-nums;white-space:nowrap;width:26%}
    Форма взята из .cn («Условия труда»), цвета — сочные:
    лайм, мандарин, малина */
 #phr-root .cnd.st4{margin:24px 0 6px}
-#phr-root .cn.s1{background:linear-gradient(140deg,var(--c-ig-2),var(--c-ig-1))}
-#phr-root .cn.s2{background:linear-gradient(140deg,var(--c-ig-3),var(--c-ig-2))}
-#phr-root .cn.s3{background:linear-gradient(140deg,var(--c-ig-4),var(--c-ig-3))}
+/* Голубая гамма вместо инста-градиента (решение владельца 26.08).
+   Градиент сквозной: три плашки читаются как одна лента, идущая
+   от тёмного к светлому. Первая — самая тёмная, третья — светлая.
+   Оттенки из палитры: --c-b-700 #2A6FAB … --c-b-300 #8FC7E8. */
+/* Гамма продолжает плашку «Цена одного кадра» из блока 07
+   (#12703A → #4FC26A) — решение владельца 26.08. Первая плашка
+   подхватывает её тон, дальше переход к светлому. Прежний #158026
+   был темнее баннерного и выпадал из ряда. Третья оставлена как была. */
+#phr-root .cn.s1{background:linear-gradient(140deg,#12703A,#3AA45C)}
+#phr-root .cn.s2{background:linear-gradient(140deg,#2E9B52,#4FC26A)}
+#phr-root .cn.s3{background:linear-gradient(140deg,var(--c-g-350),var(--c-g-500))}
 #phr-root .cn .bg.big4{font-size:44px}
 
 /* ---------- логистика: знак слева, текст справа ---------- */
@@ -1276,6 +1667,8 @@ background:none}
 #phr-root .logii{position:absolute;left:14px;top:50%;transform:translateY(-50%);
 width:118px;height:118px;z-index:0;pointer-events:none}
 #phr-root .logii svg{width:100%;height:100%;display:block}
+/* Тот же силуэт в зелёной гамме — для итогового уведомления. */
+#phr-root .logi.logiw{border-color:#CDEBD6}
 #phr-root .logit{position:relative;z-index:1}
 #phr-root .logit > b{display:block;font-size:16px;font-weight:700;letter-spacing:-.015em;
 color:var(--c-ink);line-height:1.3}
@@ -1285,10 +1678,73 @@ color:var(--gr);margin-top:6px}
 #phr-root .logi{padding:20px 20px 20px 108px}
 #phr-root .logii{width:82px;height:82px;left:10px}
 #phr-root .logit > b{font-size:15px}}
+/* ═══ ОБЩЕЕ ПРАВИЛО ПЛАШЕК-УВЕДОМЛЕНИЙ НА МОБИЛЬНОМ ═══
+   Решение владельца 27.08. Отменяет прежний порядок от 26.08 (З-044),
+   где знак логистики уезжал наверх по центру.
+
+   Ниже 620px любая плашка .logi складывается одинаково:
+   первая строка — знак и заголовок вместе, как одна шапка;
+   вторая строка — текст уведомления во всю ширину плашки.
+   Знак НИКОГДА не уходит наверх и не встаёт по центру.
+
+   Сделано сеткой на две области. `.logit` получает display:contents,
+   чтобы заголовок и текст попали в сетку плашки напрямую, минуя
+   собственную обёртку. */
+@media(max-width:620px){
+#phr-root .logi{display:grid;grid-template-columns:auto 1fr;
+grid-template-areas:"знак заголовок" "текст текст";
+align-items:center;column-gap:12px;row-gap:8px;
+padding:20px 16px;text-align:left}
+#phr-root .logii{grid-area:знак;position:static;transform:none;
+width:44px;height:44px;margin:0;left:auto;top:auto}
+#phr-root .logit{display:contents}
+#phr-root .logit > b{grid-area:заголовок;align-self:center;
+text-align:left;font-size:15.5px}
+#phr-root .logit > span{grid-area:текст;margin-top:0}}
+
+/* ПЛАШКА ИТОГА «Вы посчитали свою юнит-экономику» — решение владельца 27.08.
+   Она сложена так же и на широком экране: знак невелик и рядом с
+   заголовком смотрится уместнее, чем крупным пятном слева. */
+#phr-root .logi.logiw{display:grid;grid-template-columns:auto 1fr;
+grid-template-areas:"знак заголовок" "текст текст";
+align-items:center;column-gap:14px;row-gap:8px;
+padding:22px 26px;text-align:left}
+#phr-root .logi.logiw .logii{grid-area:знак;position:static;transform:none;
+width:52px;height:52px;margin:0;left:auto;top:auto}
+#phr-root .logi.logiw .logit{display:contents}
+#phr-root .logi.logiw .logit > b{grid-area:заголовок;text-align:left;
+align-self:center;font-size:17px}
+#phr-root .logi.logiw .logit > span{grid-area:текст;margin-top:0}
+@media(max-width:620px){
+#phr-root .logi.logiw{padding:20px 16px;column-gap:12px}
+#phr-root .logi.logiw .logii{width:44px;height:44px}
+#phr-root .logi.logiw .logit > b{font-size:15.5px}}
+
+/* ЛОГИСТИКА — тот же вид, что у плашки итога, на всех ширинах.
+   Решение владельца 27.08: уведомления оформляются одинаково —
+   знак и заголовок одной шапкой, текст под ними во всю ширину.
+   Прежний вид (знак 118px слева во всю высоту) снят. */
+#phr-root .logi{display:grid;grid-template-columns:auto 1fr;
+grid-template-areas:"знак заголовок" "текст текст";
+align-items:center;column-gap:14px;row-gap:8px;
+padding:22px 26px;text-align:left}
+#phr-root .logi .logii{grid-area:знак;position:static;transform:none;
+width:52px;height:52px;margin:0;left:auto;top:auto}
+#phr-root .logi .logit{display:contents}
+#phr-root .logi .logit > b{grid-area:заголовок;text-align:left;
+align-self:center;font-size:17px}
+#phr-root .logi .logit > span{grid-area:текст;margin-top:0}
+@media(max-width:620px){
+#phr-root .logi{padding:20px 16px;column-gap:12px}
+#phr-root .logi .logii{width:44px;height:44px}
+#phr-root .logi .logit > b{font-size:15.5px}}
 
 /* ---------- информационный блок ---------- */
-#phr-root .wnote{background:var(--c-white);border-radius:var(--r);padding:40px 38px 30px;
-box-shadow:var(--sh);margin-bottom:16px}
+/* Блок лежит прямо на фоне страницы: белая подложка и тень убраны
+   решением владельца 27.08. Внутренние поля оставлены — они держат
+   тот же отступ содержимого от краёв, что и у соседних блоков. */
+#phr-root .wnote{background:none;border-radius:var(--r);padding:40px 38px 30px;
+box-shadow:none;margin-bottom:16px}
 #phr-root .wnh{font-size:27px;font-weight:700;letter-spacing:-.025em;line-height:1.2;
 text-align:center;color:var(--c-ink);margin-bottom:18px}
 /* Главная мысль блока — в плашке под яблоко: рамка перетекает из зелёного
@@ -1420,8 +1876,12 @@ font-size:14.5px;line-height:1.65;color:var(--c-ink2);text-align:center}
 #phr-root .cmpar{transform:rotate(90deg);padding:4px 0}}
 
 /* ---------- карта скидок ---------- */
-#phr-root .dmap{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
-#phr-root .dmc{border-radius:var(--r);padding:24px 20px 20px;text-align:center;
+/* grid-auto-rows:1fr — все ряды одной высоты, как у эталонного блока
+   «Если просто брать больше заказов». Радиус и поля тоже сведены
+   к нему: 14px и 16/18px вместо 20px и 24/20/20px. */
+#phr-root .dmap{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;
+align-items:stretch;grid-auto-rows:1fr}
+#phr-root .dmc{border-radius:14px;padding:16px 18px;text-align:center;
 background:var(--c-surf);display:flex;flex-direction:column}
 #phr-root .dmc .dcond{font-size:11.5px;font-weight:700;letter-spacing:.07em;
 text-transform:uppercase;margin-bottom:14px}
@@ -1443,6 +1903,48 @@ font-variant-numeric:tabular-nums}
 #phr-root .dmc .dfoot{color:rgba(255,255,255,.80);border-top:1px solid rgba(255,255,255,.24)}
 #phr-root .dmc .dfoot b{color:#fff}
 @media(max-width:820px){#phr-root .dmap{grid-template-columns:1fr 1fr}}
+/* Скидка за объём: две плашки в ряд, формат ВИЗИТКИ — пропорция 2:3
+   (решение владельца 26.08). Высота НЕ задаётся жёстко: прежний
+   aspect-ratio 2/3 давал скачок — на 660px карточка была 173px,
+   а на 620px сразу 364px. Теперь высота растёт от содержимого,
+   как у эталонного блока «Если просто брать больше заказов»
+   (.scn .g div): плашки остаются горизонтальными и плавно
+   ужимаются, без резкого вытягивания.
+   Одинаковую высоту всем четырём даёт grid-auto-rows:1fr.
+   Цифра скидки уменьшается ПРОПОРЦИОНАЛЬНО ширине плашки — тот же
+   приём, что в центре кольца: min(кегль от экрана, доля от контейнера).
+   Без этого плашки упирались в минимум 140px и с 340px вылезали
+   за край карточки (замер: выход 29px на 340px, 32px на 320px). */
+@media(max-width:620px){#phr-root .dmap{gap:14px;align-items:stretch;grid-auto-rows:1fr}
+#phr-root .dmc{padding:14px 12px;container-type:inline-size;min-width:0;
+justify-content:space-between}
+#phr-root .dmc .dpr{font-size:clamp(20px,7.2vw,36px)}
+#phr-root .dmc .dcond{font-size:10.5px;letter-spacing:.02em;margin-bottom:10px}
+#phr-root .dmc .dph2{font-size:11px;margin-top:6px}
+#phr-root .dmc .dfoot{font-size:11px;padding-top:10px}
+#phr-root .dmc .dfoot b{font-size:12px}}
+/* Подписи тоже уменьшаются от ширины плашки, а не только цифра.
+   Иначе ниже 375px они переносились на две строки и высота карточки
+   снова росла: 137 → 147 → 159px. Теперь строй остаётся горизонтальным
+   до самого узкого экрана. */
+@supports (container-type:inline-size){
+@media(max-width:620px){
+#phr-root .dmc .dpr{font-size:min(clamp(20px,7.2vw,36px),27cqw)}
+#phr-root .dmc .dcond{font-size:max(9px,min(10.5px,8.4cqw))}
+#phr-root .dmc .dph2{font-size:max(9px,min(11px,8.8cqw))}
+#phr-root .dmc .dfoot{font-size:max(9px,min(11px,8.8cqw))}
+#phr-root .dmc .dfoot b{font-size:max(9.5px,min(12px,9.6cqw))}}}
+/* Ниже 360px плашка уже 110px: подписи из двух слов («ваша стоимость
+   часа», «базовая ставка») не помещаются в строку даже при 9px —
+   минимальном читаемом кегле. Дальше ужимать нельзя, поэтому перенос
+   разрешаем, но высоту держим фиксированной: строй не ломается,
+   карточки остаются горизонтальными. */
+@media(max-width:359px){
+#phr-root .dmap{grid-auto-rows:124px}
+#phr-root .dmc{padding:10px}
+#phr-root .dmc .dcond{margin-bottom:4px}
+#phr-root .dmc .dph2{margin-top:2px}
+#phr-root .dmc .dfoot{padding-top:4px}}
 
 #phr-root .dnote3{margin-top:18px;padding:16px 20px;background:var(--c-surf);border-radius:14px;
 font-size:13px;line-height:1.65;color:var(--c-gr)}
@@ -1634,6 +2136,12 @@ clip-path:polygon(0.0% 0.0%,4.5% 9.0%,9.1% 0.0%,13.6% 9.0%,18.2% 0.0%,22.7% 9.0%
    колонки на три ряда, и по бокам оставалось много пустого поля. */
 #phr-root .fg{display:grid;grid-template-columns:repeat(2,1fr);
 grid-template-rows:auto auto;gap:16px;align-items:stretch}
+/* Все четыре карточки сложены одинаково: заголовок, рамка с цифрой,
+   пояснение. Строки выровнены по самой высокой карточке — иначе рамки
+   стояли на разной высоте и формат «плавал». Решение владельца 27.08. */
+#phr-root .fct{display:grid;grid-template-rows:auto auto 1fr;align-content:start}
+@supports (container-type:inline-size){
+#phr-root .fct{container-type:inline-size}}
 #phr-root .fg .fct.a{grid-column:1;grid-row:1}
 #phr-root .fg .fct.b{grid-column:2;grid-row:1}
 #phr-root .fg .fct.c{grid-column:1;grid-row:2}
@@ -1656,19 +2164,33 @@ overflow:hidden;color:var(--c-white);box-shadow:var(--sh)}
 #phr-root .fct.b{background:linear-gradient(155deg,#176B77 0%,#58B1B9 100%)}
 #phr-root .fct.c{background:linear-gradient(155deg,#146B4C 0%,#53B991 100%)}
 #phr-root .fct.d{background:linear-gradient(155deg,#12703A 0%,var(--c-g-400) 100%)}
-#phr-root .fct .fl{font-size:12px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;
-color:rgba(255,255,255,.88);margin-bottom:14px;text-align:center}
-#phr-root .fct .fv{font-size:46px;font-weight:800;letter-spacing:-.035em;line-height:1;
+/* Заголовок крупнее: 12px капителью терялся рядом с рамкой. 27.08. */
+#phr-root .fct .fl{font-size:16px;font-weight:700;letter-spacing:-.01em;text-transform:none;
+color:var(--c-white);margin-bottom:14px;text-align:center;
+min-height:2.4em;display:flex;align-items:center;justify-content:center}
+/* Цифра с единицей — в собственной рамке, как суммы на главном экране
+   (.hero .rw>div): та же прозрачная подложка, обводка и радиус.
+   Решение владельца 27.08. Обёртку .fvb ставит скрипт. */
+#phr-root .fct .fvb{border:1px solid rgba(255,255,255,.22);border-radius:14px;
+padding:16px 16px 14px;background:rgba(255,255,255,.07)}
+/* Значение всегда одной строкой: «692 ₽/ч» рвалось по частям, отдельно
+   уезжал «/ч». Перенос запрещён, кегль сжимается от ширины карточки.
+   Решение владельца 27.08. */
+#phr-root .fct .fv{font-size:clamp(26px,7.2cqw,46px);font-weight:800;
+letter-spacing:-.035em;line-height:1.05;white-space:nowrap;
 font-variant-numeric:tabular-nums;color:var(--c-white);text-align:center}
+/* Подпись под цифрой — ровно две строки во всех плашках, чтобы рамки
+   были одной высоты независимо от длины текста. */
 #phr-root .fct .fu{font-size:14px;font-weight:600;color:var(--c-white);margin-top:8px;
-text-align:center}
-#phr-root .fct .fd{font-size:13px;line-height:1.6;color:rgba(255,255,255,.90);margin-top:16px;
-padding-top:16px;border-top:1px solid rgba(255,255,255,.30)}
+text-align:center;min-height:2.6em;display:flex;align-items:center;
+justify-content:center}
+/* Черта убрана: рамка вокруг цифры уже отделяет её от пояснения,
+   вторая линия дробила карточку. Решение владельца 27.08. */
+#phr-root .fct .fd{font-size:13px;line-height:1.6;color:rgba(255,255,255,.90);margin-top:16px}
 @media(max-width:600px){#phr-root .fg{grid-template-columns:1fr}
 #phr-root .fg .fct.a,#phr-root .fg .fct.b,
 #phr-root .fg .fct.c,#phr-root .fg .fct.d{grid-column:1;grid-row:auto}
-#phr-root .fct{padding:22px}
-#phr-root .fct .fv{font-size:38px}}
+#phr-root .fct{padding:22px}}
 
 /* ---------- заключение ---------- */
 #phr-root .card.fin{background:linear-gradient(145deg,var(--c-g-50) 0%,var(--c-a-50) 55%,var(--c-r-50) 100%);
@@ -1826,12 +2348,14 @@ font-size:13px;line-height:1.6;color:var(--c-b-900)}
 
 /* ---------- структура контента ---------- */
 #phr-root .cst{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:8px}
-#phr-root .cstc{border:0;border-radius:var(--r);padding:24px 20px 22px;text-align:center}
+/* Пропорции и отступы — как у плашек самозанятости (.npd .g div):
+   поля 16/18px, радиус 14px. Решение владельца 26.08. */
+#phr-root .cstc{border:0;border-radius:14px;padding:16px 18px;text-align:center}
 #phr-root .cstc:nth-child(1){background:linear-gradient(160deg,var(--c-g-100),var(--c-g-50))}
 #phr-root .cstc:nth-child(2){background:linear-gradient(160deg,var(--c-p-100),var(--c-p-50))}
 #phr-root .cstc:nth-child(3){background:linear-gradient(160deg,var(--c-a-100),var(--c-a-50))}
 #phr-root .cstc:nth-child(4){background:linear-gradient(160deg,var(--c-b-100),var(--c-b-50))}
-#phr-root .cstc .ic{width:54px;height:54px;border-radius:14px;margin:0 auto 14px;
+#phr-root .cstc .ic{width:44px;height:44px;border-radius:12px;margin:0 auto 12px;
 display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.75)!important}
 #phr-root .cstc .pc{font-size:30px!important;font-weight:700;letter-spacing:-.025em;line-height:1;
 font-variant-numeric:tabular-nums}
@@ -1839,6 +2363,16 @@ font-variant-numeric:tabular-nums}
 #phr-root .cstc .ds{font-size:12.5px;color:var(--c-gr);line-height:1.55}
 @media(max-width:820px){#phr-root .cst{grid-template-columns:1fr 1fr}
 #phr-root .bmk{grid-template-columns:1fr}}
+/* «Объясняйте клиенту» — тот же строй, что у плашек самозанятости
+   (.npd .g): на мобильном одна колонка, иконка слева от текста,
+   а не над ним по центру. Решение владельца 26.08. */
+@media(max-width:620px){#phr-root .cst{grid-template-columns:1fr;gap:10px}
+#phr-root .cstc{display:grid;grid-template-columns:auto 1fr;
+column-gap:14px;align-items:start;text-align:left;padding:14px 16px}
+#phr-root .cstc .ic{grid-row:1/3;margin:0;width:44px;height:44px;border-radius:12px}
+#phr-root .cstc .ic svg{width:22px;height:22px}
+#phr-root .cstc .nm{grid-column:2;margin:0 0 4px;font-size:14px}
+#phr-root .cstc .ds{grid-column:2;font-size:12px;line-height:1.45}}
 
 /* ---------- продвижение ---------- */
 #phr-root .pmo{background:var(--c-p-50);border-radius:14px;padding:22px 24px;margin-bottom:18px}
@@ -1905,13 +2439,42 @@ border-radius:14px;padding:18px 22px;margin-top:0}
 border:1.5px solid var(--c-p-200);border-radius:14px;padding:22px 24px}
 #phr-root .scn .t{font-weight:700;font-size:15.5px;color:var(--c-ig-1);margin-bottom:4px}
 #phr-root .scn .d{font-size:13px;color:var(--c-ig-2);line-height:1.55;margin-bottom:16px}
-#phr-root .scn .g{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+/* align-items:stretch — высота плашек выравнивается по самой высокой
+   в ряду. Без него подписи разной длины давали разбег 122/123px
+   (решение владельца 26.08: высоту блока 06 не менять, только выровнять). */
+/* grid-auto-rows:1fr — все ряды сетки одной высоты. align-items:stretch
+   выравнивает только внутри ряда, а расхождение 122/123px было МЕЖДУ
+   рядами: подписи разной длины давали разную высоту строки
+   (решение владельца 26.08: высоту блока 06 не менять, только выровнять). */
+#phr-root .scn .g{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;
+align-items:stretch;grid-auto-rows:1fr}
 /* Плашки цифр — градиент инста-гаммы, белый текст, блик в углу.
    Четыре ступени перехода малина → коралл → янтарь, как в блоке 08. */
 #phr-root .scn .g div{border:0;border-radius:14px;padding:16px 18px;
 box-shadow:0 4px 14px rgba(131,58,180,.20);position:relative;overflow:hidden;
 background:linear-gradient(140deg,var(--c-ig-2),var(--c-ig-1))}
-#phr-root .scn .g div:before{content:'';position:absolute;right:-26px;top:-26px;
+/* Круги-блики: у каждой из четырёх плашек свой набор — размер, место
+   и прозрачность разные. Текст прижат влево, круги уходят вправо
+   и за края. Решение владельца 27.08 (было одинаково у всех). */
+#phr-root .scn .g div:before,#phr-root .scn .g div:after{content:'';position:absolute;
+border-radius:50%;pointer-events:none}
+#phr-root .scn .g div:nth-child(1):before{right:-38px;bottom:-44px;width:116px;height:116px;
+background:rgba(255,255,255,.12)}
+#phr-root .scn .g div:nth-child(1):after{right:44px;top:-24px;width:44px;height:44px;
+background:rgba(255,255,255,.06)}
+#phr-root .scn .g div:nth-child(2):before{right:-18px;top:-32px;width:88px;height:88px;
+background:rgba(255,255,255,.09)}
+#phr-root .scn .g div:nth-child(2):after{right:26px;bottom:-28px;width:60px;height:60px;
+background:rgba(255,255,255,.13)}
+#phr-root .scn .g div:nth-child(3):before{right:-48px;bottom:-30px;width:126px;height:126px;
+background:rgba(255,255,255,.08)}
+#phr-root .scn .g div:nth-child(3):after{right:66px;bottom:-16px;width:32px;height:32px;
+background:rgba(255,255,255,.15)}
+#phr-root .scn .g div:nth-child(4):before{right:-28px;top:-40px;width:104px;height:104px;
+background:rgba(255,255,255,.11)}
+#phr-root .scn .g div:nth-child(4):after{right:18px;bottom:-34px;width:52px;height:52px;
+background:rgba(255,255,255,.07)}
+#phr-root .scn .g div:not(:nth-child(-n+4)):before{right:-26px;top:-26px;
 width:104px;height:104px;border-radius:50%;background:rgba(255,255,255,.10)}
 #phr-root .scn .g span,#phr-root .scn .g b,#phr-root .scn .g em{position:relative;z-index:1}
 #phr-root .scn .g div:nth-child(2){background:linear-gradient(140deg,var(--c-ig-3),var(--c-ig-2))}
@@ -1952,6 +2515,14 @@ rgba(255,255,255,.6) 0 4px,transparent 4px 8px)}
 justify-content:center;font-size:10.5px;font-weight:600;color:var(--c-ink3);letter-spacing:.01em;
 padding:0 4px;text-align:center;line-height:1.15;overflow:hidden}
 #phr-root .wk i span.wlbl{color:#fff;font-weight:700}
+/* ПОДПИСИ В ЯЧЕЙКАХ КАЛЕНДАРЯ — решение владельца 26.08.
+   Ниже 520px подписи перестают помещаться и режутся: замер показал
+   «Продвижение» требует 66px, а ячейка даёт 63px на 480px и всего
+   38px на 320px — читалось «одвижен». На планшете (520px и выше)
+   подписи влезают и остаются.
+   Ниже — только цветовые обозначения; что означает каждый цвет,
+   расшифровывает легенда .wlg под сеткой. */
+@media(max-width:519px){#phr-root .wk i span{display:none}}
 #phr-root .wlg{display:flex;gap:9px;flex-wrap:wrap;margin-top:18px}
 #phr-root .wlg span{display:flex;align-items:center;gap:7px;font-size:12.5px;color:var(--c-ink3);
 background:var(--c-bg);border-radius:12px;padding:7px 13px}
@@ -1965,7 +2536,10 @@ background:var(--c-bg);border-radius:12px;padding:7px 13px}
 
 
 /* ═══ СПРАВОЧНИК И ПОДРОБНАЯ ДЕТАЛИЗАЦИЯ ═══ */
-#phr-root #спрдет{margin-top:20px;--w-ном:38px;--w-код:46px;--w-блок:52px;--w-имя:290px;--w-знач:132px}
+/* Код 46px был шире содержимого («t01», «R»): столбец раздувал таблицу
+   и прокрутка появлялась раньше, чем нужно. Ставим как у № — 38px.
+   Решение владельца 27.08. */
+#phr-root #спрдет{margin-top:20px;--w-ном:38px;--w-код:38px;--w-блок:52px;--w-имя:290px;--w-знач:132px}
 #phr-root #спрдет .пункт{background:#fff;border-radius:var(--r);box-shadow:var(--sh);margin-bottom:12px}
 #phr-root #спрдет .шапка{display:flex;align-items:center;gap:12px;width:100%;background:none;border:0;
 font:inherit;color:var(--c-ink);text-align:left;cursor:pointer;padding:20px 24px}
@@ -2011,16 +2585,25 @@ color:var(--c-gr2);transition:transform .18s,color .18s}
 letter-spacing:.01em}
 #phr-root #спрдет .тело h3:first-child{margin-top:0}
 #phr-root #спрдет .key{color:var(--c-gr);font-size:12.5px;padding:14px 2px 0}
-#phr-root #спрдет a.спр{color:inherit;text-decoration:none;border-bottom:1px dotted var(--c-gr2)}
-#phr-root #спрдет a.спр:hover{border-bottom-color:var(--c-ink2);border-bottom-style:solid}
+/* Без подчёркивания: пунктир под каждым термином рябил в плотной
+   таблице. Решение владельца 27.08. Подсветка осталась при наведении. */
+#phr-root #спрдет a.спр{color:inherit;text-decoration:none;border-bottom:0}
+#phr-root #спрдет a.спр:hover{color:var(--c-ink2)}
 #phr-root #спрдет .wrap{overflow-x:auto;border:1px solid var(--c-ln);border-radius:14px;background:#fff}
+/* min-width:760px убран — из-за него КАЖДАЯ таблица была шире телефона
+   и подсказка о прокрутке висела всегда, даже на коротких таблицах.
+   Теперь ширину диктуют сами колонки: узкая таблица укладывается
+   в экран и прокрутки не требует. Решение владельца 27.08. */
 #phr-root #спрдет table.rt{width:100%;border-collapse:collapse;font-size:13px;
-table-layout:fixed;min-width:760px}
-#phr-root #спрдет table.rt col.cnum{width:var(--w-ном)}
-#phr-root #спрдет table.rt col.ck{width:var(--w-код)}
-#phr-root #спрдет table.rt col.cb{width:var(--w-блок)}
-#phr-root #спрдет table.rt col.cn{width:var(--w-имя)}
-#phr-root #спрдет table.rt col.cv{width:var(--w-знач)}
+table-layout:fixed}
+/* Ширины задаются классами на ячейках шапки, а не через col.
+   Прежние col.cn/.cv конфликтовали с новым порядком колонок:
+   браузер отдавал «Наименованию» 132px вместо 290, а суммам —
+   46px кода, и «1 322 592 ₽» обрезалось. */
+#phr-root #спрдет table.rt th.ш-ном{width:var(--w-ном)}
+#phr-root #спрдет table.rt th.ш-имя{width:var(--w-имя)}
+#phr-root #спрдет table.rt th.ш-знач{width:var(--w-знач)}
+#phr-root #спрдет table.rt th.ш-код{width:var(--w-код);text-align:right}
 #phr-root #спрдет table.rt th{text-align:left;font-weight:600;color:var(--c-gr);font-size:12px;
 padding:9px 12px;border-bottom:1.5px solid var(--c-ln);white-space:nowrap;background:var(--c-surf)}
 #phr-root #спрдет table.rt td{text-align:left;padding:8px 12px;border-bottom:1px solid var(--c-bg);
@@ -2028,15 +2611,27 @@ font-variant-numeric:tabular-nums;vertical-align:middle;white-space:nowrap}
 #phr-root #спрдет table.rt tr:last-child td{border-bottom:0}
 #phr-root #спрдет table.rt tr.пояснение td{background:var(--c-surf);color:var(--c-gr);font-size:11.5px;
 text-transform:uppercase;letter-spacing:.05em;font-weight:600;padding:7px 12px;white-space:normal}
-#phr-root #спрдет table.rt td:first-child,#phr-root #спрдет table.rt td:nth-child(2){
-color:var(--c-gr2);font-size:12px}
-#phr-root #спрдет table.rt td:nth-child(3){color:var(--c-ink2);white-space:normal}
-#phr-root #спрдет table.rt.вв td:nth-child(3){color:var(--c-gr2);font-size:12px}
-#phr-root #спрдет table.rt.вв td:nth-child(4){color:var(--c-ink2);white-space:normal}
+/* Порядок колонок с 26.08: № · Наименование · значения… · Код · (пусто).
+   Прежние правила считали старый порядок (№ · Код · Блок · Имя) и после
+   перестановки красили не те столбцы: наименование становилось серым
+   и переставало переноситься — длинные имена наезжали на соседний
+   столбец. Теперь стиль привязан к смыслу колонки, а не к её номеру. */
+#phr-root #спрдет table.rt td:first-child{color:var(--c-gr2);font-size:12px}
+#phr-root #спрдет table.rt td:nth-child(2){color:var(--c-ink2);white-space:normal;
+overflow-wrap:anywhere}
+#phr-root #спрдет table.rt td.код{color:var(--c-gr2);font-size:12px;
+white-space:nowrap;text-align:right}
+
+/* Текстовые значения тоже переносятся: «Самозанятый (НПД) 5%, смешанные
+   заказчики» не влезал в 132px и обрезался. Числа не страдают —
+   они короче ячейки и остаются в строке. */
+#phr-root #спрдет table.rt td:nth-child(3){white-space:normal;overflow-wrap:anywhere}
 @media(max-width:700px){#phr-root #спрдет .шапка{padding:16px}
 #phr-root #спрдет .тело{padding:0 16px 18px}
 #phr-root #спрдет table.rt{font-size:12.5px}
-#phr-root #спрдет{--w-имя:230px;--w-знач:118px}}
+/* Имя переносится по словам (правило ниже), поэтому широкая колонка
+   не нужна: 142px вместо 230px. Решение владельца 27.08. */
+#phr-root #спрдет{--w-имя:142px;--w-знач:118px}}
 @media print{
 #phr-root #спрдет .печать,#phr-root #спрдет .шапка .шев,#phr-root #спрдет .пункт.терм .плюс{display:none}
 #phr-root #спрдет .пункт{box-shadow:none;border:0;margin:0}
@@ -2091,7 +2686,8 @@ display:flex;justify-content:space-between;text-transform:lowercase}
 #phr-root .savebar.top{margin:16px 0;padding-top:0;border-top:0}
 #phr-root .savebtn{display:flex;width:100%;align-items:center;justify-content:center;gap:11px;
 background:#fff;color:var(--gd);border:1.5px solid var(--ln);border-radius:var(--r);
-padding:0 30px;height:72px;font-family:inherit;font-size:17px;font-weight:600;
+padding:0 clamp(12px,4vw,30px);height:72px;font-family:inherit;font-size:17px;font-weight:600;
+white-space:nowrap;
 letter-spacing:-.01em;cursor:pointer;transition:.16s;box-shadow:var(--sh);
 text-decoration:none}
 #phr-root .savebtn:hover{border-color:var(--g);background:var(--c-g-50)}
@@ -2110,14 +2706,67 @@ font-family:inherit;font-size:14.5px;font-weight:600;color:var(--ink);cursor:poi
 #phr-root .note:not(.warn):not(.info):not(.ok):not(.plain){
 font-size:12.5px;color:var(--c-gr2);text-align:center;
 margin-top:12px;line-height:1.5}
+/* Выключка влево — по левому краю подзаголовка блока. Решение 27.08.
+   Селектор повторяет исключения сноски выше: у той длинный список
+   :not(), и короткое правило .note.лево она перебивала даже стоя выше. */
+#phr-root .note.лево:not(.warn):not(.info):not(.ok):not(.plain){text-align:left}
+
+/* ТРИ СЦЕНАРИЯ (блок 05) НА ПЛАНШЕТЕ — решение владельца 27.08.
+   Плашки разваливались в столбик уже с 820px: высота ряда прыгала
+   с 523 до 1524px, каждая плашка во всю ширину окна. Держим ряд
+   до 480px, поджимая поля, зазор, кольцо и кегли.
+   В столбик — только на телефоне. */
+/* ИСКЛЮЧЕНИЕ ИЗ ПОРОГА 640px — решение владельца 27.08.
+   Три сценария остаются в ряд и на горизонтальном телефоне: плашки
+   узкие, кольцо сжимается, содержимое не страдает. В столбик они
+   уходят только на вертикальном телефоне (ниже 480px). */
+@media(min-width:480px) and (max-width:820px){
+#phr-root .three{grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+#phr-root .scnhead{padding:14px 10px 13px}
+#phr-root .scnbody{padding:14px 10px 16px}
+/* Метка переносится: «Идеальный сценарий» в одну строку не влезал
+   и резался (замер 568px: 161px против 137px). Решение 27.08. */
+#phr-root .scn3 .nm3{font-size:10.5px;letter-spacing:.05em;padding:0 0 8px;
+white-space:normal}
+#phr-root .three .amt{margin:0;min-height:3em}
+#phr-root .three .amt i{font-size:13px}
+#phr-root .scnhead{padding:13px 12px 12px}
+#phr-root .scnbody{padding:14px 12px 14px}
+#phr-root .ratebox{padding-top:12px}
+#phr-root .ratebot .rb1{padding:8px 5px}
+#phr-root .bigsum b{font-size:clamp(17px,2.6vw,27px)}
+#phr-root .bigsum span{font-size:11px}
+#phr-root .bigsum.top{margin:0 0 12px}
+#phr-root .scn3>.dn{width:100%;max-width:190px}
+#phr-root .scn3>.dn svg{width:100%;height:auto;display:block}
+#phr-root .ratebot{margin-top:12px;padding-top:12px;gap:6px}
+/* Перенос разрешён: «108 300 ₽/мес» в одну строку не влезает в узкую
+   колонку и раздувает карточку. Решение 27.08. */
+#phr-root .ratebot b{font-size:12px;white-space:normal;line-height:1.25}
+#phr-root .ratebot .rb1{padding:8px 4px}
+#phr-root .ratebot span{font-size:10.5px;line-height:1.3}}
+@media(min-width:480px) and (max-width:760px){
+#phr-root .three{gap:8px}
+#phr-root .scnbody{padding:12px 7px 14px}}
+/* Столбик — только на вертикальном телефоне. Объявлено ПОСЛЕ ряда выше,
+   иначе тот перебивает. */
+@media(max-width:479px){
+#phr-root .three{grid-template-columns:1fr;gap:28px}}
 
 @media(max-width:820px){
-#phr-root .three{grid-template-columns:1fr;gap:28px}
+/* .three исключён: ряд из трёх держится до 480px, см. правило ниже. */
 #phr-root .scmp{grid-template-columns:1fr}
 #phr-root .htx{padding-top:4px}
 #phr-root h1{font-size:26px}
 #phr-root .hero .big{font-size:40px}
-#phr-root .card{padding:20px}
+/* МЕСТО ПОД НОМЕР БЛОКА — решение владельца 26.08.
+   Правило: нижнее поле карточки вдвое больше бокового плюс сам номер.
+   Боковое 20px → нижнее 40px + 38px под номер с отбивкой = 78px.
+   Раньше номер наезжал на последний элемент блока: замер показывал
+   перекрытие в 30px. Объявлено здесь, ПОСЛЕ общего padding:20px,
+   иначе оно сбрасывает нижнее поле. */
+#phr-root .card{padding:20px 20px 78px}
+#phr-root .bn{left:20px;right:20px;bottom:20px;padding-top:16px}
 #phr-root .wk{grid-template-columns:42px repeat(5,1fr)}
 #phr-root .nmg{grid-template-columns:1fr}
 #phr-root .scn .g{grid-template-columns:1fr 1fr}
@@ -2174,13 +2823,15 @@ transition:border-color .16s,color .16s}
 
 /* ── подложка и окно ── */
 #phr-root .shm{position:fixed;inset:0;z-index:90;display:none;
-align-items:center;justify-content:center;padding:20px;overflow-y:auto}
+align-items:center;justify-content:center;padding:20px;
+min-width:320px;overflow:auto}
 #phr-root .shm.on{display:flex}
 html.shm-стоп,html.shm-стоп body{overflow:hidden}
 #phr-root .shm,#phr-root .shm *{box-sizing:border-box}
 #phr-root .shm-фон{position:fixed;inset:0;background:rgba(26,26,26,.55);
 backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
-#phr-root .shm-окно{position:relative;z-index:1;width:100%;max-width:500px;margin:auto;
+#phr-root .shm-окно{position:relative;z-index:1;width:100%;max-width:500px;
+min-width:296px;margin:auto;
 background:var(--c-white);border-radius:var(--r);padding:34px 34px 30px;
 box-shadow:0 18px 60px rgba(16,24,40,.28);text-align:center}
 #phr-root .shm button.shm-крестик{position:absolute;top:14px;right:16px;z-index:2;width:34px;height:34px;
@@ -2248,15 +2899,28 @@ transition:border-color .16s,color .16s}
 
 /* ── подложка и окно ── */
 #phr-root .thxm{position:fixed;inset:0;z-index:90;display:none;
-align-items:center;justify-content:center;padding:20px;overflow-y:auto}
+align-items:center;justify-content:center;padding:20px;
+min-width:320px;overflow:auto}
 #phr-root .thxm.on{display:flex}
 /* Пока окно открыто, страница под ним не прокручивается */
 html.thxm-стоп,html.thxm-стоп body{overflow:hidden}
 #phr-root .thxm-фон{position:fixed;inset:0;background:rgba(26,26,26,.55);
 backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
-#phr-root .thxm-окно{position:relative;z-index:1;width:100%;max-width:500px;margin:auto;
+/* Окно не выше экрана: раньше оно тянулось за содержимым и на телефоне
+   вылезало за верх и низ. Теперь высота ограничена видимой частью
+   экрана, а длинное содержимое прокручивается внутри самого окна.
+   dvh учитывает панели браузера на телефоне. Решение владельца 27.08. */
+/* Нижний предел ширины — 296px: это 320px (минимальная ширина отчёта,
+   см. #phr-root{min-width:320px}) минус поля подложки. Уже окно
+   не сжимается, дальше страница просто прокручивается вбок —
+   так же, как ведёт себя сам отчёт. Решение владельца 27.08. */
+#phr-root .thxm-окно{position:relative;z-index:1;width:100%;max-width:500px;
+min-width:296px;margin:auto;
 background:var(--c-white);border-radius:var(--r);padding:0 0 44px;
+max-height:calc(100vh - 40px);overflow-y:auto;
 box-shadow:0 18px 60px rgba(16,24,40,.28)}
+@supports (height:100dvh){
+#phr-root .thxm-окно{max-height:calc(100dvh - 40px)}}
 #phr-root .thxm button.thxm-крестик{position:absolute;top:14px;right:16px;z-index:2;width:34px;height:34px;
 border:0;border-radius:12px;background:rgba(255,255,255,.18);color:var(--c-white);
 font-size:22px;line-height:1;cursor:pointer;transition:background .18s}
@@ -2288,6 +2952,8 @@ background:var(--c-white);color:var(--c-ig-3)}
 #phr-root .thxm-кружок svg path{transition:fill .3s}
 #phr-root .thxm.лайк .thxm-кружок svg path,
 #phr-root .thxm.спасибо .thxm-кружок svg path{fill:currentColor}
+/* Сердечко с кнопки оплаты убрано решением владельца 27.08:
+   в окне уже есть крупное сердце в кружке, второе было лишним. */
 #phr-root .thxm.спасибо .thxm-кружок{animation:thx-стук .5s ease}
 @keyframes thx-стук{0%{transform:scale(1)}38%{transform:scale(1.16)}100%{transform:scale(1)}}
 #phr-root .thxm-кружок svg{width:32px;height:32px}
@@ -2333,6 +2999,7 @@ line-height:1.65;color:var(--c-gr);text-align:center}
 /* ── суммы: одна зелёная гамма. Рамка градиентная приёмом двух фонов:
    светлая заливка по padding-box, градиент по border-box.
    Цвет цифры и подписи при выделении намеренно не меняется. ── */
+/* Три суммы всегда в один ряд — на любой ширине. Решение владельца 27.08. */
 #phr-root .thxm-суммы{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:42px 30px 0}
 #phr-root .thxm button.thxm-сумма{--г1:#A9DDB8;--г2:#21A038;--г3:#158026;
 display:flex;align-items:center;justify-content:center;
@@ -2385,17 +3052,63 @@ margin:18px 30px 0;line-height:1}
 #phr-root .thxm-знакниз span{font-size:10px;font-weight:700;letter-spacing:.11em;
 text-transform:lowercase;color:var(--c-gr2)}
 
-@media(max-width:600px){
-#phr-root .thxm{padding:14px}
-#phr-root .thxm-шапка{padding:18px 20px 18px}
-#phr-root .thxm-кружок{width:56px;height:56px}
-#phr-root .thxm-кружок svg{width:27px;height:27px}
-#phr-root .thxm-главное{margin:28px 20px 0}
-#phr-root .thxm-заголовок{font-size:19px}
-#phr-root .thxm-суммы{grid-template-columns:1fr 1fr;padding:34px 20px 0}
-#phr-root .thxm button.thxm-сумма:nth-child(3){grid-column:1/-1}
-#phr-root .thxm button.thxm-оплатить{width:calc(100% - 40px);margin:16px 20px 0}
-#phr-root .thxm-низ,#phr-root .thxm-знакниз{margin-left:20px;margin-right:20px}}
+/* Порог 640px — как во всём отчёте (решение владельца 27.08).
+   Раньше здесь было 600px и окно жило по своим правилам.
+   Вместо роста в высоту ужимаем содержимое: кегли, поля, отступы. */
+@media(max-width:640px){
+#phr-root .thxm{padding:12px}
+#phr-root .thxm-окно{max-height:calc(100vh - 24px);padding-bottom:30px}
+#phr-root .thxm-шапка{padding:16px 18px}
+#phr-root .thxm-кружок{width:52px;height:52px}
+#phr-root .thxm-кружок svg{width:25px;height:25px}
+#phr-root .thxm-главное{margin:20px 18px 0}
+#phr-root .thxm-заголовок{font-size:18px;margin-bottom:9px}
+#phr-root .thxm-главное p{font-size:14px;line-height:1.5}
+/* Суммы остаются в один ряд: поля и кегль сжимаются, перенос запрещён. */
+#phr-root .thxm-суммы{grid-template-columns:repeat(3,1fr);gap:7px;padding:22px 18px 0}
+#phr-root .thxm button.thxm-сумма{padding:12px 4px;font-size:clamp(13px,3.6vw,16px);
+white-space:nowrap}
+#phr-root .thxm button.thxm-оплатить{width:calc(100% - 36px);margin:14px 18px 0;
+height:52px;font-size:15px}
+#phr-root .thxm-низ,#phr-root .thxm-знакниз{margin-left:18px;margin-right:18px}
+#phr-root .thxm-низ{margin-top:16px;font-size:10px}}
+
+/* НИЗКИЙ ЭКРАН (телефон в альбомной ориентации, до 520px высоты).
+   Решение владельца 27.08: не растить окно, а ужимать содержимое.
+   Кегли и отступы сжаты так, чтобы кнопка оплаты была видна сразу,
+   без прокрутки. */
+@media(max-height:520px){
+#phr-root .thxm{padding:8px}
+#phr-root .thxm-окно{max-height:calc(100vh - 16px);padding-bottom:16px}
+#phr-root .thxm-шапка{padding:10px 18px}
+#phr-root .thxm-кружок{width:38px;height:38px;border-width:2px}
+#phr-root .thxm-кружок svg{width:19px;height:19px}
+#phr-root .thxm-медаль{margin-top:5px}
+#phr-root .thxm-число b{font-size:12px}
+#phr-root .thxm-главное{margin:12px 18px 0}
+#phr-root .thxm-заголовок{font-size:16px;margin-bottom:5px}
+#phr-root .thxm-главное p{font-size:12.5px;line-height:1.4}
+#phr-root .thxm-суммы{padding:12px 18px 0;gap:6px}
+#phr-root .thxm button.thxm-сумма{padding:9px 4px;font-size:14px}
+#phr-root .thxm button.thxm-оплатить{height:44px;margin-top:10px;font-size:14px}
+#phr-root .thxm-низ{margin-top:10px;font-size:9px;line-height:1.35}
+#phr-root .thxm-знакниз{margin-top:8px}}
+
+/* САМЫЙ НИЗКИЙ ЭКРАН (до 360px высоты — iPhone SE в альбоме).
+   Скрываем то, без чего можно обойтись: описание и сноску о платеже.
+   Остаётся суть — счётчик, заголовок, суммы и кнопка. */
+@media(max-height:360px){
+#phr-root .thxm-главное p{display:none}
+#phr-root .thxm-низ{display:none}
+#phr-root .thxm-шапка{padding:8px 18px}
+#phr-root .thxm-кружок{width:32px;height:32px}
+#phr-root .thxm-кружок svg{width:16px;height:16px}
+#phr-root .thxm-главное{margin:10px 18px 0}
+#phr-root .thxm-заголовок{font-size:15px;margin-bottom:0}
+#phr-root .thxm-суммы{padding:10px 18px 0}
+#phr-root .thxm button.thxm-сумма{padding:8px 4px;font-size:13px}
+#phr-root .thxm button.thxm-оплатить{height:40px;margin-top:8px}
+#phr-root .thxm-знакниз{margin-top:6px}}
 
 /* ═══ ЗАГОРЕВШЕЕСЯ СЕРДЕЧКО И САЛЮТ ═══
    .thx-горит вешается скриптом на любую кнопку [data-thx] после нажатия
@@ -2404,7 +3117,9 @@ text-transform:lowercase;color:var(--c-gr2)}
    и удаляются сами. Разметку кнопок оба класса не требуют. */
 [data-thx]{transition:color .2s}
 [data-thx].thx-горит{color:var(--c-ig-3)}
-[data-thx].thx-горит svg path{fill:currentColor;stroke:currentColor}
+/* Нажатое сердечко везде одинаковое: сплошная розово-красная заливка
+   без обводки — решение владельца 27.08. */
+[data-thx].thx-горит svg path{fill:var(--c-ig-3);stroke:none}
 .thx-искра{--dx:0px;--dy:0px;--rot:0deg;--s:1;--t:1.05s;
 position:fixed;z-index:120;pointer-events:none;width:22px;height:22px;
 margin:-11px 0 0 -11px;color:var(--c-ig-3,#E1306C);will-change:transform,opacity;
@@ -2425,6 +3140,7 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 <div class="tbar" id="topbar">
 <nav class="tbn">
 <a class="fbl" id="editLink" href="#edit">Редактировать данные</a>
+<a class="fbi fbedit" id="editLinkIco" href="#edit" data-tip="Редактировать данные" aria-label="Редактировать данные"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 20h4.2L19 9.2a2.1 2.1 0 0 0 0-3l-1.2-1.2a2.1 2.1 0 0 0-3 0L4 15.8V20Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M13.6 6.4l4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></a>
 <button class="fbi" id="dlBtn" type="button" data-tip="Скачать отчёт" aria-label="Скачать отчёт">
 <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0l-4.5-4.5M12 15l4.5-4.5" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg></button>
 <button class="fbi" id="shareBtn" type="button" data-tip="Поделиться" aria-label="Поделиться">
@@ -2506,7 +3222,7 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 
 <div class="savebar top">
 <a class="savebtn" href="#thanks" data-thx="report-top">
-<svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0l-1 1-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1 7.8 7.8 7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8Z" stroke="var(--c-g-700)" stroke-width="2"/></svg>
+<svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0l-1 1-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1 7.8 7.8 7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8Z" stroke="currentColor" stroke-width="2"/></svg>
 <span data-t="rsv_01">Поблагодарить проект</span></a>
 </div>
 
@@ -2625,7 +3341,7 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 <div class="fnd" id="fnd"></div>
 </div>
 
-<div class="thxbar"><a class="savebtn" href="#thanks" data-thx="report-mid"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0l-1 1-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1 7.8 7.8 7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8Z" stroke="var(--c-g-700)" stroke-width="2"/></svg><span data-t="rthx_01">Поблагодарить проект</span></a></div>
+<div class="thxbar"><a class="savebtn" href="#thanks" data-thx="report-mid"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0l-1 1-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1 7.8 7.8 7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8Z" stroke="currentColor" stroke-width="2"/></svg><span data-t="rthx_01">Поблагодарить проект</span></a></div>
 
 <div class="card" id="card07"><div class="bn">04</div>
 <h2 class="big-h" data-t="rh2_12">Ваш идеальный налоговый режим</h2>
@@ -2634,6 +3350,7 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 <div class="npd" id="npdBox"></div>
 <div class="txh" data-t="rth_hd">Сравнение режимов налогообложения на ваших цифрах</div>
 <div class="txhs" data-t="rth_hs">Посмотрите, какой вариант действительно приносит максимальную чистую прибыль и на каких условиях вам будет комфортнее работать.</div>
+<div class="свайп" aria-hidden="true"><div class="свайп-полоса"><svg class="свайп-рука" viewBox="0 0 64 64" fill="none"><path d="M58.9 29.6c-2.8-2.1-6.8-1.9-9.4.3-1.1.9-2 2.1-3 3.2l-1.5 1.7c0-6.2 0-12.5 0-18.7 0-1.8.1-3.5-1.1-5.1-2.5-3.3-7.9-3.2-10.1.3-1 1.5-.8 3.2-.8 4.9v5.4c-2-.5-4.3 0-5.7 1.8-.4.5-.6.9-.8 1.5-.6-.2-1.1-.3-1.7-.3-2.4 0-4.2 1.4-4.9 3.4-2-.6-4.3-.2-5.8 1.5-1.6 1.8-1.2 4.3-1.2 6.5v3.7c0 4.1-.6 8.8 1.7 12.5 1 1.6 1.9 3.2 3.1 4.6 2.1 2.4 5.2 3.6 8.3 3.7h5.4c2 0 4 .1 5.9-.4 4-1.2 6.9-4.7 9.5-7.8 4.3-5.1 8.6-10.2 12.8-15.3 2.1-2.6 2-5.6-.5-7.5z" fill="currentColor"/></svg></div></div>
 <div class="txbox"><div class="txw"><table class="tx"><thead><tr>
 <th class="cnm srt" data-sort="имя" data-t="rth_10">Налоговый режим</th>
 <th class="num srt on" data-sort="нагрузка" data-t="rth_13">Нагрузка</th>
@@ -2650,6 +3367,7 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 <th class="srt" data-sort="касса" data-t="rth_r4">Касса</th>
 <th class="srt" data-sort="сотр" data-t="rth_r5">Сотрудники</th>
 </tr></thead><tbody id="txrows"></tbody></table></div><div class="txfoot"></div></div>
+
 <div class="pmknote txnote" id="txNote"></div>
 </div>
 
@@ -2660,13 +3378,9 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 <div class="minb" style="margin-top:24px">
 <div class="t" data-t="rmb_01">Точка безубыточности / Съёмка в ноль</div>
 <div class="ts" data-t="rmb_05">Это та самая черта, за которой начинается работа в минус. Если стоимость будет ниже этой границы, вы не просто остаётесь без прибыли — вы буквально сами доплачиваете своим клиентам за то, что выполняете для них работу.</div>
-<div class="mbl">
-<div class="y"><i>✓</i><span data-t="rmb_06">Сюда входят все обязательные расходы, которые вам придётся оплачивать в любом случае: аренда, подписки на софт, амортизация камер и света, реклама, налоги, страховые взносы и банковские комиссии. Полный список — в блоке <a href="#cardTab">«Все цифры расчёта в одной таблице»</a>, раздел «Расходы за год».</span></div>
-<div class="n"><i>✕</i><span data-t="rmb_07">Чего здесь нет — вас! Ни секунды вашего времени. Вся съёмка, многочасовая обработка, бесконечные переписки с клиентами остаются полностью бесплатными, а проезд до съёмочной площадки вы оплачиваете из своего кармана.</span></div>
+<div class="mblink"><a class="спр" href="#спр-77" data-t="rmb_06">Смотреть пункт 77 справочника</a></div>
 </div>
-<div class="mbf" data-t="rmb_04"><b>Главная ловушка</b> в том, что эти расходы капают каждый месяц независимо от того, есть у вас заказы или нет. Из-за этого математика работает безжалостно: чем меньше съёмок удаётся найти, тем выше поднимается эта точка безубыточности, потому что вся аренда и подписки раскидываются на жалкие пару заказов.</div>
-</div>
-<div class="note warn" data-t="rlg_01"><b>Логистика в расчёт не входит.</b> Дорога, бензин, такси и парковка по закону ложатся на исполнителя — значит, на третьей ставке вы не выходите в ноль, а работаете в минус на сумму поездок.</div>
+<div class="note warn" data-t="rlg_01"><b>Логистика в расчёт не входит.</b> Дорога, бензин, такси и парковка по закону ложатся на исполнителя — значит, при ставке в ноль вы работаете в минус на сумму логистики.</div>
 </div>
 
 <div class="card" id="card05"><div class="bn">06</div>
@@ -2680,8 +3394,8 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 </div>
 
 <div class="card" id="card09" data-thx-авто><div class="bn">07</div>
-<h2 class="big-h" data-t="rh2_20">Четыре цифры, которые стоит запомнить</h2>
-<p class="hint ctr" data-t="rhi_20">Они выведены из вашего расчёта и пригодятся в любом разговоре о деньгах</p>
+<h2 class="big-h" data-t="rh2_20">Четыре цифры,<br>которые стоит запомнить</h2>
+<p class="hint ctr" data-t="rhi_20">Пригодятся в любом разговоре о деньгах</p>
 <div class="fg" id="factGrid"></div>
 </div>
 
@@ -2697,13 +3411,31 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 <div><div class="bg">+34%</div>
 <div class="sm" data-t="rpm_20">чаще соглашаются, когда названа причина цены</div></div></div>
 <div class="cn s3"><div class="tp" data-t="rpm_22b">Выше ценник</div>
-<div><div class="bg">87%</div>
+<div><div class="bg">+87%</div>
 <div class="sm" data-t="rpm_22">покупателей готовы платить больше тем, кому доверяют</div></div></div>
 </div>
 
-<div class="note" data-t="rpm_24">Источники: Гарвардская школа бизнеса и Университет Сан-Франциско, шесть экспериментов с раскрытием себестоимости, «Marketing Science», 2020 · эксперимент Эллен Лангер, Гарвард, 1978 · исследование доверия к брендам Salsify.</div>
+<div class="note лево" data-t="rpm_24">Источники: Гарвардская школа бизнеса и Университет Сан-Франциско, шесть экспериментов с раскрытием себестоимости, «Marketing Science», 2020 · эксперимент Эллен Лангер, Гарвард, 1978 · исследование доверия к брендам Salsify.</div>
 
-<div class="note info" data-t="rpm_25">Вы посчитали свою юнит-экономику! Теперь у вас есть железобетонные цифры, которых нет у большинства коллег, — и полный карт-бланш говорить о стоимости без оправданий.</div>
+</div>
+
+<!-- Уведомление «железобетонные цифры». Вынесено из блока 08 отдельной
+     плашкой между блоками — силуэт тот же, что у «Логистика в расчёт
+     не входит» (.logi), гамма зелёная: это не предупреждение, а итог.
+     Решение владельца 27.08. -->
+<div class="logi logiw">
+<div class="logii" aria-hidden="true">
+<svg viewBox="0 0 24 24" fill="none">
+  <path d="M18.9 6.5A8.8 8.8 0 1 0 20 15.6" stroke="var(--c-gr3)"
+        stroke-width="2.2" stroke-linecap="round"/>
+  <path d="m7.4 12.4 3 3 7.2-7.5" stroke="var(--c-g-500)"
+        stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+</div>
+<div class="logit">
+<b data-t="rpm_25a">Вы посчитали свою юнит-экономику</b>
+<span data-t="rpm_25">Теперь у вас есть железобетонные цифры, которых нет у большинства коллег, — и полный карт-бланш говорить о стоимости без оправданий.</span>
+</div>
 </div>
 
 <!-- СКРЫТ 10.08.2026 по решению заказчика: баннер «30 сценариев».
@@ -2714,19 +3446,19 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 <circle cx="50" cy="50" r="50" fill="#fff"/></svg>
 <svg class="dec" style="right:90px;bottom:-70px" width="180" height="180" viewBox="0 0 100 100" fill="none">
 <circle cx="50" cy="50" r="50" fill="#fff"/></svg>
+<!-- Декор баннера: два белых круга и одно маленькое сердечко без обводки.
+     Большое тёмное сердечко с белой обводкой убрано решением владельца 26.08 —
+     оно спорило с фоном и читалось как инородное пятно. -->
 <svg class="dec" style="right:214px;top:24px;opacity:.22" width="54" height="54" viewBox="0 0 24 24" fill="none">
 <path d="M20.8 4.6a5.5 5.5 0 00-7.8 0l-1 1-1-1a5.5 5.5 0 00-7.8 7.8l1 1 7.8 7.8 7.8-7.8 1-1a5.5 5.5 0 000-7.8z" fill="#fff"/></svg>
-<svg class="dec" style="right:52px;top:56px;opacity:.3" width="132" height="132" viewBox="0 0 24 24" fill="none">
-<path d="M20.8 4.6a5.5 5.5 0 00-7.8 0l-1 1-1-1a5.5 5.5 0 00-7.8 7.8l1 1 7.8 7.8 7.8-7.8 1-1a5.5 5.5 0 000-7.8z"
- fill="var(--c-a-700)" stroke="#fff" stroke-width="1.3"/></svg>
 <div class="in">
-<div class="kick" data-t="rthx_02">Если расчёт оказался полезным</div>
+<div class="kick" data-t="rthx_02">Спасибо, что пользуетесь сервисом!</div>
 <h3 data-t="rthx_03">Поблагодарить проект</h3>
-<p data-t="rthx_04">Так мы будем знать, что сервис вам нужен, и сможем развивать его и сохранять бесплатным для всех специалистов креативной индустрии.</p>
+<p data-t="rthx_04">Ваша поддержка помогает нам видеть реальную пользу нашей работы и направлять ресурсы на то, чтобы делать инструмент ещё удобнее для вас.</p>
 <a class="btn2" href="#thanks" data-thx="report-block">
 <svg width="19" height="19" viewBox="0 0 24 24" fill="none">
 <path d="M20.8 4.6a5.5 5.5 0 00-7.8 0l-1 1-1-1a5.5 5.5 0 00-7.8 7.8l1 1 7.8 7.8 7.8-7.8 1-1a5.5 5.5 0 000-7.8z"
- fill="none" stroke="var(--c-a-700)" stroke-width="2"/></svg>
+ fill="none" stroke="currentColor" stroke-width="2"/></svg>
 Поблагодарить</a>
 </div>
 </div>
@@ -2801,7 +3533,7 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 
     <div class="thxm-главное">
       <div class="thxm-заголовок" id="thxmЗаголовок"><span class="до">Поддержите проект</span><span class="после">Спасибо за поддержку!</span><span class="оплата">Оплата прошла, спасибо!</span></div>
-      <p>Ваша поддержка помогает нам развивать проект, добавлять новые возможности и сохранять его доступным для всех специалистов, которые работают на себя.</p>
+      <p>Ваша поддержка помогает нам развивать сервис и сохранять его доступным для всех независимых специалистов.</p>
     </div>
 
     <div class="thxm-суммы" id="thxmСуммы">
@@ -2811,7 +3543,6 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
     </div>
 
     <button type="button" class="thxm-оплатить" id="thxmОплатить">
-      <svg viewBox="0 0 24 24" fill="none" width="22" height="22" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0l-1 1-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1 7.8 7.8 7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8Z" fill="#fff"/></svg>
       <span>Поддержать Счётикс — <b id="thxmИтог">500</b></span>
     </button>
 
@@ -2906,7 +3637,7 @@ currentResult:636863.01905,currentIncome:636863.01905,currentLoss:0,currentIsLos
 wsY:67680,siteY:10000,eduY:74409.14286,fundY:0,discY:0,fundP:0,discP:0,depShoot:107759.99048,depOffice:65732.93333,depSoft:11500,
 depEdu:74409.14286,depSite:10000,depWs:9285.71429,varAds:187500,varSoft:27000,varBank:1800,varRent:67680,varAcc:0,NW:43.8,K:3,cl:1,
 curRate:6000,
-regime:'\u0421\u0430\u043c\u043e\u0437\u0430\u043d\u044f\u0442\u044b\u0439 (\u041d\u041f\u0414) \u2014 5%, \u0441\u043c\u0435\u0448\u0430\u043d\u043d\u044b\u0435 \u0437\u0430\u043a\u0430\u0437\u0447\u0438\u043a\u0438',
+regime:'\u0421\u0430\u043c\u043e\u0437\u0430\u043d\u044f\u0442\u044b\u0439 (\u041d\u041f\u0414) 5%, \u0441\u043c\u0435\u0448\u0430\u043d\u043d\u044b\u0435 \u0437\u0430\u043a\u0430\u0437\u0447\u0438\u043a\u0438',
 regimeCode:'npd5',clients:'mix',profession:'\u0444\u043e\u0442\u043e\u0433\u0440\u0430\u0444\u0430'};
 
 function loadData(){
@@ -3035,7 +3766,10 @@ function donut(vals,cols,cx,big,idx,labels){
     hex=hex.slice(1); if(hex.length===3)hex=hex[0]+hex[0]+hex[1]+hex[1]+hex[2]+hex[2];
     var n=parseInt(hex,16); return ((n>>16)*0.2126+((n>>8)&255)*0.7152+(n&255)*0.0722)/255;
   }
-  var s='<svg width="'+SZ+'" height="'+SZ+'" viewBox="0 0 '+SZ+' '+SZ+'">';
+  /* Ширина не жёсткая: viewBox держит пропорции, а размер задаёт CSS.
+     Иначе кольцо 190px не давало трём плашкам встать в ряд ниже 820px. */
+  var s='<svg width="'+SZ+'" height="'+SZ+'" viewBox="0 0 '+SZ+' '+SZ+'" '+
+        'preserveAspectRatio="xMidYMid meet" style="max-width:100%;height:auto">';
   if(big){
     s+='<defs>';
     list.forEach(function(k){
@@ -3406,7 +4140,12 @@ var REFD=[
   var gRole=VI.filter(function(i){return i>=2&&i<=4});/* остальные роли   */
   var gIdle=VI.filter(function(i){return i===5});     /* компенсация      */
   var gCost=VI.filter(function(i){return i>=6&&i<=10}); /* расходы */
-  var gRes=VI.filter(function(i){return i>=11});         /* резервы */
+  /* Резервы: индексы 11 фонд развития, 12 лояльность, 13 отпуск.
+     Отпуск идёт ПЕРВЫМ — он обязательный, остальные два включаются
+     галочкой и могут отсутствовать. Решение владельца 26.08.
+     Порядок совпадает с таблицей детализации «Резервный фонд». */
+  var gRes=VI.filter(function(i){return i===13})
+             .concat(VI.filter(function(i){return i>=11&&i<=12}));
 
   var out='<div class="lggrp">\u0412\u044b \u0437\u0430\u0440\u0430\u0431\u0430\u0442\u044b\u0432\u0430\u0435\u0442\u0435 \u043a\u0430\u043a \u0444\u043e\u0442\u043e\u0433\u0440\u0430\u0444</div>'+
     gProf.map(lgRow).join('');
@@ -3585,20 +4324,20 @@ var REFD=[
   /* Порядок: 1 — как есть сейчас, 2 — сколько нужно, 3 — нижняя граница.
      Раньше первым стоял идеальный, и человек видел цель раньше факта. */
   var three=[
-    {cls:'s1',no:'\u0440\u0435\u0430\u043b\u044c\u043d\u044b\u0439',num:'1',fill:['#5CA8E0','#2F80C4'],
+    {cls:'s1',no:'\u0420\u0435\u0430\u043b\u044c\u043d\u044b\u0439 \u0441\u0446\u0435\u043d\u0430\u0440\u0438\u0439',num:'1',fill:['#5CA8E0','#2F80C4'],
      t:currentIsLoss?'\u0412\u0430\u0448 \u0443\u0431\u044b\u0442\u043e\u043a':'\u0412\u0430\u0448 \u0442\u0435\u043a\u0443\u0449\u0438\u0439 \u0434\u043e\u0445\u043e\u0434',
      r:f0(d.curRate), rev:f0(curR/12), v:[incC,idlC+expC],
      mid:currentIsLoss?f0s(currentResult/12):f0(currentResult/12),
      cap:currentIsLoss?'\u0443\u0431\u044b\u0442\u043e\u043a / \u043c\u0435\u0441':CAPM,
      loss:currentIsLoss, lossRevenue:curR/12, lossCosts:expC/12,
      lossValue:currentResult/12},
-    {cls:'s2',no:'\u0438\u0434\u0435\u0430\u043b\u044c\u043d\u044b\u0439',num:'2',fill:['#4FC26A','#1B9331'],
+    {cls:'s2',no:'\u0418\u0434\u0435\u0430\u043b\u044c\u043d\u044b\u0439 \u0441\u0446\u0435\u043d\u0430\u0440\u0438\u0439',num:'2',fill:['#4FC26A','#1B9331'],
      t:'\u041d\u0435\u043e\u0431\u0445\u043e\u0434\u0438\u043c\u044b\u0439 \u0434\u043e\u0445\u043e\u0434',
      /* Все три поля относятся к одному точному сценарию calc(), но денежный
         показ для пользователя округляется до ближайшего целого рубля. */
      r:f0(goalRateV), rev:f0(d.R/12),
      v:[incM,idlM+expM], mid:f0(d.Ny/12), cap:CAPM},
-    {cls:'s3',no:'\u0432 \u043d\u043e\u043b\u044c',num:'3',fill:['#E1306C','#C13584'],
+    {cls:'s3',no:'\u0421\u0446\u0435\u043d\u0430\u0440\u0438\u0439 \u0432 \u043d\u043e\u043b\u044c',num:'3',fill:['#E1306C','#C13584'],
      t:'\u0414\u043e\u0445\u043e\u0434\u0430 \u043d\u0435\u0442',
      /* Расчёт остаётся точным, отображение округляется до целого рубля.
         Специальное округление вверх до 100 ₽ здесь не применяется. */
@@ -3606,19 +4345,24 @@ var REFD=[
      v:[0,Vb], mid:f0(0), cap:CAPM}];
   var SC=[[C_INC1,C_INC2,C_INC3],[C_EXP1,C_EXP2,C_EXP3]];
   $('dns').innerHTML=three.map(function(x){
+    /* Порядок с 27.08 (решение владельца): название текстом, под ним
+       диаграмма, под диаграммой плашка со стоимостью часа, под чертой —
+       доход на руки и выручка. */
     return '<div class="scn3 '+x.cls+'"><div class="scdeco"></div>'+
-    '<div class="nm3">'+x.no+'</div>'+
-    '<div class="amt">'+x.t+'</div>'+
-    '<div class="bigsum top"><b>'+x.mid+'</b><span>'+x.cap+'</span></div>'+
+    '<div class="scnhead"><div class="nm3">'+x.no+'</div>'+
+    '<div class="amt"><i>'+x.t+'</i></div></div>'+
+    '<div class="scnbody">'+
     '<div class="dn">'+(x.loss
       ? '<div class="losscompare"><div><span>\u0412\u044b\u0440\u0443\u0447\u043a\u0430</span><b>'+f0(x.lossRevenue)+'</b></div>'+
         '<div><span>\u0417\u0430\u0442\u0440\u0430\u0442\u044b</span><b>'+f0(x.lossCosts)+'</b></div>'+
         '<div class="loss"><span>\u0423\u0431\u044b\u0442\u043e\u043a</span><b>'+f0s(x.lossValue)+'</b></div></div>'
       : donutNum(x.v,SC,x.num,x.fill))+'</div>'+
-    '<div class="ratebot"><div class="rb1"><b>'+x.r+'</b>'+
-    '<span>\u0441\u0442\u043e\u0438\u043c\u043e\u0441\u0442\u044c \u0447\u0430\u0441\u0430</span></div>'+
-    '<div class="rb1"><b>'+x.rev+'</b>'+
-    '<span>\u0432\u044b\u0440\u0443\u0447\u043a\u0430 / \u043c\u0435\u0441</span></div></div>'+
+    '<div class="ratebox"><b>'+x.r+'/\u0447\u0430\u0441</b></div>'+
+    '<div class="ratebot"><div class="rb1"><b>'+x.mid+'/\u043c\u0435\u0441</b>'+
+    '<span>'+(x.loss?'\u0443\u0431\u044b\u0442\u043e\u043a':'\u043d\u0430 \u0440\u0443\u043a\u0438')+'</span></div>'+
+    '<div class="rb1"><b>'+x.rev+'/\u043c\u0435\u0441</b>'+
+    '<span>\u0432\u044b\u0440\u0443\u0447\u043a\u0430</span></div></div>'+
+    '</div>'+
     (x.loss?'<div class="current-loss-note">\u0414\u043e\u0445\u043e\u0434\u0430 \u043d\u0435\u0442. \u041f\u0440\u0438 \u0442\u0435\u043a\u0443\u0449\u0435\u0439 \u0441\u0442\u0430\u0432\u043a\u0435 \u0432\u0430\u0448\u0438 \u0437\u0430\u0442\u0440\u0430\u0442\u044b \u043f\u0440\u0435\u0432\u044b\u0448\u0430\u044e\u0442 \u0432\u044b\u0440\u0443\u0447\u043a\u0443 \u043d\u0430 '+f0(Math.abs(x.lossValue))+' \u0432 \u043c\u0435\u0441\u044f\u0446.</div>':'')+
     '</div>'}).join('')+
     '<div class="slg" style="grid-column:1/-1">'+
@@ -3655,7 +4399,7 @@ var REFD=[
       tiers.map(function(c){
         return '<div class="dmc d'+c.ix+'">'+
         '<div class="dcond">\u043e\u0442 '+c.S+' '+hword(c.S)+'</div>'+
-        '<div class="dpr disc">\u2212'+f1(c.dd*100)+'%</div>'+
+        '<div class="dpr disc">'+f1(c.dd*100)+'%</div>'+
         '<div class="dph2">\u0441\u043a\u0438\u0434\u043a\u0430 \u043d\u0430 \u0447\u0430\u0441</div>'+
         '<div class="dfoot"><b>'+f0(c.h)+'</b> \u0437\u0430 \u0447\u0430\u0441</div>'+
         '</div>';
@@ -4394,14 +5138,14 @@ var REFD=[
     var frames=(typeof d.frames==='number'&&isFinite(d.frames))?d.frames:80;
     var framesTotal=frames*d.S;
     var FC=[
-     ['a','\u0414\u043e\u0445\u043e\u0434 \u0432 \u0447\u0430\u0441 \u043d\u0430 \u0440\u0443\u043a\u0438',f0(hrAll),
+     ['a','\u0414\u043e\u0445\u043e\u0434 \u043d\u0430 \u0440\u0443\u043a\u0438',f0(hrAll)+'/\u0447',
       '\u0437\u0430 \u043b\u044e\u0431\u0443\u044e \u0440\u0430\u0431\u043e\u0442\u0443',
       '\u0421\u0442\u043e\u043b\u044c\u043a\u043e \u0432\u044b \u0437\u0430\u0440\u0430\u0431\u0430\u0442\u044b\u0432\u0430\u0435\u0442\u0435 \u0437\u0430 \u0447\u0430\u0441 \u2014 \u0441 \u043a\u0430\u043c\u0435\u0440\u043e\u0439 \u0438\u043b\u0438 \u0437\u0430 \u043a\u043e\u043c\u043f\u044c\u044e\u0442\u0435\u0440\u043e\u043c. \u042d\u0442\u043e \u0432\u0430\u0448 \u0434\u043e\u0445\u043e\u0434, \u0440\u0430\u0437\u043b\u043e\u0436\u0435\u043d\u043d\u044b\u0439 \u043d\u0430 \u0432\u0441\u0451 \u0440\u0430\u0431\u043e\u0447\u0435\u0435 \u0432\u0440\u0435\u043c\u044f.'],
      ['b','\u0421\u0442\u0430\u0432\u043a\u0430 \u0432 \u043d\u043e\u043b\u044c',f0r(bRateV)+'/\u0447',
       '\u043d\u0438\u0436\u0435 \u044d\u0442\u043e\u0439 \u0446\u0435\u043d\u044b \u2014 \u0432 \u0443\u0431\u044b\u0442\u043e\u043a',
       '\u041d\u0430 \u044d\u0442\u043e\u0439 \u0441\u0442\u0430\u0432\u043a\u0435 \u0432\u044b \u043f\u043e\u043a\u0440\u044b\u0432\u0430\u0435\u0442\u0435 \u0442\u0435\u0445\u043d\u0438\u043a\u0443, \u043d\u0430\u043b\u043e\u0433\u0438 \u0438 \u0432\u0441\u0435 \u0441\u0447\u0435\u0442\u0430, \u043d\u043e \u043d\u0435 \u043f\u043e\u043b\u0443\u0447\u0430\u0435\u0442\u0435 \u043d\u0438 \u0440\u0443\u0431\u043b\u044f \u0441\u0435\u0431\u0435. \u0426\u0438\u0444\u0440\u0430, \u043d\u0438\u0436\u0435 \u043a\u043e\u0442\u043e\u0440\u043e\u0439 \u0442\u043e\u0440\u0433\u043e\u0432\u0430\u0442\u044c\u0441\u044f \u043d\u0435\u043b\u044c\u0437\u044f.'],
-     ['c','\u0412\u0440\u0435\u043c\u0435\u043d\u0438 \u043d\u0430 \u043e\u0434\u043d\u0443 \u0441\u044a\u0451\u043c\u043a\u0443',f1(d.pt),
-      '\u0447\u0430\u0441\u043e\u0432 \u0440\u0430\u0431\u043e\u0442\u044b \u0432 \u0446\u0435\u043b\u043e\u043c',
+     ['c','\u0412\u0440\u0435\u043c\u044f \u043d\u0430 \u043e\u0434\u043d\u0443 \u0441\u044a\u0451\u043c\u043a\u0443',f1(d.pt)+'\u00a0\u0447',
+      '\u0440\u0430\u0431\u043e\u0442\u044b \u0432 \u0446\u0435\u043b\u043e\u043c',
       '\u041d\u0435 \u0442\u043e\u043b\u044c\u043a\u043e \u0447\u0430\u0441\u044b \u0441 \u043a\u0430\u043c\u0435\u0440\u043e\u0439: \u043f\u043e\u0434\u0433\u043e\u0442\u043e\u0432\u043a\u0430, \u043f\u0435\u0440\u0435\u043f\u0438\u0441\u043a\u0430, \u043e\u0442\u0431\u043e\u0440, \u043e\u0431\u0440\u0430\u0431\u043e\u0442\u043a\u0430 \u0438 \u043f\u0435\u0440\u0435\u0434\u0430\u0447\u0430 \u043c\u0430\u0442\u0435\u0440\u0438\u0430\u043b\u0430 \u043a\u043b\u0438\u0435\u043d\u0442\u0443.'],
      ['d','\u0426\u0435\u043d\u0430 \u043e\u0434\u043d\u043e\u0433\u043e \u043a\u0430\u0434\u0440\u0430',f0(framesTotal>0?projPrice/framesTotal:0),
       '\u0437\u0430 \u0433\u043e\u0442\u043e\u0432\u044b\u0439 \u043a\u0430\u0434\u0440',
@@ -4409,7 +5153,8 @@ var REFD=[
     fg.innerHTML=FC.map(function(x){
       return '<div class="fct '+x[0]+'">'+
       '<div class="fl">'+x[1]+'</div>'+
-      '<div class="fv">'+x[2]+'</div><div class="fu">'+x[3]+'</div>'+
+      '<div class="fvb"><div class="fv">'+x[2]+'</div>'+
+      '<div class="fu">'+x[3]+'</div></div>'+
       '<div class="fd">'+x[4]+'</div></div>'}).join('');
   }
 
@@ -4607,6 +5352,17 @@ var СПР_НОМЕР = {};
 (function(){
   var корень = $('спрдет'); if(!корень) return;
   var НБ = '\u00a0', ТИРЕ = '\u2014';
+  /* Подсказка о горизонтальной прокрутке — как в Tilda: серая полоска
+     и схематичная ладонь, которая по ней едет. Никаких надписей.
+     Рука — контурный SVG, тот же силуэт, что в эталонной реализации. */
+  var СВАЙП = '<div class="свайп" aria-hidden="true"><div class="свайп-полоса">'+
+    '<svg class="свайп-рука" viewBox="0 0 64 64" fill="none">'+
+    '<path d="M58.9 29.6c-2.8-2.1-6.8-1.9-9.4.3-1.1.9-2 2.1-3 3.2l-1.5 1.7c0-6.2 0-12.5 0-18.7'+
+    ' 0-1.8.1-3.5-1.1-5.1-2.5-3.3-7.9-3.2-10.1.3-1 1.5-.8 3.2-.8 4.9v5.4c-2-.5-4.3 0-5.7 1.8'+
+    '-.4.5-.6.9-.8 1.5-.6-.2-1.1-.3-1.7-.3-2.4 0-4.2 1.4-4.9 3.4-2-.6-4.3-.2-5.8 1.5'+
+    '-1.6 1.8-1.2 4.3-1.2 6.5v3.7c0 4.1-.6 8.8 1.7 12.5 1 1.6 1.9 3.2 3.1 4.6 2.1 2.4 5.2 3.6 8.3 3.7'+
+    'h5.4c2 0 4 .1 5.9-.4 4-1.2 6.9-4.7 9.5-7.8 4.3-5.1 8.6-10.2 12.8-15.3 2.1-2.6 2-5.6-.5-7.5z"'+
+    ' fill="currentColor"/></svg></div></div>';
   var дв = function(н){ return ('0' + н).slice(-2) };
   function ч(x, dec){
     dec = dec || 0;
@@ -4635,10 +5391,28 @@ var СПР_НОМЕР = {};
   function T(cols, rows, оп){
     оп = оп || {};
     var имя_в = оп.имя_в ? 1 : 0, связь = оп.связь || {}, спр = !!оп.спр;
-    var cg = '<col class="cnum"><col class="ck">' + (имя_в ? '<col class="cb">' : '') +
-             '<col class="cn">' + Array(cols.length - (имя_в ? 2 : 0) + 1).join('<col class="cv">') + '<col>';
-    var th = '<th>№</th><th>Код</th>' + (имя_в ? '' : '<th>Наименование</th>') +
-             cols.map(function(c){ return '<th>' + c + '</th>' }).join('') + '<th></th>';
+    /* Порядок колонок (решение владельца 26.08): № · Наименование ·
+       значения · Код. Столбец «Блок» убран — он не нёс пользы.
+       Код перенесён в конец, после значимых данных.
+       На мобильном столбец № скрывается через CSS (.cnum). */
+    /* Колонок значений ровно столько, сколько заголовков после
+       «Наименования». Оно занимает отдельный col.cn: при имя_в имя
+       уже лежит внутри cols, иначе добавляется отдельным th.
+       В обоих случаях столбцов значений на один меньше длины cols
+       минус имя. Ошибка в этом счёте сдвигала все ширины на колонку:
+       имя получало 132px вместо 290, а суммы «1 322 592 ₽» —
+       46px кода и обрезались. */
+    var знач = cols.length - (имя_в ? 1 : 0);
+    var cg = '<col class="cnum"><col class="cn">' +
+             Array(знач + 1).join('<col class="cv">') +
+             '<col class="ck"><col>';
+    /* Классы на ячейках шапки: по ним CSS задаёт ширины надёжнее,
+       чем через col — при table-layout:fixed col срабатывал не всегда. */
+    var th = '<th class="ш-ном">№</th>' + (имя_в ? '' : '<th class="ш-имя">Наименование</th>') +
+             cols.map(function(c,к){
+               return '<th class="' + (имя_в && к === 0 ? 'ш-имя' : 'ш-знач') + '">' + c + '</th>';
+             }).join('') +
+             '<th class="ш-код">Код</th><th class="ш-хвост"></th>';
     var ширина = cols.length + 3, tr = '', i = 0;
     rows.forEach(function(r){
       if(r[0] === '\u00a7'){
@@ -4647,16 +5421,25 @@ var СПР_НОМЕР = {};
       }
       i++;
       r = r.slice();
+      /* r[0] — код, r[1] (или r[2] при имя_в) — наименование.
+         Вынимаем код из начала и приписываем в конец строки. */
+      var код = r.shift();
+      if(имя_в) r.shift();          /* «Блок» больше не выводим */
       if(спр){
-        var поз = имя_в ? 2 : 1;
-        var чистое = String(r[поз]).replace(/<[^>]+>/g, '');
+        var чистое = String(r[0]).replace(/<[^>]+>/g, '');
         var терм = связь[чистое] || СВЯЗЬ[чистое];
-        if(СПР_НОМЕР[терм]) r[поз] = ссылка(r[поз], терм);
+        if(СПР_НОМЕР[терм]) r[0] = ссылка(r[0], терм);
       }
       tr += '<tr><td>' + дв(i) + '</td>' +
-            r.map(function(v){ return '<td>' + v + '</td>' }).join('') + '<td></td></tr>';
+            r.map(function(v){ return '<td>' + v + '</td>' }).join('') +
+            '<td class="код">' + код + '</td><td></td></tr>';
     });
-    return '<div class="wrap"><table class="rt' + (имя_в ? ' вв' : '') + '"><colgroup>' + cg +
+    /* Подсказка о боковой прокрутке — приём Tilda: серая полоска,
+       по которой едет схематичная ладонь. Без надписей. Стоит ПЕРЕД
+       таблицей: таблицы длинные, в конце подсказку никто не увидит.
+       Видна только на мобильном и только если есть что прокручивать
+       (класс .есть-прокрутка ставит скрипт ниже). */
+    return СВАЙП + '<div class="wrap"><table class="rt' + (имя_в ? ' вв' : '') + '"><colgroup>' + cg +
            '</colgroup><thead><tr>' + th + '</tr></thead><tbody>' + tr + '</tbody></table></div>';
   }
 
@@ -4694,7 +5477,9 @@ var СПР_НОМЕР = {};
     вв.push(['\u0410', дв(п.b), п.n, р(п.price), период(п)]);
   });
   вв.sort(function(a, b){ return a[1] - b[1] });
-  var t01 = T(['Блок','Наименование','Значение','Срок и период'], вв, {имя_в:1, спр:1});
+  /* Столбец «Блок» убран решением владельца 26.08 — он не нёс пользы.
+     Сами данные его по-прежнему содержат (r[1]), T() их отбрасывает. */
+  var t01 = T(['Наименование','Значение','Срок / период'], вв, {имя_в:1, спр:1});
 
   /* ── 02. время */
   var t02 = T(['/год','/мес','/нед','/день','/проект'], [
@@ -5497,5 +6282,61 @@ var _p=$('dlpdf'); if(_p)_p.onclick=function(){try{document.title=window.PHR_FIL
   }
 
   try{спросить('get',false)}catch(e){}
+})();
+</script>
+
+<script>
+/* Подсказка о прокрутке таблиц: показываем только там, где таблица
+   действительно шире экрана. Иначе на широком мониторе или у короткой
+   таблицы висела бы бессмысленная полоска. Проверяем при загрузке,
+   при смене размера окна и скрываем, как только человек начал листать. */
+(function(){
+  var корень=document.getElementById('phr-root'); if(!корень) return;
+  function обёртка(п){
+    var с=п.nextElementSibling;
+    while(с){
+      if(с.classList&&(с.classList.contains('wrap')||с.classList.contains('txbox')))return с;
+      if(с.querySelector){var в=с.querySelector('.wrap,.txw'); if(в)return в}
+      с=с.nextElementSibling;
+    }
+    return null;
+  }
+  function скроллер(э){
+    if(!э)return null;
+    if(э.scrollWidth>э.clientWidth+2)return э;
+    return э.querySelector('.txw,.wrap');
+  }
+  /* Подсказка ведёт себя как полоса прокрутки: есть ровно тогда, когда
+     таблица шире экрана, и никуда не девается. Раньше она исчезала
+     после первого движения пальцем и больше не возвращалась —
+     человек листал следующую таблицу и подсказки уже не видел.
+     Решение владельца 27.08. */
+  function обновить(){
+    корень.querySelectorAll('.свайп').forEach(function(п){
+      var э=скроллер(обёртка(п));
+      var надо = !!э && э.scrollWidth>э.clientWidth+2;
+      п.classList.toggle('есть-прокрутка',надо);
+      if(э&&!э.dataset.свайпСлушает){
+        э.dataset.свайпСлушает='1';
+        /* следим за размером: колонки могут пересчитаться позже */
+        if(window.ResizeObserver){
+          try{new ResizeObserver(обновить).observe(э)}catch(e){}
+        }
+      }
+    });
+  }
+  обновить();
+  window.addEventListener('resize',обновить);
+  /* Пункты справочника и детализации раскрываются по клику. Пока пункт
+     закрыт, таблица внутри него не имеет ширины — сравнивать нечего,
+     и подсказка не появлялась. Пересчитываем после каждого раскрытия.
+     Два замера: сразу и через 250 мс, когда раскрытие доиграет. */
+  корень.addEventListener('click',function(с){
+    if(с.target.closest&&с.target.closest('#спрдет .шапка')){
+      обновить(); setTimeout(обновить,250);
+    }
+  });
+  /* таблицы детализации рисуются скриптом позже — ждём следующий кадр */
+  setTimeout(обновить,300); setTimeout(обновить,1200);
 })();
 </script>

@@ -100,6 +100,11 @@ var(--c-g-600) 68%,var(--c-g-500) 100%);
 position:relative;overflow:hidden;
 -webkit-font-smoothing:antialiased}
 #phw-root *{box-sizing:border-box}
+/* НИЖНЯЯ ГРАНИЦА АДАПТИВНОСТИ — решение владельца 26.08.
+   320px — минимальная контрольная точка Tilda и самый узкий реальный
+   телефон. Ниже страница не ужимается, а фиксируется: появляется
+   горизонтальная прокрутка. То же правило в calc.html и report.html. */
+#phw-root{min-width:320px}
 
 /* Фоновые ромбы — приём .hdeco из шапки отчёта */
 #phw-root .deco{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:0}
