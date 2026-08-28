@@ -6,7 +6,7 @@
 Код возврата: 0 — всё чисто, 1 — есть падения."""
 import json, subprocess, sys, os, re, io, collections
 
-КОРЕНЬ = sys.argv[1] if len(sys.argv) > 1 else '/home/user/schetix'
+КОРЕНЬ = sys.argv[1] if len(sys.argv) > 1 else os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
 ЗДЕСЬ  = os.path.dirname(os.path.abspath(__file__))
 ХАРНЕСС = os.path.join(ЗДЕСЬ, 'харнесс.js')
 ok, fail, warn = [], [], []
@@ -348,8 +348,8 @@ calc, rep, karkas = читать('Веб/calc.html'), читать('Веб/repor
          and 'var costsCПереданы=Number(d.currentCostsTotal)' in rep)
 проверка('карточка текущего дохода не обрезает убыток до нуля',
          'Math.max(curR-expC,0)' not in rep)
-проверка('карточка текущего дохода меняет подпись на «Ваш убыток»',
-         "currentIsLoss?'\\u0412\\u0430\\u0448 \\u0443\\u0431\\u044b\\u0442\\u043e\\u043a'" in rep)
+проверка('карточка текущего дохода меняет подпись на «Убыток» (З-148)',
+         "currentIsLoss?'\\u0423\\u0431\\u044b\\u0442\\u043e\\u043a'" in rep)
 проверка('убыток показывается сравнительной плашкой и знаком минус',
          'class="losscompare"' in rep and 'class="current-loss-note"' in rep
          and "v<0?'\\u2212':''" in rep)

@@ -1,3 +1,10 @@
+<!DOCTYPE html>
+<html lang="ru"><head>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Счётикс — расчёт стоимости часа</title>
+</head><body>
 <div id="phr-root">
 <style>
 #phr-root{
@@ -426,7 +433,11 @@ letter-spacing:-.03em;line-height:1.15;white-space:nowrap}
    и на наведение он не реагирует. */
 #phr-root .dn .seg.fixed{pointer-events:none}
 /* подсказка на сегменте — светлая, в стиле карточек.
-   Позиция считается в JS: плашка уходит от центра кольца, цифры не перекрывает */
+   Позицию и ширину считает JS (З-104): ближний край плашки — на
+   постоянном радиусе от центра кольца (слегка заезжает на кольцо,
+   ~1/5 его ширины), на боках плашка чуть выше курсора, сверху и
+   снизу — ровно сверху/снизу. Ширина фиксирована по самому
+   широкому сектору */
 #phr-root .segtip{position:absolute;z-index:6;pointer-events:none;
 background:var(--c-white);color:var(--c-ink);border:1px solid var(--c-ln);
 border-radius:12px;padding:10px 14px;box-shadow:0 8px 28px rgba(16,24,40,.16);
@@ -525,9 +536,15 @@ box-shadow:none}
    был :before со смещением наружу и вылезал поверх соседних плашек,
    потому что у .scn3 нет overflow:hidden (его нельзя включить — метка .nm3
    висит выше верхнего края). */
-#phr-root .scn3.s1{background:linear-gradient(160deg,var(--c-b-100) 0%,var(--c-b-50) 100%)}
-#phr-root .scn3.s2{background:linear-gradient(160deg,var(--c-g-100) 0%,var(--c-g-50) 100%)}
-#phr-root .scn3.s3{background:linear-gradient(160deg,var(--c-p-100) 0%,var(--c-p-50) 100%)}
+/* З-143/145: цветной фон плашек убран — светлый фон и мягкий контур
+   цветом шапки своей карточки. Border — longhand: shorthand с var()
+   в Chrome резолвился в 1px. */
+#phr-root .scn3.s1{background:var(--c-surf)}
+#phr-root .scn3.s2{background:var(--c-surf)}
+#phr-root .scn3.s3{background:var(--c-surf)}
+#phr-root .scn3.s1{border-width:1.5px;border-style:solid;border-color:var(--c-b-300)}
+#phr-root .scn3.s2{border-width:1.5px;border-style:solid;border-color:var(--c-g-300)}
+#phr-root .scn3.s3{border-width:1.5px;border-style:solid;border-color:var(--c-p-200)}
 /* Фоновый круг в правом верхнем углу — тот же приём, что у плиток
    «Условий труда» (.cn:before) и плашек блока 04 (.npd .g div:before).
    Лежит в отдельном слое .scdeco с overflow:hidden, поэтому за края плашки
@@ -549,19 +566,24 @@ pointer-events:none;z-index:0}
    (.hcard), зелёная от «9 185 ₽/мес» (в тон первой, чуть темнее исходной),
    розовая от плашки блока 06 (.scn .g). Все три затемнены на 16% —
    в исходном виде белый текст давал контраст 2.1–2.6 при норме 4.5. */
-#phr-root .scn3.s1 .scnhead{background:linear-gradient(140deg,#276BA4 0%,#4D8DBC 100%)}
-#phr-root .scn3.s2 .scnhead{background:linear-gradient(140deg,#1B862F 0%,#4DA763 100%)}
-#phr-root .scn3.s3 .scnhead{background:linear-gradient(140deg,#BD285A 0%,#A22C6E 100%)}
+/* З-143/145: шапки — в референсных гаммах баннеров блока 01
+   (голубая резерва, зелёная дохода, розовая расходов). */
+#phr-root .scn3.s1 .scnhead{background:linear-gradient(140deg,var(--c-b-600) 0%,var(--c-b-400) 100%)}
+/* З-147: шапка зелёной карточки светлее */
+#phr-root .scn3.s2 .scnhead{background:linear-gradient(140deg,var(--c-g-600) 0%,var(--c-g-400) 100%)}
+#phr-root .scn3.s3 .scnhead{background:linear-gradient(140deg,var(--c-ig-2) 0%,var(--c-ig-3) 100%)}
 #phr-root .scnbody{position:relative;z-index:1;padding:18px 20px 20px;
 display:flex;flex-direction:column;flex:1 1 auto}
 /* Иерархия: метка сценария — мелкое пояснение сверху, название
    показателя — главный заголовок. Раньше оба были одного веса
    и спорили между собой. Решение владельца 27.08. */
+/* З-148: подпись — как у референсных плашек блока 04 (.npd .g span):
+   12px, обычный вес, белый; без капителлей и трекинга. */
 #phr-root .scn3 .nm3{position:static;transform:none;
 display:block;margin:0 0 6px;padding:0;background:none;box-shadow:none;
 border:0;border-radius:0;
-font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
-white-space:normal;line-height:1.3;color:rgba(255,255,255,.72)}
+font-size:12px;
+white-space:normal;line-height:1.35;color:var(--c-white)}
 /* 1 реальный — гамма «Условий труда» (.cn.b), 2 идеальный — зелёный,
    3 в ноль — гамма блока 08 (.cn.s2, «Выше ценник»). */
 /* Заголовок карточки — фиксированные две строки: иначе кольца съезжают. */
@@ -576,21 +598,25 @@ white-space:normal;line-height:1.3;color:rgba(255,255,255,.72)}
 #phr-root .ratebox b{font-size:clamp(19px,13cqw,30px)}}
 #phr-root .three .amt{display:flex;align-items:center;justify-content:center;
 margin:0;padding:0;border:0;background:none;text-align:center;min-height:2.2em}
+/* З-148: ставка часа — как числа референсных плашек (.npd .g b):
+   22px / 700, табличные цифры. */
 #phr-root .three .amt i{font-style:normal;display:block;
-font-size:18px;font-weight:800;letter-spacing:-.02em;
-line-height:1.2;color:var(--c-white)}
+font-size:22px;font-weight:700;letter-spacing:-.02em;
+line-height:1.2;color:var(--c-white);font-variant-numeric:tabular-nums}
 /* Ставка — крупной строкой под кольцом, без плашки и без черты. */
 #phr-root .ratebox{margin:auto 0 0;padding:14px 0 0;text-align:center;
 border:0;background:none}
 #phr-root .ratebox b{display:block;font-size:26px;font-weight:800;
 letter-spacing:-.035em;line-height:1.05;white-space:nowrap;
 font-variant-numeric:tabular-nums}
-#phr-root .scn3.s1 .ratebox b{color:var(--c-b-700)}
-#phr-root .scn3.s2 .ratebox b{color:var(--c-g-700)}
-#phr-root .scn3.s3 .ratebox b{color:var(--c-ig-2)}
+/* З-147: цветная окраска текстов плашек убрана — тексты штатные. */
 #phr-root .three .dn .mid{display:none}
 /* обёртка кольца растягивается, подвал прижат к низу — линии совпадают */
 #phr-root .scn3>.dn{margin:0 auto;flex:1 0 auto;display:flex;align-items:center}
+/* З-143/145: кольцо крупнее (190 → 230 px). Селектор — потомковый:
+   .dn лежит внутри .scnbody, прежний .scn3>.dn не совпадал вовсе. */
+#phr-root .scn3 .dn{width:100%;max-width:230px;margin:0 auto}
+#phr-root .scn3 .dn svg{width:100%;height:auto;display:block}
 #phr-root .scn3 .ratebot{margin-top:auto}
 #phr-root .bigsum.top{margin:0 0 18px;padding:0;border:0}
 #phr-root .bigsum b{display:block;font-size:30px;font-weight:700;letter-spacing:-.03em;
@@ -608,12 +634,20 @@ white-space:normal;line-height:1.2;font-variant-numeric:tabular-nums;color:var(-
 
 #phr-root .ratebot span{display:block;font-size:11.5px;color:var(--gr);margin:0 0 4px;
 line-height:1.3}
-#phr-root .scn3.s1 .ratebot b{color:var(--c-b-700)}
-#phr-root .scn3.s2 .ratebot b{color:var(--c-g-700)}
-#phr-root .scn3.s3 .ratebot b{color:var(--c-ig-2)}
-#phr-root .scn3.s1 .bigsum b{color:var(--c-b-700)}
-#phr-root .scn3.s2 .bigsum b{color:var(--c-g-700)}
-#phr-root .scn3.s3 .bigsum b{color:var(--c-ig-2)}
+/* З-148: рамка «Доход на руки» — пропорции и кегли референсных
+   плашек блока 04 (поля 16/18, радиус 14, подпись 12px, число
+   22px/700); суммы — «N ₽/мес». */
+#phr-root .scn3 .handbox{margin:18px auto 0;padding:16px 18px;text-align:center;
+border:1.5px solid var(--c-ln);border-radius:14px;background:var(--c-white)}
+#phr-root .scn3 .handbox span{display:block;font-size:12px;color:var(--c-gr);
+margin-bottom:6px;line-height:1.35}
+#phr-root .scn3 .handbox b{display:block;font-size:22px;font-weight:700;
+letter-spacing:-.02em;color:var(--ink);font-variant-numeric:tabular-nums;white-space:nowrap}
+#phr-root .scn3 .revrow{margin-top:14px;text-align:center}
+#phr-root .scn3 .revrow span{display:block;font-size:12px;color:var(--c-gr);
+margin-bottom:2px;line-height:1.35}
+#phr-root .scn3 .revrow b{display:block;font-size:16px;font-weight:700;
+letter-spacing:-.02em;color:var(--ink);font-variant-numeric:tabular-nums;white-space:nowrap}
 /* При убытке круговая пропорция неприменима: затраты больше выручки.
    Вместо кольца показываем прямое сравнение выручки, затрат и убытка. */
 #phr-root .losscompare{display:grid;gap:8px;width:100%;margin:4px 0 2px;text-align:left}
@@ -1042,15 +1076,18 @@ padding:40px 44px;color:#fff;position:relative;overflow:hidden;margin-top:20px}
 /* ---------- лучший режим ---------- */
 /* Блок про налоги — в синей ведомственной гамме, а не в зелёной фирменной:
    так он читается как «про государство», а не как ещё одна наша плашка. */
-#phr-root .bestbox{background:linear-gradient(142deg,#3B54A8 0%,var(--c-fns-2) 46%,#16255A 100%);
+/* З-107 (слово владельца 27.08, вечер): блок 04 уводим в ГОЛУБУЮ гамму —
+   растяжка как на hero-плашках «18 съёмок» / «6 съёмок»
+   (b-600 → b-400 и b-300 → b-400). Прежний тёмно-синий (fns) уходит. */
+#phr-root .bestbox{background:linear-gradient(140deg,var(--c-b-600),var(--c-b-400));
 border-radius:var(--r);
-padding:28px 30px;color:#fff;margin:16px 0 22px;position:relative;overflow:visible}
+padding:28px 30px;color:#fff;margin:16px 0 14px;position:relative;overflow:visible}
 #phr-root .bestbox .bb1{font-size:12px;font-weight:700;letter-spacing:.1em;
 text-transform:uppercase;opacity:.75;margin-bottom:10px}
 /* Угловая метка «самый выгодный»: ярко-зелёная, белые буквы,
-   выходит за верхний и правый край синей плашки. */
+   выходит за верхний и правый край голубой плашки. */
 /* Метка в углу: белый круг с крупным знаком, подпись под кругом.
-   Выходит за верхнюю границу синей плашки. */
+   Выходит за верхнюю границу голубой плашки. */
 #phr-root .bestbox .bbwin{position:absolute;top:-20px;right:26px;z-index:2;
 width:104px;display:flex;flex-direction:column;align-items:center;text-align:center}
 /* Круг залит цветом состояния, знак внутри — крупный белый. */
@@ -1081,11 +1118,16 @@ box-shadow:0 6px 20px rgba(185,28,28,.38),0 0 0 4px rgba(255,255,255,.22)}
 #phr-root .bestbox .bb2{padding-right:96px}}
 #phr-root .bestbox .bb2{font-size:34px;font-weight:700;letter-spacing:-.03em;line-height:1.1;
 margin-bottom:16px}
-#phr-root .bestbox .bbg{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;
-padding-top:18px;border-top:1px solid rgba(255,255,255,.22)}
-#phr-root .bestbox .bbg div span{display:block;font-size:12px;opacity:.8;margin-bottom:4px}
-#phr-root .bestbox .bbg div b{font-size:21px;font-weight:700;font-variant-numeric:tabular-nums;
-letter-spacing:-.02em}
+#phr-root .bestbox .bbg{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+/* З-113 (слово владельца): числа шапки — в собственных рамках, как ряд
+   «Доход на руки · Всего расходов · Общая выручка» на главном баннере
+   (.hero .rw>div): та же рамка, радиус, поля, лёгкая подложка, центр;
+   число сверху, подпись снизу; разделительная линия снята. */
+#phr-root .bestbox .bbg div{border:1px solid rgba(255,255,255,.22);border-radius:14px;
+padding:14px 16px;text-align:center;background:rgba(255,255,255,.07)}
+#phr-root .bestbox .bbg div span{display:block;font-size:13px;opacity:.85;margin-top:3px}
+#phr-root .bestbox .bbg div b{font-size:22px;font-weight:600;
+font-variant-numeric:tabular-nums;letter-spacing:-.02em}
 #phr-root .bestbox .bbn{font-size:13px;line-height:1.6;opacity:.9;margin-top:16px}
 @media(max-width:700px){#phr-root .bestbox{padding:22px}
 #phr-root .bestbox .bb2{font-size:25px}
@@ -1097,61 +1139,64 @@ letter-spacing:-.02em}
 #phr-root .txh{font-size:17px;font-weight:700;color:var(--c-ink);
 margin:38px 0 4px}
 #phr-root .txhs{font-size:13px;color:var(--c-gr);margin-bottom:14px}
-/* горизонтальная прокрутка: колонок стало восемь */
-/* Таблица в границах карточки. overflow:hidden обрезает шапку по радиусу,
-   поэтому белой полосы над синим больше нет. */
-/* Скругление держит внешняя обёртка, а не сам скроллер: липкие ячейки
-   первого столбца остаются липкими, но обрезаются по радиусу родителя.
-   Приём и вид взяты из соседнего проекта Schetix_Child (.wrap + table.rt):
-   рамка 1px, радиус 14, белая подложка. */
-#phr-root .txbox{margin-bottom:26px;border:1px solid var(--c-ln);
-border-radius:14px;overflow:hidden;background:var(--c-white)}
-#phr-root .txw{overflow-x:auto;
--webkit-overflow-scrolling:touch;
-/* Firefox шире стандартной полосу не умеет — там только цвета. */
-scrollbar-width:auto;scrollbar-color:var(--c-fns-2) var(--c-ln)}
-/* Подвал: серая полоса под прокруткой, чтобы плашки ниже не прилипали
-   к бегунку. Без разделительных линий. */
-#phr-root .txfoot{height:17px;background:var(--c-ln)}
-/* Нижняя полоса — как итоговая строка таблицы: сплошная светло-серая
-   на всю высоту, в тон светлому краю заливок первого столбца.
-   Высота 38 px — столько же, сколько у синей шапки. */
-#phr-root .txw::-webkit-scrollbar{height:19px;background:transparent}
-#phr-root .txw::-webkit-scrollbar-track{background:var(--c-ln)}
-/* бегунок цвета шапки, по центру серой полосы */
-#phr-root .txw::-webkit-scrollbar-thumb{
-background:linear-gradient(135deg,var(--c-fns-2),var(--c-fns-1));
-background-clip:padding-box;border:5px solid transparent;border-radius:12px}
-#phr-root .txw::-webkit-scrollbar-thumb:hover{
-background:var(--c-fns-1);background-clip:padding-box}
-/* стрелки — треугольники цвета шапки, по центру серой полосы */
-#phr-root .txw::-webkit-scrollbar-button:horizontal:single-button{
-width:19px;background-color:transparent;background-repeat:no-repeat;
-background-position:center center}
-#phr-root .txw::-webkit-scrollbar-button:horizontal:decrement{
-background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='6' height='9'><path d='M5.5 0L0 4.5l5.5 4.5z' fill='%231B2E6B'/></svg>")}
-#phr-root .txw::-webkit-scrollbar-button:horizontal:increment{
-background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='6' height='9'><path d='M0.5 0L6 4.5.5 9z' fill='%231B2E6B'/></svg>")}
-#phr-root .txw::-webkit-scrollbar-button:horizontal:double-button{display:none}
-#phr-root .txw::-webkit-scrollbar-corner{background:var(--c-ln)}
+/* З-106 (слово владельца 27.08, ночь): таблица режимов блока 04 взята
+   в точности в стиль таблиц подробной детализации — та же разметка
+   (.wrap + table.rt), та же светлая шапка на серой подложке, тонкие
+   линии строк, рамка 1px со скруглением 14. Градиентная тёмная шапка,
+   зебра, тонировка названий по выгоде и стрелки сортировки (клик к ним
+   не был подключен) ушли вместе со старым оформлением.
+   Предметные отличия: столбцов 14 и ширины свои. Первый столбец НЕ
+   закреплён — решение владельца 27.08 (вечер): прокручивается вместе
+   со всеми остальными, чтобы на телефоне не съедать экран. */
+#phr-root #card07 .wrap{margin-bottom:26px;--w-имя:250px;--w-знач:116px}
+#phr-root #card07 table.rt{min-width:calc(var(--w-имя) + 13*var(--w-знач))}
+/* Название режима — полужирным и с переносом по словам: столбец узкий,
+   длинные имена («Доходы минус расходы») укладываются в две строки.
+   Закрепления НЕТ — решение владельца 27.08: первый столбец прокручивается
+   вместе со всеми остальными; замороженный столбец на телефоне съедал
+   экран и мешал читать строку. */
+#phr-root #card07 table.rt td.имя{font-weight:600;color:var(--c-ink);
+white-space:normal;overflow-wrap:anywhere}
+/* Шапка таблицы — голубая растяжка, как на hero-плашках «18/6 съёмок»
+   (З-107, слово владельца 27.08): блок 04 целиком в голубой гамме. */
+/* З-146 (слово владельца 27.08): шапка — нейтральная серая, как в
+   таблицах подробной детализации: заливка var(--c-surf), шрифт и
+   цвет базовые для table.rt th (600, 12,5px, var(--c-gr)), граница
+   var(--c-ln). Остальная таблица не тронута. */
+#phr-root #card07 table.rt thead th{
+background:var(--c-surf);color:var(--c-gr);border-bottom-color:var(--c-ln)}
+/* Ваш режим — галочка и мягкая зелёная подложка: это данные, без
+   метки свою строку в сравнении не найти. Палитра — как у прочих
+   «положительных» отметок отчёта. */
+#phr-root #card07 table.rt tr.best td{background:var(--c-g-50)}
+#phr-root #card07 table.rt tr.best td.имя:before{content:'\2713\00a0';
+color:var(--c-g-700);font-weight:700}
+/* недоступные режимы — приглушённо, как прежде */
+#phr-root #card07 table.rt tr.over td{color:var(--c-gr2)}
+#phr-root #card07 table.rt tr.over td.имя{color:var(--c-gr)}
+/* пояснение под строкой недоступного режима */
+#phr-root #card07 table.rt td.нз{font-size:12px;color:var(--c-gr);
+white-space:normal;padding-top:0}
+/* «Нет» — зелёным, «Да» — красным: это смысл обязанности, не стиль */
+#phr-root #card07 table.rt td.ok{color:#15803D}
+#phr-root #card07 table.rt td.no{color:#B91C1C}
+/* подтекст обязанностей («раз в год», «чек в „Мой налог"») */
+#phr-root #card07 table.rt td i{display:block;font-style:normal;font-size:11.5px;
+font-weight:400;color:var(--c-gr2);margin-top:2px;white-space:normal}
 
 
 
-/* ---------- налоги ----------
-   Плашки цифр были белыми на почти белом фоне и проваливались.
-   Теперь подложка блока — синяя ведомственная, плашки светлые с рамкой
-   и заметно отделяются. */
-#phr-root .npd{background:linear-gradient(135deg,var(--c-fns-4) 0%,var(--c-white) 65%,var(--c-fns-4) 100%);
-border:1.5px solid var(--c-fns-3);border-radius:14px;
-padding:22px 24px;margin-bottom:18px}
-#phr-root .npd .t{font-size:15.5px;font-weight:700;color:var(--c-fns-1);margin-bottom:4px}
-#phr-root .npd .s{font-size:13px;color:var(--c-fns-2);margin-bottom:16px;line-height:1.55}
+/* ---------- налоги ---------- */
+/* З-113 (слово владельца 27.08, ночь): рамка, зелёная подложка и заголовок
+   плашки режима сняты — остаются только три цифровые плашки .g,
+   вплотную под баннером «Ваш режим» и на всю его ширину. */
+#phr-root .npd{padding:0;margin:0 0 18px}
 #phr-root .npd .g{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-/* Плашки цифр синие, как верхняя: белые числа выхватываются сразу,
-   на светлом фоне они терялись. */
+/* Плашки цифр голубые, как hero-плашки «18/6 съёмок»: белые числа
+   выхватываются сразу, на светлом фоне они терялись. */
 #phr-root .npd .g div{border:0;border-radius:14px;padding:16px 18px;
 box-shadow:0 4px 14px rgba(27,46,107,.20);position:relative;overflow:hidden;
-background:linear-gradient(145deg,#3B54A8 0%,var(--c-fns-2) 100%)}
+background:linear-gradient(140deg,var(--c-b-600),var(--c-b-400))}
 /* блик в углу — тот же приём, что у плиток «Условий труда» */
 /* Круги-блики: у каждой плашки свой набор — разный размер, разное
    место, разная прозрачность. Симметрии нет нигде, ритм «крупный —
@@ -1176,26 +1221,19 @@ background:rgba(255,255,255,.08)}
 #phr-root .npd .g div:nth-child(3):after{right:34px;bottom:-34px;width:70px;height:70px;
 background:rgba(255,255,255,.12)}
 #phr-root .npd .g span,#phr-root .npd .g b{position:relative;z-index:1}
-/* три плашки в одной гамме, но разной глубины: от голубой к тёмно-синей —
-   так они читаются как ряд, а не как одинаковые прямоугольники */
-#phr-root .npd .g div:nth-child(1){background:linear-gradient(140deg,#2A74AE 0%,#0F4A79 100%)}
-#phr-root .npd .g div:nth-child(2){background:linear-gradient(140deg,#4A66C4 0%,#26346F 100%)}
-/* третья плашка — предельная ставка: красная, её нужно заметить */
-#phr-root .npd .g div:nth-child(3){background:linear-gradient(140deg,#D42A62 0%,#8E1A3F 100%)}
+/* две цифровые плашки — глубины hero-пары: «Расчётная выручка» — как
+   «18 съёмок» (b-600 → b-400), «Запас до лимита» — как «6 съёмок»
+   (b-300 → b-400): читаются как ряд, но не одинаковые прямоугольники */
+#phr-root .npd .g div:nth-child(1){background:linear-gradient(140deg,var(--c-b-600),var(--c-b-400))}
+#phr-root .npd .g div:nth-child(2){background:linear-gradient(140deg,var(--c-b-300),var(--c-b-400))}
+/* третья плашка — предельная ставка: цветом как плашки «Рабочих ч/день»
+   и «Рабочих дней в году» блока 06 (коралл → малина инста-гаммы) —
+   предел должен быть заметен. Решение владельца 27.08. */
+#phr-root .npd .g div:nth-child(3){background:linear-gradient(140deg,var(--c-ig-3),var(--c-ig-2))}
 #phr-root .npd .g span{display:block;font-size:12px;color:var(--c-white);
 margin-bottom:6px;line-height:1.35;min-height:30px}
 #phr-root .npd .g b{font-size:22px;font-weight:700;color:var(--c-white);
 font-variant-numeric:tabular-nums;letter-spacing:-.02em}
-/* Ограничение режима: белая полоса на синей подложке — это условие
-   работы, а не цифра, поэтому отделено от плашек. */
-#phr-root .npd .npdlim{margin-top:14px;padding:14px 16px;border-radius:12px;
-background:var(--c-white);border:1px solid var(--c-fns-3);
-font-size:13px;line-height:1.6;color:var(--c-ink2)}
-#phr-root .npd .npdlim b{display:block;font-weight:700;color:var(--c-fns-1);
-margin-bottom:3px;font-size:13.5px}
-#phr-root .npd .warn{margin-top:14px;font-size:13px;line-height:1.6;color:var(--c-ink3);
-display:flex;align-items:flex-start;gap:7px}
-#phr-root .npd .warn b{color:var(--ink);font-weight:700}
 /* ---------- справочник-памятка ---------- */
 /* Скрытые элементы: остаются в разметке, но не показываются.
    Так проще вернуть — не нужно искать код по архиву. */
@@ -1297,135 +1335,29 @@ opacity:.9}
 /* Без подложки: фон тот же, что у страницы и меню. Отступы по бокам
    убраны — текст выравнивается по общей колонке. */
 #phr-root .pmknote{margin-top:26px;padding:22px 0;background:none;border:0}
-#phr-root .pmknote .pnh{font-size:13px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;
-color:var(--c-gr2);margin-bottom:14px}
-#phr-root .pmknote .pi2{font-size:12.5px;line-height:1.7;color:var(--c-gr);margin-bottom:9px;
-display:flex;gap:11px;align-items:flex-start;padding:6px 8px;margin-left:-8px;
-border-radius:12px;transition:background .25s}
-#phr-root .pmknote .pi2:last-of-type{margin-bottom:0}
-/* номер пункта — кружок слева, на него ссылаются из блоков отчёта */
-#phr-root .pmknote .pi2 .rnum{flex:none;width:26px;height:26px;border-radius:50%;
-display:inline-flex;align-items:center;justify-content:center;font-style:normal;
-font-size:11px;font-weight:800;font-variant-numeric:tabular-nums;
-color:var(--c-gr2);background:var(--c-white);border:1px solid var(--c-ln);
-margin-top:1px;transition:background .25s,color .25s,border-color .25s}
-#phr-root .pmknote .pi2 .rtx{min-width:0}
-/* Подсветка при переходе по ссылке: :target срабатывает на том пункте,
-   чей id стоит в адресе. Человек видит, куда именно он попал. */
-#phr-root .pmknote .pi2:target{background:var(--c-b-50)}
-#phr-root .pmknote .pi2:target .rnum{background:linear-gradient(140deg,var(--c-b-500),var(--c-b-700));
-border-color:transparent;color:var(--c-white)}
-#phr-root .pmknote .pi2:target b{color:var(--c-b-800)}
-#phr-root .pmknote .pi2 b{color:var(--c-ink2);font-weight:600}
-/* Ссылки внутри памятки — как .refl: цветом не выделяются, наследуют
-   шрифт абзаца, обозначены только подчёркиванием. */
-#phr-root .pmknote .pi2 a{color:inherit;font:inherit;text-decoration:none;
-border-bottom:1px solid currentColor;opacity:.9}
-#phr-root .pmknote .pi2 a:hover{opacity:1}
-#phr-root .pmknote .pnf{font-size:12px;color:var(--c-gr2);margin-top:14px;padding-top:12px;
-border-top:1px solid var(--c-bg);line-height:1.55}
-
-#phr-root .tx{width:100%;border-collapse:separate;border-spacing:0;
-font-size:13px;margin-top:6px;min-width:1760px}
-/* Шапка — градиентная, как все заливки в отчёте. Правила только через
-   thead th: иначе .cnm и .num перекрашивают и заголовки. */
-#phr-root .tx thead th{text-align:left;font-weight:700;
-color:var(--c-white)!important;font-size:11.5px;letter-spacing:.02em;
-padding:12px 12px;white-space:nowrap;border:0;vertical-align:bottom;
-background:linear-gradient(135deg,var(--c-fns-2),var(--c-fns-1))}
-#phr-root .tx thead th.num{text-align:right}
-/* Скругление углов — только на обёртке .txw: она не двигается при
-   прокрутке. Раньше радиус стоял на крайних ячейках шапки и уезжал
-   вместе с таблицей — слева углы пропадали, справа появлялись. */
-/* Скругление — на самой таблице, а не на ячейках: иначе у первой ячейки
-   оставался прямой угол и читался как «бордюр». */
-
-/* Чередование строк: белая — светло-серая */
-#phr-root .tx tbody td{padding:13px 12px;border:0;
-border-bottom:1px solid var(--c-ln2);background:var(--c-white);
-font-variant-numeric:tabular-nums;color:var(--c-ink2)}
-#phr-root .tx tbody tr.zeb td{background:var(--c-surf)}
-/* Каждая ячейка первого столбца залита сверху вниз: тёмный верх —
-   светлый низ. Так видна граница между строками. */
-/* Фон первого столбца ставится из JS: тот же тон, что у «Нагрузки»
-   в этой строке, только плотнее. Так столбец связан со шкалой, а не
-   спорит с ней отдельным цветом. */
-#phr-root .tx tbody tr:last-child td{border-bottom:0}
-#phr-root .tx .num{text-align:right;white-space:nowrap}
-/* Название режима закреплено при горизонтальной прокрутке: без него
-   в длинной таблице непонятно, чья это строка. */
-#phr-root .tx td.cnm{white-space:normal;font-weight:700;color:var(--c-ink);
-width:250px;min-width:250px;max-width:250px;line-height:1.35;
-position:sticky;left:0;z-index:2}
-#phr-root .tx td.cnm i{display:block;font-style:normal;font-weight:400;
-font-size:12px;color:var(--c-ink3);margin-top:2px}
-/* Угловая ячейка липнет сразу по двум осям: при горизонтальной прокрутке
-   заголовок первого столбца уезжал, хотя сам столбец оставался. */
-#phr-root .tx thead th.cnm{position:sticky;left:0;z-index:6;
-background:linear-gradient(135deg,var(--c-fns-2),var(--c-fns-1))}
-/* правый край липкой колонки — тонкая линия вместо тени */
-#phr-root .tx td.cnm:after{content:'';position:absolute;top:0;bottom:0;right:0;
-width:1px;background:rgba(0,0,0,.07)}
-/* Жирный оставлен только заголовкам и столбцу «Налоговый режим»:
-   раньше цифры спорили с ним за внимание. */
-#phr-root .tx td.ld{font-weight:400;color:var(--c-ink);font-size:14px}
-#phr-root .tx td.tot{font-weight:400;color:var(--c-ink);font-size:14px}
-#phr-root .tx td.mk{font-variant-numeric:normal;font-size:12.5px;line-height:1.4;
-white-space:nowrap}
-#phr-root .tx td.ok,#phr-root .tx td.mk.ok{color:#15803D;font-weight:400}
-#phr-root .tx td.mk.no{color:#B91C1C}
-#phr-root .tx td.cx{letter-spacing:2px;color:var(--c-fns-2);font-size:12px}
-/* ваш режим — левая метка, без обводки по периметру */
-/* Без полосы слева: она читалась как случайный бордюр на первой строке.
-   Ваш режим помечен галочкой перед названием. */
-/* Строка выбранного режима подсвечена целиком — так её видно сразу.
-   Цвет мягкий синий: он не спорит со шкалой выгодности в колонке. */
-#phr-root .tx tbody tr.best td{background:var(--c-fns-4)}
-#phr-root .tx tbody tr.best td.cnm:before{content:'\2713\00a0';
-color:var(--c-g-700);font-weight:700}
-#phr-root .tx tbody tr.best td.ld,#phr-root .tx tbody tr.best td.tot{
-color:var(--c-fns-1)}
-#phr-root .tx tbody tr.over td{color:var(--c-gr2)}
-#phr-root .tx tbody tr.over td.cnm{color:var(--c-gr)}
-/* Сортировка стрелкой прямо в заголовке: по клику колонка становится
-   активной, повторный клик переворачивает порядок. */
-#phr-root .tx thead th.srt{cursor:pointer;user-select:none;padding-right:26px;
-position:relative}
-#phr-root .tx thead th.srt:hover{background:linear-gradient(135deg,var(--c-fns-1),#16255A)}
-#phr-root .tx thead th.srt:after{content:'';position:absolute;right:11px;
-top:50%;margin-top:-2px;border-left:4px solid transparent;
-border-right:4px solid transparent;border-top:5px solid rgba(255,255,255,.38)}
-#phr-root .tx thead th.srt.on:after{border-top-color:var(--c-white)}
-#phr-root .tx thead th.srt.on.desc:after{border-top:0;
-border-bottom:5px solid var(--c-white);margin-top:-3px}
-/* .srt задаёт position:relative и стоит ниже по файлу — для угловой
-   ячейки возвращаем sticky, иначе её заголовок уезжает вбок. */
-#phr-root .tx thead th.cnm.srt{padding-right:26px;
-position:sticky;left:0;z-index:6}
+/* З-108: стили пунктов справки (pnh/pi2) удалены вместе с самой
+   справкой. З-109: уведомление под таблицей переведено на канон
+   .note.warn — собственных стилей у памятки больше нет. */
 
 /* ═══ ТАБЛИЦЫ НА МОБИЛЬНОМ — решение владельца 26.08 ═══
-   Единый стиль для всех таблиц отчёта: таблицы режимов (.txw),
-   подробной детализации и справочника (#спрдет .wrap).
+   Единый стиль для всех таблиц отчёта (.wrap + table.rt): подробная
+   детализация, справочник, сравнение режимов блока 04.
    1. Липкие первые колонки сняты: на узком экране закреплённый
       столбец съедал половину видимой ширины.
    2. Полоса прокрутки убрана — листаем пальцем (свайп).
    3. Перед таблицей — подсказка: серая полоска с едущей ладонью.
    4. Столбец № скрыт: на узком экране порядковый номер не нужен. */
 @media(max-width:620px){
-#phr-root .tx td.cnm,#phr-root .tx thead th.cnm,#phr-root .tx td.mk{position:static}
-#phr-root .tx td.cnm:after{display:none}
-#phr-root .txw::-webkit-scrollbar,
-#phr-root #спрдет .wrap::-webkit-scrollbar{height:0;width:0;display:none}
-#phr-root .txw,#phr-root #спрдет .wrap{scrollbar-width:none;-ms-overflow-style:none}
-#phr-root .txfoot{display:none}
-#phr-root .txbox,#phr-root #спрдет .wrap{border-radius:14px}
+#phr-root .wrap::-webkit-scrollbar{height:0;width:0;display:none}
+#phr-root .wrap{scrollbar-width:none;-ms-overflow-style:none}
 /* Порядковый номер на мобильном не показываем — место дороже. */
 #phr-root #спрдет table.rt th.ш-ном,
 #phr-root #спрдет table.rt td:first-child{display:none}
 /* Наименование переносится по словам и потому может быть узким:
    142px вместо 186px. Решение владельца 27.08 — читать в две строки
-   удобнее, чем тянуть таблицу вбок ради одной длинной строки. */
-#phr-root #спрдет{--w-имя:142px;--w-знач:104px}
+   удобнее, чем тянуть таблицу вбок ради одной длинной строки.
+   Ширины — общие для справочника и таблицы режимов блока 04. */
+#phr-root #спрдет,#phr-root #card07 .wrap{--w-имя:142px;--w-знач:104px}
 /* Наименование — всегда вторая ячейка строки (первая — №, скрытый
    на мобильном). Отдельного класса у неё нет, поэтому целимся
    по позиции. Строки-пояснения (colspan) исключены. */
@@ -1451,23 +1383,31 @@ animation:phr-свайп 2.1s cubic-bezier(.45,0,.35,1) infinite}
 78%,100%{transform:translateX(70px);opacity:0}}
 @media(prefers-reduced-motion:reduce){
 #phr-root .свайп-рука{animation:none;transform:translateX(42px);opacity:1}}
-/* пояснение второй строкой внутри ячейки-обязанности */
-#phr-root .tx td.mk i{display:block;font-style:normal;font-size:11.5px;
-font-weight:400;color:var(--c-gr2);margin-top:2px;white-space:normal}
 
 /* ---------- итог под кольцом ---------- */
-/* итог под кольцом — рамка, без плотной заливки.
-   Фон: лёгкий градиент + фирменный знак прозрачностью 5% */
-#phr-root .dnsum{position:relative;overflow:hidden;margin:-6px auto 32px;max-width:660px;
-text-align:center;border:1.5px solid var(--c-g-200);border-radius:var(--r);
-padding:26px 30px 22px;background:radial-gradient(120% 90% at 50% 0%,var(--c-g-50) 0%,var(--c-white) 62%)}
+/* З-122 (слово владельца 27.08): плашки залиты градиентом по типу
+   основного баннера hero (блик + 160deg, текст белый); цвет каждого
+   баннера идентичен диаграмме под ним. Размер и наполнение прежние.
+   Ниже — история З-114 (светлые плашки, заменены З-122). */
+/* З-114 (слово владельца 27.08, ночь): возврат к прежним светлым плашкам —
+   закраска всех трёх полей голубим (З-112) отменена. «Доход на руки» —
+   светлая зелёная, «Ваши расходы» — розовая, «Отложите в резерв» — тот же
+   силуэт, но в голубой гамме (b-токены), не закрашенная. */
+#phr-root .dnsum{position:relative;overflow:hidden;margin:28px -28px 32px;
+text-align:center;border:0;border-radius:var(--r) var(--r) 0 0;
+padding:26px 30px 22px;background:
+radial-gradient(circle at 86% 0%,rgba(255,255,255,.15) 0%,rgba(255,255,255,0) 36%),
+linear-gradient(160deg,var(--c-g-800) 0%,var(--c-g-600) 46%,rgba(111,209,131,.6) 100%)}
+/* З-124 (слово владельца 27.08): цветная полоса по нижнему краю плашек
+   убрана — подчёркивание баннера, чужой стилистический элемент, в
+   оформлении документа больше не используется. */
 #phr-root .dnsum .dsdeco{position:absolute;right:-34px;bottom:-40px;width:170px;height:170px;
 opacity:.05;pointer-events:none}
 #phr-root .dnsum .dsh{position:relative;z-index:1;font-size:21px;font-weight:700;
-letter-spacing:-.02em;color:var(--c-ink);margin-bottom:12px}
-#phr-root .dnsum .dsm{position:relative;z-index:1;font-size:15.5px;line-height:1.45;color:var(--c-ink3)}
+letter-spacing:-.02em;color:var(--c-white);margin-bottom:12px}
+#phr-root .dnsum .dsm{position:relative;z-index:1;font-size:15.5px;line-height:1.45;color:rgba(255,255,255,.85)}
 #phr-root .dnsum .dsb{position:relative;z-index:1;font-size:38px;font-weight:700;
-color:var(--c-g-800);letter-spacing:-.03em;line-height:1.1;margin-top:4px;
+color:var(--c-white);letter-spacing:-.03em;line-height:1.1;margin-top:4px;
 font-variant-numeric:tabular-nums}
 #phr-root .dnsum .dsg{position:relative;z-index:1;display:flex;flex-direction:column;gap:7px;
 max-width:430px;margin:16px auto 0;text-align:left}
@@ -1477,22 +1417,38 @@ font-size:13.5px;color:var(--c-ink3);line-height:1.35}
 #phr-root .dnsum .dsi b{font-weight:700;color:var(--c-ink);font-variant-numeric:tabular-nums;
 white-space:nowrap}
 #phr-root .dnsum .dsl{position:relative;z-index:1;font-size:14px;line-height:1.55;
-color:var(--c-gr);margin-top:16px;padding-top:13px;border-top:1px solid var(--c-ln)}
-#phr-root .dnsum .dsl u{text-decoration:none;font-weight:700;color:var(--c-ink2);
+color:rgba(255,255,255,.8);margin-top:16px;padding-top:13px;border-top:1px solid rgba(255,255,255,.25)}
+#phr-root .dnsum .dsl u{text-decoration:none;font-weight:700;color:var(--c-white);
 font-variant-numeric:tabular-nums;white-space:nowrap}
 @media(max-width:600px){
 #phr-root .lgi .lvv .a{font-size:14px}
 #phr-root .dnsum{padding:20px 16px}
 #phr-root .dnsum .dsb{font-size:31px}#phr-root .dnsum .dsm{font-size:14px}
 #phr-root .dnsum .dsi{font-size:12.5px}#phr-root .dnsum .dsl{font-size:13px}}
-/* вторая плашка — расходы, тот же силуэт в красной гамме */
-#phr-root .dnsum.exp{margin:38px auto 32px;border-color:var(--c-r-200);
-background:radial-gradient(120% 90% at 50% 0%,var(--c-r-50) 0%,var(--c-white) 62%)}
-#phr-root .dnsum.exp .dsb{color:var(--c-r-700)}
-/* третья плашка — резерв, тот же силуэт в серо-синей гамме кольца */
-#phr-root .dnsum.res{margin:38px auto 32px;border-color:var(--c-g-300);
-background:radial-gradient(120% 90% at 50% 0%,var(--c-g-50) 0%,var(--c-white) 62%)}
-#phr-root .dnsum.res .dsb{color:var(--c-g-900)}
+/* З-114: расходы — прежняя розовая гамма; резерв — та же светлая плашка,
+   но в голубой (b-200/b-50/b-600); интервал между полями 38px */
+/* З-140: заливка — точно как у баннеров «Ваш доход на руках» и
+   «Отложите в резерв» (насыщенный → средний → светлый полупрозрачный
+   хвост, 160deg), отличается только цветом. Гамма — референс
+   блока 06, плашки 2–4 («Рабочих ч/день 12,6», «Рабочих дней в
+   году», «Выходных / год»): старт ig-2 → средний ig-3 → светлый
+   хвост ig-4. Первая плашка ряда — дополнительная, не берётся. */
+#phr-root .dnsum.exp{margin:52px -28px 32px;
+background:radial-gradient(circle at 86% 0%,rgba(255,255,255,.15) 0%,rgba(255,255,255,0) 36%),
+linear-gradient(160deg,var(--c-ig-2) 0%,var(--c-ig-3) 46%,rgba(245,96,64,.6) 100%)}
+#phr-root .dnsum.exp .dsb{color:var(--c-white)}
+/* З-137: гамма — референс hero-плашек «18/6 съёмок» (b-600 → b-400,
+   светлый хвост b-300), как зафиксировано в блоке 04 (З-107). */
+#phr-root .dnsum.res{margin:52px -28px 32px;
+background:radial-gradient(circle at 86% 0%,rgba(255,255,255,.15) 0%,rgba(255,255,255,0) 36%),
+linear-gradient(160deg,var(--c-b-600) 0%,var(--c-b-400) 46%,rgba(143,199,232,.6) 100%)}
+#phr-root .dnsum.res .dsb{color:var(--c-white)}
+/* З-117: на узких экранах боковое поле карточки 20px — плашки тянут
+   до края с той же компенсацией; стоит после .exp/.res, чтобы
+   порядок каскада не сбивал боковые поля. */
+@media(max-width:600px){
+#phr-root .dnsum,#phr-root .dnsum.exp,#phr-root .dnsum.res{
+margin-left:-20px;margin-right:-20px}}
 
 /* ---------- декор карточки 01 ---------- */
 #phr-root #card01{position:relative;overflow:hidden}
@@ -1552,24 +1508,27 @@ position:relative;z-index:1;box-sizing:border-box}
 #phr-root .cn .sm{display:flex;align-items:flex-start;height:68px;min-height:68px;
 padding-top:10px;box-sizing:border-box;font-size:13.5px;opacity:.92;
 line-height:1.45;position:relative;z-index:1}
-/* Ряд из трёх держится до 480px — как у плашек главного экрана и блока 05.
-   Промежуточного вида «одна плашка во всю ширину» больше нет: с планшета
+/* Ряд из трёх держится до 640px — как у плашек главного экрана и блока 05.
+   Промежуточного вида «одна плашка во всю ширину» нет: с планшета
    сразу в мобильный формат. Решение владельца 27.08. */
-/* Плашки не ужимаются до крошечных: держим пропорцию, близкую к квадрату
-   (min-height от ширины колонки), иначе на узком планшете содержимому
-   не хватало места и черта съезжала. Строки заданы сеткой — подпись,
-   цифра с чертой и описание всегда на одном уровне во всех трёх.
-   Решение владельца 27.08. */
-@media(min-width:641px) and (max-width:760px){
-#phr-root .cnd{gap:10px}
-#phr-root .cn{display:grid;grid-template-rows:auto auto 1fr;
-height:auto;min-height:210px;padding:16px 14px}
-#phr-root .cn .tp{height:auto;min-height:2.6em;font-size:11px;line-height:1.3;
-display:flex;align-items:flex-start}
-#phr-root .cn .bg{height:auto;min-height:0;font-size:clamp(20px,3.4vw,30px);
-margin:8px 0 0;padding-bottom:10px;align-items:flex-end}
-#phr-root .cn .sm{height:auto;min-height:0;padding-top:10px;
-align-items:flex-start;font-size:11.5px;line-height:1.4}}
+/* Сжатие ряда — планомерное (З-105, слово владельца 27.08, ночь):
+   прежняя промежуточная ступень 641–760px прижимала содержимое к
+   верху сеткой, и строка с цифрой и чертой прыгала вверх на ~50px.
+   Теперь верхние и нижние края плашки сходятся равномерно: высота,
+   поля и кегли заданы clamp'ами, у которых потолок достигается ровно
+   на 800px — на 801px и выше действует базовый вид без единого
+   скачка. Структура прежняя: заголовок сверху, цифра с чертой и
+   описание прижаты к низу — строка поднимается постепенно, по мере
+   сжатия окна. Пропорция плашки остаётся близкой к квадрату
+   (min-height от ширины окна). */
+@media(min-width:641px) and (max-width:800px){
+#phr-root .cnd{gap:clamp(10px,2vw,16px)}
+#phr-root .cn{height:auto;min-height:clamp(206px,33vw,264px);
+padding:clamp(14px,3.5vw,28px) clamp(13px,3.25vw,26px)}
+#phr-root .cn .bg{height:auto;min-height:clamp(60px,12vw,96px);
+font-size:clamp(22px,4vw,32px)}
+#phr-root .cn .sm{height:auto;min-height:clamp(46px,8.5vw,68px);
+font-size:clamp(11.5px,1.69vw,13.5px)}}
 @media(max-width:640px){#phr-root .cnd{grid-template-columns:1fr}
 #phr-root .cn{height:auto;min-height:0;padding:22px}}
 /* Мобильный вид по образцу плашек самозанятости (.npd .g div):
@@ -1802,21 +1761,20 @@ padding-top:16px;border-top:1px solid var(--c-bg)}
 @media(max-width:820px){#phr-root .cond .ch2{font-size:18px}}
 
 /* ---------- вывод-аксиома ---------- */
-/* Плашка под календарём. Текст начинается там же, где плашки дней:
-   58px (колонка часов) + 7px (зазор сетки) = 65px. Отступ карточки
-   прибавлять не нужно — плашка уже внутри неё.
-   Знак «Счётикс» уходит вверх-влево за край, под градиент. */
-#phr-root .wknote{position:relative;overflow:hidden;margin-top:22px;
-padding:24px 28px 24px 65px;
-border:1.5px solid var(--c-g-200);border-radius:var(--r);
-background:radial-gradient(120% 90% at 50% 0%,var(--c-g-50) 0%,var(--c-white) 62%);
-font-size:14.5px;line-height:1.7;color:var(--c-ink2)}
-#phr-root .wknote > *{position:relative;z-index:1}
-#phr-root .wknote .wkmk{position:absolute;left:-58px;top:-58px;width:150px;height:150px;
-opacity:.06;z-index:0;pointer-events:none}
-#phr-root .wknote b{color:var(--ink);font-weight:700}
-#phr-root .wknote .big3{display:block;font-size:16px;font-weight:700;color:var(--ink);
-margin-bottom:6px;letter-spacing:-.01em}
+/* З-120 (слово владельца 27.08): примечание возвращено на место;
+   перед диаграммой потраченного времени — отдельный текстовой
+   блок (вторая половина прежнего примечания, дословно).
+   Диаграмма переехала в собственный контейнер #wkchart. */
+#phr-root .wktxt{font-size:14.5px;line-height:1.7;color:var(--c-ink2);margin:22px 0 0}
+#phr-root .wktxt b{color:var(--ink);font-weight:700}
+/* З-141: подзаголовок таблицы недели — в стиле надзаголовка
+   «Сервис работает в пробном режиме» (серый капителли, var(--c-gr2)),
+   по центру таблицы. Верхний отступ 46 px — чёткое разделение
+   части с линейной диаграммой и части с таблицей-календарём. */
+#phr-root .wktitle{margin:46px 0 18px;text-align:center;font-size:12.5px;
+font-weight:600;line-height:1.4;letter-spacing:.04em;text-transform:uppercase;
+color:var(--c-gr2)}
+#phr-root #wkchart{margin-top:22px}
 
 /* ---------- расшифровка недели плашками ---------- */
 #phr-root .dgrp{font-size:12px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;
@@ -2019,10 +1977,13 @@ border-radius:14px;padding:12px 15px;background:var(--c-surf);position:relative;
 #phr-root .lgi .fill{position:absolute;left:0;top:0;bottom:0;opacity:.13;border-radius:14px}
 #phr-root .lgi.zero{opacity:1;background:var(--c-a-50);border:1px dashed var(--c-a-300)}
 #phr-root .lgi.zero .ltx b,#phr-root .lgi.zero .ltx em{color:var(--c-gr)}
-#phr-root .lgi.zero .ltx i{opacity:.45}
-/* предупреждение внутри строки легенды: вид из .note.warn,
-   здесь только раскладка в гриде */
-#phr-root .lgi .note.warn{grid-column:1/-1;z-index:2;margin-top:10px}
+#phr-root .lgi.zero .ltx i{opacity:1}
+/* З-115 (слово владельца): сама строка-уведомление уже несёт фон и рамку —
+   внутреннее предупреждение без рамки и подложки; жёлтый знак «!»
+   перенесён в правый верхний угол строки (.zex вместо «не заложено») */
+#phr-root .lgi .note.warn{grid-column:1/-1;z-index:2;margin-top:10px;
+border:0;background:none;padding:0}
+#phr-root .lgi .note.warn:before{display:none}
 /* Кнопка внутри предупреждения: ведёт к нужному полю анкеты.
    Гамма предупреждения, чтобы не спорить с плашкой. */
 #phr-root .lgwb{display:table;margin-top:12px;
@@ -2032,7 +1993,12 @@ text-decoration:none;transition:background .18s,border-color .18s,transform .12s
 #phr-root .lgwb:hover{background:var(--c-a-50);border-color:var(--c-a-400)}
 #phr-root .lgwb:active{transform:translateY(1px)}
 @media print{#phr-root .lgwb{display:none}}
-#phr-root .lgi.zero .lvv .a{font-size:12.5px;font-weight:600;color:var(--c-a-700)}
+/* З-117 (слово владельца 27.08): знак «!» — точно канонический размер
+   кружка уведомлений .note.warn:before (18×18, 11px/700), позиция
+   справа в строке — как сейчас. */
+#phr-root .lgi .zex{display:inline-flex;align-items:center;justify-content:center;
+width:18px;height:18px;border-radius:50%;background:var(--c-a-400);
+color:var(--c-white);font-size:11px;font-weight:700}
 #phr-root .lgi .ltx{position:relative;z-index:2;display:flex;align-items:center;gap:10px;min-width:0}
 #phr-root .lgi .ltx i{width:10px;height:10px;border-radius:3px;flex:none}
 #phr-root .lgi .ltx b{font-size:14px;font-weight:600;color:var(--ink);line-height:1.3}
@@ -2486,7 +2452,8 @@ margin-bottom:5px;min-height:32px}
 font-variant-numeric:tabular-nums;letter-spacing:-.02em}
 #phr-root .scn .g em{font-style:normal;font-size:11.5px;color:rgba(255,255,255,.75);
 display:block;margin-top:3px}
-/* вывод — белая полоса на светлой подложке, как .npdlim в блоке 04 */
+/* вывод — белая полоса на светлой подложке, как бывшая полоса-ограничение
+   блока 04 (убрана в З-111) */
 #phr-root .scn .out{margin-top:14px;padding:14px 16px;border-radius:12px;
 background:var(--c-white);border:1px solid var(--c-p-200);
 font-size:13px;line-height:1.6;color:var(--c-ink2)}
@@ -2521,16 +2488,9 @@ padding:0 4px;text-align:center;line-height:1.15;overflow:hidden}
    38px на 320px — читалось «одвижен». На планшете (520px и выше)
    подписи влезают и остаются.
    Ниже — только цветовые обозначения; что означает каждый цвет,
-   расшифровывает легенда .wlg под сеткой. */
+   расшифровывает легенда .slg под сеткой. */
 @media(max-width:519px){#phr-root .wk i span{display:none}}
-#phr-root .wlg{display:flex;gap:9px;flex-wrap:wrap;margin-top:18px}
-#phr-root .wlg span{display:flex;align-items:center;gap:7px;font-size:12.5px;color:var(--c-ink3);
-background:var(--c-bg);border-radius:12px;padding:7px 13px}
-#phr-root .wlg i{width:10px;height:10px;border-radius:3px;display:block;flex:none}
-#phr-root .wlg b{font-weight:700;color:var(--ink);font-variant-numeric:tabular-nums}
 @media(max-width:700px){#phr-root .wk{grid-template-columns:44px repeat(5,1fr);gap:5px}
-#phr-root .wknote{padding:20px 20px 20px 49px}
-#phr-root .wknote .wkmk{left:-46px;top:-46px;width:116px;height:116px}
 #phr-root .wk i{height:30px;border-radius:12px}
 #phr-root .wk .hr{line-height:30px;font-size:10px}}
 
@@ -2589,27 +2549,31 @@ letter-spacing:.01em}
    таблице. Решение владельца 27.08. Подсветка осталась при наведении. */
 #phr-root #спрдет a.спр{color:inherit;text-decoration:none;border-bottom:0}
 #phr-root #спрдет a.спр:hover{color:var(--c-ink2)}
-#phr-root #спрдет .wrap{overflow-x:auto;border:1px solid var(--c-ln);border-radius:14px;background:#fff}
+/* Стиль .rt общий для всего отчёта (З-106, слово владельца 27.08):
+   таблицы подробной детализации, справочника и сравнения режимов
+   (блок 04) оформлены одинаково. Предметные отличия — ширины
+   столбцов и закрепления — задаются на месте, у каждой таблицы. */
+#phr-root .wrap{overflow-x:auto;border:1px solid var(--c-ln);border-radius:14px;background:#fff}
 /* min-width:760px убран — из-за него КАЖДАЯ таблица была шире телефона
    и подсказка о прокрутке висела всегда, даже на коротких таблицах.
    Теперь ширину диктуют сами колонки: узкая таблица укладывается
    в экран и прокрутки не требует. Решение владельца 27.08. */
-#phr-root #спрдет table.rt{width:100%;border-collapse:collapse;font-size:13px;
+#phr-root table.rt{width:100%;border-collapse:collapse;font-size:13px;
 table-layout:fixed}
 /* Ширины задаются классами на ячейках шапки, а не через col.
    Прежние col.cn/.cv конфликтовали с новым порядком колонок:
    браузер отдавал «Наименованию» 132px вместо 290, а суммам —
    46px кода, и «1 322 592 ₽» обрезалось. */
-#phr-root #спрдет table.rt th.ш-ном{width:var(--w-ном)}
-#phr-root #спрдет table.rt th.ш-имя{width:var(--w-имя)}
-#phr-root #спрдет table.rt th.ш-знач{width:var(--w-знач)}
-#phr-root #спрдет table.rt th.ш-код{width:var(--w-код);text-align:right}
-#phr-root #спрдет table.rt th{text-align:left;font-weight:600;color:var(--c-gr);font-size:12px;
+#phr-root table.rt th.ш-ном{width:var(--w-ном)}
+#phr-root table.rt th.ш-имя{width:var(--w-имя)}
+#phr-root table.rt th.ш-знач{width:var(--w-знач)}
+#phr-root table.rt th.ш-код{width:var(--w-код);text-align:right}
+#phr-root table.rt th{text-align:left;font-weight:600;color:var(--c-gr);font-size:12px;
 padding:9px 12px;border-bottom:1.5px solid var(--c-ln);white-space:nowrap;background:var(--c-surf)}
-#phr-root #спрдет table.rt td{text-align:left;padding:8px 12px;border-bottom:1px solid var(--c-bg);
+#phr-root table.rt td{text-align:left;padding:8px 12px;border-bottom:1px solid var(--c-bg);
 font-variant-numeric:tabular-nums;vertical-align:middle;white-space:nowrap}
-#phr-root #спрдет table.rt tr:last-child td{border-bottom:0}
-#phr-root #спрдет table.rt tr.пояснение td{background:var(--c-surf);color:var(--c-gr);font-size:11.5px;
+#phr-root table.rt tr:last-child td{border-bottom:0}
+#phr-root table.rt tr.пояснение td{background:var(--c-surf);color:var(--c-gr);font-size:11.5px;
 text-transform:uppercase;letter-spacing:.05em;font-weight:600;padding:7px 12px;white-space:normal}
 /* Порядок колонок с 26.08: № · Наименование · значения… · Код · (пусто).
    Прежние правила считали старый порядок (№ · Код · Блок · Имя) и после
@@ -2629,6 +2593,8 @@ white-space:nowrap;text-align:right}
 @media(max-width:700px){#phr-root #спрдет .шапка{padding:16px}
 #phr-root #спрдет .тело{padding:0 16px 18px}
 #phr-root #спрдет table.rt{font-size:12.5px}
+/* таблица режимов блока 04 — тот же кегль, что у прочих .rt */
+#phr-root #card07 table.rt{font-size:12.5px}
 /* Имя переносится по словам (правило ниже), поэтому широкая колонка
    не нужна: 142px вместо 230px. Решение владельца 27.08. */
 #phr-root #спрдет{--w-имя:142px;--w-знач:118px}}
@@ -2641,7 +2607,18 @@ white-space:nowrap;text-align:right}
 #phr-root #спрдет table.rt{min-width:0;font-size:10.5px}
 #phr-root #спрдет table.rt th,#phr-root #спрдет table.rt td{padding:4px 6px}
 #phr-root #спрдет a.спр{border-bottom:0}
-#phr-root #спрдет .пункт .пункт{break-inside:avoid}}
+#phr-root #спрдет .пункт .пункт{break-inside:avoid}
+/* З-106: таблица режимов блока 04 печатается так же, как таблицы
+   детализации, — без прокрутки, компактным кеглем. */
+#phr-root #card07 .wrap{overflow:visible}
+#phr-root #card07 table.rt{min-width:0;font-size:10.5px}
+#phr-root #card07 table.rt th,#phr-root #card07 table.rt td{padding:4px 6px}
+/* 14 столбцов на листе узки — заголовки переносятся по словам */
+#phr-root #card07 table.rt th{white-space:normal}
+/* на печати шапка возвращается к светлой подложке детализации:
+   голубая растяжка на бумаге съедает чернила и глушит текст */
+#phr-root #card07 table.rt thead th{background:var(--c-surf);
+color:var(--c-gr);border-bottom-color:var(--c-ln)}}
 
 /* ---------- пробный режим: объяснение ----------
    Перед подвалом. Подложки нет: это сноска ко всему отчёту, а не блок
@@ -2737,7 +2714,7 @@ white-space:normal}
 #phr-root .bigsum b{font-size:clamp(17px,2.6vw,27px)}
 #phr-root .bigsum span{font-size:11px}
 #phr-root .bigsum.top{margin:0 0 12px}
-#phr-root .scn3>.dn{width:100%;max-width:190px}
+
 #phr-root .scn3>.dn svg{width:100%;height:auto;display:block}
 #phr-root .ratebot{margin-top:12px;padding-top:12px;gap:6px}
 /* Перенос разрешён: «108 300 ₽/мес» в одну строку не влезает в узкую
@@ -2772,7 +2749,6 @@ white-space:normal}
 #phr-root .scn .g{grid-template-columns:1fr 1fr}
 #phr-root .npd .g{grid-template-columns:1fr}
 #phr-root .chn{grid-template-columns:1fr}
-#phr-root .tx{font-size:12.5px}
 
 #phr-root table.rt{font-size:13px}}
 
@@ -3301,10 +3277,11 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 <div class="card" id="card02"><div class="bn">02</div>
 <h2 data-t="rh2_09">Как распределяется ваше время</h2>
 <p class="hint" data-t="rhi_09">Реальная структура рабочей недели: чтобы провести несколько часов на площадке, вы работаете полную пятидневку</p>
-
+<div class="lgd" id="wkchart"></div>
+<h3 class="wktitle">Примерный график на неделю</h3>
 <div class="wk" id="wk"></div>
 <div class="slg" id="wklg"></div>
-<div class="wknote" id="wknote"></div>
+<p class="wktxt" id="wktxt"></p>
 </div>
 
 <div class="card" id="card06"><div class="bn">03</div>
@@ -3351,22 +3328,31 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 <div class="txh" data-t="rth_hd">Сравнение режимов налогообложения на ваших цифрах</div>
 <div class="txhs" data-t="rth_hs">Посмотрите, какой вариант действительно приносит максимальную чистую прибыль и на каких условиях вам будет комфортнее работать.</div>
 <div class="свайп" aria-hidden="true"><div class="свайп-полоса"><svg class="свайп-рука" viewBox="0 0 64 64" fill="none"><path d="M58.9 29.6c-2.8-2.1-6.8-1.9-9.4.3-1.1.9-2 2.1-3 3.2l-1.5 1.7c0-6.2 0-12.5 0-18.7 0-1.8.1-3.5-1.1-5.1-2.5-3.3-7.9-3.2-10.1.3-1 1.5-.8 3.2-.8 4.9v5.4c-2-.5-4.3 0-5.7 1.8-.4.5-.6.9-.8 1.5-.6-.2-1.1-.3-1.7-.3-2.4 0-4.2 1.4-4.9 3.4-2-.6-4.3-.2-5.8 1.5-1.6 1.8-1.2 4.3-1.2 6.5v3.7c0 4.1-.6 8.8 1.7 12.5 1 1.6 1.9 3.2 3.1 4.6 2.1 2.4 5.2 3.6 8.3 3.7h5.4c2 0 4 .1 5.9-.4 4-1.2 6.9-4.7 9.5-7.8 4.3-5.1 8.6-10.2 12.8-15.3 2.1-2.6 2-5.6-.5-7.5z" fill="currentColor"/></svg></div></div>
-<div class="txbox"><div class="txw"><table class="tx"><thead><tr>
-<th class="cnm srt" data-sort="имя" data-t="rth_10">Налоговый режим</th>
-<th class="num srt on" data-sort="нагрузка" data-t="rth_13">Нагрузка</th>
-<th class="num srt" data-sort="сумма" data-t="rth_14b">Всего за год</th>
-<th class="num srt" data-sort="ставка" data-t="rth_st">Ставка</th>
-<th class="num srt" data-sort="налог" data-t="rth_tx">Налог / год</th>
-<th class="num srt" data-sort="фикс" data-t="rth_fx">Взносы фикс. / год</th>
-<th class="num srt" data-sort="доп" data-t="rth_dp">Взносы&nbsp;+1% / год</th>
-<th class="num srt" data-sort="бух" data-t="rth_ac">Бухгалтерия / год</th>
-<th class="num srt" data-sort="порог" data-t="rth_lm">Порог (макс. ₽/год)</th>
-<th class="srt" data-sort="дек" data-t="rth_r1">Декларация / год</th>
-<th class="srt" data-sort="кв" data-t="rth_r2">Отчёты / квартал</th>
-<th class="srt" data-sort="куд" data-t="rth_r3">КУДиР</th>
-<th class="srt" data-sort="касса" data-t="rth_r4">Касса</th>
-<th class="srt" data-sort="сотр" data-t="rth_r5">Сотрудники</th>
-</tr></thead><tbody id="txrows"></tbody></table></div><div class="txfoot"></div></div>
+<!-- З-106: разметка таблицы режимов — в точности как в подробной
+     детализации: свайп-подсказка, .wrap + table.rt с colgroup и
+     классами ш-имя/ш-знач на шапке. Столбцы и строки прежние.
+     Классы srt/data-sort убраны: стрелки сортировки не были
+     подключены к клику — это была мёртвая декорация. -->
+<div class="wrap"><table class="rt"><colgroup><col class="cn">
+<col class="cv"><col class="cv"><col class="cv"><col class="cv"><col class="cv">
+<col class="cv"><col class="cv"><col class="cv"><col class="cv"><col class="cv">
+<col class="cv"><col class="cv"><col class="cv"></colgroup>
+<thead><tr>
+<th class="ш-имя" data-t="rth_10">Налоговый режим</th>
+<th class="ш-знач" data-t="rth_13">Нагрузка</th>
+<th class="ш-знач" data-t="rth_14b">Всего за год</th>
+<th class="ш-знач" data-t="rth_st">Ставка</th>
+<th class="ш-знач" data-t="rth_tx">Налог / год</th>
+<th class="ш-знач" data-t="rth_fx">Взносы фикс. / год</th>
+<th class="ш-знач" data-t="rth_dp">Взносы&nbsp;+1% / год</th>
+<th class="ш-знач" data-t="rth_ac">Бухгалтерия / год</th>
+<th class="ш-знач" data-t="rth_lm">Порог (макс. ₽/год)</th>
+<th class="ш-знач" data-t="rth_r1">Декларация / год</th>
+<th class="ш-знач" data-t="rth_r2">Отчёты / квартал</th>
+<th class="ш-знач" data-t="rth_r3">КУДиР</th>
+<th class="ш-знач" data-t="rth_r4">Касса</th>
+<th class="ш-знач" data-t="rth_r5">Сотрудники</th>
+</tr></thead><tbody id="txrows"></tbody></table></div>
 
 <div class="pmknote txnote" id="txNote"></div>
 </div>
@@ -3692,7 +3678,9 @@ function parts(x){
 function visIdx(x){
   var P=parts(x), v=[0,1,2,3];
   if(x.accT>0)v.push(4);
-  /* На кольце резерв стоит между доходом и простоем с форс-мажорами. */
+  /* На кольце резерв стоит между доходом и простоем с форс-мажорами.
+     З-119: порядок сортировки секторов кольца считается в месте
+     вызова donut, чтобы не трогать легенды под кольцом. */
   v.push(11); v.push(12); v.push(13);
   v.push(5);
   for(var i=6;i<=10;i++) if(P[i]>0.5) v.push(i);
@@ -3732,13 +3720,9 @@ function donutNum(vals,cols,num,fill){
   /* Центр — как круглая метка блока 04: заливка градиентом, мягкая тень
      и белое кольцо вокруг. Цифра по центру: dy вместо dominant-baseline,
      его браузеры считают по-разному и цифра съезжала вверх. */
-  var circ='<g filter="url(#'+uid+'_s)">'+
-   '<circle cx="95" cy="95" r="46" fill="url(#'+uid+'_c)"/></g>'+
-   '<circle cx="95" cy="95" r="48" fill="none" stroke="#fff" stroke-opacity="0.55" stroke-width="4"/>'+
-   '<text x="95" y="95" dy="0.355em" text-anchor="middle" '+
-   'font-size="46" font-weight="700" fill="#fff" '+
-   'style="pointer-events:none">'+num+'</text>';
-  return s.replace('>',">"+defs,1).replace('</svg>',circ+'</svg>');
+  /* З-143/145 (слово владельца): середина кольца с цифрой убрана —
+     кольцо остаётся полым, без круглой метки в центре. */
+  return s.replace('>',">"+defs,1);
 }
 function donut(vals,cols,cx,big,idx,labels){
   /* Каждый сегмент — отдельный path-сектор. Так нет наложений от stroke-dasharray
@@ -3861,10 +3845,18 @@ function render(){
   var costY=(d.depShoot||0)+(d.depOffice||0)+(d.depSoft||0)+(d.depEdu||0)+
             (d.depSite||0)+(d.depWs||0)+(d.varAds||0)+(d.varSoft||0)+
             (d.varBank||0)+(d.varRent||0)+(d.varAcc||0);
+  /* З-042 · правило листа 09g: число с единицей — одно целое.
+     f0 ставит перед «₽» обычный пробел — целое() меняет его на
+     неразрывный (NB, заодно и разряды, если браузер разделит их
+     пробелом). WJ — невидимый запрет переноса: «₽/ч» и «₽/мес»
+     не рвутся по слэшу на «₽/» и «мес» (замер из З-042). */
+  var NB='\u00A0',WJ='\u2060';
+  var целое=function(s){return s.replace(/ /g,NB);};
+  var ЧАС=WJ+'/'+WJ+'\u0447',МЕС=WJ+'/'+WJ+'\u043c\u0435\u0441';
   /* ставка: округлённая крупно, точная в скобках */
-  $('hRate').textContent=f0r(rate)+'/\u0447';
+  $('hRate').textContent=целое(f0r(rate))+ЧАС;
   var hEx=$('hRateEx');
-  if(hEx)hEx.textContent=(rRate(rate)!==Math.round(rate))?'('+f0(rate)+'/\u0447)':'';
+  if(hEx)hEx.textContent=(rRate(rate)!==Math.round(rate))?'('+целое(f0(rate))+ЧАС+')':'';
   /* склонение существительного при числе: 1 съёмка, 2 съёмки, 5 съёмок */
   function скл(n,f1_,f2_,f5_){
     var d1=n%10,d2=n%100;
@@ -3875,13 +3867,12 @@ function render(){
   }
   /* доход + расходы = выручка */
   var expMo=d.totalExpenses/12;
-  var MO='/\u043c\u0435\u0441';
   /* доход в час на руки: доход на всё рабочее время, включая паузы */
   var hf=$('hFact');
-  if(hf)hf.innerHTML='\u0414\u043e\u0445\u043e\u0434 \u0432 \u0447\u0430\u0441 \u043d\u0430 \u0440\u0443\u043a\u0438 \u2014 <b>'+f0(hr0)+'/\u0447</b>';
-  $('hInc').textContent=f0(d.Ny/12)+MO;
-  $('hExp').textContent=f0(expMo)+MO;
-  $('hMon').textContent=f0(d.R/12)+MO;
+  if(hf)hf.innerHTML='\u0414\u043e\u0445\u043e\u0434 \u0432 \u0447\u0430\u0441 \u043d\u0430 \u0440\u0443\u043a\u0438 \u2014 <b>'+целое(f0(hr0))+ЧАС+'</b>';
+  $('hInc').textContent=целое(f0(d.Ny/12))+МЕС;
+  $('hExp').textContent=целое(f0(expMo))+МЕС;
+  $('hMon').textContent=целое(f0(d.R/12))+МЕС;
 
   /* --- меню и плавающая плашка ---
      Меню прокручивается вместе со страницей. Плашка появляется после
@@ -4108,15 +4099,21 @@ var REFD=[
   /* Куда ведёт кнопка в предупреждении: якорь поля в анкете
      и надпись. Ключи те же, что id полей в calc.html. */
   var ZWA=[];
-  ZWA[11]=['fund_on','\u0417\u0430\u043b\u043e\u0436\u0438\u0442\u044c \u0444\u043e\u043d\u0434 \u0440\u0430\u0437\u0432\u0438\u0442\u0438\u044f'];
-  ZWA[12]=['disc_on','\u0417\u0430\u043b\u043e\u0436\u0438\u0442\u044c \u0437\u0430\u043f\u0430\u0441 \u043d\u0430 \u0441\u043a\u0438\u0434\u043a\u0443'];
+  ZWA[11]=['fund_on','\u0417\u0430\u043b\u043e\u0436\u0438\u0442\u044c \u0440\u0435\u0437\u0435\u0440\u0432 \u043d\u0430 \u0440\u0430\u0437\u0432\u0438\u0442\u0438\u0435'];
+  ZWA[12]=['disc_on','\u0417\u0430\u043b\u043e\u0436\u0438\u0442\u044c \u0440\u0435\u0437\u0435\u0440\u0432 \u043d\u0430 \u0441\u043a\u0438\u0434\u043a\u0443'];
   ZW[11]='\u0422\u0435\u0445\u043d\u0438\u043a\u0443 \u043f\u0440\u0438\u0434\u0451\u0442\u0441\u044f \u043c\u0435\u043d\u044f\u0442\u044c \u0438\u0437 \u0441\u0432\u043e\u0435\u0433\u043e \u043a\u0430\u0440\u043c\u0430\u043d\u0430 \u0438\u043b\u0438 \u0432 \u043a\u0440\u0435\u0434\u0438\u0442. \u0410\u043c\u043e\u0440\u0442\u0438\u0437\u0430\u0446\u0438\u044f \u043f\u043e\u043a\u0440\u044b\u0432\u0430\u0435\u0442 \u0442\u043e\u043b\u044c\u043a\u043e \u0437\u0430\u043c\u0435\u043d\u0443 \u0442\u043e\u0433\u043e, \u0447\u0442\u043e \u0443\u0436\u0435 \u0435\u0441\u0442\u044c, \u2014 \u043d\u0430 \u043d\u043e\u0432\u043e\u0435 \u0441\u0442\u0435\u043a\u043b\u043e, \u0432\u0442\u043e\u0440\u043e\u0439 \u043a\u043e\u0440\u043f\u0443\u0441 \u0438 \u043e\u0431\u0443\u0447\u0435\u043d\u0438\u0435 \u0434\u0435\u043d\u0435\u0433 \u0432 \u0440\u0430\u0441\u0447\u0451\u0442\u0435 \u043d\u0435\u0442.';
   ZW[12]='\u041b\u044e\u0431\u0430\u044f \u0441\u043a\u0438\u0434\u043a\u0430 \u00ab\u043f\u0440\u043e\u0441\u0442\u043e \u0442\u0430\u043a\u00bb \u0431\u0443\u0434\u0435\u0442 \u0432\u044b\u0447\u0442\u0435\u043d\u0430 \u0438\u0437 \u0432\u0430\u0448\u0435\u0433\u043e \u0434\u043e\u0445\u043e\u0434\u0430. \u041e\u0441\u0442\u0430\u043d\u0435\u0442\u0441\u044f \u0442\u043e\u043b\u044c\u043a\u043e \u0441\u043a\u0438\u0434\u043a\u0430 \u0437\u0430 \u043e\u0431\u044a\u0451\u043c \u2014 \u043e\u043d\u0430 \u043f\u043e\u0441\u0447\u0438\u0442\u0430\u043d\u0430 \u043d\u0438\u0436\u0435 \u0438 \u0431\u0435\u0440\u0451\u0442\u0441\u044f \u0438\u0437 \u043d\u0430\u043a\u043b\u0430\u0434\u043d\u044b\u0445 \u0440\u0430\u0441\u0445\u043e\u0434\u043e\u0432.';
+  /* З-115 (слово владельца 27.08, ночь): заголовок строки, когда резерв
+     не заложен, — «…не заложен», а не «Отложите резерв…». */
+  var ZT=[];
+  ZT[11]='\u0420\u0435\u0437\u0435\u0440\u0432 \u043d\u0430 \u0440\u0430\u0437\u0432\u0438\u0442\u0438\u0435 \u043d\u0435 \u0437\u0430\u043b\u043e\u0436\u0435\u043d';
+  ZT[12]='\u0420\u0435\u0437\u0435\u0440\u0432 \u043d\u0430 \u0441\u043a\u0438\u0434\u043a\u0443 \u043d\u0435 \u0437\u0430\u043b\u043e\u0436\u0435\u043d';
   function lgRow(i){
     var w=mx>0?P[i]/mx*100:0, zero=P[i]<0.5;
+    var col=RESC[i]||CO[i];
     return '<div class="lgi'+(zero?' zero':'')+'">'+
-    '<div class="fill" style="--w:'+w.toFixed(1)+'%;width:'+w.toFixed(1)+'%;background:'+CO[i]+'"></div>'+
-    '<div class="ltx"><i style="background:'+CO[i]+'"></i><div><b>'+LB[i]+'</b>'+
+    '<div class="fill" style="--w:'+w.toFixed(1)+'%;width:'+w.toFixed(1)+'%;background:'+col+'"></div>'+
+    '<div class="ltx"><i style="background:'+(zero?'var(--c-a-400)':col)+'"></i><div><b>'+(zero&&ZT[i]?ZT[i]:LB[i])+'</b>'+
     (function(){
       /* Вместо пересказа состава — ссылка на пункт справочника.
          Определение живёт в одном месте и не расходится по блокам. */
@@ -4126,7 +4123,7 @@ var REFD=[
         ' \u0421\u043f\u0440\u0430\u0432\u043e\u0447\u043d\u0438\u043a\u0430</a></em>';
       return SUB[i]?'<em>'+SUB[i]+'</em>':'';
     })()+'</div></div>'+
-    '<div class="lvv"><div class="a">'+(zero?'\u043d\u0435 \u0437\u0430\u043b\u043e\u0436\u0435\u043d\u043e':f0(P[i]/d.sh))+'</div>'+
+    '<div class="lvv"><div class="a">'+(zero?'<span class="zex">!</span>':f0(P[i]/d.sh))+'</div>'+
     (HRS[i]!==undefined?'<div class="b2">\u0437\u0430 '+f1(HRS[i])+' \u0447</div>':'')+
     '</div>'+
     (zero&&ZW[i]?'<div class="note warn lgw">'+ZW[i]+
@@ -4146,6 +4143,12 @@ var REFD=[
      Порядок совпадает с таблицей детализации «Резервный фонд». */
   var gRes=VI.filter(function(i){return i===13})
              .concat(VI.filter(function(i){return i>=11&&i<=12}));
+  /* З-138 (слово владельца 27.08): строки резервов — в референсной
+     голубой гамме hero-плашек «18/6 съёмок» (b-600 → b-400 → b-300,
+     от насыщенного к светлому — как ступени зелёной гаммы доходов
+     и красной гаммы расходов). Только оттенок: разметка и правила
+     диаграммы не меняются; CO и кольцо не тронуты. */
+  var RESC={13:'var(--c-b-600)',11:'var(--c-b-400)',12:'var(--c-b-300)'};
 
   var out='<div class="lggrp">\u0412\u044b \u0437\u0430\u0440\u0430\u0431\u0430\u0442\u044b\u0432\u0430\u0435\u0442\u0435 \u043a\u0430\u043a \u0444\u043e\u0442\u043e\u0433\u0440\u0430\u0444</div>'+
     gProf.map(lgRow).join('');
@@ -4185,10 +4188,10 @@ var REFD=[
   var resSum=0; VI.forEach(function(i){ if(i>=11)resSum+=P[i] });
   var dr=$('dnRes');
   if(dr) dr.innerHTML='<svg class="dsdeco" viewBox="0 0 32 32" fill="none" aria-hidden="true">'+
-    '<rect x="10.95" y="2.09" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 7.14)" fill="var(--c-g-900)"/>'+
-    '<rect x="19.81" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 24.86 16)" fill="var(--c-g-900)"/>'+
-    '<rect x="10.95" y="19.81" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 24.86)" fill="var(--c-g-900)"/>'+
-    '<rect x="2.09" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 7.14 16)" fill="var(--c-g-900)"/>'+
+    '<rect x="10.95" y="2.09" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 7.14)" fill="var(--c-b-600)"/>'+
+    '<rect x="19.81" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 24.86 16)" fill="var(--c-b-600)"/>'+
+    '<rect x="10.95" y="19.81" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 24.86)" fill="var(--c-b-600)"/>'+
+    '<rect x="2.09" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 7.14 16)" fill="var(--c-b-600)"/>'+
     '</svg>'+
     '<div class="dsh">\u041e\u0442\u043b\u043e\u0436\u0438\u0442\u0435 \u0432 \u0440\u0435\u0437\u0435\u0440\u0432</div>'+
     '<div class="dsm">\u0421 \u043a\u0430\u0436\u0434\u043e\u0433\u043e \u0447\u0430\u0441\u0430 \u0441\u044a\u0451\u043c\u043a\u0438 \u0432\u044b \u043e\u0442\u043a\u043b\u0430\u0434\u044b\u0432\u0430\u0435\u0442\u0435</div>'+
@@ -4217,11 +4220,12 @@ var REFD=[
   }
 
   /* --- три сценария --- */
-  /* Серый сектор был #E5E7EB — почти сливался с подложкой плашки и читался
-     только при наведении. Взят тон, который раньше давало наведение.
-     Три ступени на сектор: светлый верх → основной тон → тень внизу. */
-  var C_EXP1='#D3D7DC', C_EXP2='#B4B9C1', C_EXP3='#8E949E';
-  var C_INC1='#5FCC79', C_INC2='#2BA845', C_INC3='#14762A';
+  /* З-143/145 (слово владельца): серый сектор — тем же светлым серым,
+     что «Форс-мажоры и простой» (#C5D0C8); ступени объёма — вокруг
+     этого тона. Зелёный сектор сверен с референсной гаммой доходов:
+     g-400 → g-500 → g-700 (#4FC26A / #21A038 / #158026). */
+  var C_EXP1='#D4DDD7', C_EXP2='#C5D0C8', C_EXP3='#AEBEB4';
+  var C_INC1='#4FC26A', C_INC2='#21A038', C_INC3='#158026';
   /* Неэффективное рабочее время оплачено: оно заложено в ставку часа и входит в доход
      на руки. Раньше они попадали в серый сектор как потеря, и зелёный
      занижался на 163 499 ₽ — на руки 1 307 988, а показывали 1 144 490. */
@@ -4325,7 +4329,7 @@ var REFD=[
      Раньше первым стоял идеальный, и человек видел цель раньше факта. */
   var three=[
     {cls:'s1',no:'\u0420\u0435\u0430\u043b\u044c\u043d\u044b\u0439 \u0441\u0446\u0435\u043d\u0430\u0440\u0438\u0439',num:'1',fill:['#5CA8E0','#2F80C4'],
-     t:currentIsLoss?'\u0412\u0430\u0448 \u0443\u0431\u044b\u0442\u043e\u043a':'\u0412\u0430\u0448 \u0442\u0435\u043a\u0443\u0449\u0438\u0439 \u0434\u043e\u0445\u043e\u0434',
+     t:currentIsLoss?'\u0423\u0431\u044b\u0442\u043e\u043a':'\u0422\u0435\u043a\u0443\u0449\u0438\u0439 \u0434\u043e\u0445\u043e\u0434',
      r:f0(d.curRate), rev:f0(curR/12), v:[incC,idlC+expC],
      mid:currentIsLoss?f0s(currentResult/12):f0(currentResult/12),
      cap:currentIsLoss?'\u0443\u0431\u044b\u0442\u043e\u043a / \u043c\u0435\u0441':CAPM,
@@ -4345,23 +4349,21 @@ var REFD=[
      v:[0,Vb], mid:f0(0), cap:CAPM}];
   var SC=[[C_INC1,C_INC2,C_INC3],[C_EXP1,C_EXP2,C_EXP3]];
   $('dns').innerHTML=three.map(function(x){
-    /* Порядок с 27.08 (решение владельца): название текстом, под ним
-       диаграмма, под диаграммой плашка со стоимостью часа, под чертой —
-       доход на руки и выручка. */
+    /* З-147 (слово владельца 27.08): надписи «Реальный сценарий» и
+       прочие убраны. Заголовок плашки: «Стоимость часа N ₽/час — …»,
+       стоимость часа — главное (крупно). Под диаграммой — рамочка
+       «Доход на руки» с суммой в месяц, под ней — «Общая выручка». */
     return '<div class="scn3 '+x.cls+'"><div class="scdeco"></div>'+
-    '<div class="scnhead"><div class="nm3">'+x.no+'</div>'+
-    '<div class="amt"><i>'+x.t+'</i></div></div>'+
+    '<div class="scnhead"><div class="nm3">'+x.t+'</div>'+
+    '<div class="amt"><i>'+x.r+'/\u0447\u0430\u0441</i></div></div>'+
     '<div class="scnbody">'+
     '<div class="dn">'+(x.loss
       ? '<div class="losscompare"><div><span>\u0412\u044b\u0440\u0443\u0447\u043a\u0430</span><b>'+f0(x.lossRevenue)+'</b></div>'+
         '<div><span>\u0417\u0430\u0442\u0440\u0430\u0442\u044b</span><b>'+f0(x.lossCosts)+'</b></div>'+
         '<div class="loss"><span>\u0423\u0431\u044b\u0442\u043e\u043a</span><b>'+f0s(x.lossValue)+'</b></div></div>'
       : donutNum(x.v,SC,x.num,x.fill))+'</div>'+
-    '<div class="ratebox"><b>'+x.r+'/\u0447\u0430\u0441</b></div>'+
-    '<div class="ratebot"><div class="rb1"><b>'+x.mid+'/\u043c\u0435\u0441</b>'+
-    '<span>'+(x.loss?'\u0443\u0431\u044b\u0442\u043e\u043a':'\u043d\u0430 \u0440\u0443\u043a\u0438')+'</span></div>'+
-    '<div class="rb1"><b>'+x.rev+'/\u043c\u0435\u0441</b>'+
-    '<span>\u0432\u044b\u0440\u0443\u0447\u043a\u0430</span></div></div>'+
+    '<div class="handbox"><span>\u0414\u043e\u0445\u043e\u0434 \u043d\u0430 \u0440\u0443\u043a\u0438</span><b>'+x.mid+'/\u043c\u0435\u0441</b></div>'+
+    '<div class="revrow"><span>\u041e\u0431\u0449\u0430\u044f \u0432\u044b\u0440\u0443\u0447\u043a\u0430</span><b>'+x.rev+'/\u043c\u0435\u0441</b></div>'+
     '</div>'+
     (x.loss?'<div class="current-loss-note">\u0414\u043e\u0445\u043e\u0434\u0430 \u043d\u0435\u0442. \u041f\u0440\u0438 \u0442\u0435\u043a\u0443\u0449\u0435\u0439 \u0441\u0442\u0430\u0432\u043a\u0435 \u0432\u0430\u0448\u0438 \u0437\u0430\u0442\u0440\u0430\u0442\u044b \u043f\u0440\u0435\u0432\u044b\u0448\u0430\u044e\u0442 \u0432\u044b\u0440\u0443\u0447\u043a\u0443 \u043d\u0430 '+f0(Math.abs(x.lossValue))+' \u0432 \u043c\u0435\u0441\u044f\u0446.</div>':'')+
     '</div>'}).join('')+
@@ -4752,7 +4754,7 @@ var REFD=[
 
   /* --- налоговые режимы --- */
   var IWT='<svg class=\"iwt\" viewBox=\"0 0 28 26\" fill=\"none\"><path d=\"M12.94 3.2 1.6 20.05a1.9 1.9 0 0 0 1.6 2.9h21.6a1.9 1.9 0 0 0 1.6-2.9L15.06 3.2a1.25 1.25 0 0 0-2.12 0Z\" fill=\"var(--c-a-400)\"/><path d=\"M14 9.6v5.1\" stroke=\"var(--c-white)\" stroke-width=\"2.5\" stroke-linecap=\"round\"/><circle cx=\"14\" cy=\"18.6\" r=\"1.45\" fill=\"var(--c-white)\"/></svg>';
-  var IWT14=IWT, IWT17=IWT;
+  var IWT14=IWT;
   var IOK17='<svg class=\"iok\" viewBox=\"0 0 28 26\" fill=\"none\">'+
    '<circle cx=\"14\" cy=\"13\" r=\"10.4\" fill=\"var(--c-g-600)\"/>'+
    '<path d=\"M9.2 13.3l3.3 3.3L19 10\" stroke=\"var(--c-white)\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>';
@@ -4876,36 +4878,14 @@ var REFD=[
         касса:[1,'\u0414\u0430<i>\u043a\u0430\u0441\u0441\u0430 \u043d\u0443\u0436\u043d\u0430</i>'],
         сотр:[0,'\u041d\u0435\u0442<i>\u0441\u0447\u0438\u0442\u0430\u0435\u0442 \u0431\u0430\u043d\u043a</i>'],
         сл:[2,'\u0421\u0440\u0435\u0434\u043d\u0435']}};
-  /* Подложка только на «Всего за год»: зелёный → жёлтый → красный. */
-  /* Гамма холодная: весь блок построен на синем, тёплый жёлтый в середине
-     давал резонанс. Переход зелёный → голубой → холодный красный. */
-  var шкала=[[214,240,228],[201,226,246],[246,204,216]];
-  /* Каждая ячейка залита своим градиентом — от светлого к насыщенному.
-     Сплошная заливка читалась как один длинный столбец, границы строк
-     терялись. */
-  function тон2(t){
-    var c=тон(t), свет=тонС(t);
-    /* Верхний край высветляем к белому, нижний — чистый цвет шкалы.
-       Раньше низ затемняли, и столбец выглядел грязным. */
-    return 'linear-gradient(180deg,'+свет+' 0%,'+c+' 100%)';
-  }
-  function тонС(t){
-    var a=t<0.5?шкала[0]:шкала[1], b=t<0.5?шкала[1]:шкала[2],
-        k=t<0.5?t/0.5:(t-0.5)/0.5;
-    var c=[0,1,2].map(function(i){
-      var v=a[i]+(b[i]-a[i])*k;
-      return Math.round(v+(255-v)*0.55);   /* на ступень светлее */
-    });
-    return 'rgb('+c.join(',')+')';
-  }
-  function тон(t){
-    var a=t<0.5?шкала[0]:шкала[1], b=t<0.5?шкала[1]:шкала[2],
-        k=t<0.5?t/0.5:(t-0.5)/0.5, c=[0,1,2].map(function(i){
-          return Math.round(a[i]+(b[i]-a[i])*k)});
-    return 'rgb('+c.join(',')+')';
-  }
+  /* З-106: шкала тонировки названий (зелёный → голубой → холодный
+     красный) удалена — в стиле детализации названия не тонированы. */
   function ячОбяз(п){
-    return '<td class="mk '+(п[0]?'no':'ok')+'">'+п[1]+'</td>';
+    /* З-146 (слово владельца 27.08): «Да» — нейтральный цвет, без
+       красного: класс не ставим, ячейка наследует обычный цвет
+       таблицы. «Нет» остаются зелёными, остальное — как было. */
+    var к=(!п[0])?'ok':(String(п[1]).indexOf('\u0414\u0430')===0?'':'no');
+    return '<td class="'+к+'">'+п[1]+'</td>';
   }
   /* Три порядка: по выгоде (по умолчанию), по ставке, по простоте ведения. */
   function поОбяз(к){return function(p,q){
@@ -4929,30 +4909,26 @@ var REFD=[
       if(p.over!==q.over)return p.over?1:-1;   /* недоступные всегда внизу */
       return СОРТ[режимСорт](p,q)*НАПРАВЛ;
     });
-    var доступно=порядок.filter(function(x){return !x.over}).length;
-    /* цвет считается по выгоде всегда, даже если порядок другой */
-    var поВыгоде=rowsTx.slice().filter(function(x){return !x.over})
-      .sort(function(p,q){return (p.tax+учёт)-(q.tax+учёт)});
     $('txrows').innerHTML=порядок.map(function(x,ix){
       var cls=[];
       if(x.over)cls.push('over'); else if(свой&&x.n===свой.n)cls.push('best');
-      if(ix%2)cls.push('zeb');
-      var ранг=поВыгоде.indexOf(x);
-      var t=(!x.over&&поВыгоде.length>1)?ранг/(поВыгоде.length-1):0;
       var o=ОБЯЗ[x.сем];
-      var фонИмени=x.over?'':' style="background:'+тон2(t)+'"';
+      /* З-106: оформление — как у таблиц детализации: без зебры и
+         тонировки названий по выгоде; первый столбец (название режима)
+         не закреплён — прокручивается вместе со всеми (слово владельца
+         27.08); метки best/over и цвета ok/no — данные. */
       return '<tr class="'+cls.join(' ')+'">'+
-      '<td class="cnm"'+фонИмени+'>'+x.n+'</td>'+
-      '<td class="num ld">'+f1((x.tax+учёт)/(x.V||1)*100)+'%</td>'+
-      '<td class="num tot">'+f0(x.tax+учёт)+'</td>'+
-      '<td class="num">'+x.став+'</td>'+
-      '<td class="num">'+f0(x.налог)+'</td>'+
-      '<td class="num'+(x.фикс>0?'':' ok')+'">'+(x.фикс>0?f0(x.фикс):'\u041d\u0435\u0442')+'</td>'+
-      '<td class="num'+(x.доп>0?'':' ok')+'">'+(x.доп>0?f0(x.доп):'\u041d\u0435\u0442')+'</td>'+
-      '<td class="num'+(учёт>0?'':' ok')+'">'+(учёт>0?f0(учёт):'\u041d\u0435\u0442')+'</td>'+
-      '<td class="num">'+f0(x.lim)+'</td>'+
+      '<td class="имя">'+x.n+'</td>'+
+      '<td>'+f1((x.tax+учёт)/(x.V||1)*100)+'%</td>'+
+      '<td>'+f0(x.tax+учёт)+'</td>'+
+      '<td>'+x.став+'</td>'+
+      '<td>'+f0(x.налог)+'</td>'+
+      '<td class="'+(x.фикс>0?'':'ok')+'">'+(x.фикс>0?f0(x.фикс):'\u041d\u0435\u0442')+'</td>'+
+      '<td class="'+(x.доп>0?'':'ok')+'">'+(x.доп>0?f0(x.доп):'\u041d\u0435\u0442')+'</td>'+
+      '<td class="'+(учёт>0?'':'ok')+'">'+(учёт>0?f0(учёт):'\u041d\u0435\u0442')+'</td>'+
+      '<td>'+f0(x.lim)+'</td>'+
       ячОбяз(o.дек)+ячОбяз(o.кв)+ячОбяз(o.куд)+ячОбяз(o.касса)+ячОбяз(o.сотр)+'</tr>'+
-      (x.over?'<tr class="over"><td colspan="14" style="font-size:12px;padding-top:0;border:0">'+
+      (x.over?'<tr class="over"><td colspan="14" class="нз">'+
        IWT14+' \u043d\u0435 \u043f\u043e\u0434\u0445\u043e\u0434\u0438\u0442: \u0432\u0430\u0448\u0430 \u0432\u044b\u0440\u0443\u0447\u043a\u0430 '+f0(Vreal)+
        ' \u0432\u044b\u0448\u0435 \u043b\u0438\u043c\u0438\u0442\u0430 '+f0(x.lim)+'</td></tr>':'')
     }).join('');
@@ -4963,16 +4939,12 @@ var REFD=[
      про закрытый перечень статьи 346.16 НК. */
   var tn=$('txNote');
   if(tn){
-    /* Справка без цифр: это правила, а не расчёт. Конкретные суммы
-       человек видит в таблице выше и в блоке 01. */
-    tn.innerHTML=
-     '<div class="pnh">\u0421 \u0447\u0435\u0433\u043e \u0441\u0447\u0438\u0442\u0430\u0435\u0442\u0441\u044f \u043d\u0430\u043b\u043e\u0433</div>'+
-     '<div class="pi2"><b>\u041d\u041f\u0414 \u0438 \u0440\u0435\u0436\u0438\u043c\u044b \u00ab\u0414\u043e\u0445\u043e\u0434\u044b\u00bb</b> \u2014 \u043d\u0430\u043b\u043e\u0433 \u0431\u0435\u0440\u0451\u0442\u0441\u044f \u0441\u043e \u0432\u0441\u0435\u0439 \u0432\u044b\u0440\u0443\u0447\u043a\u0438. \u0420\u0430\u0441\u0445\u043e\u0434\u044b \u0435\u0451 \u043d\u0435 \u0443\u043c\u0435\u043d\u044c\u0448\u0430\u044e\u0442: \u0441\u043a\u043e\u043b\u044c\u043a\u043e \u043f\u043e\u043b\u0443\u0447\u0438\u043b\u0438 \u043e\u0442 \u043a\u043b\u0438\u0435\u043d\u0442\u0430 \u2014 \u0441 \u0442\u043e\u0439 \u0441\u0443\u043c\u043c\u044b \u0438 \u043f\u043b\u0430\u0442\u0438\u0442\u0435.</div>'+
-     '<div class="pi2"><b>\u0420\u0435\u0436\u0438\u043c\u044b \u00ab\u0414\u043e\u0445\u043e\u0434\u044b \u043c\u0438\u043d\u0443\u0441 \u0440\u0430\u0441\u0445\u043e\u0434\u044b\u00bb</b> \u2014 \u043d\u0430\u043b\u043e\u0433 \u0431\u0435\u0440\u0451\u0442\u0441\u044f \u0441 \u0440\u0430\u0437\u043d\u0438\u0446\u044b \u043c\u0435\u0436\u0434\u0443 \u0432\u044b\u0440\u0443\u0447\u043a\u043e\u0439 \u0438 \u0437\u0430\u0442\u0440\u0430\u0442\u0430\u043c\u0438. \u0412 \u0440\u0430\u0441\u0447\u0451\u0442\u0435 \u0438\u0437 \u0432\u044b\u0440\u0443\u0447\u043a\u0438 \u0432\u044b\u0447\u0442\u0435\u043d\u044b \u0432\u0441\u0435 \u0433\u043e\u0434\u043e\u0432\u044b\u0435 \u0437\u0430\u0442\u0440\u0430\u0442\u044b \u0438 \u043a\u043e\u043c\u0438\u0441\u0441\u0438\u044f \u044d\u043a\u0432\u0430\u0439\u0440\u0438\u043d\u0433\u0430 \u2014 \u0438\u0445 \u0441\u043e\u0441\u0442\u0430\u0432 \u0440\u0430\u0437\u043b\u043e\u0436\u0435\u043d \u0432 \u0431\u043b\u043e\u043a\u0435 <a href="#card01">01 \u00ab\u041a\u0430\u043a \u0440\u0430\u0441\u043f\u0440\u0435\u0434\u0435\u043b\u044f\u0435\u0442\u0441\u044f \u0431\u044e\u0434\u0436\u0435\u0442\u00bb</a>.</div>'+
-     '<div class="pi2"><b>\u0424\u0438\u043a\u0441\u0438\u0440\u043e\u0432\u0430\u043d\u043d\u044b\u0435 \u0432\u0437\u043d\u043e\u0441\u044b</b> \u2014 \u0433\u043e\u0434\u043e\u0432\u0430\u044f \u0441\u0443\u043c\u043c\u0430, \u043a\u043e\u0442\u043e\u0440\u0443\u044e \u0418\u041f \u043f\u043b\u0430\u0442\u0438\u0442 \u0437\u0430 \u0441\u0435\u0431\u044f \u043d\u0435\u0437\u0430\u0432\u0438\u0441\u0438\u043c\u043e \u043e\u0442 \u0434\u043e\u0445\u043e\u0434\u0430. \u041d\u0430 \u041d\u041f\u0414 \u0438\u0445 \u043d\u0435\u0442, \u043d\u0430 \u0410\u0423\u0421\u041d \u043e\u0441\u0442\u0430\u0451\u0442\u0441\u044f \u0442\u043e\u043b\u044c\u043a\u043e \u0432\u0437\u043d\u043e\u0441 \u043d\u0430 \u0442\u0440\u0430\u0432\u043c\u0430\u0442\u0438\u0437\u043c.</div>'+
-     '<div class="pi2"><b>\u0412\u0437\u043d\u043e\u0441 1%</b> \u2014 \u0434\u043e\u043f\u043e\u043b\u043d\u0438\u0442\u0435\u043b\u044c\u043d\u044b\u0439 \u043f\u0435\u043d\u0441\u0438\u043e\u043d\u043d\u044b\u0439 \u0432\u0437\u043d\u043e\u0441 \u0418\u041f \u0441 \u0442\u043e\u0439 \u0447\u0430\u0441\u0442\u0438 \u0434\u043e\u0445\u043e\u0434\u0430, \u0447\u0442\u043e \u043f\u0440\u0435\u0432\u044b\u0448\u0430\u0435\u0442 300 000 \u20bd \u0437\u0430 \u0433\u043e\u0434. \u041d\u0430 \u00ab\u0414\u043e\u0445\u043e\u0434\u0430\u0445\u00bb \u0441\u0447\u0438\u0442\u0430\u0435\u0442\u0441\u044f \u0441 \u0432\u044b\u0440\u0443\u0447\u043a\u0438, \u043d\u0430 \u00ab\u0414\u043e\u0445\u043e\u0434\u0430\u0445 \u043c\u0438\u043d\u0443\u0441 \u0440\u0430\u0441\u0445\u043e\u0434\u0430\u0445\u00bb \u2014 \u0441 \u0440\u0430\u0437\u043d\u0438\u0446\u044b. \u041d\u0430 \u041d\u041f\u0414 \u0438 \u0410\u0423\u0421\u041d \u0435\u0433\u043e \u043d\u0435\u0442.</div>'+
-     '<div class="pi2"><b>\u041d\u0414\u0421 \u0432 \u0440\u0430\u0441\u0447\u0451\u0442 \u043d\u0435 \u0432\u0445\u043e\u0434\u0438\u0442.</b> \u041d\u0430 \u0423\u0421\u041d \u043e\u043d \u043f\u043e\u044f\u0432\u043b\u044f\u0435\u0442\u0441\u044f \u043f\u0440\u0438 \u0432\u044b\u0440\u0443\u0447\u043a\u0435 \u0441\u0432\u044b\u0448\u0435 20 \u043c\u043b\u043d \u20bd \u0437\u0430 \u0433\u043e\u0434, \u043d\u0430 \u0410\u0423\u0421\u041d \u2014 \u0441\u0432\u044b\u0448\u0435 60 \u043c\u043b\u043d, \u043d\u0430 \u041d\u041f\u0414 \u0435\u0433\u043e \u043d\u0435\u0442 \u0432\u043e\u0432\u0441\u0435. \u0422\u0430\u0431\u043b\u0438\u0446\u0430 \u0440\u0430\u0441\u0441\u0447\u0438\u0442\u0430\u043d\u0430 \u043d\u0430 \u0444\u043e\u0442\u043e\u0433\u0440\u0430\u0444\u0430, \u043a\u043e\u0442\u043e\u0440\u044b\u0439 \u0440\u0430\u0431\u043e\u0442\u0430\u0435\u0442 \u043e\u0434\u0438\u043d, \u2014 \u0434\u043e \u0442\u0430\u043a\u0438\u0445 \u043e\u0431\u043e\u0440\u043e\u0442\u043e\u0432 \u0437\u0434\u0435\u0441\u044c \u0434\u0435\u043b\u043e \u043e\u0431\u044b\u0447\u043d\u043e \u043d\u0435 \u0434\u043e\u0445\u043e\u0434\u0438\u0442. \u0415\u0441\u043b\u0438 \u0443 \u0432\u0430\u0441 \u0441\u0442\u0443\u0434\u0438\u044f \u0441 \u043a\u043e\u043c\u0430\u043d\u0434\u043e\u0439 \u0438 \u043e\u0431\u043e\u0440\u043e\u0442\u044b \u0432\u044b\u0448\u0435 \u0438 \u0432\u0430\u043c \u0442\u0440\u0435\u0431\u0443\u0435\u0442\u0441\u044f \u0440\u0430\u0441\u0447\u0451\u0442 \u041d\u0414\u0421 \u2014 \u0432\u043e\u0441\u043f\u043e\u043b\u044c\u0437\u0443\u0439\u0442\u0435\u0441\u044c \u043a\u0430\u043b\u044c\u043a\u0443\u043b\u044f\u0442\u043e\u0440\u043e\u043c \u044e\u043d\u0438\u0442-\u044d\u043a\u043e\u043d\u043e\u043c\u0438\u043a\u0438 \u0434\u043b\u044f \u0444\u043e\u0442\u043e\u0441\u0442\u0443\u0434\u0438\u0438 \u0438\u043b\u0438 \u0444\u043e\u0442\u043e\u043f\u0440\u043e\u0434\u0430\u043a\u0448\u0435\u043d\u0430.</div>'+
-     '<div class="pnf">\u0420\u0430\u0441\u0447\u0451\u0442 \u043e\u0446\u0435\u043d\u043e\u0447\u043d\u044b\u0439. \u041d\u0430\u043b\u043e\u0433\u043e\u0432\u0430\u044f \u043f\u0440\u0438\u043d\u0438\u043c\u0430\u0435\u0442 \u043d\u0435 \u043b\u044e\u0431\u044b\u0435 \u0437\u0430\u0442\u0440\u0430\u0442\u044b, \u0430 \u0442\u043e\u043b\u044c\u043a\u043e \u0442\u0435, \u0447\u0442\u043e \u043f\u0435\u0440\u0435\u0447\u0438\u0441\u043b\u0435\u043d\u044b \u0432 \u0441\u0442\u0430\u0442\u044c\u0435 346.16 \u041d\u041a \u0438 \u043f\u043e\u0434\u0442\u0432\u0435\u0440\u0436\u0434\u0435\u043d\u044b \u0434\u043e\u043a\u0443\u043c\u0435\u043d\u0442\u0430\u043c\u0438. \u041d\u0430\u043f\u0440\u0438\u043c\u0435\u0440, \u043e\u0431\u0443\u0447\u0435\u043d\u0438\u0435 \u0418\u041f \u0441\u0430\u043c\u043e\u0433\u043e \u0441\u0435\u0431\u044f \u0432 \u0440\u0430\u0441\u0445\u043e\u0434\u044b \u043d\u0435 \u043f\u0440\u0438\u043d\u0438\u043c\u0430\u0435\u0442\u0441\u044f: \u0443 \u043f\u0440\u0435\u0434\u043f\u0440\u0438\u043d\u0438\u043c\u0430\u0442\u0435\u043b\u044f \u043d\u0435\u0442 \u0440\u0430\u0431\u043e\u0442\u043e\u0434\u0430\u0442\u0435\u043b\u044f. \u0422\u043e\u0447\u043d\u044b\u0439 \u0441\u043f\u0438\u0441\u043e\u043a \u0441\u0432\u0435\u0440\u044c\u0442\u0435 \u0441 \u0431\u0443\u0445\u0433\u0430\u043b\u0442\u0435\u0440\u043e\u043c.</div>';
+    /* З-108/З-109: маленькое уведомление под таблицей — текст задан
+       владельцем дословно, оформление — канон .note.warn со знаком «!».
+       З-110 (пояснение о ставке 5% на этом месте) откачена 27.08 по
+       слову владельца. С З-111 полосы-ограничения в плашке режима
+       нет: текст ставки 5% живёт только в нюансе «Ваш режим» (НЮАНС.npd5). */
+    tn.innerHTML='<div class="note warn"><b>\u0420\u0430\u0441\u0447\u0451\u0442 \u043d\u043e\u0441\u0438\u0442 \u043f\u0440\u0435\u0434\u0432\u0430\u0440\u0438\u0442\u0435\u043b\u044c\u043d\u044b\u0439 \u0445\u0430\u0440\u0430\u043a\u0442\u0435\u0440 \u0438 \u043c\u043e\u0436\u0435\u0442 \u043e\u0442\u043b\u0438\u0447\u0430\u0442\u044c\u0441\u044f \u043e\u0442 \u0432\u0430\u0448\u0435\u0439 \u0440\u0435\u0430\u043b\u044c\u043d\u043e\u0439 \u043d\u0430\u043b\u043e\u0433\u043e\u0432\u043e\u0439 \u0441\u0438\u0442\u0443\u0430\u0446\u0438\u0438.</b> \u0414\u043b\u044f \u0442\u043e\u0447\u043d\u043e\u0433\u043e \u043e\u043f\u0440\u0435\u0434\u0435\u043b\u0435\u043d\u0438\u044f \u043d\u0430\u043b\u043e\u0433\u043e\u0432\u044b\u0445 \u043e\u0431\u044f\u0437\u0430\u0442\u0435\u043b\u044c\u0441\u0442\u0432 \u0440\u0435\u043a\u043e\u043c\u0435\u043d\u0434\u0443\u0435\u043c \u043f\u0440\u043e\u043a\u043e\u043d\u0441\u0443\u043b\u044c\u0442\u0438\u0440\u043e\u0432\u0430\u0442\u044c\u0441\u044f \u0441\u043e \u0441\u043f\u0435\u0446\u0438\u0430\u043b\u0438\u0441\u0442\u043e\u043c, \u043a\u043e\u0442\u043e\u0440\u044b\u0439 \u0432\u0435\u0434\u0451\u0442 \u0432\u0430\u0448 \u0443\u0447\u0451\u0442.</div>';
   }
 
   var bb=$('bestBox');
@@ -5016,7 +4988,7 @@ var REFD=[
     });
     var разрыв=альт?(свой.tax-альт.tax):0;
     var лучший=!(альт&&разрыв>1000);
-    /* Угловая метка: выходит за верхнюю границу синей плашки. Показываем
+    /* Угловая метка: выходит за верхнюю границу голубой плашки. Показываем
        только когда режим действительно лучший — иначе это не награда. */
     /* Метка в углу: зелёная — лучший вариант, жёлтая или красная —
        есть дешевле, и видно на сколько. Порог по доле выручки: 2% ещё
@@ -5042,9 +5014,9 @@ var REFD=[
     bb.innerHTML=ярлык+'<div class="bb1">\u0412\u0430\u0448 \u0440\u0435\u0436\u0438\u043c</div>'+
     '<div class="bb2">'+(слетел?свой.n:своёИмя)+'</div>'+
     '<div class="bbg">'+
-    '<div><span>\u041d\u0430\u043b\u043e\u0433\u0438 \u0438 \u0432\u0437\u043d\u043e\u0441\u044b / \u0433\u043e\u0434</span><b>'+f0(свой.tax)+'</b></div>'+
-    '<div><span>\u041d\u0430\u0433\u0440\u0443\u0437\u043a\u0430 \u043d\u0430 \u0432\u044b\u0440\u0443\u0447\u043a\u0443</span><b>'+f1(свой.load*100)+'%</b></div>'+
-    '<div><span>\u041d\u0430\u043b\u043e\u0433\u0438 \u0438 \u0432\u0437\u043d\u043e\u0441\u044b / \u043c\u0435\u0441</span><b>'+f0(свой.tax/12)+'</b></div>'+
+    '<div><b>'+f0(свой.tax)+'</b><span>\u041d\u0430\u043b\u043e\u0433\u0438 \u0438 \u0432\u0437\u043d\u043e\u0441\u044b / \u0433\u043e\u0434</span></div>'+
+    '<div><b>'+f1(свой.load*100)+'%</b><span>\u041d\u0430\u0433\u0440\u0443\u0437\u043a\u0430 \u043d\u0430 \u0432\u044b\u0440\u0443\u0447\u043a\u0443</span></div>'+
+    '<div><b>'+f0(свой.tax/12)+'</b><span>\u041d\u0430\u043b\u043e\u0433\u0438 \u0438 \u0432\u0437\u043d\u043e\u0441\u044b / \u043c\u0435\u0441</span></div>'+
     '</div>'+
     (слетел
      ? '<div class="bbn">\u0412\u0430\u0448\u0430 \u0432\u044b\u0440\u0443\u0447\u043a\u0430 <b>'+f0(d.R)+
@@ -5075,55 +5047,28 @@ var REFD=[
     var ИНФО;
     if(кодI.indexOf('npd')===0){
       var зап=лимНПД-d.R, макс=d.sh>0?лимНПД/d.sh:0;
-      ИНФО={t:'\u0421\u0430\u043c\u043e\u0437\u0430\u043d\u044f\u0442\u043e\u0441\u0442\u044c \u2014 \u0441\u0430\u043c\u044b\u0439 \u043f\u0440\u043e\u0441\u0442\u043e\u0439 \u0440\u0435\u0436\u0438\u043c, \u043d\u043e \u0443 \u043d\u0435\u0433\u043e \u0435\u0441\u0442\u044c \u043f\u043e\u0442\u043e\u043b\u043e\u043a',
-        s:'\u041d\u0435\u0442 \u0432\u0437\u043d\u043e\u0441\u043e\u0432 \u0438 \u043e\u0442\u0447\u0451\u0442\u043d\u043e\u0441\u0442\u0438, \u043d\u0430\u043b\u043e\u0433 \u0441\u0447\u0438\u0442\u0430\u0435\u0442\u0441\u044f \u0430\u0432\u0442\u043e\u043c\u0430\u0442\u0438\u0447\u0435\u0441\u043a\u0438. \u041d\u043e \u0434\u043e\u0445\u043e\u0434 \u043e\u0433\u0440\u0430\u043d\u0438\u0447\u0435\u043d <b>2 400 000 \u20bd \u0432 \u0433\u043e\u0434</b> \u2014 \u0432\u043e\u0442 \u043a\u0430\u043a \u044d\u0442\u043e \u0441\u043e\u043e\u0442\u043d\u043e\u0441\u0438\u0442\u0441\u044f \u0441 \u0432\u0430\u0448\u0438\u043c\u0438 \u0446\u0438\u0444\u0440\u0430\u043c\u0438:',
+      ИНФО={
         g:[['\u0420\u0430\u0441\u0447\u0451\u0442\u043d\u0430\u044f \u0432\u044b\u0440\u0443\u0447\u043a\u0430 / \u0433\u043e\u0434',г(d.R)],
            [зап>0?'\u0417\u0430\u043f\u0430\u0441 \u0434\u043e \u043b\u0438\u043c\u0438\u0442\u0430 / \u0433\u043e\u0434':'\u041f\u0440\u0435\u0432\u044b\u0448\u0435\u043d\u0438\u0435 \u043b\u0438\u043c\u0438\u0442\u0430 / \u0433\u043e\u0434',г(Math.abs(зап))],
-           ['\u041f\u0440\u0435\u0434\u0435\u043b\u044c\u043d\u0430\u044f \u0441\u0442\u0430\u0432\u043a\u0430, \u20bd/\u0447',г(макс)]],
-        /* Без цифр: выручка и запас уже показаны в плашках выше, повтор
-           только множит риск расхождений. */
-        w:'<span>\u0417\u0430\u043f\u0430\u0441 \u0434\u043b\u044f \u0440\u043e\u0441\u0442\u0430 \u0435\u0449\u0451 \u0435\u0441\u0442\u044c, \u043d\u043e \u043f\u0440\u0438 \u043f\u043e\u0432\u044b\u0448\u0435\u043d\u0438\u0438 \u0446\u0435\u043d\u044b \u0438\u043b\u0438 \u0447\u0438\u0441\u043b\u0430 \u0437\u0430\u043a\u0430\u0437\u043e\u0432 \u043f\u0440\u0438\u0434\u0451\u0442\u0441\u044f \u043f\u0435\u0440\u0435\u0445\u043e\u0434\u0438\u0442\u044c \u043d\u0430 \u0418\u041f \u2014 \u0441\u043b\u0435\u0434\u0438\u0442\u0435 \u0437\u0430 \u043b\u0438\u043c\u0438\u0442\u043e\u043c.</span>'};
+           ['\u041f\u0440\u0435\u0434\u0435\u043b\u044c\u043d\u0430\u044f \u0441\u0442\u0430\u0432\u043a\u0430, \u20bd/\u0447',г(макс)]]};
     } else if(кодI.indexOf('usn')===0){
-      ИНФО={t:'\u0423\u0421\u041d \u2014 \u0440\u0430\u0441\u0442\u0438 \u043c\u043e\u0436\u043d\u043e \u0434\u043e\u043b\u0433\u043e, \u043d\u043e \u0432\u0437\u043d\u043e\u0441\u044b \u043f\u043b\u0430\u0442\u044f\u0442\u0441\u044f \u0432\u0441\u0435\u0433\u0434\u0430',
-        s:'\u041f\u0440\u0430\u0432\u043e \u043d\u0430 \u0423\u0421\u041d \u0441\u043e\u0445\u0440\u0430\u043d\u044f\u0435\u0442\u0441\u044f \u0434\u043e <b>490,5 \u043c\u043b\u043d \u20bd/\u0433\u043e\u0434</b>, \u0438\u0434\u0451\u0442 \u0441\u0442\u0440\u0430\u0445\u043e\u0432\u043e\u0439 \u0441\u0442\u0430\u0436, \u043c\u043e\u0436\u043d\u043e \u043d\u0430\u043d\u0438\u043c\u0430\u0442\u044c \u043b\u044e\u0434\u0435\u0439. \u041d\u043e \u0441 <b>20 \u043c\u043b\u043d \u20bd/\u0433\u043e\u0434</b> \u0434\u043e\u0431\u0430\u0432\u043b\u044f\u0435\u0442\u0441\u044f \u041d\u0414\u0421, \u0430 \u0432\u0437\u043d\u043e\u0441\u044b \u043f\u043b\u0430\u0442\u044f\u0442\u0441\u044f \u0432\u0441\u0435\u0433\u0434\u0430:',
+      ИНФО={
         g:[['\u0424\u0438\u043a\u0441\u0438\u0440\u043e\u0432\u0430\u043d\u043d\u044b\u0435 \u0432\u0437\u043d\u043e\u0441\u044b / \u0433\u043e\u0434',г(TXC.FIX)],
            ['\u0417\u0430\u043f\u0430\u0441 \u0434\u043e \u043f\u043e\u0440\u043e\u0433\u0430 \u041d\u0414\u0421 / \u0433\u043e\u0434',г(Math.max(лимУСН-d.R,0))],
-           ['\u0420\u0430\u0441\u0447\u0451\u0442\u043d\u0430\u044f \u0432\u044b\u0440\u0443\u0447\u043a\u0430 / \u0433\u043e\u0434',г(d.R)]],
-        w:'<span>\u0412\u0437\u043d\u043e\u0441\u044b <b>'+г(TXC.FIX)+'</b> \u043f\u043b\u0430\u0442\u044f\u0442\u0441\u044f \u0434\u0430\u0436\u0435 \u0432 \u043c\u0435\u0441\u044f\u0446\u044b \u0431\u0435\u0437 \u0437\u0430\u043a\u0430\u0437\u043e\u0432. \u041d\u0430 \u00ab\u0414\u043e\u0445\u043e\u0434\u0430\u0445\u00bb \u043e\u043d\u0438 \u0432\u044b\u0447\u0438\u0442\u0430\u044e\u0442\u0441\u044f \u0438\u0437 \u043d\u0430\u043b\u043e\u0433\u0430 \u0446\u0435\u043b\u0438\u043a\u043e\u043c.</span>'};
+           ['\u0420\u0430\u0441\u0447\u0451\u0442\u043d\u0430\u044f \u0432\u044b\u0440\u0443\u0447\u043a\u0430 / \u0433\u043e\u0434',г(d.R)]]};
     } else {
-      ИНФО={t:'\u0410\u0423\u0421\u041d \u2014 \u0431\u0435\u0437 \u0432\u0437\u043d\u043e\u0441\u043e\u0432 \u0438 \u0434\u0435\u043a\u043b\u0430\u0440\u0430\u0446\u0438\u0439, \u043d\u043e \u0441\u0442\u0430\u0432\u043a\u0430 \u0432\u044b\u0448\u0435',
-        s:'\u0415\u0441\u043b\u0438 \u0440\u0430\u0431\u043e\u0442\u0430\u0435\u0442\u0435 \u0431\u0435\u0437 \u0441\u043e\u0442\u0440\u0443\u0434\u043d\u0438\u043a\u043e\u0432, \u0432\u0437\u043d\u043e\u0441\u043e\u0432 \u043d\u0435\u0442 \u0441\u043e\u0432\u0441\u0435\u043c: \u043d\u0438 \u0444\u0438\u043a\u0441\u0438\u0440\u043e\u0432\u0430\u043d\u043d\u044b\u0445, \u043d\u0438 \u043d\u0430 \u0442\u0440\u0430\u0432\u043c\u0430\u0442\u0438\u0437\u043c. \u041d\u0430\u043b\u043e\u0433 \u0441\u0447\u0438\u0442\u0430\u0435\u0442 \u0431\u0430\u043d\u043a, \u043a\u043d\u0438\u0433\u0443 \u0443\u0447\u0451\u0442\u0430 \u0432\u0435\u0441\u0442\u0438 \u043d\u0435 \u043d\u0443\u0436\u043d\u043e. \u041f\u043b\u0430\u0442\u0430 \u0437\u0430 \u044d\u0442\u043e \u2014 \u043f\u043e\u0432\u044b\u0448\u0435\u043d\u043d\u0430\u044f \u0441\u0442\u0430\u0432\u043a\u0430:',
+      ИНФО={
         g:[['\u0421\u0442\u0440\u0430\u0445\u043e\u0432\u044b\u0435 \u0432\u0437\u043d\u043e\u0441\u044b / \u0433\u043e\u0434','\u041d\u0435\u0442'],
            ['\u0417\u0430\u043f\u0430\u0441 \u0434\u043e \u043b\u0438\u043c\u0438\u0442\u0430 \u0410\u0423\u0421\u041d / \u0433\u043e\u0434',г(Math.max(лимАУ-d.R,0))],
-           ['\u0420\u0430\u0441\u0447\u0451\u0442\u043d\u0430\u044f \u0432\u044b\u0440\u0443\u0447\u043a\u0430 / \u0433\u043e\u0434',г(d.R)]],
-        w:'<span>\u0420\u0430\u0431\u043e\u0442\u0430\u0442\u044c \u043c\u043e\u0436\u043d\u043e \u0442\u043e\u043b\u044c\u043a\u043e \u0447\u0435\u0440\u0435\u0437 <b>\u0443\u043f\u043e\u043b\u043d\u043e\u043c\u043e\u0447\u0435\u043d\u043d\u044b\u0439 \u0431\u0430\u043d\u043a</b>, \u0438 \u0440\u0435\u0436\u0438\u043c \u0434\u043e\u0441\u0442\u0443\u043f\u0435\u043d \u043d\u0435 \u0432\u043e \u0432\u0441\u0435\u0445 \u0440\u0435\u0433\u0438\u043e\u043d\u0430\u0445.</span>'};
+           ['\u0420\u0430\u0441\u0447\u0451\u0442\u043d\u0430\u044f \u0432\u044b\u0440\u0443\u0447\u043a\u0430 / \u0433\u043e\u0434',г(d.R)]]};
     }
-    var над=(кодI.indexOf('npd')===0&&d.R>лимНПД);
-    /* Ограничение конкретного варианта режима: у НПД 4% и 6% это состав
-       заказчиков, у УСН — отчётность, у АУСН — цена простоты. Пишем
-       отдельной строкой, потому что это условие работы, а не цифра. */
-    var ОГРАН={
-     npd4:['\u0420\u0430\u0431\u043e\u0442\u0430 \u0442\u043e\u043b\u044c\u043a\u043e \u0441 \u0447\u0430\u0441\u0442\u043d\u044b\u043c\u0438 \u043b\u0438\u0446\u0430\u043c\u0438',
-       '\u0421\u0442\u0430\u0432\u043a\u0430 4% \u0434\u0435\u0439\u0441\u0442\u0432\u0443\u0435\u0442 \u0442\u043e\u043b\u044c\u043a\u043e \u043d\u0430 \u0437\u0430\u043a\u0430\u0437\u044b \u043e\u0442 \u0447\u0430\u0441\u0442\u043d\u044b\u0445 \u043b\u0438\u0446. \u041a\u0430\u043a \u0442\u043e\u043b\u044c\u043a\u043e \u043f\u043e\u044f\u0432\u043b\u044f\u0435\u0442\u0441\u044f \u043a\u043e\u043c\u043f\u0430\u043d\u0438\u044f \u0438\u043b\u0438 \u0418\u041f, \u0435\u0433\u043e \u0447\u0435\u043a \u043e\u0431\u043b\u0430\u0433\u0430\u0435\u0442\u0441\u044f \u043f\u043e 6% \u2014 \u0440\u0430\u0441\u0447\u0451\u0442 \u043e\u043a\u0430\u0436\u0435\u0442\u0441\u044f \u0437\u0430\u043d\u0438\u0436\u0435\u043d\u043d\u044b\u043c.'],
-     npd6:['\u0420\u0430\u0431\u043e\u0442\u0430 \u0442\u043e\u043b\u044c\u043a\u043e \u0441 \u043a\u043e\u043c\u043f\u0430\u043d\u0438\u044f\u043c\u0438 \u0438 \u0418\u041f',
-       '\u0421\u0442\u0430\u0432\u043a\u0430 6% \u0432\u0437\u044f\u0442\u0430 \u0434\u043b\u044f \u0437\u0430\u043a\u0430\u0437\u043e\u0432 \u043e\u0442 \u044e\u0440\u043b\u0438\u0446. \u0417\u0430\u043a\u0430\u0437\u044b \u043e\u0442 \u0447\u0430\u0441\u0442\u043d\u044b\u0445 \u043b\u0438\u0446 \u043e\u0431\u043b\u0430\u0433\u0430\u044e\u0442\u0441\u044f \u043f\u043e 4% \u2014 \u0440\u0435\u0430\u043b\u044c\u043d\u044b\u0439 \u043d\u0430\u043b\u043e\u0433 \u043e\u043a\u0430\u0436\u0435\u0442\u0441\u044f \u043c\u0435\u043d\u044c\u0448\u0435 \u0440\u0430\u0441\u0447\u0451\u0442\u043d\u043e\u0433\u043e.'],
-     npd5:['\u0421\u0442\u0430\u0432\u043a\u0430 5% \u2014 \u043d\u0430\u0448\u0430 \u0440\u0430\u0441\u0447\u0451\u0442\u043d\u0430\u044f, \u0435\u0451 \u043d\u0435\u0442 \u0432 \u041d\u041a',
-        '\u0412 \u041d\u0430\u043b\u043e\u0433\u043e\u0432\u043e\u043c \u043a\u043e\u0434\u0435\u043a\u0441\u0435 \u0420\u0424 \u0434\u043b\u044f \u041d\u041f\u0414 \u043f\u0440\u0435\u0434\u0443\u0441\u043c\u043e\u0442\u0440\u0435\u043d\u044b \u0442\u043e\u043b\u044c\u043a\u043e \u0434\u0432\u0435 \u0441\u0442\u0430\u0432\u043a\u0438 \u2014 4% \u043f\u0440\u0438 \u0440\u0430\u0431\u043e\u0442\u0435 \u0441 \u0444\u0438\u0437\u0438\u0447\u0435\u0441\u043a\u0438\u043c\u0438 \u043b\u0438\u0446\u0430\u043c\u0438 \u0438 6% \u0441 \u044e\u0440\u0438\u0434\u0438\u0447\u0435\u0441\u043a\u0438\u043c\u0438 \u043b\u0438\u0446\u0430\u043c\u0438 \u0438 \u0418\u041f. \u0420\u0430\u0441\u0447\u0451\u0442\u043d\u044b\u0435 5% \u2014 \u044d\u0442\u043e \u0443\u0441\u0440\u0435\u0434\u043d\u0451\u043d\u043d\u043e\u0435 \u0437\u043d\u0430\u0447\u0435\u043d\u0438\u0435 \u0434\u043b\u044f \u043f\u0440\u0438\u043c\u0435\u0440\u0430. \u0415\u0441\u043b\u0438 \u0432\u044b \u0440\u0430\u0431\u043e\u0442\u0430\u0435\u0442\u0435 \u0442\u043e\u043b\u044c\u043a\u043e \u0441 \u0444\u0438\u0437\u043b\u0438\u0446\u0430\u043c\u0438 \u0438\u043b\u0438 \u043d\u0430\u043e\u0431\u043e\u0440\u043e\u0442 \u0442\u043e\u043b\u044c\u043a\u043e \u0441 \u043a\u043e\u043c\u043f\u0430\u043d\u0438\u044f\u043c\u0438, \u043e\u0440\u0438\u0435\u043d\u0442\u0438\u0440\u0443\u0439\u0442\u0435\u0441\u044c \u043d\u0430 \u0444\u0430\u043a\u0442\u0438\u0447\u0435\u0441\u043a\u0438\u0435 \u0441\u0442\u0440\u043e\u043a\u0438 4% \u0438 6% \u0432 \u0442\u0430\u0431\u043b\u0438\u0446\u0435 \u043d\u0438\u0436\u0435.'],
-     usn6:['\u0423\u0447\u0451\u0442 \u043f\u0440\u0438\u0434\u0451\u0442\u0441\u044f \u0432\u0435\u0441\u0442\u0438 \u0441\u0430\u043c\u0438\u043c \u0438\u043b\u0438 \u043f\u043b\u0430\u0442\u0438\u0442\u044c \u0441\u043f\u0435\u0446\u0438\u0430\u043b\u0438\u0441\u0442\u0443',
-       '\u0414\u0435\u043a\u043b\u0430\u0440\u0430\u0446\u0438\u044f, \u0430\u0432\u0430\u043d\u0441\u044b \u043a\u0430\u0436\u0434\u044b\u0439 \u043a\u0432\u0430\u0440\u0442\u0430\u043b, \u043a\u043d\u0438\u0433\u0430 \u0443\u0447\u0451\u0442\u0430 \u0438 \u043a\u0430\u0441\u0441\u0430. \u0415\u0441\u043b\u0438 \u043d\u0430\u043d\u0438\u043c\u0430\u0435\u0442\u0435 \u0441\u043f\u0435\u0446\u0438\u0430\u043b\u0438\u0441\u0442\u0430 \u2014 \u0443\u043a\u0430\u0436\u0438\u0442\u0435 \u0435\u0433\u043e \u0441\u0442\u043e\u0438\u043c\u043e\u0441\u0442\u044c \u0432 \u0430\u043d\u043a\u0435\u0442\u0435, \u0447\u0442\u043e\u0431\u044b \u043e\u043d\u0430 \u043f\u043e\u043f\u0430\u043b\u0430 \u0432 \u0440\u0430\u0441\u0447\u0451\u0442.'],
-     usn15:['\u041a\u0430\u0436\u0434\u044b\u0439 \u0440\u0430\u0441\u0445\u043e\u0434 \u043d\u0443\u0436\u043d\u043e \u043f\u043e\u0434\u0442\u0432\u0435\u0440\u0436\u0434\u0430\u0442\u044c \u0434\u043e\u043a\u0443\u043c\u0435\u043d\u0442\u0430\u043c\u0438',
-       '\u0411\u0435\u0437 \u0434\u043e\u0433\u043e\u0432\u043e\u0440\u043e\u0432, \u0430\u043a\u0442\u043e\u0432 \u0438 \u0447\u0435\u043a\u043e\u0432 \u0437\u0430\u0442\u0440\u0430\u0442\u0430 \u0432 \u0440\u0430\u0441\u0445\u043e\u0434\u044b \u043d\u0435 \u043f\u043e\u043f\u0430\u0434\u0451\u0442. \u0411\u0435\u0437 \u0441\u043f\u0435\u0446\u0438\u0430\u043b\u0438\u0441\u0442\u0430 \u0432\u0435\u0441\u0442\u0438 \u0442\u0430\u043a\u043e\u0439 \u0443\u0447\u0451\u0442 \u0442\u044f\u0436\u0435\u043b\u043e.'],
-     ausn8:['\u041f\u0440\u043e\u0441\u0442\u043e\u0442\u0430 \u043e\u043f\u043b\u0430\u0447\u0435\u043d\u0430 \u043f\u043e\u0432\u044b\u0448\u0435\u043d\u043d\u043e\u0439 \u0441\u0442\u0430\u0432\u043a\u043e\u0439',
-       '\u041e\u0442\u0447\u0451\u0442\u043d\u043e\u0441\u0442\u0438 \u043f\u043e\u0447\u0442\u0438 \u043d\u0435\u0442, \u043d\u043e 8% \u0432\u044b\u0448\u0435, \u0447\u0435\u043c 6% \u043d\u0430 \u0423\u0421\u041d. \u0420\u0430\u0431\u043e\u0442\u0430\u0442\u044c \u043c\u043e\u0436\u043d\u043e \u0442\u043e\u043b\u044c\u043a\u043e \u0447\u0435\u0440\u0435\u0437 \u0443\u043f\u043e\u043b\u043d\u043e\u043c\u043e\u0447\u0435\u043d\u043d\u044b\u0439 \u0431\u0430\u043d\u043a, \u0438 \u0440\u0435\u0436\u0438\u043c \u0435\u0441\u0442\u044c \u043d\u0435 \u0432\u043e \u0432\u0441\u0435\u0445 \u0440\u0435\u0433\u0438\u043e\u043d\u0430\u0445.'],
-     ausn20:['\u041f\u0440\u043e\u0441\u0442\u043e\u0442\u0430 \u043e\u043f\u043b\u0430\u0447\u0435\u043d\u0430 \u043f\u043e\u0432\u044b\u0448\u0435\u043d\u043d\u043e\u0439 \u0441\u0442\u0430\u0432\u043a\u043e\u0439',
-       '20% \u0441 \u0440\u0430\u0437\u043d\u0438\u0446\u044b \u0432\u044b\u0448\u0435, \u0447\u0435\u043c 15% \u043d\u0430 \u0423\u0421\u041d, \u0438 \u0435\u0441\u0442\u044c \u043c\u0438\u043d\u0438\u043c\u0430\u043b\u044c\u043d\u044b\u0439 \u043d\u0430\u043b\u043e\u0433 3% \u0441 \u0432\u044b\u0440\u0443\u0447\u043a\u0438. \u0422\u043e\u043b\u044c\u043a\u043e \u0447\u0435\u0440\u0435\u0437 \u0443\u043f\u043e\u043b\u043d\u043e\u043c\u043e\u0447\u0435\u043d\u043d\u044b\u0439 \u0431\u0430\u043d\u043a \u0438 \u043d\u0435 \u0432\u043e \u0432\u0441\u0435\u0445 \u0440\u0435\u0433\u0438\u043e\u043d\u0430\u0445.']};
-    var огр=ОГРАН[кодI];
-    npdB.innerHTML='<div class="t">'+ИНФО.t+'</div>'+
-      '<div class="s">'+ИНФО.s+'</div>'+
+    /* З-113 (слово владельца 27.08, ночь): от плашки режима остаются
+       только три цифровые плашки .g — рамка, зелёная подложка и
+       заголовок сняты; контейнер прозрачный, плашки стоят прямо
+       под баннером «Ваш режим» (bestbox) и на всю его ширину. */
+    npdB.innerHTML=
       '<div class="g">'+ИНФО.g.map(function(x){
-        return '<div><span>'+x[0]+'</span><b>'+x[1]+'</b></div>'}).join('')+'</div>'+
-      (огр?'<div class="npdlim"><b>'+огр[0]+'</b>'+огр[1]+'</div>':'')+
-      '<div class="warn">'+(над?IWT17+' ':'')+ИНФО.w+'</div>';
+        return '<div><span>'+x[0]+'</span><b>'+x[1]+'</b></div>'}).join('')+'</div>';
   }
 
   /* --- четыре цифры --- */
@@ -5273,8 +5218,9 @@ var REFD=[
     for(var dd=0;dd<5;dd++){
       var c=grid[dd][ss];
       if(!c){html+='<div><i class="free"></i></div>';continue}
-      var isFirst=(ss===0)||(!grid[dd][ss-1])||(grid[dd][ss-1].n!==c.n);
-      var lbl=isFirst?'<span'+(c.n==='\u0421\u044a\u0451\u043c\u043a\u0430'?' class="wlbl"':'')+'>'+c.n+'</span>':'';
+      /* З-118 (слово владельца 27.08): подпись стоит в каждой занятой
+         ячейке календаря — на десктопе помещаются все подписи. */
+      var lbl='<span'+(c.n==='\u0421\u044a\u0451\u043c\u043a\u0430'?' class="wlbl"':'')+'>'+c.n+'</span>';
       /* неполный час закрашивается на свою долю, сверху вниз */
       var bg=(c.part!=null&&c.part<0.999)
         ? 'linear-gradient(to bottom,'+c.c+' 0 '+(c.part*100).toFixed(0)+'%,'+
@@ -5300,37 +5246,47 @@ var REFD=[
     }).join('');
   }
 
-  var wkn=$('wknote');
-  if(wkn){
-    /* Одинаковые съёмки объединяем: «три съёмки по 2 ч и одна на 1,5 ч». */
-    var grp=[];
-    shoots.forEach(function(v){
-      var key=f1(v), last=grp[grp.length-1];
-      if(last&&last.k===key)last.n++; else grp.push({k:key,n:1,v:v});
-    });
-    var CNTW=['','\u043e\u0434\u043d\u0430','\u0434\u0432\u0435','\u0442\u0440\u0438','\u0447\u0435\u0442\u044b\u0440\u0435',
-              '\u043f\u044f\u0442\u044c','\u0448\u0435\u0441\u0442\u044c','\u0441\u0435\u043c\u044c','\u0432\u043e\u0441\u0435\u043c\u044c'];
-    var parts2=grp.map(function(g){
-      var cnt=CNTW[g.n]||String(g.n);
-      /* «две съёмки», но «пять съёмок» — со счётной формы 5 и больше
-         существительное уходит в родительный падеж множественного числа */
-      var сл=(g.n>=5)?'\u0441\u044a\u0451\u043c\u043e\u043a':'\u0441\u044a\u0451\u043c\u043a\u0438';
-      return g.n===1
-        ? '\u043e\u0434\u043d\u0430 \u0441\u044a\u0451\u043c\u043a\u0430 \u043d\u0430 '+g.k+' \u0447'
-        : cnt+' '+сл+' \u043f\u043e '+g.k+' \u0447';
-    });
-    var shoW=parts2.length>1
-      ? parts2.slice(0,-1).join(', ')+' \u0438 '+parts2[parts2.length-1]
-      : (parts2[0]||'');
-    var wkSign='<svg class="wkmk" viewBox="0 0 32 32" fill="none" aria-hidden="true">'+
-      '<rect x="10.95" y="2.09" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 7.14)" fill="var(--c-gr3)"/>'+
-      '<rect x="19.81" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 24.86 16)" fill="var(--c-g-500)"/>'+
-      '<rect x="10.95" y="19.81" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 24.86)" fill="var(--c-gr3)"/>'+
-      '<rect x="2.09" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 7.14 16)" fill="var(--c-gr3)"/>'+
-      '</svg>';
-    wkn.innerHTML=wkSign+'<span class="big3">\u0417\u0430 \u043d\u0435\u0434\u0435\u043b\u044e \u0443 \u0432\u0430\u0441 '+shoW+'</span>'+
-     '\u041f\u043e\u043b\u0443\u0447\u0430\u0435\u0442\u0441\u044f \u0432\u0441\u0435\u0433\u043e <b>'+f1(shW)+' '+hword(shW)+'</b> \u0441 \u043a\u0430\u043c\u0435\u0440\u043e\u0439 \u0432 \u0440\u0443\u043a\u0430\u0445, '+
-     '\u0430 \u043e\u0441\u0442\u0430\u043b\u044c\u043d\u043e\u0435 \u0432\u0440\u0435\u043c\u044f \u2014 \u044d\u0442\u043e \u0442\u0430 \u0441\u0430\u043c\u0430\u044f \u043d\u0435\u0432\u0438\u0434\u0438\u043c\u0430\u044f, \u043d\u043e \u043e\u0433\u0440\u043e\u043c\u043d\u0430\u044f \u0440\u0430\u0431\u043e\u0442\u0430 \u0437\u0430 \u043a\u0430\u0434\u0440\u043e\u043c, \u0431\u0435\u0437 \u043a\u043e\u0442\u043e\u0440\u043e\u0439 \u043d\u0438 \u043e\u0434\u043d\u0430 \u0441\u044a\u0451\u043c\u043a\u0430 \u043f\u0440\u043e\u0441\u0442\u043e \u043d\u0435 \u0441\u043e\u0441\u0442\u043e\u0438\u0442\u0441\u044f.';
+  /* З-137 (слово владельца 27.08): уведомление «За неделю у вас …
+     съёмки» удалено из блока 02 совсем. Текстовой комментарий
+     «Получается всего…» после диаграммы остаётся (З-136). */
+  var wkt=$('wktxt');
+  if(wkt)wkt.innerHTML='\u041f\u043e\u043b\u0443\u0447\u0430\u0435\u0442\u0441\u044f \u0432\u0441\u0435\u0433\u043e <b>'+f1(shW)+' '+hword(shW)+'</b> \u0441 \u043a\u0430\u043c\u0435\u0440\u043e\u0439 \u0432 \u0440\u0443\u043a\u0430\u0445, '+
+   '\u0430 \u043e\u0441\u0442\u0430\u043b\u044c\u043d\u043e\u0435 \u0432\u0440\u0435\u043c\u044f \u2014 \u044d\u0442\u043e \u0442\u0430 \u0441\u0430\u043c\u0430\u044f \u043d\u0435\u0432\u0438\u0434\u0438\u043c\u0430\u044f, \u043d\u043e \u043e\u0433\u0440\u043e\u043c\u043d\u0430\u044f \u0440\u0430\u0431\u043e\u0442\u0430 \u0437\u0430 \u043a\u0430\u0434\u0440\u043e\u043c, \u0431\u0435\u0437 \u043a\u043e\u0442\u043e\u0440\u043e\u0439 \u043d\u0438 \u043e\u0434\u043d\u0430 \u0441\u044a\u0451\u043c\u043a\u0430 \u043f\u0440\u043e\u0441\u0442\u043e \u043d\u0435 \u0441\u043e\u0441\u0442\u043e\u0438\u0442\u0441\u044f.';
+
+  /* З-118: линейная диаграмма потраченного времени (строки .lgi,
+     как легенды блока 01); порядок — по убыванию часов, полоса —
+     доля от максимума. */
+  var wkc=$('wkchart');
+  if(wkc){
+    /* З-136 (слово владельца 27.08): строка — в точности как в
+       линейных диаграммах блока 01 (lg1–lg3): двухэтажная —
+       название <b> + подпись <em>, маркер-квадратик, справа
+       значение .a, полоса .fill — доля от максимума. Порядок
+       строк — как в календаре и легенде недели, без сортировки.
+       Подпись <em> — доля вида в общем времени недели (термины
+       справочника покрывают не все виды, поэтому без ссылок).
+       Заголовок вынесен из диаграммы отдельным h2 (см. разметку). */
+    var ТЧ=[[shW,'\u0421\u044a\u0451\u043c\u043a\u0430',WC.sh],
+            [poW,'\u041e\u0431\u0440\u0430\u0431\u043e\u0442\u043a\u0430',WC.po],
+            [prW,'\u041f\u0440\u043e\u0434\u0432\u0438\u0436\u0435\u043d\u0438\u0435',WC.pr],
+            [clW,'\u0420\u0430\u0431\u043e\u0442\u0430 \u0441 \u043a\u043b\u0438\u0435\u043d\u0442\u043e\u043c',WC.cl],
+            [acW,'\u0423\u0447\u0451\u0442',WC.ac],
+            [idW,'\u0420\u0430\u0431\u043e\u0447\u0438\u0435 \u043f\u0430\u0443\u0437\u044b',WC.id],
+            [fmW,'\u0424\u043e\u0440\u0441-\u043c\u0430\u0436\u043e\u0440\u044b',WC.fm]]
+      .filter(function(x){return x[0]>0.05});
+    var mxT=0, sumT=0;
+    ТЧ.forEach(function(x){if(x[0]>mxT)mxT=x[0]; sumT+=x[0]});
+    wkc.innerHTML=
+      ТЧ.map(function(x){
+        var w=mxT>0?x[0]/mxT*100:0;
+        var p=sumT>0?x[0]/sumT*100:0;
+        return '<div class="lgi">'+
+          '<div class="fill" style="--w:'+w.toFixed(1)+'%;width:'+w.toFixed(1)+'%;background:'+x[2]+'"></div>'+
+          '<div class="ltx"><i style="background:'+x[2]+'"></i><div><b>'+x[1]+'</b>'+
+          '<em>'+Math.round(p)+'% \u0432\u0440\u0435\u043c\u0435\u043d\u0438 \u043d\u0435\u0434\u0435\u043b\u0438</em></div></div>'+
+          '<div class="lvv"><div class="a">'+f1(x[0])+' '+hword(x[0])+'</div></div>'+
+          '</div>';
+      }).join('');
   }
 
   /* Плашки «Ставка часа» и «Цена съёмки» убраны из врезки: те же цифры
@@ -5796,9 +5752,20 @@ var СПР_НОМЕР = {};
 })();
 
 /* --- подсказка на сегменте кольца ---
-   Плашка ставится СНАРУЖИ кольца, по направлению от центра к сектору.
-   Сектор справа — подсказка правее, сверху — выше, и так далее.
-   Центр кольца со ставкой не перекрывается никогда. */
+   Правило (З-104, слово владельца 27.08, ночная правка): расстояние
+   меряется от ЦЕНТРА диаграммы, а не от курсора. Ближний край плашки
+   держится на постоянном радиусе — внешний край кольца минус одна
+   пятая ширины кольца: плашка слегка заезжает на кольцо, не задевая
+   цифры секторов (они на средней линии кольца) и центральную ставку.
+   Направление — за курсором: бока — плашка чуть выше курсора (луч
+   наклоняется вверх у горизонтали), ровно сверху — ровно сверху,
+   ровно снизу — ровно снизу. Движение непрерывное, без переключений;
+   расстояние — точное решение по половинкам сторон плашки, без
+   итераций. На узких окнах карточка не затягивает плашку на
+   центральную ставку: прижатая по горизонтали, она поднимается или
+   опускается до точного зазора от внутреннего круга.
+   Ширина фиксирована: один раз измеряем все секторы и задаём всем
+   ширину самого широкого — от наведённого сектора она не зависит. */
 (function(){
   var host=$('dn1'); if(!host)return;
   var tip=document.createElement('div');
@@ -5813,19 +5780,68 @@ var СПР_НОМЕР = {};
     var len=Math.sqrt(dx*dx+dy*dy)||1;
     var ux=dx/len, uy=dy/len;                 /* направление от центра наружу */
 
+    /* Бока — плашка чуть выше курсора (слово владельца 27.08): луч
+       наклоняется вверх у горизонтали. Сверху и снизу наклона нет —
+       там плашка ровно сверху / ровно снизу. */
+    var НАКЛОН=0.25, wy=uy-НАКЛОН*Math.abs(ux),
+        vl=Math.sqrt(ux*ux+wy*wy)||1, vx=ux/vl, vy=wy/vl;
+
     var tw=tip.offsetWidth, th=tip.offsetHeight;
-    var OTST=18;                              /* зазор от курсора */
-    /* отталкиваем плашку от центра: чем ближе к краю по оси, тем сильнее сдвиг */
-    var x=mx+ux*OTST-tw*(0.5-ux*0.5);
-    var y=my+uy*OTST-th*(0.5-uy*0.5);
+    var k=r.width/260;
+    /* Якорь (слово владельца): ближний край плашки — на постоянном
+       радиусе от центра: внешнее кольцо минус одна пятая его ширины.
+       Плашка слегка заезжает на кольцо, но цифры секторов (они на
+       средней линии кольца) и центральная ставка не задеты. */
+    var ЗАПРЕТ=(116-52/5)*k;
+
+    /* Плашка касается круга радиуса ЗАПРЕТ в направлении
+       наклонённого луча. Расстояние L до центра плашки — точное
+       решение по половинкам сторон a и b: без итераций, без скачков. */
+    var a=tw/2, b=th/2, A=Math.abs(vx), B=Math.abs(vy);
+    var Q=a*A*(A-1)+b*B*(B-1),
+        R2=a*a*(A-1)*(A-1)+b*b*(B-1)*(B-1)-ЗАПРЕТ*ЗАПРЕТ;
+    var L=-Q+Math.sqrt(Math.max(0,Q*Q-R2));
+    if((L+a)*A<=a) L=(ЗАПРЕТ+b*(1-B))/B;        /* активна только вертикаль */
+    else if((L+b)*B<=b) L=(ЗАПРЕТ+a*(1-A))/A;   /* только горизонталь */
+    var x=cx+L*vx-tw*(0.5-vx*0.5);
+    var y=cy+L*vy-th*(0.5-vy*0.5);
 
     /* не вылезать за пределы карточки */
     var pole=host.parentNode.getBoundingClientRect();
     var minX=pole.left-r.left+4, maxX=pole.right-r.left-tw-4;
     if(x<minX)x=minX; if(x>maxX)x=maxX;
+
+    /* Узкое окно прижало плашку по горизонтали — единственное, что
+       нельзя перекрывать, центральная ставка: внутренний круг плюс
+       запас. Прижатая плашка поднимается (боковые сектора) или
+       опускается (нижние) до точного зазора от него. */
+    var ВНУТР=(64+8)*k;
+    var nx=Math.max(x,Math.min(cx,x+tw)), dxn=Math.abs(nx-cx);
+    if(dxn<ВНУТР){
+      var H=Math.sqrt(ВНУТР*ВНУТР-dxn*dxn);
+      if(y+th>cy-H&&y<cy+H) y=vy<0?cy-H-th:cy+H;
+    }
     if(y<-th-4)y=-th-4;
     tip.style.left=x.toFixed(0)+'px';
     tip.style.top=y.toFixed(0)+'px';
+  }
+
+  /* Фиксированная ширина: меряем скрытой плашкой каждый сектор и ширину
+     самого широкого задаём всем (у него и берём образец). Один раз,
+     при первом наведении. */
+  var ШИР=null;
+  function фиксШирина(){
+    if(ШИР!==null)return;
+    var показ=tip.style.display, тело=tip.innerHTML;
+    tip.style.display='block'; tip.style.visibility='hidden';
+    var макс=0, сс=host.querySelectorAll('.seg[data-nm]');
+    for(var i=0;i<сс.length;i++){
+      tip.innerHTML='<b>'+сс[i].getAttribute('data-nm')+'</b><span><u>'+
+        сс[i].getAttribute('data-pc')+'% \u0441\u0442\u043e\u0438\u043c\u043e\u0441\u0442\u0438 \u0447\u0430\u0441\u0430</span>';
+      макс=Math.max(макс,tip.offsetWidth);
+    }
+    tip.innerHTML=тело; tip.style.display=показ; tip.style.visibility='';
+    ШИР=макс; tip.style.width=макс+'px';
   }
 
   host.addEventListener('mousemove',function(e){
@@ -5840,6 +5856,7 @@ var СПР_НОМЕР = {};
         tip.style.setProperty('--tipc',t.getAttribute('fill')||'');
       }
       tip.style.display='block';
+      фиксШирина();
       place(t,e);
       tip.className='segtip on';
     } else { tip.className='segtip'; tip.style.display='none'; tip.removeAttribute('data-cur'); }
@@ -6340,3 +6357,5 @@ var _p=$('dlpdf'); if(_p)_p.onclick=function(){try{document.title=window.PHR_FIL
   setTimeout(обновить,300); setTimeout(обновить,1200);
 })();
 </script>
+
+</body></html>
