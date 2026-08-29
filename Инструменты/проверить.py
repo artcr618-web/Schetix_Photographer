@@ -4,7 +4,7 @@
 Запускать после любой правки:  python3 проверить.py [корень]
 Численные проверки выполняют НАСТОЯЩИЙ код calc()/parts(), вырезанный из HTML.
 Код возврата: 0 — всё чисто, 1 — есть падения."""
-import json, subprocess, sys, os, re, io, collections
+import json, subprocess, sys, os, re, io, collections, math
 
 КОРЕНЬ = sys.argv[1] if len(sys.argv) > 1 else '/home/user/schetix'
 ЗДЕСЬ  = os.path.dirname(os.path.abspath(__file__))
@@ -49,12 +49,12 @@ d = расчёт(поля={'tax_off': True})
          abs(d['R'] - d['C'] - d['aq'] - d['Ny']) < 1)
 
 d = базовый
-проверка('иерархия: операционное + резерв + проектное = чистое',
-         abs(d['side'] + d['fmT'] + d['pool'] - d['NT']) < 0.01)
-проверка('иерархия: профильное + клиентское = проектное',
-         abs(d['core'] + d['clT'] - d['pool']) < 0.01)
-проверка('иерархия: съёмка + обработка = профильное',
-         abs(d['sh'] + d['post'] - d['core']) < 0.01)
+проверка('иерархия: операционное + резерв + проектное = эффективное',
+         abs(d['promo'] + d['accT'] + d['fmT'] + d['pool'] - d['NT']) < 0.01)
+проверка('иерархия: съёмочное + постпродакшн + проектное клиентское = проектное',
+         abs(d['sh'] + d['post'] + d['clT'] - d['pool']) < 0.01)
+проверка('контракт: удалены неиспользуемые агрегаты и старые режимы',
+         not ({'core','sAuto','equip','promoM','current','side'} & set(d)))
 проверка('сумма сегментов кольца = выручка',
          abs(sum(d['__parts']) - d['R']) < 1, f"Δ {sum(d['__parts']) - d['R']:.4f}")
 проверка('доходные сектора = доход без отпуска',
@@ -73,6 +73,16 @@ d = базовый
 проверка('сетка скидок: ставка часа убывает с длительностью',
          all(ставки[i] > ставки[i+1] for i in range(3)),
          ' → '.join(f'{r:,.0f}' for r in ставки))
+# Пользовательская карта Прайса: база — его минимальная Продолжительность
+# съёмки, затем +2/+4/+6; ставки округляются вверх до 100 ₽.
+d = базовый
+S0 = max(round(d['S'] or 2), 1); hp = d['R']/d['pool'] if d['pool'] else 0
+rr100 = lambda n: math.ceil((n or 0)/100)*100
+volume_durations = [S0, S0+2, S0+4, S0+6]
+volume_rates = [rr100((S*(1+d['K'])+d['cl'])*hp/S) for S in volume_durations]
+проверка('сетка скидок: Прайс строится от минимальной съёмки через +2/+4/+6 часов',
+         volume_durations == [1,3,5,7] and all(volume_rates[i]>=volume_rates[i+1] for i in range(3)),
+         ' / '.join(f'{S} ч: {r:,.0f} ₽' for S,r in zip(volume_durations,volume_rates)))
 
 # Загрузка считает именно проекты, а не съёмочные часы. При S=1 они равны,
 # поэтому проверяем весь разрешённый диапазон длительности съёмки.
@@ -120,6 +130,10 @@ for код, кто, имя in РЕЖИМЫ:
          all(x['sh'] > 0 and abs(x['rateZero']*x['sh']-x['Rb']) < 1e-5 for x in нулевые))
 проверка('месячная выручка в ноль = годовая / 12',
          all(abs((x['Rb']/12)*12-x['Rb']) < 1e-7 for x in нулевые))
+проверка('съёмки при Ставке в ноль покрывают расходы',
+         all(abs(x['zeroShootsY']*x['rateZero']*x['S']-x['Rb']) < 0.02
+             and abs(x['zeroShootsM']*12-x['zeroShootsY']) < 1e-9
+             and abs(x['zeroShootsY']-x['py']) < 1e-9 for x in нулевые))
 
 # Специальные ветки, которые прежний повторный расчёт в report.html терял.
 d = расчёт(поля={'tax_off': True})
@@ -214,6 +228,42 @@ d = расчёт(поля={'fund_on': False, 'disc_on': False})
 d = расчёт(радио={'site_mode': 'hired'})
 проверка('эффективный ноль · неактивная ветка собственного сайта',
          d['currentSelfSiteCost'] == 0)
+d = расчёт(поля={'own_home': True})
+ответ_жильё = next((x['v'] for x in d['answers'] if x['n'] == 'Сколько вы платите за жильё в месяц'), None)
+проверка('рабочее место · собственное жильё: аренда или ипотека получает эффективный ноль',
+         abs(d['wsY'] - 10080) < 0.01 and ответ_жильё == 0,
+         f"Содержание рабочего места {d['wsY']:,.0f} ₽/год; ответ {ответ_жильё}")
+d = расчёт(радио={'ws_mode': 'office'})
+проверка('рабочее место · отдельное помещение: аренда и коммунальные учитываются полностью',
+         abs(d['wsY'] - 264000) < 0.01,
+         f"{d['wsY']:,.0f} ₽/год")
+d = расчёт(EXC_ВНЕШ={'Form009b': True})
+проверка('рабочее место · исключённый блок: содержание и обустройство получают ноль',
+         d['wsY'] == 0 and d['depWs'] == 0 and d['varRent'] == 0)
+d = расчёт(CAT={'Form006': {'k':'months','rows':[['Курс 1',80000,4],['Курс 2',20000,2]]}})
+ожид_обучение = (100000 + 6*d['Ny']/12) / 7
+проверка('обучение · несколько курсов: стоимость и периоды без дохода суммируются',
+         abs(d['eduY']-ожид_обучение) < 0.01 and abs(d['depEdu']-ожид_обучение) < 0.01,
+         f"{d['eduY']:,.2f} ₽/год")
+d = расчёт(EXC_ВНЕШ={'Form006': True})
+проверка('обучение · исключённый блок получает эффективный ноль',
+         d['eduY'] == 0 and d['depEdu'] == 0)
+d = расчёт(поля={'edu_life':'0'})
+проверка('обучение · нулевой срок не вызывает деление на ноль', d['eduY'] == 0)
+d = расчёт(радио={'site_mode':'hired'})
+проверка('сайт · подрядчик: стоимость распределяется, Инвестиционное время равно нулю',
+         abs(d['siteY']-10000) < 0.01 and d['goalSelfSiteCost'] == 0)
+d = расчёт(радио={'site_mode':'self'})
+ожид_сайт = d['R']*80/(7*d['NT'])
+проверка('сайт · самостоятельно: деньги равны нулю, Инвестиционное время компенсируется',
+         d['siteY'] == 0 and abs(d['goalSelfSiteCost']-ожид_сайт) < 0.01,
+         f"{d['goalSelfSiteCost']:,.2f} ₽/год")
+d = расчёт(EXC_ВНЕШ={'Form014': True})
+проверка('сайт · исключённый блок: деньги и Инвестиционное время получают ноль',
+         d['siteY'] == 0 and d['goalSelfSiteCost'] == 0)
+d = расчёт(поля={'site_life':'0'}, радио={'site_mode':'self'})
+проверка('сайт · нулевой срок не вызывает деление на ноль',
+         d['siteY'] == 0 and d['goalSelfSiteCost'] == 0)
 d = расчёт(поля={'current_rate': '1000'})
 проверка('убыток не обрезается и сохраняет знак минус',
          d['currentResult'] < 0 and d['currentLoss'] < 0
@@ -290,14 +340,27 @@ calc, rep, karkas = читать('Веб/calc.html'), читать('Веб/repor
          and ент_ю('Фактическая стоимость вашего часа работы') not in rep
          and ент_ю('Час вашего времени') not in rep,
          'эталон названий — лист 01_Глоссарий книги')
+проверка('три сценария Ставки часа съёмки связаны правильно',
+         'Ваша желаемая ставка за час съёмки' in rep
+         and ент_ю('Текущий доход') in rep
+         and ент_ю('Ваш текущий доход') not in rep
+         and ент_ю('Желаемый доход') in rep
+         and ент_ю('Необходимый доход') not in rep
+         and "no:'"+ент_ю('текущий')+"'" in rep
+         and "no:'"+ент_ю('желаемый')+"'" in rep
+         and "no:'"+ент_ю('реальный')+"'" not in rep
+         and "no:'"+ент_ю('идеальный')+"'" not in rep
+         and "ссылка('Текущая','Текущая ставка')" in rep
+         and "ссылка('Желаемая','Желаемая ставка')" in rep
+         and "ссылка('В ноль','Ставка в ноль')" in rep)
 
-# Карточка «Необходимый доход» показывает один точный аналитический сценарий.
+# Карточка «Желаемый доход» показывает один точный аналитический сценарий.
 # Округлённая вверх ставка остаётся только в практических блоках отчёта.
 идеал = re.search(r"\{cls:'s2'.*?cap:CAPM\}", rep, re.S)
 идеал_код = идеал.group(0) if идеал else ''
-проверка('карточка «Необходимый доход»: ставка берётся из d.rateHour',
+проверка('карточка «Желаемый доход»: ставка берётся из d.rateHour',
          'var rateGoalПередан=Number(d.rateHour)' in rep)
-проверка('карточка «Необходимый доход»: три суммы показаны до целого рубля',
+проверка('карточка «Желаемый доход»: три суммы показаны до целого рубля',
          'r:f0(goalRateV)' in идеал_код
          and 'rev:f0(d.R/12)' in идеал_код
          and 'mid:f0(d.Ny/12)' in идеал_код
@@ -317,6 +380,10 @@ calc, rep, karkas = читать('Веб/calc.html'), читать('Веб/repor
 проверка('проектное время — годовой pool, а не длительность проекта',
          "['Р','Проектное время', чс(pool)" in rep
          and "['Р','Время на проекты'" not in rep)
+проверка('отчёт: Скидка за объём строится от Продолжительности съёмки пользователя',
+         'var Sbase=Math.max(Math.round(d.S||2),1)' in rep
+         and 'var steps=[Sbase+2,Sbase+4,Sbase+6]' in rep
+         and 'var baseHour=rRate(hourAt(Sbase))' in rep)
 проверка('календарь: Выходной и Праздник разделены',
          '"Выходные дни": "Выходной"' in rep
          and '"Праздничные дни": "Праздник"' in rep
@@ -324,6 +391,11 @@ calc, rep, karkas = читать('Веб/calc.html'), читать('Веб/repor
 проверка('лояльность: внутренние правила не выводятся пользователю',
          "return '<h3>Фонд и его распределение</h3>' + a;" in rep
          and '<h3>08.2 По каким правилам делится фонд</h3>' not in rep)
+проверка('лояльность: неподтверждённая экономия постоянного клиента удалена',
+         'перепЧ*0.70' not in rep
+         and 'Сверх того сэкономите на привлечении' not in rep
+         and 'от 30% вашего бюджета' not in rep
+         and 'до 20% вашего рабочего времени' not in rep)
 
 # Карточка «В ноль» берёт точный сценарий из calc(), но денежные значения
 # для пользователя округляет до ближайшего целого рубля. Округление вверх
@@ -339,16 +411,19 @@ calc, rep, karkas = читать('Веб/calc.html'), читать('Веб/repor
          and 'rev:f0(Vb/12)' in ноль_код
          and 'mid:f0(0)' in ноль_код
          and 'f0r(bRateV)' not in ноль_код)
+проверка('карточка «Дохода нет»: количество съёмок не дублирует блок загрузки',
+         'shoots:Math.ceil(d.zeroShootsM||0)' not in ноль_код
+         and 'чтобы покрыть расходы при этой ставке' not in rep)
 проверка('денежный формат с копейками удалён из пользовательского интерфейса',
          'var f2=' not in rep and 'f2=function' not in calc)
 проверка('блок «Четыре цифры»: ставка в ноль округляется вверх до 100 ₽',
          "['b','\\u0421\\u0442\\u0430\\u0432\\u043a\\u0430 \\u0432 \\u043d\\u043e\\u043b\\u044c',f0r(bRateV)+'/\\u0447'" in rep)
-проверка('карточка текущего дохода берёт готовый currentResult из calc()',
+проверка('карточка «Текущий доход» берёт готовый currentResult из calc()',
          'var resultCПередан=Number(d.currentResult)' in rep
          and 'var costsCПереданы=Number(d.currentCostsTotal)' in rep)
-проверка('карточка текущего дохода не обрезает убыток до нуля',
+проверка('карточка «Текущий доход» не обрезает убыток до нуля',
          'Math.max(curR-expC,0)' not in rep)
-проверка('карточка текущего дохода меняет подпись на «Ваш убыток»',
+проверка('карточка «Текущий доход» меняет подпись на «Ваш убыток»',
          "currentIsLoss?'\\u0412\\u0430\\u0448 \\u0443\\u0431\\u044b\\u0442\\u043e\\u043a'" in rep)
 проверка('убыток показывается сравнительной плашкой и знаком минус',
          'class="losscompare"' in rep and 'class="current-loss-note"' in rep
@@ -361,6 +436,221 @@ aq_form = re.search(r'id="acq_rate"[^>]*value="([\d.]+)"', calc)
          aq_rep is None and 'AQФАКТ' in rep,
          f'в отчёте осталось зашитое {aq_rep.group(1) if aq_rep else "—"}'
          + (f' · в анкете {aq_form.group(1)} %' if aq_form else ''))
+проверка('анкета: собственное жильё блокирует поле аренды или ипотеки',
+         'rent.disabled=oh.checked' in calc
+         and "homeHousing=CHK('own_home')?0:V('home_rent')" in calc)
+проверка('анкета: переключатель Рабочего места меняет домашнюю и арендную ветки',
+         "$('ws_home').style.display=r.value==='home'?'grid':'none'" in calc
+         and "$('ws_off').style.display=r.value==='office'?'grid':'none'" in calc)
+income_tag=re.search(r'<input[^>]*id="income_month"[^>]*>',calc)
+проверка('income_month: денежное поле 10 000–3 000 000 ₽ без копеек, шаг 100 ₽',
+         bool(income_tag)
+         and 'data-integer' in income_tag.group(0)
+         and 'min="10000"' in income_tag.group(0)
+         and 'max="3000000"' in income_tag.group(0)
+         and 'step="100"' in income_tag.group(0)
+         and "if(!/^\\d+$/.test(сыр))" in calc
+         and 'Желаемый доход должен быть не меньше 10 000 ₽ в месяц' in calc
+         and 'Желаемый доход должен быть не больше 3 000 000 ₽ в месяц' in calc)
+current_rate_tag=re.search(r'<input[^>]*id="current_rate"[^>]*>',calc)
+проверка('current_rate: денежное поле 0–1 000 000 ₽ без копеек, шаг 100 ₽',
+         bool(current_rate_tag)
+         and 'data-integer' in current_rate_tag.group(0)
+         and 'min="0"' in current_rate_tag.group(0)
+         and 'max="1000000"' in current_rate_tag.group(0)
+         and 'step="100"' in current_rate_tag.group(0)
+         and 'Текущую ставку укажите целым числом без копеек' in calc
+         and 'Текущая ставка должна быть не больше 1 000 000 ₽ в час' in calc)
+frames_out_tag=re.search(r'<input[^>]*id="frames_out"[^>]*>',calc)
+проверка('frames_out: целое количество 1–1 000 кадров/ч, шаг 10',
+         bool(frames_out_tag)
+         and 'data-integer' in frames_out_tag.group(0)
+         and 'min="1"' in frames_out_tag.group(0)
+         and 'max="1000"' in frames_out_tag.group(0)
+         and 'step="10"' in frames_out_tag.group(0)
+         and 'Количество готовых кадров укажите целым числом' in calc
+         and 'Количество готовых кадров должно быть не меньше 1 за час' in calc
+         and 'Количество готовых кадров должно быть не больше 1 000 за час. Это верхний предел для реалистичного расчёта' in calc)
+shutter_per_hour_tag=re.search(r'<input[^>]*id="shutter_per_hour"[^>]*>',calc)
+проверка('shutter_per_hour: целое количество 1–1 000 срабатываний/ч, шаг 10',
+         bool(shutter_per_hour_tag)
+         and 'data-integer' in shutter_per_hour_tag.group(0)
+         and 'min="1"' in shutter_per_hour_tag.group(0)
+         and 'max="1000"' in shutter_per_hour_tag.group(0)
+         and 'step="10"' in shutter_per_hour_tag.group(0)
+         and 'Количество срабатываний затвора укажите целым числом' in calc
+         and 'Количество срабатываний затвора должно быть не меньше 1 за час' in calc
+         and 'Количество срабатываний затвора должно быть не больше 1 000 за час. Это верхний предел для реалистичного расчёта' in calc)
+проверка('Form001 и Form002: срок службы позиции 1–30 лет, целые годы, шаг 1',
+         "f==='Form001'?'съёмочного оборудования':(f==='Form002'?'офисного оборудования'" in calc
+         and "var максимумСрока=f==='Form004'?10:30" in calc
+         and "категорияСрока?' data-limit-live data-integer min=\"1\" max=\"'+максимумСрока+'\" step=\"1\"" in calc
+         and 'Установлен минимум — 1 год службы' in calc
+         and "class=\"c3\"'+пределСрока" in calc)
+проверка('Form004: срок службы Купленной программы 1–10 лет, целые годы, шаг 1',
+         "f==='Form004'?'купленной программы'" in calc
+         and "f==='Form004'?10:30" in calc
+         and "Установлен максимум — '+максимумСрока+' лет службы" in calc)
+проверка('Form013: срок службы Обустройства рабочего места 1–30 лет',
+         "f==='Form013'?'обустройства рабочего места'" in calc
+         and "var максимумСрока=f==='Form004'?10:30" in calc
+         and "Установлен максимум — '+максимумСрока+' лет службы" in calc)
+проверка('Form001 и Form002: стоимость позиции 0–10 000 000 ₽, целые рубли, шаг 100',
+         "f==='Form001'?'одну позицию съёмочного оборудования':(f==='Form002'?'одну позицию офисного оборудования'" in calc
+         and "var максимумСтоимости=(f==='Form003'||f==='Form004')?100000:(f==='Form013'?500000:10000000)" in calc
+         and "описаниеСтоимости?' data-limit-live data-integer min=\"0\" max=\"'+максимумСтоимости+'\" step=\"100\"" in calc
+         and 'Для указанной позиции стоимость равна 0 ₽' in calc
+         and "#t_Form002 .c1,#t_Form002 .c2" in calc)
+проверка('Form003: платёж подписки 0–100 000 ₽, целые рубли, шаг 100',
+         "f==='Form003'?'один платёж подписки'" in calc
+         and "(f==='Form003'||f==='Form004')?'100 000':(f==='Form013'?'500 000':'10 000 000')" in calc
+         and '#t_Form003 .c1,#t_Form003 .c2' in calc)
+проверка('Form004: купленная программа 0–100 000 ₽, целые рубли, шаг 100',
+         "f==='Form004'?'одну купленную программу'" in calc
+         and '#t_Form004 .c1,#t_Form004 .c2' in calc
+         and 'проверитьНулевуюСтоимостьСтроки(e)' in calc)
+проверка('Form013: обустройство рабочего места 0–500 000 ₽, целые рубли, шаг 100',
+         "f==='Form013'?'одну позицию обустройства рабочего места'" in calc
+         and "f==='Form013'?500000:10000000" in calc
+         and "f==='Form013'?'500 000':'10 000 000'" in calc
+         and '#t_Form013 .c1,#t_Form013 .c2' in calc)
+office_util_tag=re.search(r'<input[^>]*id="office_util"[^>]*>',calc)
+проверка('office_util: 0–100 000 ₽/мес, целые рубли, шаг 100',
+         bool(office_util_tag)
+         and 'data-integer' in office_util_tag.group(0)
+         and 'data-limit-live' in office_util_tag.group(0)
+         and 'min="0"' in office_util_tag.group(0)
+         and 'max="100000"' in office_util_tag.group(0)
+         and 'step="100"' in office_util_tag.group(0)
+         and 'Установлен максимум — 100 000 ₽ в месяц на коммунальные платежи, интернет и связь отдельного помещения' in calc)
+office_rent_tag=re.search(r'<input[^>]*id="office_rent"[^>]*>',calc)
+проверка('office_rent: 0–500 000 ₽/мес, целые рубли, шаг 100',
+         bool(office_rent_tag)
+         and 'data-integer' in office_rent_tag.group(0)
+         and 'data-limit-live' in office_rent_tag.group(0)
+         and 'min="0"' in office_rent_tag.group(0)
+         and 'max="500000"' in office_rent_tag.group(0)
+         and 'step="100"' in office_rent_tag.group(0)
+         and 'Установлен максимум — 500 000 ₽ в месяц за аренду отдельного помещения' in calc)
+cab_area_tag=re.search(r'<input[^>]*id="cab_area"[^>]*>',calc)
+проверка('cab_area: активное поле 0,1–100 м², шаг 0,1 и не больше home_area',
+         bool(cab_area_tag)
+         and 'data-limit-live' in cab_area_tag.group(0)
+         and 'data-step-live' in cab_area_tag.group(0)
+         and 'min="0.1"' in cab_area_tag.group(0)
+         and 'max="100"' in cab_area_tag.group(0)
+         and 'step="0.1"' in cab_area_tag.group(0)
+         and 'Установлен абсолютный максимум — 100 м² рабочей зоны' in calc
+         and "зона<=всего" in calc
+         and 'Площадь рабочей зоны не может превышать общую площадь жилья' in calc)
+home_area_tag=re.search(r'<input[^>]*id="home_area"[^>]*>',calc)
+проверка('home_area: активное поле 1–1 000 м² с шагом 0,1',
+         bool(home_area_tag)
+         and 'data-limit-live' in home_area_tag.group(0)
+         and 'data-step-live' in home_area_tag.group(0)
+         and 'min="1"' in home_area_tag.group(0)
+         and 'max="1000"' in home_area_tag.group(0)
+         and 'step="0.1"' in home_area_tag.group(0)
+         and 'Установлен минимум — 1 м² общей площади жилья' in calc
+         and 'Установлен максимум — 1 000 м² общей площади жилья' in calc
+         and "(el.id==='home_area'||el.id==='cab_area')?'0,1 м²':'0,5 часа'" in calc)
+home_util_tag=re.search(r'<input[^>]*id="home_util"[^>]*>',calc)
+проверка('home_util: 0–100 000 ₽/мес, целые рубли, шаг 100',
+         bool(home_util_tag)
+         and 'data-integer' in home_util_tag.group(0)
+         and 'data-limit-live' in home_util_tag.group(0)
+         and 'min="0"' in home_util_tag.group(0)
+         and 'max="100000"' in home_util_tag.group(0)
+         and 'step="100"' in home_util_tag.group(0)
+         and 'Установлен максимум — 100 000 ₽ в месяц на коммунальные платежи, интернет и связь' in calc)
+home_rent_tag=re.search(r'<input[^>]*id="home_rent"[^>]*>',calc)
+проверка('home_rent: 0–500 000 ₽/мес, целые рубли, шаг 100',
+         bool(home_rent_tag)
+         and 'data-integer' in home_rent_tag.group(0)
+         and 'data-limit-live' in home_rent_tag.group(0)
+         and 'min="0"' in home_rent_tag.group(0)
+         and 'max="500000"' in home_rent_tag.group(0)
+         and 'step="100"' in home_rent_tag.group(0)
+         and 'Установлен максимум — 500 000 ₽ в месяц за жильё' in calc
+         and "homeHousing=CHK('own_home')?0:V('home_rent')" in calc)
+promo_per_day_tag=re.search(r'<input[^>]*id="promo_per_day"[^>]*>',calc)
+проверка('promo_per_day: включённый блок 0,5–8 часов/день с шагом 0,5',
+         bool(promo_per_day_tag)
+         and 'data-limit-live' in promo_per_day_tag.group(0)
+         and 'data-step-live' in promo_per_day_tag.group(0)
+         and 'min="0.5"' in promo_per_day_tag.group(0)
+         and 'max="8"' in promo_per_day_tag.group(0)
+         and 'step="0.5"' in promo_per_day_tag.group(0)
+         and 'Чтобы не учитывать блок, используйте галочку исключения' in calc
+         and 'это полный нормативный рабочий день' in calc)
+client_time_tag=re.search(r'<input[^>]*id="client_time"[^>]*>',calc)
+проверка('client_time: включённый блок 0,5–72 часа на проект с шагом 0,5',
+         bool(client_time_tag)
+         and 'data-limit-live' in client_time_tag.group(0)
+         and 'data-step-live' in client_time_tag.group(0)
+         and 'min="0.5"' in client_time_tag.group(0)
+         and 'max="72"' in client_time_tag.group(0)
+         and 'step="0.5"' in client_time_tag.group(0)
+         and 'Чтобы не учитывать блок, используйте галочку исключения' in calc
+         and 'Установлен максимум — 72 часа работы с клиентом на проект' in calc)
+post_ratio_tag=re.search(r'<input[^>]*id="post_ratio"[^>]*>',calc)
+проверка('post_ratio: 0–72 часа на час съёмки с точным шагом 0,5 часа',
+         bool(post_ratio_tag)
+         and 'data-limit-live' in post_ratio_tag.group(0)
+         and 'data-step-live' in post_ratio_tag.group(0)
+         and 'min="0"' in post_ratio_tag.group(0)
+         and 'max="72"' in post_ratio_tag.group(0)
+         and 'step="0.5"' in post_ratio_tag.group(0)
+         and 'Установлен минимум — 0 часов постпродакшна' in calc
+         and 'Установлен максимум — 72 часа постпродакшна на один час съёмки' in calc)
+shoot_manual_tag=re.search(r'<input[^>]*id="shoot_manual"[^>]*>',calc)
+проверка('shoot_manual: 0,5–72 часа с точным шагом 0,5 часа',
+         bool(shoot_manual_tag)
+         and 'data-limit-live' in shoot_manual_tag.group(0)
+         and 'data-step-live' in shoot_manual_tag.group(0)
+         and 'min="0.5"' in shoot_manual_tag.group(0)
+         and 'max="72"' in shoot_manual_tag.group(0)
+         and 'step="0.5"' in shoot_manual_tag.group(0)
+         and 'Установлен минимум — 0,5 часа' in calc
+         and 'Установлен максимум — 72 часа' in calc)
+shutter_life_tag=re.search(r'<input[^>]*id="shutter_life"[^>]*>',calc)
+проверка('shutter_life: целый ресурс 10 000–1 000 000 срабатываний, шаг 10 000',
+         bool(shutter_life_tag)
+         and 'data-integer' in shutter_life_tag.group(0)
+         and 'data-limit-live' in shutter_life_tag.group(0)
+         and 'min="10000"' in shutter_life_tag.group(0)
+         and 'max="1000000"' in shutter_life_tag.group(0)
+         and 'step="10000"' in shutter_life_tag.group(0)
+         and 'Установлен минимум — 10 000 срабатываний затвора' in calc
+         and 'Установлен максимум — 1 000 000 срабатываний затвора' in calc)
+проверка('каталоги Form001, Form002, Form004 и Form013 публикуют пределы срока',
+         "'Срок min', 'Срок max', 'Срок step'" in читать('Инструменты/значения_по_умолчанию.py')
+         and "if form in ('Form001', 'Form002', 'Form013') and kind == 'life':" in читать('Инструменты/значения_по_умолчанию.py')
+         and "elif form == 'Form004' and kind == 'life':" in читать('Инструменты/значения_по_умолчанию.py')
+         and "term_min, term_max, term_step = '1', '10', '1'" in читать('Инструменты/значения_по_умолчанию.py'))
+проверка('каталоги Form001–Form004 и Form013 публикуют пределы стоимости',
+         "if form in ('Form001', 'Form002'):" in читать('Инструменты/значения_по_умолчанию.py')
+         and "elif form in ('Form003', 'Form004'):" in читать('Инструменты/значения_по_умолчанию.py')
+         and "elif form == 'Form013':" in читать('Инструменты/значения_по_умолчанию.py')
+         and "cost_min, cost_max, cost_step = '0', '500000', '100'" in читать('Инструменты/значения_по_умолчанию.py'))
+проверка('утверждённые числовые пределы применяются сразу возле поля',
+         len(re.findall(r'<input[^>]*data-limit-live',calc)) == 15
+         and "R.addEventListener('input'" in calc
+         and "применитьПредел(e,'max')" in calc
+         and "R.addEventListener('blur'" in calc
+         and "применитьПредел(e,'min')" in calc
+         and 'привестиКЦелому(e)' in calc
+         and 'привестиКШагу(e)' in calc
+         and "'Значение приведено к ближайшему шагу — '+шагТекст" in calc
+         and 'Значение округлено до ближайшего целого. Проверьте значение.' in calc
+         and "note.setAttribute('aria-live','polite')" in calc
+         and 'Введённое значение приведено к допустимой границе' in calc)
+проверка('report: печатная версия раскрывает детализацию и скрывает служебные панели',
+         '@media print' in rep
+         and '#phr-root #спрдет .пункт .тело{display:block!important' in rep
+         and '#phr-root .trb{display:none}' in rep
+         and '#phr-root .dlbar,#phr-root .bn,#phr-root .savebar{display:none!important}' in rep
+         and 'print-color-adjust:exact' in rep)
 
 for имя, файл in (('calc', calc), ('report', rep)):
     css = '\n'.join(re.findall(r'<style[^>]*>([\s\S]*?)</style>', файл))
@@ -393,7 +683,7 @@ for имя, файл in (('calc', calc), ('report', rep), ('index', читать
     б = баланс_тегов(файл)
     проверка(f'{имя}: баланс HTML-тегов', not б, '; '.join(б[:3]))
 
-# 24 прямых потомка .wp
+# 19 прямых потомков .wp
 def детей(s):
     s = re.sub(r'<style[^>]*>[\s\S]*?</style>|<script[^>]*>[\s\S]*?</script>|<!--[\s\S]*?-->', '', s)
     VOID = {'br','img','input','meta','link','hr','source','area','col','embed','track','wbr',
@@ -412,7 +702,35 @@ def детей(s):
             гл += 1
     return дети
 n = детей(rep)
-проверка("в .wp ровно 19 блоков (как ждёт собрать.py)", n == 19, f"{n}")
+проверка("в .wp ровно 20 блоков (как ждёт собрать.py)", n == 20, f"{n}")
+report_story=['REPORT-B007','REPORT-B008','REPORT-B012','REPORT-B010','REPORT-B013','REPORT-B009','REPORT-B011','REPORT-B014','REPORT-B015']
+report_positions=[rep.find(f'data-block-id="{x}"') for x in report_story]
+проверка('report: маршрут бюджет → время → сценарии → благодарность → загрузка → скидка → налоги',
+         all(x>=0 for x in report_positions) and report_positions==sorted(report_positions))
+report_user_numbers={'REPORT-B007':'01','REPORT-B008':'02','REPORT-B012':'03','REPORT-B013':'04','REPORT-B009':'05','REPORT-B011':'06','REPORT-B014':'07','REPORT-B015':'08'}
+number_errors=[]
+for bid,no in report_user_numbers.items():
+    m=re.search(rf'data-block-id="{bid}"[^>]*>.*?<div class="bn">(\d{{2}})</div>',rep,re.S)
+    if not m or m.group(1)!=no:number_errors.append(f'{bid}→{m.group(1) if m else "—"}')
+проверка('report: пользовательские номера 01–08 соответствуют новому порядку',not number_errors,', '.join(number_errors))
+
+# Стабильная техническая нумерация страниц и всех смысловых блоков.
+index_html = читать('Веб/index.html')
+for имя, файл, page_id, count in (
+    ('index', index_html, 'PAGE-INDEX', 2),
+    ('calc', calc, 'PAGE-CALC', 39),
+    ('report', rep, 'PAGE-REPORT', 20),
+):
+    ids = re.findall(r'data-block-id="([^"]+)"', файл)
+    проверка(f'{имя}: все смысловые блоки имеют уникальный технический ID',
+             len(ids) == count and len(set(ids)) == count,
+             f'{len(ids)} ID, уникальных {len(set(ids))}, ожидается {count}')
+    проверка(f'{имя}: закреплён data-page-id={page_id}',
+             f'data-page-id="{page_id}"' in файл)
+branches = re.findall(r'data-branch-id="([^"]+)"', calc)
+проверка('calc: условные ветки имеют стабильные ID',
+         len(branches) == 10 and len(set(branches)) == 10,
+         f'{len(branches)} ID, уникальных {len(set(branches))}')
 
 # логотип: 8 правил книги
 for имя, файл in (('calc', calc), ('report', rep)):
@@ -488,47 +806,30 @@ try:
             плохо.append(f'{и}: книга «{знач}», в анкете {"включено" if форма_вкл else "выключено"}')
     проверка('переключатели книги совпадают с анкетой', not плохо, '; '.join(плохо))
 
-    # ── реестр полей и реестр правил
-    проверка('книга: есть лист 16_Реестр_правил', '16_Реестр_правил' in wb.sheetnames)
-    if '15_Реестр_полей' in wb.sheetnames and '16_Реестр_правил' in wb.sheetnames:
-        реестр = wb['15_Реестр_полей']
-        правила = wb['16_Реестр_правил']
-        ожид_шапка = ['№','Название правила','ID','Условие','Действие','Краткое описание','Ссылка на документ']
-        факт_шапка = [правила.cell(1,c).value for c in range(1,8)]
-        проверка('реестр правил: утверждённая структура 7 столбцов', факт_шапка == ожид_шапка,
-                 ' | '.join(str(x) for x in факт_шапка))
-        rule_ids = [правила.cell(r,3).value for r in range(2,правила.max_row+1)]
-        ожид_ids = [f'RULE-{i:03d}' for i in range(1,len(rule_ids)+1)]
-        проверка('реестр правил: ID уникальны и последовательны', rule_ids == ожид_ids)
-        битые_док = []
-        for r in range(2,правила.max_row+1):
-            link = str(правила.cell(r,7).value or '')
-            if not link or not os.path.exists(os.path.join(КОРЕНЬ,link)):
-                битые_док.append(f'{правила.cell(r,3).value} → {link or "—"}')
-        проверка('реестр правил: ссылки ведут на существующие документы', not битые_док,
-                 '; '.join(битые_док[:4]))
-        известные = set(rule_ids)
-        ссылки_полей, битые_правила = set(), []
-        for r in range(1,реестр.max_row+1):
-            if not str(реестр.cell(r,1).value or '').isdigit(): continue
-            for rid in str(реестр.cell(r,28).value or '').split(';'):
-                rid=rid.strip()
-                if not rid: continue
-                ссылки_полей.add(rid)
-                if rid not in известные: битые_правила.append(f'строка {r}: {rid}')
-        проверка('реестр полей: Правило ID ведут в реестр правил', not битые_правила,
-                 '; '.join(битые_правила[:4]))
-        # Каждый верхнеуровневый ключ настоящего calc() должен быть в реестре.
-        зарегистрировано = set()
-        for r in range(1,реестр.max_row+1):
-            code = str(реестр.cell(r,11).value or '')
-            if code.startswith('d.'):
-                зарегистрировано.add(code[2:].split('.')[0])
-        пропущено = sorted(set(базовый)-{'__parts'}-зарегистрировано)
-        лишнее = sorted(зарегистрировано-set(базовый))
-        проверка('реестр полей: полный верхнеуровневый контракт calc()', not пропущено and not лишнее,
-                 ('нет: '+', '.join(пропущено[:5]) if пропущено else '')+
-                 ('; лишнее: '+', '.join(лишнее[:5]) if лишнее else ''))
+    # ── старый реестр полей + канонический Markdown-реестр правил.
+    # Лист 16 больше не является источником: правило own_home в нём устарело.
+    rule_path = os.path.join(КОРЕНЬ, 'Документация', 'Описания расчётов',
+                             'Архитектура — Правила модели и интерфейса.md')
+    rule_rows = []
+    for line in io.open(rule_path, encoding='utf-8'):
+        if re.match(r'^\|\s*\d+\s*\|', line):
+            cols = [x.strip() for x in line.strip().strip('|').split('|')]
+            if len(cols) == 7:
+                rule_rows.append(cols)
+    rule_ids = [x[2] for x in rule_rows]
+    ожид_ids = [f'RULE-{i:03d}' for i in range(1,20)]
+    проверка('канонический реестр правил: 19 последовательных ID', rule_ids == ожид_ids,
+             ', '.join(rule_ids))
+    битые_док = []
+    for row in rule_rows:
+        link = row[6].replace('`','')
+        if not link or not os.path.exists(os.path.join(КОРЕНЬ,link)):
+            битые_док.append(f'{row[2]} → {link or "—"}')
+    проверка('канонический реестр правил: документы существуют', not битые_док,
+             '; '.join(битые_док[:4]))
+    правило10 = next((x for x in rule_rows if x[2]=='RULE-010'), [])
+    проверка('RULE-010: собственное жильё блокирует аренду или ипотеку',
+             bool(правило10) and 'эффективное значение равным 0' in правило10[4])
 
     # Пересчитана ли книга: у формул должны быть сохранённые значения.
     # Без них проверки не могут сверять расчёт кода с расчётом книги.
@@ -562,6 +863,147 @@ try:
     проверка('налоговые константы совпадают с книгой', not плохо, '; '.join(плохо))
 except ImportError:
     замечание('openpyxl не установлен — сверка с книгой пропущена')
+
+# ── чистая книга: автономность нового расчётного контура
+try:
+    clean_path = os.path.join(КОРЕНЬ, 'Книга', 'Калькулятор_ставки_часа.xlsx')
+    clean = openpyxl.load_workbook(clean_path, data_only=False)
+    clean_values = openpyxl.load_workbook(clean_path, data_only=True)
+    clean_formula_errors=[]
+    for sh in clean.worksheets:
+        for row in sh.iter_rows():
+            for cell in row:
+                if cell.data_type=='f':
+                    value=clean_values[sh.title][cell.coordinate].value
+                    if value is None or (isinstance(value,str) and value.startswith('#')):
+                        clean_formula_errors.append(f'{sh.title}!{cell.coordinate}={value}')
+    проверка('чистая книга: все формулы имеют кэш без ошибок', not clean_formula_errors,
+             '; '.join(clean_formula_errors[:5]))
+    expected_clean = ['00_Читать', '01_Глоссарий', 'calc', 'Состав',
+                      'Значения_по_умолчанию', 'Интерфейс', 'Тексты',
+                      'CSS_и_компоненты', 'Программа_лояльности', 'Полный_отчёт']
+    проверка('чистая книга: ровно 10 утверждённых листов', clean.sheetnames == expected_clean,
+             f'{len(clean.sheetnames)} листов')
+    old_refs = []
+    for sh in clean.worksheets:
+        for row in sh.iter_rows():
+            for cell in row:
+                if isinstance(cell.value, str) and ("'03_Каталоги'!" in cell.value or "'05_Расчёт'!" in cell.value):
+                    old_refs.append(f'{sh.title}!{cell.coordinate}')
+    for dn in clean.defined_names.values():
+        text = dn.attr_text or ''
+        if '03_Каталоги' in text or '05_Расчёт' in text:
+            old_refs.append(f'имя {dn.name}')
+    проверка('чистая книга: нет расчётных ссылок на 03_Каталоги и 05_Расчёт', not old_refs,
+             ', '.join(old_refs[:5]))
+    required_names = {'cat_form', 'cat_year', 'revenue_target', 'tax_target',
+                      'acquiring_target', 'total_expenses_model', 'revenue_break_even',
+                      'tax_break_even', 'acquiring_break_even', 'rate_zero_model',
+                      'rate_hour_model', 'project_price_model', 'revenue_month_model',
+                      'revenue_current', 'tax_current', 'current_costs_total_model',
+                      'current_result_model', 'current_income_model', 'current_loss_model'}
+    missing_names = sorted(required_names - set(clean.defined_names))
+    проверка('чистая книга: финансовое ядро связано именами', not missing_names,
+             ', '.join(missing_names))
+    ghost_names = sorted({
+        'core_time', 'weeks_year', 'work_time', 'site_value', 'revenue_base',
+        'rate_current', 'threshold_credit', 'injury_contrib',
+        'revenue_npd_avg', 'revenue_npd_fiz', 'revenue_npd_ur',
+        'revenue_usn_inc', 'revenue_usn_prof', 'revenue_ausn_inc',
+        'revenue_ausn_prof', 'week_target', 'shoot_auto', 'fm_week',
+        'projects_month', 'projects_week', 'shooting_month', 'shooting_week',
+        'ops_per_shoot', 'frames_total', 'equip_only'
+    } & set(clean.defined_names))
+    проверка('чистая книга: удалённые промежуточные дубли не возвращаются', not ghost_names,
+             ', '.join(ghost_names))
+    clean_calc = clean['calc']
+    forbidden_calc_names = ('ПЕРЕКЛЮЧАТЕЛЬ ·', 'ЧИСТОЕ время', 'ПРОЕКТНОЕ время',
+                            'СЪЁМОЧНОЕ время', 'Переменные ·', 'Амортизация ·',
+                            'ИТОГО', 'ВСЕГО РАСХОДОВ (C)', 'текущей ставке')
+    stale_names = [f'B{r}: {clean_calc.cell(r,2).value}' for r in range(1,clean_calc.max_row+1)
+                   if clean_calc.cell(r,1).value not in (None,'ID')
+                   and any(x in str(clean_calc.cell(r,2).value or '') for x in forbidden_calc_names)]
+    проверка('чистая книга: устаревшие наименования calc не возвращаются', not stale_names,
+             '; '.join(stale_names[:5]))
+    active_ids = [clean_calc.cell(r,1).value for r in range(1,clean_calc.max_row+1)
+                  if clean_calc.cell(r,1).value not in (None,'ID') and not str(clean_calc.cell(r,1).value)[0].isdigit()]
+    duplicate_ids = sorted(x for x,n in collections.Counter(active_ids).items() if n>1)
+    проверка('чистая книга: активные ID calc уникальны', not duplicate_ids,
+             ', '.join(duplicate_ids))
+    проверка('чистая книга: базовая ставка питается выбранной выручкой',
+             clean_calc['C132'].value == '=IF(net_time=0,0,revenue_target/net_time)',
+             str(clean_calc['C132'].value))
+    current_result_cell = clean.defined_names['current_result_model'].attr_text.split('$C$')[-1]
+    current_formula = clean_calc[f'C{current_result_cell}'].value
+    проверка('чистая книга: текущий результат не обрезается и учитывает все затраты',
+             current_formula == '=revenue_current-current_costs_total_model',
+             str(current_formula))
+    full = clean['Полный_отчёт']
+    full_ok = full.max_row == 118 and full.max_column == 16 and all(full.cell(r, 14).value == 'да' for r in range(2, 119))
+    проверка('чистая книга: Полный_отчёт содержит показатели, диаграммы и полный контракт d', full_ok,
+             f'{full.max_row-1} строк')
+    contract_fields=set()
+    bad_full_rules=[]
+    known_rules={f'RULE-{i:03d}' for i in range(1,20)}
+    for r in range(2,full.max_row+1):
+        contract_fields.update(re.findall(r'd\.([A-Za-z_][\w]*)',str(full.cell(r,5).value or '')))
+        for rid in str(full.cell(r,16).value or '').split(';'):
+            rid=rid.strip()
+            if rid and rid not in known_rules: bad_full_rules.append(f'P{r}:{rid}')
+    contract_missing=sorted((set(базовый)-{'__parts'})-contract_fields)
+    contract_extra=sorted(contract_fields-set(базовый))
+    проверка('чистая книга: Полный_отчёт регистрирует весь верхнеуровневый контракт calc()',
+             not contract_missing and not contract_extra,
+             ('нет: '+', '.join(contract_missing[:5]) if contract_missing else '')+
+             ('; лишнее: '+', '.join(contract_extra[:5]) if contract_extra else ''))
+    проверка('чистая книга: Правило ID Полного_отчёта ведёт в RULE-001…019',
+             not bad_full_rules, ', '.join(bad_full_rules[:5]))
+    chart_totals = collections.defaultdict(float)
+    for r in range(2, full.max_row+1):
+        block = str(full.cell(r,1).value or '')
+        if block.startswith('Данные диаграммы / '):
+            chart_totals[block.removeprefix('Данные диаграммы / ')] += float(full.cell(r,13).value or 0)
+    chart_ok = (abs(chart_totals['Желаемая ставка']-базовый['R']) < 0.02
+                and abs(chart_totals['Текущая ставка']-базовый['Rc']) < 0.02
+                and abs(chart_totals['Ставка в ноль']-базовый['Rb']) < 0.02)
+    проверка('данные трёх диаграмм сходятся с Выручкой каждого сценария', chart_ok,
+             '; '.join(f'{k}: {v:,.2f}' for k,v in chart_totals.items()))
+    loyalty_sheet = clean['Программа_лояльности']
+    loyalty_structure = (loyalty_sheet.max_row == 79 and loyalty_sheet.max_column == 10
+                         and sum(c.data_type == 'f' for row in loyalty_sheet.iter_rows() for c in row) == 47)
+    проверка('чистая книга: Программа_лояльности содержит формулы и контрольные сценарии',
+             loyalty_structure, f'{loyalty_sheet.max_row-1} строк')
+    loyalty_controls = collections.defaultdict(dict)
+    for r in range(2, loyalty_sheet.max_row+1):
+        section = str(loyalty_sheet.cell(r,1).value or '')
+        if section.startswith('Контроль '):
+            loyalty_controls[section][loyalty_sheet.cell(r,3).value] = float(loyalty_sheet.cell(r,4).value or 0)
+    loyalty_ok = True
+    for values in loyalty_controls.values():
+        loyalty_ok &= abs(values.get('Постоянные клиенты',0)+values.get('Подарочные сертификаты',0)
+                          +values.get('Скидка за объём',0)-values.get('Фонд программы лояльности',0)) < 0.01
+        loyalty_ok &= values.get('Заказы постоянных клиентов',0) <= базовый['py']*0.30+0.01
+    проверка('чистая книга: контроль 5/10/15% распределяет фонд без превышения потока',
+             loyalty_ok and len(loyalty_controls)==3,
+             ', '.join(sorted(loyalty_controls)))
+    full_old_refs = [f'{full.cell(r,1).value}:{full.cell(r,3).value}' for r in range(2,full.max_row+1)
+                     if '04_Итог' in str(full.cell(r,12).value or '') or '05_Расчёт' in str(full.cell(r,12).value or '')]
+    проверка('чистая книга: Полный_отчёт не зависит от старых сводных листов', not full_old_refs,
+             ', '.join(full_old_refs[:4]))
+    bad_units=[]
+    for sheet,col in ((clean_calc,4),(full,7)):
+        for r in range(2,sheet.max_row+1):
+            unit=str(sheet.cell(r,col).value or '')
+            if ' / ' in unit or '₽/час' in unit or 'руб' in unit.lower():
+                bad_units.append(f'{sheet.title}!{sheet.cell(r,col).coordinate}:{unit}')
+    проверка('чистая книга: единицы записаны через слэш без устаревших вариантов',
+             not bad_units, '; '.join(bad_units[:5]))
+    be_cost = (базовый['C'] + базовый['taxB'] + базовый['aqB']) / базовый['sh'] if базовый['sh'] else 0
+    проверка('себестоимость: налоги и эквайринг берутся от Точки безубыточности',
+             abs(базовый['costHour'] - be_cost) < 1e-7,
+             f'{базовый["costHour"]:,.2f} ₽/ч')
+except Exception as e:
+    fail.append(('чистая книга читается и проверяется', str(e)[:120]))
 
 # ── демо-набор отчёта должен совпадать с расчётом по умолчанию
 # Иначе отчёт, открытый без данных, показывает устаревшие числа

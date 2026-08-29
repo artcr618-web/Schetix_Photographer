@@ -1,4 +1,4 @@
-<div id="phc-root">
+<div id="phc-root" data-page-id="PAGE-CALC">
 <style>
 #phc-root{
 /* ===== ПАЛИТРА · единая с отчётом, см. лист 09c_Палитра =====
@@ -240,6 +240,8 @@ transition:border-color .15s,box-shadow .15s}
    между разрядами. В карточках сохраняем место под ₽/мес, ₽/ч и ₽. */
 #phc-root .qf input[data-money]{padding-right:72px;font-variant-numeric:tabular-nums}
 #phc-root table.dt input[data-money]{font-variant-numeric:tabular-nums}
+#phc-root .field-limit-note{display:none;margin:10px 0 0;padding:10px 12px;border-radius:10px;background:var(--c-a-50,#fff2ee);color:var(--c-a-700,#9f2f1b);font-size:13px;line-height:1.45;font-weight:600}
+#phc-root .field-limit-note.on{display:block}
 #phc-root .qf .un{position:absolute;right:14px;bottom:14px;font-size:14px;color:var(--gr);
 pointer-events:none;font-weight:500}
 #phc-root .qf.hasl .un{bottom:14px}
@@ -1906,7 +1908,7 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 <!-- Строка со знаком. В отчёте здесь же слева стоят кнопки
      «Редактировать данные», «Скачать», «Поделиться» и сердечко.
      В анкете действовать нечем, поэтому в строке только знак. -->
-<div class="tbar">
+<div class="tbar" data-block-id="CALC-B001" data-block-name="Верхняя панель">
 <nav class="tbn">
 <button class="fbi" id="topResetBtn" type="button" data-tip="Вернуть значения по умолчанию" aria-label="Вернуть значения по умолчанию"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20.5 3.6v4.4h-4.4" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/><path d="M20.1 8A8.5 8.5 0 1 0 20.5 12" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg></button>
 <button class="fbi" id="shareBtn" type="button" data-tip="Поделиться" aria-label="Поделиться">
@@ -1917,7 +1919,7 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 <div class="brand" title="Счётикс — твоя юнит-экономика"><span class="btx"><span class="bt">счётикс</span><span class="bd" data-t="bt_02"><i>т</i><i>в</i><i>о</i><i>я</i><i>&nbsp;</i><i>ю</i><i>н</i><i>и</i><i>т</i><i>-</i><i>э</i><i>к</i><i>о</i><i>н</i><i>о</i><i>м</i><i>и</i><i>к</i><i>а</i></span></span><svg class="bx" viewBox="0 0 32 32" fill="none" aria-hidden="true"><rect x="10.95" y="2.09" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 7.14)" fill="var(--c-gr3)"/><rect x="19.81" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 24.86 16)" fill="var(--c-g-500)"/><rect x="10.95" y="19.81" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 24.86)" fill="var(--c-gr3)"/><rect x="2.09" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 7.14 16)" fill="var(--c-gr3)"/></svg></div>
 </div>
 
-<div class="trustbar" id="trustBar" role="navigation" aria-label="Быстрые действия">
+<div class="trustbar" id="trustBar" role="navigation" aria-label="Быстрые действия" data-block-id="CALC-B002" data-block-name="Плавающая панель">
 <div class="trustbar-brand"><svg class="trustbar-mark" viewBox="0 0 32 32" fill="none" aria-hidden="true"><rect x="10.95" y="2.09" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 7.14)" fill="var(--c-gr3)"/><rect x="19.81" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 24.86 16)" fill="var(--c-g-500)"/><rect x="10.95" y="19.81" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 24.86)" fill="var(--c-gr3)"/><rect x="2.09" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 7.14 16)" fill="var(--c-gr3)"/></svg><span class="trustbar-name">счётикс</span></div>
 <button class="trustbar-action trustbar-reset" id="trustResetBtn" type="button" data-tip="Вернуть значения по умолчанию" aria-label="Вернуть значения по умолчанию"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20.5 3.6v4.4h-4.4" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/><path d="M20.1 8A8.5 8.5 0 1 0 20.5 12" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg></button>
 <button class="trustbar-action" id="trustShareBtn" type="button" data-tip="Поделиться" aria-label="Поделиться"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="18" cy="5" r="2.6" stroke="currentColor" stroke-width="1.8"/><circle cx="6" cy="12" r="2.6" stroke="currentColor" stroke-width="1.8"/><circle cx="18" cy="19" r="2.6" stroke="currentColor" stroke-width="1.8"/><path d="M8.4 10.8l7.2-4.2M8.4 13.2l7.2 4.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
@@ -1925,7 +1927,7 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 <button class="trustbar-close" id="trustBarClose" type="button" aria-label="Скрыть">×</button>
 </div>
 
-<div class="hdr">
+<div class="hdr" data-block-id="CALC-B003" data-block-name="Шапка анкеты">
 <div class="htx">
 <a class="kick-trial" href="#trial"><svg class="kick-ic" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3.5 2.4 20.5h19.2L12 3.5Z" fill="var(--c-a-400)"/><path d="M12 9.5v5" stroke="var(--c-white)" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="17.5" r="1.15" fill="var(--c-white)"/></svg><span>Сервис работает в пробном режиме</span></a>
 <h1 data-t="rh_01">Юнит-экономика фотографа</h1>
@@ -1933,7 +1935,7 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 </div>
 </div>
 
-<div class="hero-cover">
+<div class="hero-cover" data-block-id="CALC-B004" data-block-name="Вводный баннер">
 <img src="img/hero-bg-clean.jpg" alt="Фотограф в чёрном костюме в журнальной чёрно-белой съёмке">
 <div class="hero-copy">
 <div class="hero-title" aria-label="Быть независимым автором">
@@ -1949,7 +1951,7 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 <div class="hero-time" id="heroTime" aria-hidden="true"><span class="ht-h">00</span><span class="ht-dots"><i></i><i></i></span><span class="ht-m">00</span><span class="ht-day" id="heroDay"></span></div>
 </div>
 
-<section class="benefits" aria-label="Что даст калькулятор">
+<section class="benefits" aria-label="Что даст калькулятор" data-block-id="CALC-B005" data-block-name="Преимущества">
 <div class="benefits-grid">
 <div class="benefit">
 <div class="benefit-icon"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m11 17 2 2a1.4 1.4 0 0 0 2-2l-4.7-4.7a1.8 1.8 0 0 0-2.5 0l-.8.8a1.8 1.8 0 0 1-2.5-2.5l3.1-3.1a4 4 0 0 1 5-.5l.8.5a2.8 2.8 0 0 0 2 .4l3.6-.7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="m8.5 15.5 2.8 2.8a1.4 1.4 0 1 1-2 2l-5.5-5.5M3 5l3.2 1.4M21 5l-2.4 1.1M2 4l1.2 11h2.2M22 4l-1.2 11h-2.2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
@@ -1982,18 +1984,18 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 
 <div id="frm">
 
-<div class="core-inputs" aria-label="Основные данные для расчёта">
-<div class="card income-card"><div class="bn">01</div>
+<div class="core-inputs" aria-label="Основные данные для расчёта" data-block-id="CALC-B006" data-block-name="Основные данные">
+<div class="card income-card" data-block-id="CALC-B007" data-block-name="Вопрос 01"><div class="bn">01</div>
 <h2 data-t="h2_01">Ваш желаемый доход</h2>
 <p data-t="sub_01" class="hint">Укажите, сколько вы хотите получать на руки каждый месяц</p>
 <div class="qr wide income-desc"><div>
 <div data-t="qd_01" class="qd">От этой суммы мы рассчитаем стоимость вашего рабочего часа — такую, чтобы покрыть все расходы и&nbsp;вложения, обеспечить желаемый доход и&nbsp;оставить время на&nbsp;отдых, семью и&nbsp;творческое развитие.</div>
 </div></div>
-<div class="qf half-single-field"><input type="text" inputmode="numeric" data-money id="income_month" value="110216"><span data-t="un_01" class="un">₽/мес</span></div>
+<div class="qf half-single-field"><input type="text" inputmode="numeric" data-money data-integer data-limit-live id="income_month" value="110216" min="10000" max="3000000" step="100"><span data-t="un_01" class="un">₽/мес</span></div>
 <p data-t="def_01" class="def">По умолчанию выведена среднемесячная номинальная начисленная заработная плата работников организаций по&nbsp;Российской Федерации по&nbsp;состоянию на&nbsp;июль 2026&nbsp;г.</p>
 </div>
 
-<div class="card"><div class="bn">02</div>
+<div class="card" data-block-id="CALC-B008" data-block-name="Вопрос 02"><div class="bn">02</div>
 <h2 data-t="h2_02">Ваш налоговый режим</h2>
 <div class="qr no-top-line two-col-row"><div>
 <div data-t="q_02" class="q">На каком режиме налогообложения вы работаете?</div>
@@ -2004,7 +2006,7 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 <option value="usn15">ИП, УСН «Доходы минус расходы» — 15%</option>
 <option value="ausn8">ИП, АУСН «Доходы» — 8%</option>
 <option value="ausn20">ИП, АУСН «Доходы минус расходы» — 20%</option></select></div></div>
-<div class="qr two-col-row" id="npdWho"><div>
+<div class="qr two-col-row" id="npdWho" data-branch-id="CALC-B008-S01" data-branch-name="Заказчики НПД"><div>
 <div data-t="q_02b" class="q">С кем вы чаще работаете?</div>
 <div data-t="qd_02b" class="qd">Если работаете и с частными лицами, и с компаниями — НПД посчитаем по усреднённой ставке 5%.</div>
 </div><div class="qf"><select id="npd_who">
@@ -2028,36 +2030,36 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 <div class="fnote" id="taxOffNote">Работая без оформления, вы рискуете получить доначисления и штрафы при проверке и фактически снижаете стоимость работы для заказчика за свой счёт.</div>
 </div>
 
-<div class="card"><div class="bn">03</div>
+<div class="card" data-block-id="CALC-B009" data-block-name="Вопрос 03"><div class="bn">03</div>
 <h2 data-t="h2_03t">Ваша текущая ставка</h2>
 <p data-t="hint_00t" class="hint">Увидите, сколько вы зарабатываете сейчас, и сравните с желаемым доходом.</p>
-<div class="qf focus-field half-single-field"><input type="text" inputmode="numeric" data-money id="current_rate" value="6000"><span data-t="un_02" class="un">₽/ч</span></div>
+<div class="qf focus-field half-single-field"><input type="text" inputmode="numeric" data-money data-integer data-limit-live id="current_rate" value="6000" min="0" max="1000000" step="100"><span data-t="un_02" class="un">₽/ч</span></div>
 </div>
 
-<div class="card"><div class="bn">04</div>
+<div class="card" data-block-id="CALC-B010" data-block-name="Вопрос 04"><div class="bn">04</div>
 <h2>Готовых кадров за 1 час</h2>
 <p data-t="qd_04b" class="hint">Укажите, сколько готовых кадров в среднем вы отдаёте за один час съёмки, после отбора и цветокоррекции.</p>
-<div class="qf focus-field half-single-field"><input type="number" id="frames_out" value="80" min="1" step="10"><span data-t="un_03b" class="un">кадров/час</span></div>
+<div class="qf focus-field half-single-field"><input type="number" inputmode="numeric" data-integer data-limit-live id="frames_out" value="80" min="1" max="1000" step="10"><span data-t="un_03b" class="un">кадров/час</span></div>
 <div class="разделитель"></div>
 <div class="qr two-col-row"><div>
 <div class="q">Сколько срабатываний затвора приходится обычно на один ваш час съёмки?</div>
-</div><div class="qf"><input type="number" id="shutter_per_hour" value="350" min="1" step="10"><span class="un">кадров/час</span></div></div>
+</div><div class="qf"><input type="number" inputmode="numeric" data-integer data-limit-live id="shutter_per_hour" value="350" min="1" max="1000" step="10"><span class="un">кадров/час</span></div></div>
 <div class="qr two-col-row"><div>
 <div class="q">Ресурс затвора вашей камеры</div>
 <div class="qd">Заявленное производителем количество срабатываний.</div>
-</div><div class="qf"><input type="number" id="shutter_life" value="300000" min="1000" step="10000"><span class="un">срабатываний</span></div></div>
+</div><div class="qf"><input type="number" inputmode="numeric" data-integer data-limit-live id="shutter_life" value="300000" min="10000" max="1000000" step="10000"><span class="un">срабатываний</span></div></div>
 </div>
 
 </div>
 
-<div class="sect">
+<div class="sect" data-block-id="CALC-B027" data-block-name="Как мы считаем">
 <h2 data-t="h2_03">Как мы считаем:</h2>
 <div class="ss method-copy">
 <p><b>Работа на себя должна делать вашу жизнь лучше, а не превращать её в бесконечную работу.</b></p>
 <p>Поэтому в расчётах Счётикс мы ориентируемся на нормы трудового законодательства РФ и производственный календарь — <b>чтобы у вас оставались силы на творчество, развитие и жизнь вне работы.</b></p>
 </div></div>
 
-<div class="cnd">
+<div class="cnd" data-block-id="CALC-B028" data-block-name="Условия труда по ТК РФ">
 <div class="cn a"><div data-t="tp_01" class="tp">Человеческие условия</div>
 <div><div class="bg"><span>Условия труда<br>по ТК РФ</span></div>
 <div data-t="sm_01" class="sm">Официальные нормы труда и отдыха, установленные государством.</div></div></div>
@@ -2069,7 +2071,7 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 <div data-t="sm_03" class="sm">И 8-часовой рабочий день — норма труда, установленная законом.</div></div></div>
 </div>
 
-<div class="workmore-note">
+<div class="workmore-note" data-block-id="CALC-B029" data-block-name="Можно ли работать больше">
 <p class="workmore-q">Можно ли работать больше?</p>
 <p><b>Конечно, если вы сами этого хотите.</b> Дополнительные часы могут помогать быстрее расти или достигать своих целей.</p>
 <p>Но если без переработок ваша экономика не сходится, стоит пересмотреть стоимость часа: иначе вы просто создаёте себе рабочее место хуже, чем в найме.</p>
@@ -2079,7 +2081,7 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 </div>
 </div>
 
-<div class="form-section form-section-time">
+<div class="form-section form-section-time" data-block-id="CALC-B030" data-block-name="Съёмка и обработка">
 <div class="sect section-banner time-banner">
 <div class="benefits-note banner-benefits" data-t="ss_time" aria-label="Структура рабочего времени">
 <div class="proof-item"><span class="proof-check"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="7" width="18" height="12" rx="2.6" stroke="currentColor" stroke-width="1.8"/><path d="M8 7 9.5 4.5h5L16 7" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><circle cx="12" cy="13" r="4" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="13" r="1.5" fill="currentColor"/></svg></span><span class="proof-copy"><span>Съёмка и</span><span>обработка</span></span></div>
@@ -2092,16 +2094,16 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 </div>
 </div>
 
-<div class="card"><div class="bn">05</div>
+<div class="card" data-block-id="CALC-B011" data-block-name="Вопрос 05"><div class="bn">05</div>
 <h2>Минимальный заказ (часов)</h2>
 <p data-t="qd_04" class="hint">Укажите минимальное количество съёмочных часов, ради которых вы готовы выезжать на заказ.</p>
-<div class="qf focus-field time-field"><input type="number" id="shoot_manual" value="1" min="0.5" step="0.5"><span data-t="un_03" class="un">часов</span></div>
+<div class="qf focus-field time-field"><input type="number" inputmode="decimal" data-limit-live data-step-live id="shoot_manual" value="1" min="0.5" max="72" step="0.5"><span data-t="un_03" class="un">часов</span></div>
 </div>
 
-<div class="card"><div class="bn">06</div>
+<div class="card" data-block-id="CALC-B012" data-block-name="Вопрос 06"><div class="bn">06</div>
 <h2>Время на постпродакшн</h2>
 <p data-t="qd_06" class="hint post-subtitle">Укажите, сколько времени в среднем вы тратите на подготовку материала за 1 час съёмки. Учитывайте всё время — от начала выгрузки материала на компьютер до передачи готового результата клиенту.</p>
-<div class="qf focus-field time-field"><input type="number" id="post_ratio" value="3" step="0.5"><span data-t="un_04" class="un">часа</span></div>
+<div class="qf focus-field time-field"><input type="number" inputmode="decimal" data-limit-live data-step-live id="post_ratio" value="3" min="0" max="72" step="0.5"><span data-t="un_04" class="un">часа</span></div>
 <details class="more2 post-details"><summary><svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-t="exp_01">Вот что мы заложили как основные этапы постпродакшна</span></summary><div class="in2 post-in2">
 <div class="post-stages">
 <div class="post-stage"><div class="post-stage-title"><i>1</i><b>Подготовка материала</b></div><ul><li>создание и организация папок и файлов;</li><li>выгрузка материала с карт памяти;</li><li>резервное копирование.</li></ul></div>
@@ -2119,11 +2121,11 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 </div>
 </div>
 
-<div class="card" id="c_FormClientTime"><div class="bn">07</div>
+<div class="card" id="c_FormClientTime" data-block-id="CALC-B013" data-block-name="Вопрос 07"><div class="bn">07</div>
 <h2>Проектная работа с клиентами <span class="h-unit">(на один проект)</span></h2>
 <p data-t="qd_07" class="hint">Укажите, сколько времени в среднем вы тратите на общение с клиентом и организацию одного уже подтверждённого проекта.</p>
 <p class="client-default-note">Мы замерили время на нескольких реальных проектах, взяли среднее значение и уже внесли его в калькулятор в качестве значения по умолчанию.</p>
-<div class="qf focus-field time-field"><input type="number" id="client_time" value="1" step="0.5"><span data-t="un_05" class="un">часа</span></div>
+<div class="qf focus-field time-field"><input type="number" inputmode="decimal" data-limit-live data-step-live id="client_time" value="1" min="0.5" max="72" step="0.5"><span data-t="un_05" class="un">часа</span></div>
 <details class="more2 post-details client-details"><summary><svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-t="exp_02">Вот что мы заложили как основные этапы работы с клиентом</span></summary><div class="in2 post-in2">
 <div class="post-stages client-stages">
 <div class="post-stage"><div class="post-stage-title"><i>1</i><b>Обсуждение проекта</b></div><ul><li>обсуждение задачи и формирование технического задания;</li><li>подбор и показ референсов;</li><li>обсуждение вариантов реализации съёмки;</li><li>согласование деталей и сроков.</li></ul></div>
@@ -2140,11 +2142,11 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 <p>Но вам, как специалисту, который работает на себя, приходится делать всё это самостоятельно.</p>
 </div>
 
-<div class="card" id="c_FormPromoTime"><div class="bn">08</div>
+<div class="card" id="c_FormPromoTime" data-block-id="CALC-B014" data-block-name="Вопрос 08"><div class="bn">08</div>
 <h2>Поиск заказов</h2>
 <p data-t="qd_08" class="hint">Укажите, сколько времени в среднем вы тратите на поиск новых клиентов и продвижение своих услуг.</p>
 <p class="search-default-note">Мы заложили в расчёт базовый минимум — 2 часа в день, 5 дней в неделю. Этого времени должно хватать на регулярное продвижение и поддержание потока заказов.</p>
-<div class="qf focus-field time-field"><input type="number" id="promo_per_day" value="2" step="0.5"><span data-t="un_06" class="un">ч/день</span></div>
+<div class="qf focus-field time-field"><input type="number" inputmode="decimal" data-limit-live data-step-live id="promo_per_day" value="2" min="0.5" max="8" step="0.5"><span data-t="un_06" class="un">ч/день</span></div>
 <details class="more2 post-details search-details"><summary><svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-t="exp_03">Что включено в эти 2 часа</span></summary><div class="in2 post-in2">
 <div class="search-tasks">
 <div class="search-task"><i>✓</i><span>ведение основных социальных сетей;</span></div>
@@ -2171,7 +2173,7 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 </div>
 </div>
 
-<div class="form-section form-section-expenses">
+<div class="form-section form-section-expenses" data-block-id="CALC-B031" data-block-name="Расходы">
 <div class="sect section-banner expenses-banner">
 <div class="benefits-note banner-benefits" data-t="ss_rash" aria-label="Преимущества учёта расходов">
 <div class="proof-item"><span class="proof-check"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="7" width="18" height="13" rx="2.5" stroke="currentColor" stroke-width="1.8"/><path d="M8 7V5.5A1.5 1.5 0 0 1 9.5 4h5A1.5 1.5 0 0 1 16 5.5V7M3 11.5h18M10 11.5v2h4v-2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="proof-copy"><span>Ваши</span><span>инвестиции</span></span></div>
@@ -2184,7 +2186,7 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 </div>
 </div>
 
-<div class="card" id="c_Form001"><div class="bn">09</div>
+<div class="card" id="c_Form001" data-block-id="CALC-B015" data-block-name="Вопрос 09"><div class="bn">09</div>
 <h2 data-t="h2_06">Съёмочное оборудование</h2>
 <div data-t="hint_02" class="hint hint-copy">
 <p>Это набор вашего базового оборудования, без которого вы просто не сможете провести съёмку. Укажите текущую рыночную стоимость и срок, за который позицию придётся заменить.</p>
@@ -2196,7 +2198,7 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 <button data-t="add_01" class="add" data-add="Form001">+ Добавить позицию</button>
 <label class="exc"><input type="checkbox" data-exc="Form001">Не учитывать этот блок в расчёте</label></div>
 
-<div class="card" id="c_Form002"><div class="bn">10</div>
+<div class="card" id="c_Form002" data-block-id="CALC-B016" data-block-name="Вопрос 10"><div class="bn">10</div>
 <h2 data-t="h2_07">Офисное оборудование</h2>
 <p data-t="hint_03" class="hint">Это оборудование, которое помогает вам выполнять заказы и решать рабочие задачи за компьютером. Укажите его текущую рыночную стоимость и срок, через который планируете заменить.</p>
 <table class="dt"><thead><tr><th data-t="th_04" style="width:52%">Позиция</th><th data-t="th_05" style="width:24%">Стоимость</th>
@@ -2210,7 +2212,7 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 <p>Чтобы к моменту замены у вас было достаточно денег на покупку такого же или сопоставимого оборудования.</p>
 </div>
 
-<div class="card" id="c_Form008b"><div class="bn">11</div>
+<div class="card" id="c_Form008b" data-block-id="CALC-B017" data-block-name="Вопрос 11"><div class="bn">11</div>
 <h2 data-t="h2_08">Программное обеспечение</h2>
 <p class="hint software-hint">Укажите программы и сервисы, которые нужны вам для профессиональной деятельности и работы вокруг неё.</p>
 <div data-t="sh_01" class="sh">Подписки</div>
@@ -2226,7 +2228,7 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 </tr></thead><tbody id="t_Form004"></tbody></table>
 <button data-t="add_04" class="add" data-add="Form004">+ Добавить программу</button>
 <label class="exc"><input type="checkbox" data-exc="Form008b">Не учитывать этот блок в расчёте</label></div>
-<div class="card" id="c_Form009b"><div class="bn">12</div>
+<div class="card" id="c_Form009b" data-block-id="CALC-B018" data-block-name="Вопрос 12"><div class="bn">12</div>
 <h2 data-t="h2_09">Рабочее место</h2>
 <div data-t="hint_04" class="hint hint-copy workspace-intro">
 <p>В найме рабочее место предоставляет работодатель. Когда вы работаете на себя, вы создаёте и оплачиваете его самостоятельно — поэтому эти расходы тоже должны быть учтены в стоимости вашего часа.</p>
@@ -2234,10 +2236,10 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 <div class="rad" id="ws_mode_r">
 <label class="on"><input type="radio" name="ws_mode" value="home" checked>Работаю из дома</label>
 <label><input type="radio" name="ws_mode" value="office">Арендую помещение</label></div>
-<div id="ws_home">
+<div id="ws_home" data-branch-id="CALC-B018-S01" data-branch-name="Рабочее место дома">
 <div class="qr two-col-row"><div><div data-t="q_08" class="q">Сколько вы платите за жильё в месяц?</div>
 <div data-t="qd_09" class="qd">Аренда или ипотека.</div>
-</div><div class="qf"><input type="text" inputmode="numeric" data-money id="home_rent" value="40000"><span data-t="un_07" class="un">₽/мес</span></div></div>
+</div><div class="qf"><input type="text" inputmode="numeric" data-money data-integer data-limit-live id="home_rent" value="40000" min="0" max="500000" step="100"><span data-t="un_07" class="un">₽/мес</span></div></div>
 <label class="flag workspace-own-home-flag"><input type="checkbox" id="own_home"><span data-t="own_01">Живу в своём, ипотеки нет</span></label>
 <div class="fnote ownnote" data-t="own_02">
 <p><b>Рекомендуем учитывать стоимость рабочего места в расчёте.</b></p>
@@ -2245,22 +2247,22 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 <p>Укажите актуальную стоимость аренды аналогичного жилья в вашем городе или размер ежемесячного ипотечного платежа.</p>
 </div>
 <div class="qr two-col-row removable-field-row"><div><div data-t="q_09" class="q">Коммунальные платежи, интернет и связь</div>
-</div><div class="qf"><input type="text" inputmode="numeric" data-money id="home_util" value="7000"><span data-t="un_08" class="un">₽/мес</span></div>
+</div><div class="qf"><input type="text" inputmode="numeric" data-money data-integer data-limit-live id="home_util" value="7000" min="0" max="100000" step="100"><span data-t="un_08" class="un">₽/мес</span></div>
 <button class="del" type="button" data-remove-field aria-label="Удалить коммунальные платежи">×</button></div>
 <div class="qr two-col-row removable-field-row"><div><div data-t="q_10" class="q">Общая площадь вашего жилья</div>
-</div><div class="qf"><input type="number" id="home_area" value="50"><span data-t="un_09" class="un">м²</span></div>
+</div><div class="qf"><input type="number" inputmode="decimal" data-limit-live data-step-live id="home_area" value="50" min="1" max="1000" step="0.1"><span data-t="un_09" class="un">м²</span></div>
 <button class="del" type="button" data-remove-field aria-label="Удалить общую площадь жилья">×</button></div>
 <div class="qr two-col-row removable-field-row"><div><div data-t="q_11" class="q">Сколько метров выделено под вашу рабочую зону?</div>
-</div><div class="qf"><input type="number" id="cab_area" value="6"><span data-t="un_10" class="un">м²</span></div>
+</div><div class="qf"><input type="number" inputmode="decimal" data-limit-live data-step-live id="cab_area" value="6" min="0.1" max="100" step="0.1"><span data-t="un_10" class="un">м²</span></div>
 <button class="del" type="button" data-remove-field aria-label="Удалить площадь рабочей зоны">×</button></div>
 <div data-t="qd_10" class="info-notice workspace-home-note">Если вы работаете из дома, коммунальные платежи, интернет и связь учитываются пропорционально площади, которую занимает рабочая зона.</div>
 </div>
-<div id="ws_off" style="display:none">
+<div id="ws_off" style="display:none" data-branch-id="CALC-B018-S02" data-branch-name="Отдельное помещение">
 <div class="qr two-col-row"><div><div data-t="q_12" class="q">Стоимость аренды помещения</div>
 <div data-t="qd_12" class="qd">Студия, кабинет или место в коворкинге.</div>
-</div><div class="qf"><input type="text" inputmode="numeric" data-money id="office_rent" value="15000"><span data-t="un_11" class="un">₽/мес</span></div></div>
+</div><div class="qf"><input type="text" inputmode="numeric" data-money data-integer data-limit-live id="office_rent" value="15000" min="0" max="500000" step="100"><span data-t="un_11" class="un">₽/мес</span></div></div>
 <div class="qr two-col-row"><div><div data-t="q_13" class="q">Коммунальные платежи, интернет и связь</div>
-</div><div class="qf"><input type="text" inputmode="numeric" data-money id="office_util" value="7000"><span data-t="un_12" class="un">₽/мес</span></div></div>
+</div><div class="qf"><input type="text" inputmode="numeric" data-money data-integer data-limit-live id="office_util" value="7000" min="0" max="100000" step="100"><span data-t="un_12" class="un">₽/мес</span></div></div>
 <div class="info-notice workspace-office-note">Если вы арендуете помещение, коммунальные платежи, интернет и связь учитываются полностью.</div>
 </div>
 <div data-t="sh_03" class="sh">Обустройство рабочего места</div>
@@ -2274,7 +2276,7 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 <div class="info-notice workspace-diy-note">Если вы делали всё самостоятельно, рекомендуем использовать в расчёте сумму, которую пришлось бы заплатить наёмным специалистам за аналогичную работу, и общую стоимость закупленных материалов.</div>
 <label class="exc"><input type="checkbox" data-exc="Form009b">Не учитывать этот блок в расчёте</label></div>
 
-<div class="card" id="c_Form006"><div class="bn">13</div>
+<div class="card" id="c_Form006" data-block-id="CALC-B019" data-block-name="Вопрос 13"><div class="bn">13</div>
 <h2 data-t="h2_10">Обучение и курсы</h2>
 <p data-t="hint_05" class="hint">Опишите, сколько времени и денег вы вложили, чтобы получить профессию</p>
 <div data-t="shd_04" class="shd" style="margin-bottom:16px">Курсы, семинары, мастер-классы, наставничество. Это ваш опыт, за который вы заплатили деньгами и месяцами жизни — он тоже должен окупаться через стоимость часа.</div>
@@ -2293,14 +2295,14 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 <p>Это стоимость времени, которое вы инвестировали в получение профессии, создание сайта или другие задачи, необходимые для работы. И у этого времени есть своя цена. Мы переведём время обучения в деньги и учтём как часть вложений в профессию.</p>
 </div>
 
-<div class="card" id="c_Form014"><div class="bn">14</div>
+<div class="card" id="c_Form014" data-block-id="CALC-B020" data-block-name="Вопрос 14"><div class="bn">14</div>
 <h2 data-t="h2_11">Создание сайта</h2>
 <div class="rad" id="site_mode_r">
 <label class="on"><input type="radio" name="site_mode" value="hired" checked>Нанимал (а) специалиста</label>
 <label><input type="radio" name="site_mode" value="self">Делал (а) самостоятельно</label></div>
-<div class="qr two-col-row" id="site_c_w"><div><div data-t="q_15" class="q">Сколько вы заплатили за создание сайта?</div>
+<div class="qr two-col-row" id="site_c_w" data-branch-id="CALC-B020-S01" data-branch-name="Сайт заказан"><div><div data-t="q_15" class="q">Сколько вы заплатили за создание сайта?</div>
 </div><div class="qf"><input type="text" inputmode="numeric" data-money id="site_cost" value="70000"><span class="un">₽</span></div></div>
-<div class="qr two-col-row" id="site_h_w" style="display:none"><div>
+<div class="qr two-col-row" id="site_h_w" style="display:none" data-branch-id="CALC-B020-S02" data-branch-name="Сайт создан самостоятельно"><div>
 <div data-t="q_16" class="q">Сколько времени вы потратили на создание сайта?</div>
 </div><div class="qf"><input type="number" id="site_hours" value="80"><span data-t="un_14" class="un">часов</span></div></div>
 <div class="qr two-col-row"><div><div data-t="q_17" class="q">За сколько лет окупить вложения в сайт?</div>
@@ -2308,7 +2310,7 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 </div><div class="qf"><input type="number" id="site_life" value="7"><span data-t="un_15" class="un">лет</span></div></div>
 <label class="exc"><input type="checkbox" data-exc="Form014">Не учитывать этот блок в расчёте</label></div>
 
-<div class="card" id="c_Form010"><div class="bn">15</div>
+<div class="card" id="c_Form010" data-block-id="CALC-B021" data-block-name="Вопрос 15"><div class="bn">15</div>
 <h2 data-t="h2_12">Реклама и продвижение</h2>
 <p data-t="hint_07" class="hint">Деньги, которые вы регулярно тратите на поиск и привлечение клиентов</p>
 <table class="dt"><thead><tr><th data-t="th_19" style="width:52%">Канал</th><th data-t="th_20" style="width:24%">Стоимость</th>
@@ -2317,7 +2319,7 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 <button data-t="add_07" class="add" data-add="Form010">+ Добавить канал</button>
 <label class="exc"><input type="checkbox" data-exc="Form010">Не учитывать этот блок в расчёте</label></div>
 
-<div class="card" id="c_Form015b"><div class="bn">16</div>
+<div class="card" id="c_Form015b" data-block-id="CALC-B022" data-block-name="Вопрос 16"><div class="bn">16</div>
 <h2 data-t="h2_13">Банковское обслуживание</h2>
 <div data-t="sh_04" class="sh">Регулярные платежи</div>
 <div data-t="shd_05" class="shd">Платежи за банковское обслуживание и услуги, которые оплачиваются в фиксированной сумме.</div>
@@ -2330,7 +2332,7 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 <div data-t="shd_06" class="shd">Плата, которую взимает банк в виде процента от суммы произведённой операции.</div>
 <div class="bank-rate-table">
 <div class="bank-rate-head"><div>Позиция</div><div>Ставка</div><div aria-hidden="true"></div></div>
-<div class="bank-commission-row bank-acq-group" id="bank_acq_group">
+<div class="bank-commission-row bank-acq-group" id="bank_acq_group" data-branch-id="CALC-B022-S01" data-branch-name="Эквайринг">
 <div class="bank-name-field"><input type="text" id="acq_name" value="Эквайринг" readonly aria-label="Позиция комиссии"></div>
 <div class="qf"><input type="number" id="acq_rate" value="2.7" step="0.1"><span class="un">%</span></div>
 <button class="del" id="acq_delete" type="button" aria-label="Удалить эквайринг">×</button>
@@ -2340,7 +2342,7 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 <div class="add-rst-row bank-add-row">
 <button class="add" id="bank_add" type="button">+ Добавить комиссию</button>
 </div>
-<div class="bank-share-question" id="bank_share_row">
+<div class="bank-share-question" id="bank_share_row" data-branch-id="CALC-B022-S02" data-branch-name="Доля безналичных платежей">
 <div data-t="q_19" class="bank-share-label-field">Какая доля оплат проходит через эквайринг?</div>
 <div class="qf"><input type="number" id="acq_share" value="100" step="5"><span class="un">%</span></div>
 <div class="bank-cell-placeholder" aria-hidden="true"></div>
@@ -2348,24 +2350,24 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 </div>
 <label class="exc"><input type="checkbox" data-exc="Form015b">Не учитывать этот блок в расчёте</label></div>
 
-<div class="card" id="c_Form011"><div class="bn">17</div>
+<div class="card" id="c_Form011" data-block-id="CALC-B023" data-block-name="Вопрос 17"><div class="bn">17</div>
 <h2 data-t="h2_14">Бухгалтерия и учёт</h2>
 <div class="rad" id="acc_mode_r">
 <label class="on"><input type="radio" name="acc_mode" value="self" checked>Веду самостоятельно</label>
 <label><input type="radio" name="acc_mode" value="hired">Нанимаю специалиста</label></div>
-<div class="accounting-self-scope" id="acc_h_w">
+<div class="accounting-self-scope" id="acc_h_w" data-branch-id="CALC-B023-S01" data-branch-name="Учёт самостоятельно">
 <div class="qr accounting-row"><div>
 <div data-t="q_20" class="q">Сколько часов в квартал уходит на отчётность?</div>
 </div><div class="qf"><input type="number" id="acc_per_quarter" value="3"><span data-t="un_16" class="un">часа</span></div></div>
 
 </div>
-<div class="qr accounting-row" id="acc_c_w" style="display:none"><div>
+<div class="qr accounting-row" id="acc_c_w" style="display:none" data-branch-id="CALC-B023-S02" data-branch-name="Учёт ведёт специалист"><div>
 <div data-t="q_21" class="q">Сколько стоит ведение учёта?</div>
 </div><div class="qf"><input type="text" inputmode="numeric" data-money id="acc_cost_month" value="10000"><span data-t="un_17" class="un">₽/мес</span></div></div>
 <details class="more2 post-details accounting-details"><summary><svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-t="exp_04">Вот что мы заложили как основные этапы ведения учёта и бухгалтерии</span></summary><div class="in2 post-in2">
 <div class="post-stages accounting-stages">
 <div class="post-stage"><div class="post-stage-title"><i>1</i><b>Учёт доходов и расходов</b></div><ul><li>фиксация доходов и расходов;</li><li>ведение книги учёта;</li><li>сверка операций с банковской выпиской.</li></ul></div>
-<div class="post-stage"><div class="post-stage-title"><i>2</i><b>Налоги и взносы</b></div><ul><li>расчёт налогов;</li><li>уплата налогов и страховых взносов;</li><li>контроль сроков обязательных платежей.</li></ul></div>
+<div class="post-stage"><div class="post-stage-title"><i>2</i><b>Налоги и Страховые взносы</b></div><ul><li>расчёт налогов;</li><li>уплата налогов и страховых взносов;</li><li>контроль сроков обязательных платежей.</li></ul></div>
 <div class="post-stage"><div class="post-stage-title"><i>3</i><b>Подготовка отчётности</b></div><ul><li>подготовка и отправка деклараций;</li><li>подготовка другой обязательной отчётности;</li><li>контроль сроков сдачи.</li></ul></div>
 <div class="post-stage"><div class="post-stage-title"><i>4</i><b>Взаимодействие с налоговой</b></div><ul><li>сверка с налоговой инспекцией;</li><li>проверка начислений и задолженности;</li><li>ответы на требования и уведомления.</li></ul></div>
 </div>
@@ -2373,7 +2375,7 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 <label class="exc"><input type="checkbox" data-exc="Form011">Не учитывать этот блок в расчёте</label></div>
 </div>
 
-<div class="form-section form-section-reserves">
+<div class="form-section form-section-reserves" data-block-id="CALC-B032" data-block-name="Резервы">
 <div class="sect section-banner reserves-banner">
 <div class="section-points" data-t="ss_rez">
 <div class="section-point section-point-sber"><span class="section-point-icon"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M18.9 6.5A8.8 8.8 0 1 0 20 15.6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><path d="m7.4 12.4 3 3 7.2-7.5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="highlight-copy"><span>Отлично!</span><span>Базовый минимум</span><span>у нас уже есть.</span></span></div>
@@ -2384,7 +2386,7 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 </div>
 </div>
 
-<div class="card" id="c_Form018"><div class="bn">18</div>
+<div class="card" id="c_Form018" data-block-id="CALC-B024" data-block-name="Вопрос 18"><div class="bn">18</div>
 <h2 data-t="h2_14z">Резерв времени на простой и форс-мажоры</h2>
 <p data-t="hint_08z" class="hint">Заложите в расчёт часть времени на ситуации, которые возникают независимо лично от вас. Простой бывает всегда: периоды без заказов, переносы и отмены съёмок случаются у каждого специалиста. Форс-мажоры — реже: подвела погода, возникли проблемы с техникой или другие непредвиденные обстоятельства помешали работе.</p>
 
@@ -2402,7 +2404,7 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 </div>
 </div>
 
-<div class="card" id="c_Form016"><div class="bn">19</div>
+<div class="card" id="c_Form016" data-block-id="CALC-B025" data-block-name="Вопрос 19"><div class="bn">19</div>
 <h2 data-t="h2_15z">Фонд развития</h2>
 <p data-t="hint_09z" class="hint">Заложите в расчёт часть выручки на развитие вашего дела.</p>
 
@@ -2420,7 +2422,7 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 </div>
 </div>
 
-<div class="card" id="c_Form017"><div class="bn">20</div>
+<div class="card" id="c_Form017" data-block-id="CALC-B026" data-block-name="Вопрос 20"><div class="bn">20</div>
 <h2 data-t="h2_16z">Запас на скидку</h2>
 <p data-t="hint_10z" class="hint">Позволит вам уступать в цене, когда клиент требует скидку, и при этом не терять в доходе. Сможете гибко настроить собственную программу лояльности и привлекать дополнительный трафик в несезон.</p>
 
@@ -2430,7 +2432,7 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 </div>
 <div data-t="qd_23" class="qd">Без этого запаса ваши возможности будут сильно ограничены: вы сможете давать только небольшие скидки за объём или фактически доплачивать клиенту из своего кармана.</div>
 <div class="zapn" data-t="qd_23b">При включённом запасе на скидку вы получите сформированную программу лояльности на целый год, включая скидку за объём, специальные условия постоянным клиентам и комплект подарочных сертификатов под горячие направления.</div>
-<div class="lvls" id="disc_lvls">
+<div class="lvls" id="disc_lvls" data-branch-id="CALC-B026-S01" data-branch-name="Уровни программы лояльности">
 <label class="lvl a1"><input type="radio" name="disc_lvl" value="5"><div class="lv">5%</div><div class="ll">скромно</div></label>
 <label class="lvl a2"><input type="radio" name="disc_lvl" value="10"><div class="lv">10%</div><div class="ll">умеренно</div></label>
 <label class="lvl a3 on"><input type="radio" name="disc_lvl" value="15" checked><div class="lv">15%</div><div class="ll">хорошо</div></label>
@@ -2441,7 +2443,7 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 </div>
 </div>
 
-<div class="savebar">
+<div class="savebar" data-block-id="CALC-B033" data-block-name="Действия анкеты">
 <button class="btn" id="go">
 <svg class="bgd d1" viewBox="0 0 32 32" fill="none" aria-hidden="true">
 <rect x="10.95" y="2.09" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 7.14)" fill="#fff"/>
@@ -2472,18 +2474,18 @@ stroke-linecap="round" stroke-linejoin="round" opacity=".45"/></svg>
 <span id="resetTx">Вернуть значения по умолчанию</span></button>
 </div>
 
-<div class="trb" id="trial">
+<div class="trb" id="trial" data-block-id="CALC-B034" data-block-name="Пробный режим">
 <div class="trh"><svg class="tri" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3.5 2.4 20.5h19.2L12 3.5Z" fill="var(--c-a-400)"/><path d="M12 9.5v5" stroke="var(--c-white)" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="17.5" r="1.15" fill="var(--c-white)"/></svg><span data-t="ct_02">СЧЁТИКС работает в пробном режиме</span></div>
 <p data-t="ct_03">Сейчас СЧЁТИКС доступен бесплатно: мы тестируем сам сервис, его работу и возможности в реальных условиях.</p>
 <p data-t="ct_04"><b>Все расчёты уже работают в полном объёме и построены на реалистичной экономической модели.</b></p>
 <p data-t="ct_05">Если вы заметили неточность или у вас есть идея, как сделать СЧЁТИКС полезнее — напишите нам: <a href="mailto:schetix@ya.ru">schetix@ya.ru</a></p>
 </div>
 
-<div class="foot"><span class="lgs" title="Счётикс — твоя юнит-экономика"><span class="btx"><span class="bt">счётикс</span><span class="bd" data-t="bt_02"><i>т</i><i>в</i><i>о</i><i>я</i><i>&nbsp;</i><i>ю</i><i>н</i><i>и</i><i>т</i><i>-</i><i>э</i><i>к</i><i>о</i><i>н</i><i>о</i><i>м</i><i>и</i><i>к</i><i>а</i></span></span><svg class="lx" viewBox="0 0 32 32" fill="none" aria-hidden="true"><rect x="10.95" y="2.09" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 7.14)" fill="var(--c-gr3)"/><rect x="19.81" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 24.86 16)" fill="var(--c-g-500)"/><rect x="10.95" y="19.81" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 24.86)" fill="var(--c-gr3)"/><rect x="2.09" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 7.14 16)" fill="var(--c-gr3)"/></svg></span>
+<div class="foot" data-block-id="CALC-B035" data-block-name="Подвал"><span class="lgs" title="Счётикс — твоя юнит-экономика"><span class="btx"><span class="bt">счётикс</span><span class="bd" data-t="bt_02"><i>т</i><i>в</i><i>о</i><i>я</i><i>&nbsp;</i><i>ю</i><i>н</i><i>и</i><i>т</i><i>-</i><i>э</i><i>к</i><i>о</i><i>н</i><i>о</i><i>м</i><i>и</i><i>к</i><i>а</i></span></span><svg class="lx" viewBox="0 0 32 32" fill="none" aria-hidden="true"><rect x="10.95" y="2.09" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 7.14)" fill="var(--c-gr3)"/><rect x="19.81" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 24.86 16)" fill="var(--c-g-500)"/><rect x="10.95" y="19.81" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 24.86)" fill="var(--c-gr3)"/><rect x="2.09" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 7.14 16)" fill="var(--c-gr3)"/></svg></span>
 <div class="fcop" data-t="rfc_01">ООО «Центр маркетинговых услуг Гет Маркетинг» © 2026</div>
 </div>
 </div>
-<div id="ld"><div class="ldin">
+<div id="ld" data-block-id="CALC-B036" data-block-name="Анимация расчёта"><div class="ldin">
 <div class="spin">
 <svg width="200" height="200" viewBox="0 0 200 200">
 <defs><linearGradient id="ldgrad" x1="0" y1="0" x2="1" y2="1">
@@ -2494,7 +2496,7 @@ stroke-linecap="round" stroke-linejoin="round" opacity=".45"/></svg>
 <div class="pct" id="pct">0%</div></div>
 <div class="stg" id="stg">Начинаем расчёт</div><div class="stgs" id="stgs">Проверяем данные</div></div></div>
 
-<div class="limbar" id="limBar" role="status" aria-live="polite"></div>
+<div class="limbar" id="limBar" role="status" aria-live="polite" data-block-id="CALC-B037" data-block-name="Уведомление о лимите"></div>
 
 </div>
 
@@ -2639,6 +2641,107 @@ R.addEventListener('blur',function(ev){
   if(былоПусто)e.dispatchEvent(new Event('input',{bubbles:true}));
 },true);
 
+/* Утверждённые реалистичные пределы проверяем возле самого поля, а не
+   после заполнения анкеты. Максимум применяем во время ввода; минимум — при
+   выходе из поля, чтобы первая набранная цифра не мешала ввести большое число. */
+var ТЕКСТЫ_ПРЕДЕЛОВ={
+  income_month:{min:'Вы ввели значение ниже допустимого. Установлен минимум — 10 000 ₽ в месяц. Проверьте значение.',max:'Вы ввели значение выше допустимого. Установлен максимум — 3 000 000 ₽ в месяц. Проверьте значение.'},
+  current_rate:{min:'Вы ввели значение ниже допустимого. Установлен минимум — 0 ₽ в час. Проверьте значение.',max:'Вы ввели значение выше допустимого. Установлен максимум — 1 000 000 ₽ в час. Проверьте значение.'},
+  frames_out:{min:'Вы ввели значение ниже допустимого. Установлен минимум — 1 готовый кадр в час. Проверьте значение.',max:'Вы ввели значение выше допустимого. Установлен максимум — 1 000 готовых кадров в час. Проверьте значение.'},
+  shutter_per_hour:{min:'Вы ввели значение ниже допустимого. Установлен минимум — 1 срабатывание затвора в час. Проверьте значение.',max:'Вы ввели значение выше допустимого. Установлен максимум — 1 000 срабатываний затвора в час. Проверьте значение.'},
+  shutter_life:{min:'Вы ввели значение ниже допустимого. Установлен минимум — 10 000 срабатываний затвора. Проверьте значение.',max:'Вы ввели значение выше допустимого. Установлен максимум — 1 000 000 срабатываний затвора. Проверьте значение.'},
+  shoot_manual:{min:'Вы ввели значение ниже допустимого. Установлен минимум — 0,5 часа. Проверьте значение.',max:'Вы ввели значение выше допустимого. Установлен максимум — 72 часа. Проверьте значение.'},
+  post_ratio:{min:'Вы ввели отрицательное значение. Установлен минимум — 0 часов постпродакшна. Проверьте значение.',max:'Вы ввели значение выше допустимого. Установлен максимум — 72 часа постпродакшна на один час съёмки. Проверьте значение.'},
+  client_time:{min:'Вы ввели значение ниже допустимого. Установлен минимум — 0,5 часа работы с клиентом на проект. Чтобы не учитывать блок, используйте галочку исключения. Проверьте значение.',max:'Вы ввели значение выше допустимого. Установлен максимум — 72 часа работы с клиентом на проект. Проверьте значение.'},
+  promo_per_day:{min:'Вы ввели значение ниже допустимого. Установлен минимум — 0,5 часа поиска заказов в день. Чтобы не учитывать блок, используйте галочку исключения. Проверьте значение.',max:'Вы ввели значение выше допустимого. Установлен максимум — 8 часов поиска заказов в день: это полный нормативный рабочий день. Проверьте значение.'},
+  home_rent:{min:'Вы ввели отрицательное значение. Установлен минимум — 0 ₽ в месяц. Проверьте значение.',max:'Вы ввели значение выше допустимого. Установлен максимум — 500 000 ₽ в месяц за жильё. Проверьте значение.'},
+  home_util:{min:'Вы ввели отрицательное значение. Установлен минимум — 0 ₽ в месяц. Проверьте значение.',max:'Вы ввели значение выше допустимого. Установлен максимум — 100 000 ₽ в месяц на коммунальные платежи, интернет и связь. Проверьте значение.'},
+  home_area:{min:'Вы ввели значение ниже допустимого. Установлен минимум — 1 м² общей площади жилья. Чтобы не учитывать поле, удалите строку крестиком. Проверьте значение.',max:'Вы ввели значение выше допустимого. Установлен максимум — 1 000 м² общей площади жилья. Проверьте значение.'},
+  cab_area:{min:'Вы ввели значение ниже допустимого. Установлен минимум — 0,1 м² рабочей зоны. Чтобы не учитывать поле, удалите строку крестиком. Проверьте значение.',max:'Вы ввели значение выше допустимого. Установлен абсолютный максимум — 100 м² рабочей зоны. Проверьте значение.'},
+  office_rent:{min:'Вы ввели отрицательное значение. Установлен минимум — 0 ₽ в месяц. Проверьте значение.',max:'Вы ввели значение выше допустимого. Установлен максимум — 500 000 ₽ в месяц за аренду отдельного помещения. Проверьте значение.'},
+  office_util:{min:'Вы ввели отрицательное значение. Установлен минимум — 0 ₽ в месяц. Проверьте значение.',max:'Вы ввели значение выше допустимого. Установлен максимум — 100 000 ₽ в месяц на коммунальные платежи, интернет и связь отдельного помещения. Проверьте значение.'}
+};
+function плашкаПредела(el,текст){
+  var qf=el.closest('.qf'), ячейка=el.closest('td'), note=qf?qf.nextElementSibling:(ячейка&&ячейка.querySelector('.field-limit-note'));
+  var контейнер=qf||ячейка; if(!контейнер)return;
+  if(!note||!note.classList.contains('field-limit-note')){
+    note=document.createElement('div'); note.className='field-limit-note';
+    note.setAttribute('role','status'); note.setAttribute('aria-live','polite');
+    if(qf)qf.parentNode.insertBefore(note,qf.nextSibling);else ячейка.appendChild(note);
+  }
+  if(текст){note.textContent=текст;note.classList.add('on')}
+  else{note.textContent='';note.classList.remove('on')}
+}
+function применитьПредел(el,сторона){
+  if(!el||!el.matches('input[data-limit-live]'))return false;
+  var raw=String(el.value||'').replace(/[\s\u2009\u00a0\u202f]/g,'').replace(',','.');
+  if(raw===''||raw==='-'||!isFinite(Number(raw)))return false;
+  var n=Number(raw), attr=el.getAttribute(сторона), предел=attr===null?null:Number(attr);
+  if(предел===null||!isFinite(предел))return false;
+  var нарушен=сторона==='max'?n>предел:n<предел;
+  if(!нарушен)return false;
+  el.value=el.hasAttribute('data-money')?денежнаяСтрока(String(предел)):String(предел);
+  var тексты=ТЕКСТЫ_ПРЕДЕЛОВ[el.id]||{};
+  var свойТекст=el.getAttribute('data-'+сторона+'-message');
+  плашкаПредела(el,свойТекст||тексты[сторона]||'Введённое значение приведено к допустимой границе. Проверьте значение.');
+  return true;
+}
+R.addEventListener('input',function(ev){
+  var e=ev.target;
+  if(e&&e.matches&&e.matches('input[data-limit-live]')){
+    if(!применитьПредел(e,'max'))плашкаПредела(e,'');
+  }
+});
+function привестиКЦелому(el){
+  if(!el||!el.matches('input[data-limit-live][data-integer]'))return false;
+  var raw=String(el.value||'').replace(/[\s\u2009\u00a0\u202f]/g,'').replace(',','.');
+  if(raw===''||raw==='-'||!isFinite(Number(raw)))return false;
+  var n=Number(raw); if(Number.isInteger(n))return false;
+  var целое=Math.round(n);
+  el.value=el.hasAttribute('data-money')?денежнаяСтрока(String(целое)):String(целое);
+  плашкаПредела(el,'Значение округлено до ближайшего целого. Проверьте значение.');
+  return true;
+}
+function привестиКШагу(el){
+  if(!el||!el.matches('input[data-limit-live][data-step-live]'))return false;
+  var raw=String(el.value||'').replace(/[\s\u2009\u00a0\u202f]/g,'').replace(',','.');
+  if(raw===''||raw==='-'||!isFinite(Number(raw)))return false;
+  var n=Number(raw), шаг=Number(el.getAttribute('step')), база=Number(el.getAttribute('min')||0);
+  if(!(шаг>0))return false;
+  var приведённое=база+Math.round((n-база)/шаг)*шаг;
+  приведённое=Math.round(приведённое*1000000)/1000000;
+  if(Math.abs(n-приведённое)<1e-9)return false;
+  el.value=String(приведённое);
+  var шагТекст=(el.id==='home_area'||el.id==='cab_area')?'0,1 м²':'0,5 часа';
+  плашкаПредела(el,'Значение приведено к ближайшему шагу — '+шагТекст+'. Проверьте значение.');
+  return true;
+}
+R.addEventListener('blur',function(ev){
+  var e=ev.target;
+  if(e&&e.matches&&e.matches('input[data-limit-live]')){
+    привестиКЦелому(e);
+    привестиКШагу(e);
+    применитьПредел(e,'min');
+    применитьПредел(e,'max');
+  }
+},true);
+
+function ограничитьРабочуюЗону(){
+  var общая=$('home_area'), рабочая=$('cab_area');
+  if(!общая||!рабочая)return false;
+  var всего=число(общая.value), зона=число(рабочая.value);
+  if(!(всего>0)||зона<=всего)return false;
+  рабочая.value=String(всего);
+  плашкаПредела(рабочая,'Площадь рабочей зоны не может превышать общую площадь жилья. Установлено '+String(всего).replace('.',',')+' м². Проверьте значение.');
+  return true;
+}
+R.addEventListener('input',function(ev){
+  if(ev.target&&ev.target.id==='cab_area')ограничитьРабочуюЗону();
+});
+R.addEventListener('blur',function(ev){
+  if(ev.target&&(ev.target.id==='home_area'||ev.target.id==='cab_area'))ограничитьРабочуюЗону();
+},true);
+
 var V=function(id){var e=$(id);return e?число(e.value):0},
 CHK=function(id){var e=$(id);return e?!!e.checked:false},
 f0=function(n){return Math.round(n).toLocaleString('ru-RU')+' \u20BD'},
@@ -2690,7 +2793,7 @@ function обновитьПодсветкуПолей(){
     row.classList.toggle('row-zero',zero);
   });
 }
-var FIX=57390,THR=300000,CRED=3000,CAP=321818,M15=.01,M20=.03,MO=12,Q=4;
+var FIX=57390,THR=300000,CRED=3000,CAP=321818,M15=.01,M20=.03,MO=12,Q=4,WM=11;
 var WD=247,VAC=20,SICK=8,EFF=7,DW=5;
 var ND=WD-VAC-SICK, NT=ND*EFF, NW=ND/DW;
 
@@ -2727,10 +2830,17 @@ function mkRow(f,d,индекс){
   var c=CAT[f],tr=document.createElement('tr');
   var фикс=(НЕСНОСИМЫЕ[f]||[])[индекс];
   var per='<select class="c3"><option value="1">\u0413\u043E\u0434</option><option value="4">\u041A\u0432\u0430\u0440\u0442\u0430\u043B</option><option value="12">\u041C\u0435\u0441\u044F\u0446</option></select>';
+  var описаниеСтоимости=f==='Form001'?'одну позицию съёмочного оборудования':(f==='Form002'?'одну позицию офисного оборудования':(f==='Form003'?'один платёж подписки':(f==='Form004'?'одну купленную программу':(f==='Form013'?'одну позицию обустройства рабочего места':''))));
+  var максимумСтоимости=(f==='Form003'||f==='Form004')?100000:(f==='Form013'?500000:10000000);
+  var максимумСтоимостиТекст=(f==='Form003'||f==='Form004')?'100 000':(f==='Form013'?'500 000':'10 000 000');
+  var пределСтоимости=описаниеСтоимости?' data-limit-live data-integer min="0" max="'+максимумСтоимости+'" step="100" data-max-message="Вы ввели значение выше допустимого. Установлен максимум — '+максимумСтоимостиТекст+' ₽ за '+описаниеСтоимости+'. Проверьте значение."':'';
+  var категорияСрока=f==='Form001'?'съёмочного оборудования':(f==='Form002'?'офисного оборудования':(f==='Form004'?'купленной программы':(f==='Form013'?'обустройства рабочего места':'')));
+  var максимумСрока=f==='Form004'?10:30;
+  var пределСрока=категорияСрока?' data-limit-live data-integer min="1" max="'+максимумСрока+'" step="1" data-min-message="Вы ввели значение ниже допустимого. Установлен минимум — 1 год службы '+категорияСрока+'. Проверьте значение." data-max-message="Вы ввели значение выше допустимого. Установлен максимум — '+максимумСрока+' лет службы '+категорияСрока+'. Проверьте значение."':'';
   tr.innerHTML='<td><input type="text" class="c1"'+(фикс?' placeholder="'+фикс+'"':'')+'></td>'+
-   '<td><input type="text" inputmode="numeric" data-money class="c2"'+
+   '<td><input type="text" inputmode="numeric" data-money class="c2"'+пределСтоимости+
    (фикс?' placeholder="\u0421\u0442\u043e\u0438\u043c\u043e\u0441\u0442\u044c"':'')+'></td>'+
-   '<td>'+(c.k==='per'?per:'<input type="number" class="c3">')+'</td>'+
+   '<td>'+(c.k==='per'?per:'<input type="number" inputmode="numeric" class="c3"'+пределСрока+'>')+'</td>'+
    '<td><button class="del" type="button">\u00D7</button></td>';
   if(фикс)tr.classList.add('несносимая');
   tr.querySelector('.c1').value=d[0];
@@ -2753,6 +2863,21 @@ function mkRow(f,d,индекс){
   tr.addEventListener('input',recalc); tr.addEventListener('change',recalc);
   return tr;
 }
+function проверитьНулевуюСтоимостьСтроки(el){
+  var row=el&&el.closest&&el.closest('#t_Form001 tr,#t_Form002 tr,#t_Form003 tr,#t_Form004 tr,#t_Form013 tr'); if(!row)return;
+  var имя=row.querySelector('.c1'), стоимость=row.querySelector('.c2');
+  if(!имя||!стоимость)return;
+  if(String(имя.value||'').trim()&&число(стоимость.value)===0){
+    плашкаПредела(стоимость,'Для указанной позиции стоимость равна 0 ₽. Проверьте стоимость или удалите название позиции.');
+  }else if(!String(имя.value||'').trim()){
+    плашкаПредела(стоимость,'');
+  }
+}
+R.addEventListener('blur',function(ev){
+  var e=ev.target;
+  if(e&&e.matches&&e.matches('#t_Form001 .c1,#t_Form001 .c2,#t_Form002 .c1,#t_Form002 .c2,#t_Form003 .c1,#t_Form003 .c2,#t_Form004 .c1,#t_Form004 .c2,#t_Form013 .c1,#t_Form013 .c2'))проверитьНулевуюСтоимостьСтроки(e);
+},true);
+
 Object.keys(CAT).forEach(function(f){
   var tb=$('t_'+f); if(!tb)return;
   CAT[f].rows.forEach(function(d,i){tb.appendChild(mkRow(f,d,i))});
@@ -2978,14 +3103,18 @@ function зап(вкл,пол,вых,сост,реком){
 зап('fund_on','fund_pct','fund_out','fund_st',10);
 зап('fm_on','fm_pct','fm_out','fm_st',5);
 уровни();
+function обновитьСвоёЖильё(){
+  var oh=$('own_home'), rent=$('home_rent');
+  if(!oh||!rent)return;
+  /* Галочка означает буквальный эффективный ноль: стоимость жилья не
+     участвует в расчёте, поле недоступно для ввода и визуально приглушено. */
+  rent.disabled=oh.checked;
+  var note=R.querySelector('.ownnote');
+  if(note)note.classList.toggle('on',oh.checked);
+}
 var _oh=$('own_home');
-if(_oh)_oh.onchange=function(){
-  /* Даже в собственном жилье поле остаётся активным: сюда вводится
-     рыночная аренда аналога или ежемесячный ипотечный платёж. */
-  $('home_rent').disabled=false;
-  var _on=R.querySelector('.ownnote');
-  if(_on)_on.classList.toggle('on',this.checked);
-  recalc()};
+if(_oh)_oh.onchange=function(){обновитьСвоёЖильё();recalc()};
+обновитьСвоёЖильё();
 
 R.addEventListener('input',function(e){if(e.target.tagName==='INPUT'||e.target.tagName==='SELECT')recalc()});
 /* Человек сам выбрал режим — снимаем пометку об автосмене, иначе плашка
@@ -3090,17 +3219,18 @@ function calc(){
   var fmT=$('fm_on').checked?gross*(V('fm_pct')/100):0;
   var pool=gross-fmT;
   var K=V('post_ratio'), cl=EXC['FormClientTime']?0:V('client_time'), M=1+K;
-  var sAuto=M>0?(pool/NW-cl)/M:0;
   var S=V('shoot_manual');
   var framesOut=V('frames_out');
-  var pt=S*M+cl, py=pt>0?pool/pt:0, sh=py*S, post=sh*K, core=sh+post, clT=py*cl;
+  var pt=S*M+cl, py=pt>0?pool/pt:0, sh=py*S, post=sh*K, clT=py*cl;
 
   var wsEx=EXC['Form009b'];
   var wsShare=V('home_area')>0?V('cab_area')/V('home_area'):0;
-  /* Дома и стоимость жилья, и коммунальные услуги учитываются в доле
-     рабочей площади. Для отдельного помещения оба расхода идут целиком. */
+  var homeHousing=CHK('own_home')?0:V('home_rent');
+  /* В собственном жилье без ипотеки стоимость жилья получает эффективный
+     ноль. Коммунальные услуги продолжают учитываться в доле рабочей площади.
+     Для отдельного помещения аренда и коммунальные расходы идут целиком. */
   var wsY=wsEx?0:(rad('ws_mode')==='home'
-    ?(V('home_rent')+V('home_util'))*wsShare*MO
+    ?(homeHousing+V('home_util'))*wsShare*MO
     :(V('office_rent')+V('office_util'))*MO);
   var eduEx=EXC['Form006'], eduL=V('edu_life'), eduSum=0, eduMon=0;
   var etb=$('t_Form006');
@@ -3118,8 +3248,6 @@ function calc(){
   var amort=equip+sumF('Form013')+eduY+siteY;
   var accM=(!self&&!accEx)?V('acc_cost_month')*MO:0;
   var vari=sumF('Form003')+sumF('Form010')+sumF('Form007')+accM+wsY;
-  var promoM=sumF('Form010')+siteY;
-  var current=wsY+sumF('Form007')+accM+sumF('Form003')+sumF('Form013')+eduY;
   var C=amort+vari;
   var Ny=V('income_month')*MO;
   /* Резерв на отпуск: один месячный доход на руки. Не новый расход,
@@ -3232,6 +3360,13 @@ function calc(){
      финансовый результат: он может быть отрицательным. */
   var leftC=currentResult;
   var Rb=выручкаПод(0,1-a-sdiv), taxB=taxOf(Rb), aqB=Rb*a;
+  var rateZero=sh>0?Rb/sh:0;
+  /* Количество съёмок для покрытия расходов именно при Ставке в ноль.
+     Это отдельный сценарный показатель: minShoots ниже считает то же
+     покрытие по Желаемой ставке. */
+  var zeroProjectPrice=rateZero*S;
+  var zeroShootsY=zeroProjectPrice>0?Rb/zeroProjectPrice:0;
+  var zeroShootsM=zeroShootsY/MO;
   /* Минимальное количество съёмок для покрытия расходов — точка
      безубыточности в натуральном выражении (глоссарий № 49): сколько
      съёмочных проектов по расчётной цене нужно провести, чтобы покрыть
@@ -3267,7 +3402,10 @@ function calc(){
   var камРяд=(CAT['Form001']&&CAT['Form001'].rows[0])||['',0,1];
   var камЦена=камРяд[1], камСрок=камРяд[2]||1;
   var камАм=камЦена/камСрок;                     /* амортизация камеры за год  */
-  var костHour=sh>0?totalExpenses/sh:0;           /* себестоимость часа съёмки  */
+  /* Себестоимость использует налоги и эквайринг от собственной базы
+     безубыточности, а не от полной целевой Выручки. Иначе в себестоимость
+     попадали платежи с желаемого дохода и она искусственно завышалась. */
+  var костHour=sh>0?(C+taxB+aqB)/sh:0;
   var rateHour=sh>0?R_/sh:0;
   /* ── рабочий час. Считаем как у наёмного сотрудника: рабочий день 8 часов,
      включая короткие перерывы. Рабочее время = рабочих дней × 8.
@@ -3275,7 +3413,7 @@ function calc(){
   var workHours=ND*8;
   /* Доход в час на руки — сравнение с наймом: 11 месяцев на руки
      (отпускной уже внутри года как месяц без работы) и восьмичасовой день. */
-  var rateWork=workHours>0?(Ny*11/12)/workHours:0;
+  var rateWork=workHours>0?(Ny*WM/MO)/workHours:0;
   /* Базовая ставка часа — выручка за год / эффективное время (7 ч × дни).
      Для услуг вне площадки. Съёмочный час (R/sh) не трогаем. */
   var rateWorkFull=NT>0?R_/NT:0;
@@ -3298,7 +3436,7 @@ function calc(){
   }
   var загрузкаЦель=загрузка(rateHour),
       загрузкаТек =загрузка(cur),
-      загрузкаНоль=загрузка(sh>0?Rb/sh:0);
+      загрузкаНоль=загрузка(rateZero);
   /* ── все ответы анкеты для таблицы «Вводные данные» в отчёте.
      Отдаём данными, без вёрстки: блок, название, значение, единица,
      срок и вид периода. Раскладывает их уже отчёт. */
@@ -3336,7 +3474,7 @@ function calc(){
   var дома=rad('ws_mode')==='home';
   отв(12,'Где находится рабочее место',дома?'Дома':'Отдельное помещение','');
   if(дома){
-    отв(12,'Сколько вы платите за жильё в месяц',V('home_rent'),'₽/мес');
+    отв(12,'Сколько вы платите за жильё в месяц',homeHousing,'₽/мес');
     отв(12,'Коммунальные платежи, интернет и связь',V('home_util'),'₽/мес');
     отв(12,'Общая площадь вашего жилья',V('home_area'),'м²');
     отв(12,'Сколько метров выделено под рабочую зону',V('cab_area'),'м²');
@@ -3369,12 +3507,13 @@ function calc(){
     camWear:shotsYear>0?камАм/shotsYear:0,
     /* себестоимость и наценка */
     costHour:костHour,markup:костHour>0?rateHour/костHour-1:0,
-    rateHour:rateHour,rateZero:sh>0?Rb/sh:0,
+    rateHour:rateHour,rateZero:rateZero,
     workHours:workHours,rateWork:rateWork,rateWorkFull:rateWorkFull,vacY:vacY,
     minShootsY:minShootsY,minShootsM:minShootsM,
+    zeroShootsY:zeroShootsY,zeroShootsM:zeroShootsM,
     /* загрузка под желаемый доход при трёх ценах часа */
-    loadGoal:загрузкаЦель,loadCur:загрузкаТек,loadZero:загрузкаНоль,sAuto:sAuto,equip:equip,promoM:promoM,current:current,side:side,promo:promo,accT:accT,fmT:fmT,pool:pool,S:S,pt:pt,py:py,sh:sh,
-    post:post,core:core,clT:clT,amort:amort,vari:vari,C:C,totalExpenses:totalExpenses,Ny:Ny,R:R_,taxAll:taxAll,aq:aq,
+    loadGoal:загрузкаЦель,loadCur:загрузкаТек,loadZero:загрузкаНоль,promo:promo,accT:accT,fmT:fmT,pool:pool,S:S,pt:pt,py:py,sh:sh,
+    post:post,clT:clT,amort:amort,vari:vari,C:C,totalExpenses:totalExpenses,Ny:Ny,R:R_,taxAll:taxAll,aq:aq,
     goalFund:goalFund,goalDiscountReserve:goalDiscountReserve,
     goalSelfSiteCost:goalSelfSiteCost,goalCostsTotal:goalCostsTotal,
     goalResult:goalResult,
@@ -3593,9 +3732,83 @@ function подсветить(поле){
   try{поле.focus({preventScroll:true})}catch(e){}
 }
 function проверитьПоля(){
+  /* Желаемый доход — обязательная целая сумма. Поле не округляем и не
+     исправляем молча: показываем конкретную причину и сохраняем ввод. */
+  var доход=$('income_month');
+  if(доход){
+    var сыр=String(доход.value||'').replace(/[\s\u2009\u00a0\u202f]/g,'');
+    var минимум=Number(доход.getAttribute('min'))||10000;
+    var максимум=Number(доход.getAttribute('max'))||3000000;
+    if(!/^\d+$/.test(сыр)){
+      if(window.СЧХТост)СЧХТост('Желаемый доход укажите целым числом без копеек','ошибка');
+      подсветить(доход); return false;
+    }
+    var сумма=Number(сыр);
+    if(сумма<минимум){
+      if(window.СЧХТост)СЧХТост('Желаемый доход должен быть не меньше 10 000 ₽ в месяц','ошибка');
+      подсветить(доход); return false;
+    }
+    if(сумма>максимум){
+      if(window.СЧХТост)СЧХТост('Желаемый доход должен быть не больше 3 000 000 ₽ в месяц','ошибка');
+      подсветить(доход); return false;
+    }
+  }
+  /* Текущая ставка допускает честный ноль, но не отрицательное значение
+     и не копейки. Как и желаемый доход, введённое значение не исправляем. */
+  var ставка=$('current_rate');
+  if(ставка){
+    var сырСтавки=String(ставка.value||'').replace(/[\s\u2009\u00a0\u202f]/g,'');
+    var максимумСтавки=Number(ставка.getAttribute('max'))||1000000;
+    if(!/^\d+$/.test(сырСтавки)){
+      if(window.СЧХТост)СЧХТост('Текущую ставку укажите целым числом без копеек','ошибка');
+      подсветить(ставка); return false;
+    }
+    var суммаСтавки=Number(сырСтавки);
+    if(суммаСтавки>максимумСтавки){
+      if(window.СЧХТост)СЧХТост('Текущая ставка должна быть не больше 1 000 000 ₽ в час','ошибка');
+      подсветить(ставка); return false;
+    }
+  }
+  /* Готовые кадры — положительное целое количество от 1 до 1 000.
+     Шаг 10 помогает управлению стрелками, но не требует кратности десяти. */
+  var кадры=$('frames_out');
+  if(кадры){
+    var сырКадров=String(кадры.value||'').trim();
+    if(!/^\d+$/.test(сырКадров)){
+      if(window.СЧХТост)СЧХТост('Количество готовых кадров укажите целым числом','ошибка');
+      подсветить(кадры); return false;
+    }
+    var количествоКадров=Number(сырКадров);
+    if(количествоКадров<1){
+      if(window.СЧХТост)СЧХТост('Количество готовых кадров должно быть не меньше 1 за час','ошибка');
+      подсветить(кадры); return false;
+    }
+    if(количествоКадров>1000){
+      if(window.СЧХТост)СЧХТост('Количество готовых кадров должно быть не больше 1 000 за час. Это верхний предел для реалистичного расчёта','ошибка');
+      подсветить(кадры); return false;
+    }
+  }
+  /* Срабатывания затвора — положительное целое количество от 1 до 1 000.
+     Значение выше границы не обрезаем: объясняем предел и возвращаем к полю. */
+  var затвор=$('shutter_per_hour');
+  if(затвор){
+    var сырЗатвора=String(затвор.value||'').trim();
+    if(!/^\d+$/.test(сырЗатвора)){
+      if(window.СЧХТост)СЧХТост('Количество срабатываний затвора укажите целым числом','ошибка');
+      подсветить(затвор); return false;
+    }
+    var количествоСрабатываний=Number(сырЗатвора);
+    if(количествоСрабатываний<1){
+      if(window.СЧХТост)СЧХТост('Количество срабатываний затвора должно быть не меньше 1 за час','ошибка');
+      подсветить(затвор); return false;
+    }
+    if(количествоСрабатываний>1000){
+      if(window.СЧХТост)СЧХТост('Количество срабатываний затвора должно быть не больше 1 000 за час. Это верхний предел для реалистичного расчёта','ошибка');
+      подсветить(затвор); return false;
+    }
+  }
   var правила=[
     ['income_month', 'Укажите желаемый доход в месяц — от него считается всё остальное'],
-    ['frames_out',   'Укажите, сколько готовых кадров вы отдаёте за час съёмки'],
     ['shoot_manual', 'Укажите среднюю длительность съёмки в часах']
   ];
   for(var i=0;i<правила.length;i++){
@@ -4110,9 +4323,7 @@ function применитьСостояния(){
   var am=rad('acc_mode');
   if(am){$('acc_h_w').style.display=am==='self'?'grid':'none';
          $('acc_c_w').style.display=am==='hired'?'grid':'none'}
-  var oh=$('own_home');
-  if(oh){$('home_rent').disabled=false;
-    var on=R.querySelector('.ownnote'); if(on)on.classList.toggle('on',oh.checked)}
+  обновитьСвоёЖильё();
   зап('fund_on','fund_pct','fund_out');
   зап('fm_on','fm_pct','fm_out');
   уровни();
@@ -4229,7 +4440,7 @@ function сбросить(){
 </script>
 
 <!--ПОДЕЛИТЬСЯ-НАЧАЛО-->
-<div class="shm" id="shModal">
+<div class="shm" id="shModal" data-block-id="CALC-B038" data-block-name="Поделиться">
   <div class="shm-фон" data-шзакрыть></div>
   <div class="shm-окно" role="dialog" aria-modal="true" aria-labelledby="shmЗаголовок">
     <button class="shm-крестик" type="button" data-шзакрыть aria-label="Закрыть">×</button>
@@ -4261,7 +4472,7 @@ function сбросить(){
 <!--ПОДЕЛИТЬСЯ-КОНЕЦ-->
 
 <!--БЛАГОДАРНОСТЬ-НАЧАЛО-->
-<div class="thxm" id="thxModal">
+<div class="thxm" id="thxModal" data-block-id="CALC-B039" data-block-name="Благодарность">
   <div class="thxm-фон" data-закрыть></div>
   <div class="thxm-окно" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="thxmЗаголовок">
     <button class="thxm-крестик" type="button" data-закрыть aria-label="Закрыть">×</button>

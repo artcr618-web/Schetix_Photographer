@@ -28,7 +28,7 @@ function функция(текст, имя) {                 // вырезае�
   }
   throw new Error('не закрыта ' + имя);
 }
-const КОНСТ1 = срез(CJS, 'var FIX=', 'Q=4;');
+const КОНСТ1 = срез(CJS, 'var FIX=', 'WM=11;');
 const КОНСТ2 = срез(CJS, 'var WD=', 'DW=5;');
 const КОНСТ3 = срез(CJS, 'var ND=WD-VAC-SICK', ';');
 const КАТ    = срез(CJS, 'var CAT={', '\nvar EXC={').replace('\nvar EXC={', '');
@@ -68,6 +68,8 @@ ${КОНСТ1}
 ${КОНСТ2}
 ${КОНСТ3}
 ${КАТ}
+var CAT_OVERRIDE=${JSON.stringify(ПЕРЕОПР.CAT || {})};
+Object.keys(CAT_OVERRIDE).forEach(function(k){CAT[k]=CAT_OVERRIDE[k]});
 var ПОЛЯ=${JSON.stringify(ПОЛЯ_ВНЕШ)}, РАДИО=${JSON.stringify(РАДИО_ВНЕШ)}, EXC=${JSON.stringify(EXC_ВНЕШ)};
 var BANK_ACQ_ON = ${ПЕРЕОПР.BANK_ACQ_ON === false ? 'false' : 'true'};
 var ДОПКОМИССИИ = ${JSON.stringify(ПЕРЕОПР.допКомиссии || 0)};
