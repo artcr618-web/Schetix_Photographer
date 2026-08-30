@@ -37,8 +37,8 @@ fixed = [
     'Инструменты/проверить.py',
     'Инструменты/проверить_report_headless.js',
     'Инструменты/создать_pdf_отчёта.py',
-    'package.json',
-    'package-lock.json',
+    'Инструменты/package.json',
+    'Инструменты/package-lock.json',
     'PDF/Счётикс_основной_отчёт_демо.pdf',
     'PDF/Счётикс_справочник_демо.pdf',
     'PDF/Счётикс_детализация_демо.pdf',
@@ -111,6 +111,12 @@ manifest_bytes = MANIFEST.read_bytes()
 OUT.mkdir(parents=True, exist_ok=True)
 dated = OUT / f'Счётикс_передача_{now:%Y-%m-%d_%H-%M}.zip'
 latest = OUT / 'Счётикс_передача_АКТУАЛЬНАЯ.zip'
+
+# Передача воспроизводима, поэтому не накапливаем цепочку одинаковых ZIP:
+# оставляем один датированный снимок текущей сборки и файл АКТУАЛЬНАЯ.
+for old in OUT.glob('Счётикс_передача_20*.zip'):
+    if old != dated:
+        old.unlink()
 
 for target in (dated, latest):
     tmp = target.with_suffix('.tmp')

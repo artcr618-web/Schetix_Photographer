@@ -3,7 +3,7 @@
 const fs=require('fs'), path=require('path'), cp=require('child_process');
 let JSDOM,VirtualConsole;
 try{({JSDOM,VirtualConsole}=require('jsdom'))}catch(e){
-  console.error('Не установлен jsdom. Выполните npm ci в корне проекта.');process.exit(3);
+  console.error('Не установлен jsdom. Выполните npm ci в папке Инструменты.');process.exit(3);
 }
 const ROOT=path.resolve(process.argv[2]||path.join(__dirname,'..'));
 const REPORT=path.join(ROOT,'Веб','report.html');

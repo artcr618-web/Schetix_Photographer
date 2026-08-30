@@ -905,6 +905,9 @@ except Exception as e:
          and 'counter(page) " / " counter(pages)' in rep
          and 'textLength="74" lengthAdjust="spacingAndGlyphs"' in rep
          and 'padding:0!important;border:0!important;border-radius:0!important' in rep
+         and '.wrap{border:0!important;border-radius:0!important' in rep
+         and 'margin-bottom:4mm;border-bottom:.3mm solid #E5E7EB' in rep
+         and 'margin-top:4mm;padding-top:3mm;border-top:.3mm solid #E5E7EB' in rep
          and 'table.rt th.ш-хвост' in rep and 'table.rt td:last-child' in rep
          and 'table.rt th.ш-код' in rep and 'table.rt td.код{text-align:left!important}' in rep
          and '07.1 Показатели износа' in rep and '06.1 Показатели износа' not in rep
@@ -990,7 +993,7 @@ def детей(s):
             гл += 1
     return дети
 n = детей(rep)
-проверка("в .wp ровно 20 блоков (как ждёт собрать.py)", n == 20, f"{n}")
+проверка("в .wp ровно 20 блоков по контракту report", n == 20, f"{n}")
 report_story=['REPORT-B007','REPORT-B008','REPORT-B012','REPORT-B010','REPORT-B013','REPORT-B009','REPORT-B011','REPORT-B014','REPORT-B015']
 report_positions=[rep.find(f'data-block-id="{x}"') for x in report_story]
 проверка('report: маршрут бюджет → время → сценарии → благодарность → загрузка → скидка → налоги',
@@ -1165,7 +1168,7 @@ try:
                     формул += 1
                     if лв[c.coordinate].value is None: пусто += 1
     проверка('книга пересчитана (у формул есть значения)', пусто == 0,
-             f'{пусто} из {формул} формул без результата — см. Архив/Задачи/02_ПЕРЕСЧЁТ_КНИГИ.md')
+             f'{пусто} из {формул} формул без результата')
 
     # налоговые константы
     конст = {}
@@ -1392,13 +1395,14 @@ except Exception as e:
 
 # ══════════════════════════════ 4a. HEADLESS REPORT
 headless_js=os.path.join(КОРЕНЬ,'Инструменты','проверить_report_headless.js')
-jsdom_ok=subprocess.run(['node','-e','require.resolve("jsdom")'],cwd=КОРЕНЬ,
+node_cwd=os.path.join(КОРЕНЬ,'Инструменты')
+jsdom_ok=subprocess.run(['node','-e','require.resolve("jsdom")'],cwd=node_cwd,
                          capture_output=True,text=True).returncode==0
 if not jsdom_ok:
-    install=subprocess.run(['npm','ci','--silent'],cwd=КОРЕНЬ,capture_output=True,text=True)
+    install=subprocess.run(['npm','ci','--silent'],cwd=node_cwd,capture_output=True,text=True)
     jsdom_ok=install.returncode==0
 if jsdom_ok:
-    hp=subprocess.run(['node',headless_js,КОРЕНЬ],cwd=КОРЕНЬ,capture_output=True,text=True)
+    hp=subprocess.run(['node',headless_js,КОРЕНЬ],cwd=node_cwd,capture_output=True,text=True)
     проверка('report: постоянный headless-прогон 8 сценариев',
              hp.returncode==0 and '8 сценариев · 20 блоков · 12 таблиц · ошибок 0' in hp.stdout,
              (hp.stderr or hp.stdout).strip().split('\n')[-1][:180])
