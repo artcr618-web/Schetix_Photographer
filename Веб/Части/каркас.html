@@ -2751,6 +2751,41 @@ white-space:normal}
 break-inside:avoid;page-break-inside:avoid;margin-bottom:12px}
 #phr-root *{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
 
+@page{size:A4 landscape;margin:34mm 10mm 22mm}
+@media print{
+html,body{background:#fff!important;width:auto!important;min-width:0!important}
+#phr-root{max-width:none!important;width:auto!important;margin:0!important;font-size:10.5pt;padding:0!important}
+#phr-root .fbar,#phr-root .tbar,#phr-root .savebar,#phr-root .thxbar,#phr-root .cta.thx,#phr-root .shm,#phr-root .thxm,#phr-root .foot,.schx-тосты{display:none!important}
+#phr-root .wp{max-width:none!important;margin:0!important}
+#phr-root .card,#phr-root .hwrap,#phr-root .wnote,#phr-root .logi{box-shadow:none!important;border:1px solid var(--c-ln)!important}
+#phr-root .card{break-inside:auto!important;page-break-inside:auto!important}
+#phr-root #card01,#phr-root #card02,#phr-root #card04,#phr-root #card05,#phr-root #card06,#phr-root #card07,#phr-root #card09,#phr-root #card10,#phr-root #спрдет{break-before:page;page-break-before:always}
+#phr-root svg{max-width:100%}
+body.print-main #phr-root #спрдет>.пункт[data-верх]:first-child{display:none!important}
+body.print-glossary #phr-root .wp>*:not(#спрдет),body.print-details #phr-root .wp>*:not(#спрдет){display:none!important}
+body.print-glossary #phr-root #спрдет>.пункт[data-верх]:not(:first-child){display:none!important}
+body.print-details #phr-root #спрдет>.пункт[data-верх]:first-child{display:none!important}
+body.print-details #phr-root #спрдет>.пункт[data-верх]>.ряд,body.print-glossary #phr-root #спрдет>.пункт[data-верх]>.ряд{display:none!important}
+body.print-glossary #phr-root #спрдет,body.print-details #phr-root #спрдет{break-before:auto;page-break-before:auto}
+body.print-glossary #phr-root #спрдет .пункт.терм{break-inside:avoid;page-break-inside:avoid}
+body.print-main #phr-root #спрдет .пункт .пункт,body.print-details #phr-root #спрдет .пункт .пункт{break-inside:auto!important;page-break-inside:auto!important}
+/* Ритм печатной детализации: между соседними таблицами остаётся та же
+   спокойная отбивка, что между линией колонтитула и содержимым страницы.
+   При разрыве рамка и скругление клонируются на каждом фрагменте. */
+body.print-main #phr-root #спрдет,body.print-details #phr-root #спрдет{--w-ном:4%;--w-имя:24%;--w-знач:auto;--w-код:5%}
+body.print-main #phr-root #спрдет .пункт .пункт[data-таб],body.print-details #phr-root #спрдет .пункт .пункт[data-таб]{margin-bottom:5mm!important;padding:0!important;border:0!important;border-radius:0!important;background:transparent!important;-webkit-box-decoration-break:slice;box-decoration-break:slice}
+body.print-main #phr-root #спрдет .пункт .пункт[data-таб]>.тело,body.print-details #phr-root #спрдет .пункт .пункт[data-таб]>.тело{padding:0!important}
+/* В печати остаётся только обычная рамка самой таблицы. Обобщающая
+   карточка раздела удалена по решению владельца. */
+body.print-main #phr-root #спрдет .wrap,body.print-details #phr-root #спрдет .wrap{border-radius:14px!important;-webkit-box-decoration-break:slice;box-decoration-break:slice}
+/* Технический пустой хвост нужен экранной прокрутке, но в PDF отнимал
+   ширину у колонки «Код» и выталкивал её за правую границу раздела. */
+body.print-main #phr-root #спрдет table.rt th.ш-хвост,body.print-main #phr-root #спрдет table.rt td:last-child,
+body.print-details #phr-root #спрдет table.rt th.ш-хвост,body.print-details #phr-root #спрдет table.rt td:last-child{display:none}
+body.print-main #phr-root #спрдет table.rt th.ш-код,body.print-main #phr-root #спрдет table.rt td.код,
+body.print-details #phr-root #спрдет table.rt th.ш-код,body.print-details #phr-root #спрдет table.rt td.код{text-align:left!important}
+}
+
 
 /* ═══════════ ПЛАШКА-УВЕДОМЛЕНИЕ ═══════════
    Общий механизм коротких сообщений: «ссылка скопирована», ошибки,
@@ -3567,7 +3602,7 @@ var LB=['\u041a\u0430\u043a \u0444\u043e\u0442\u043e\u0433\u0440\u0430\u0444 \u2
    пересобирается скриптом части/демо.py. Показывается только по ?demo=1 —
    без расчёта отчёт предлагает заполнить анкету, а не подсовывает чужие числа. */
 var DEMO={
-answers:[{"b": 1, "n": "Желаемый доход", "v": 110216, "u": "₽/мес"}, {"b": 2, "n": "Налоговый режим", "v": "Самозанятый (НПД) — 5%, смешанные заказчики", "u": ""}, {"b": 2, "n": "С кем вы чаще работаете", "v": "И с частными лицами, и с компаниями", "u": ""}, {"b": 3, "n": "Текущая ставка", "v": 6000, "u": "₽/ч"}, {"b": 4, "n": "Готовых кадров за 1 час", "v": 80, "u": "шт"}, {"b": 4, "n": "Срабатываний затвора за 1 час", "v": 350, "u": "шт"}, {"b": 4, "n": "Ресурс затвора", "v": 300000, "u": "шт"}, {"b": 5, "n": "Минимальный заказ", "v": 1, "u": "ч"}, {"b": 6, "n": "Время на постпродакшн", "v": 3, "u": "× ч"}, {"b": 7, "n": "Проектная работа с клиентами", "v": 1, "u": "ч"}, {"b": 8, "n": "Поиск заказов", "v": 2, "u": "ч/день"}, {"b": 12, "n": "Где находится рабочее место", "v": "Дома", "u": ""}, {"b": 12, "n": "Сколько вы платите за жильё в месяц", "v": 40000, "u": "₽/мес"}, {"b": 12, "n": "Коммунальные платежи, интернет и связь", "v": 7000, "u": "₽/мес"}, {"b": 12, "n": "Общая площадь вашего жилья", "v": 50, "u": "м²"}, {"b": 12, "n": "Сколько метров выделено под рабочую зону", "v": 6, "u": "м²"}, {"b": 13, "n": "За сколько лет окупить вложения в обучение", "v": 7, "u": "лет"}, {"b": 14, "n": "Кто делал сайт", "v": "Заказывал у специалистов", "u": ""}, {"b": 14, "n": "Сколько вы заплатили за создание сайта", "v": 70000, "u": "₽"}, {"b": 14, "n": "Сколько времени вы потратили на создание сайта", "v": 80, "u": "ч"}, {"b": 14, "n": "За сколько лет окупить вложения в сайт", "v": 7, "u": "лет"}, {"b": 16, "n": "Эквайринг", "v": 2.7, "u": "%"}, {"b": 16, "n": "Доля безналичных платежей", "v": 100, "u": "%"}, {"b": 17, "n": "Кто ведёт учёт", "v": "Веду сам", "u": ""}, {"b": 17, "n": "Сколько часов в квартал уходит на отчётность", "v": 3, "u": "ч"}, {"b": 18, "n": "Резерв времени на простой и форс-мажоры", "v": null, "u": "%"}, {"b": 19, "n": "Фонд развития", "v": null, "u": "%"}, {"b": 20, "n": "Запас на скидку", "v": null, "u": "%"}],
+answers:[{"b": 1, "n": "Желаемый доход", "v": 110216, "u": "₽/мес"}, {"b": 2, "n": "Налоговый режим", "v": "Самозанятый (НПД) — 5%, смешанные заказчики", "u": ""}, {"b": 2, "n": "С кем вы чаще работаете", "v": "И с частными лицами, и с компаниями", "u": ""}, {"b": 3, "n": "Текущая ставка", "v": 6000, "u": "₽/ч"}, {"b": 4, "n": "Готовых кадров за 1 час", "v": 80, "u": "шт"}, {"b": 4, "n": "Срабатываний затвора за 1 час", "v": 350, "u": "шт"}, {"b": 4, "n": "Ресурс затвора", "v": 300000, "u": "шт"}, {"b": 5, "n": "Минимальный заказ", "v": 1, "u": "ч"}, {"b": 6, "n": "Время на постпродакшн", "v": 3, "u": "× ч"}, {"b": 7, "n": "Проектная работа с клиентами", "v": 1, "u": "ч"}, {"b": 8, "n": "Поиск заказов", "v": 2, "u": "ч/день"}, {"b": 12, "n": "Где находится рабочее место", "v": "Дома", "u": ""}, {"b": 12, "n": "Сколько вы платите за жильё в месяц", "v": 40000, "u": "₽/мес"}, {"b": 12, "n": "Коммунальные платежи, интернет и связь", "v": 7000, "u": "₽/мес"}, {"b": 12, "n": "Общая площадь вашего жилья", "v": 50, "u": "м²"}, {"b": 12, "n": "Сколько метров выделено под рабочую зону", "v": 6, "u": "м²"}, {"b": 13, "n": "За сколько лет окупить вложения в обучение", "v": 7, "u": "лет"}, {"b": 14, "n": "Кто делал сайт", "v": "Заказывал у специалистов", "u": ""}, {"b": 14, "n": "Сколько вы заплатили за создание сайта", "v": 70000, "u": "₽"}, {"b": 14, "n": "За сколько лет окупить вложения в сайт", "v": 7, "u": "лет"}, {"b": 16, "n": "Эквайринг", "v": 2.7, "u": "%"}, {"b": 16, "n": "Доля безналичных платежей", "v": 100, "u": "%"}, {"b": 17, "n": "Кто ведёт учёт", "v": "Веду сам", "u": ""}, {"b": 17, "n": "Сколько часов в квартал уходит на отчётность", "v": 3, "u": "ч"}],
 catalog:[{"b": 9, "n": "Canon EOS R6 Mark II Body", "price": 166999, "term": 3, "kind": "life"}, {"b": 9, "n": "Canon RF 24–105mm f/4.0 L IS USM", "price": 130999, "term": 5, "kind": "life"}, {"b": 9, "n": "Godox V1Pro C", "price": 36990, "term": 5, "kind": "life"}, {"b": 9, "n": "Godox XPro II C", "price": 9355, "term": 5, "kind": "life"}, {"b": 9, "n": "Аккумулятор LP-E6NH", "price": 12978, "term": 3, "kind": "life"}, {"b": 9, "n": "SanDisk Extreme PRO 256 ГБ #1", "price": 6990, "term": 2, "kind": "life"}, {"b": 9, "n": "SanDisk Extreme PRO 256 ГБ #2", "price": 6990, "term": 2, "kind": "life"}, {"b": 9, "n": "Рюкзак Lowepro ProTactic", "price": 27962, "term": 7, "kind": "life"}, {"b": 9, "n": "Godox RFT-05 отражатель", "price": 3000, "term": 5, "kind": "life"}, {"b": 9, "n": "X-Rite ColorChecker", "price": 5000, "term": 7, "kind": "life"}, {"b": 10, "n": "Системный блок", "price": 180000, "term": 5, "kind": "life"}, {"b": 10, "n": "Монитор ASUS ProArt", "price": 55000, "term": 5, "kind": "life"}, {"b": 10, "n": "Calibrite ColorChecker", "price": 30000, "term": 5, "kind": "life"}, {"b": 10, "n": "Колонки Logitech Z207", "price": 5000, "term": 5, "kind": "life"}, {"b": 10, "n": "Клавиатура Logitech K380", "price": 3500, "term": 7, "kind": "life"}, {"b": 10, "n": "Мышь Logitech M650", "price": 4000, "term": 3, "kind": "life"}, {"b": 10, "n": "Веб-камера Logitech Brio", "price": 15999, "term": 5, "kind": "life"}, {"b": 10, "n": "Микрофон FIFINE K669B", "price": 3500, "term": 5, "kind": "life"}, {"b": 10, "n": "Принтер Canon PIXMA G640", "price": 29999, "term": 5, "kind": "life"}, {"b": 11, "n": "Adobe CC Photography", "price": 2000, "term": 12, "kind": "per"}, {"b": 11, "n": "Яндекс Диск 1 ТБ", "price": 250, "term": 12, "kind": "per"}, {"b": 11, "n": "Retouch4me Heal", "price": 6900, "term": 3, "kind": "life"}, {"b": 11, "n": "Retouch4me Dodge & Burn", "price": 6900, "term": 3, "kind": "life"}, {"b": 11, "n": "Retouch4me Fabric", "price": 6900, "term": 3, "kind": "life"}, {"b": 11, "n": "Retouch4me Clean Backdrop", "price": 6900, "term": 3, "kind": "life"}, {"b": 11, "n": "Retouch4me Dust", "price": 6900, "term": 3, "kind": "life"}, {"b": 12, "n": "Мебель", "price": 35000, "term": 7, "kind": "life"}, {"b": 12, "n": "Косметический ремонт", "price": 30000, "term": 7, "kind": "life"}, {"b": 13, "n": 4, "price": 80000, "term": 4, "kind": "months"}, {"b": 15, "n": "Домен сайта", "price": 1500, "term": 1, "kind": "per"}, {"b": 15, "n": "Хостинг сайта", "price": 6000, "term": 1, "kind": "per"}, {"b": 15, "n": "Яндекс Директ", "price": 15000, "term": 12, "kind": "per"}, {"b": 15, "n": "Авито", "price": 0, "term": 12, "kind": "per"}, {"b": 15, "n": "Таргетированная реклама", "price": 0, "term": 12, "kind": "per"}, {"b": 15, "n": "Размещения у блогеров", "price": 0, "term": 12, "kind": "per"}, {"b": 15, "n": "Отклики на Profi.ru", "price": 0, "term": 12, "kind": "per"}, {"b": 16, "n": "Обслуживание счёта (РКО)", "price": 0, "term": 12, "kind": "per"}, {"b": 16, "n": "СМС-уведомления", "price": 150, "term": 12, "kind": "per"}],
 frames:80,NT:1533,idle:219,pool:1083,calDays:365,weekend:104,holidays:14,WD:247,VAC:20,SICK:8,ND:219,EFF:7,shutterPerHour:350,
 shutterLife:300000,shotsYear:75810,camName:'Canon EOS R6 Mark II Body',camPrice:166999,camLife:3,camAmort:55666.33333,camWear:0.73429,
@@ -3794,6 +3829,54 @@ var WK_sh='#6FD183',WK_po='#D8EEDF',WK_cl='#FEF3D6',WK_pr='#FCE7F3',
     WK_ac='#FDE8E8',WK_fm='#E5E7EB',WK_id='#F5F6F8';
 function render(){
   var rate=d.R/d.sh;
+  function установитьПечатнуюШапку(mode){
+    var названия={main:['Персональный отчёт','Расчёт юнит-экономики фотографа'],details:['Подробная детализация','Расчёт юнит-экономики фотографа'],glossary:['Справочник','Понятия расчёта юнит-экономики фотографа']};
+    var тек=названия[mode]||названия.main;
+    var печДата=new Date().toLocaleDateString('ru-RU');
+    var доход=f0(d.Ny/12)+'/мес',ставка=f0(d.rateHour||rate)+'/ч';
+    function xml(x){return String(x).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+    function b64(x){return btoa(unescape(encodeURIComponent(x)))}
+    /* Вся паспортная часть стоит единым левым блоком: сначала название
+       документа и пояснение, ниже — исходный доход, рассчитанная ставка
+       часа и дата. SVG нужен, чтобы сохранить иерархию кеглей внутри
+       настоящего margin box, не возвращая перекрывающий fixed-HTML. */
+    var стильВерха='<style>text{font-family:Arial,sans-serif;fill:#1A1A1A}.h{font-size:18px;font-weight:700}.s{font-size:12px;fill:#4B5563}.m{font-size:11px;fill:#374151}.v{font-weight:700;fill:#1A1A1A}</style>';
+    var верхКороткий='<svg xmlns="http://www.w3.org/2000/svg" width="105mm" height="29mm" viewBox="0 0 718 112" preserveAspectRatio="xMinYMin meet">'+стильВерха+
+      '<text class="h" x="0" y="58">'+xml(тек[0])+'</text>'+
+      '<text class="s" x="0" y="77">'+xml(тек[1])+'</text>'+
+      '<text class="m" x="0" y="98">Дата расчёта  <tspan class="v">'+xml(печДата)+'</tspan></text></svg>';
+    var верхПолный='<svg xmlns="http://www.w3.org/2000/svg" width="105mm" height="29mm" viewBox="0 0 718 112" preserveAspectRatio="xMinYMin meet">'+стильВерха+
+      '<text class="h" x="0" y="58">'+xml(тек[0])+'</text>'+
+      '<text class="s" x="0" y="78">'+xml(тек[1])+'</text>'+
+      '<text class="m" x="0" y="92">Желаемый доход  <tspan class="v">'+xml(доход)+'</tspan></text>'+
+      '<text class="m" x="220" y="92">Ставка часа  <tspan class="v">'+xml(ставка)+'</tspan></text>'+
+      '<text class="m" x="0" y="108">Дата расчёта  <tspan class="v">'+xml(печДата)+'</tspan></text></svg>';
+    /* Фирменный блок повторяет полный логотип интерфейса: графический
+       знак, название и подпись «твоя юнит-экономика». */
+    var низ='<svg xmlns="http://www.w3.org/2000/svg" width="46mm" height="9mm" viewBox="0 0 190 38" preserveAspectRatio="xMinYMin meet">'+
+      '<rect x="10.95" y="2.09" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 7.14)" fill="#B6BCC4"/>'+
+      '<rect x="19.81" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 24.86 16)" fill="#21A038"/>'+
+      '<rect x="10.95" y="19.81" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 24.86)" fill="#B6BCC4"/>'+
+      '<rect x="2.09" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 7.14 16)" fill="#B6BCC4"/>'+
+      '<text x="40" y="17" textLength="74" lengthAdjust="spacingAndGlyphs" font-family="Arial,sans-serif" font-size="15" font-weight="700" fill="#1A1A1A">счётикс</text>'+
+      '<text x="40" y="31" textLength="74" lengthAdjust="spacingAndGlyphs" font-family="Arial,sans-serif" font-size="8" fill="#6B7280">твоя юнит-экономика</text></svg>';
+    var style=$('printPageStyle');if(!style){style=document.createElement('style');style.id='printPageStyle';document.head.appendChild(style)}
+    /* Колонтитулы передаются как содержимое margin boxes, а не как фон.
+       Поэтому браузер печатает их и при выключенной опции «Фоновая графика». */
+    var верхКороткийURL='url(data:image/svg+xml;base64,'+b64(верхКороткий)+')';
+    var верхПолныйURL='url(data:image/svg+xml;base64,'+b64(верхПолный)+')';
+    var низURL='url(data:image/svg+xml;base64,'+b64(низ)+')';
+    style.textContent='@page{size:A4 landscape;margin:34mm 10mm 22mm;'+
+      '@top-left{content:'+верхКороткийURL+';text-align:left;vertical-align:bottom;padding-bottom:4mm;border-bottom:.3mm solid #E5E7EB;}'+
+      '@top-center{content:"";border-bottom:.3mm solid #E5E7EB;}'+
+      '@top-right{content:counter(page) " / " counter(pages);text-align:right;vertical-align:bottom;padding-bottom:5mm;border-bottom:.3mm solid #E5E7EB;font:600 8.5pt/1.2 Arial,sans-serif;color:#6B7280;}'+
+      '@bottom-left{content:'+низURL+';text-align:left;vertical-align:top;padding-top:4mm;border-top:.3mm solid #E5E7EB;}'+
+      '@bottom-center{content:"";border-top:.3mm solid #E5E7EB;}'+
+      '@bottom-right{content:"schetiks.ru";text-align:right;vertical-align:top;padding-top:7mm;border-top:.3mm solid #E5E7EB;font:600 8.5pt/1.2 Arial,sans-serif;color:#158026;}'+
+      '}@page:first{@top-left{content:'+верхПолныйURL+';}}';
+  }
+  window.PHR_SET_PRINT_META=установитьПечатнуюШапку;
+  установитьПечатнуюШапку((location.search.match(/[?&]print=(main|glossary|details)/)||[])[1]||'main');
   var base0=d.workHours||(d.NT+d.idle), hr0=d.rateWork||(base0>0?(d.Ny*11/12)/base0:0);
   /* ВСЕ денежные расходы за год — сумма разбивки, а не equip+promoM.
      equip покрывает только технику и ПО, promoM — рекламу и сайт; аренда,
@@ -3853,8 +3936,7 @@ function render(){
     ['dlBtn','dlBtn2'].forEach(function(id){
       var b=$(id); if(!b)return;
       b.onclick=function(){
-        try{document.title=window.PHR_FILENAME()}catch(e){}
-        window.print();
+        if(window.PHR_PRINT)window.PHR_PRINT('main');else window.print();
       };
     });
 
@@ -5525,20 +5607,20 @@ var СПР_НОМЕР = {};
   var затвСъём = d.shutterPerHour * d.S, затвГод = d.shotsYear;
   var кадрСъём = d.frames * d.S, кадрГод = d.frames * sh, камАм = d.camAmort;
   var t06 =
-    '<h3>06.1 Показатели износа</h3>' +
+    '<h3>07.1 Показатели износа</h3>' +
     T(['/съёмка','/мес','/год'], [
       ['Р','Срабатываний затвора', шт(затвСъём), шт(затвГод/MO), шт(затвГод)],
       ['Р','Выработка ресурса', пр(затвСъём/d.shutterLife, 3), пр(затвГод/MO/d.shutterLife),
        пр(затвГод/d.shutterLife)],
       ['Р','Износ камеры', р(d.camWear*затвСъём), р(камАм/MO), р(камАм)]
     ], {спр:1, связь:СВЯЗЬ_06}) +
-    '<h3>06.2 Показатели износа</h3>' +
+    '<h3>07.2 Показатели износа</h3>' +
     T(['Значение'], [
       ['Р','Срабатываний / 1 готовый кадр', шт(затвСъём/кадрСъём, 1)],
       ['Р','Стоимость / 1 срабатывание', ед(d.camWear, '\u20bd', 2)],
       ['Р','Срок службы при текущих условиях', лет(d.shutterLife/затвГод)]
     ], {спр:1, связь:СВЯЗЬ_06}) +
-    '<h3>06.3 Износ за срок службы</h3>' +
+    '<h3>07.3 Износ за срок службы</h3>' +
     T(['Значение'], [
       ['Р','Съёмок', шт(py*d.camLife, 1)],
       ['Р','Срабатываний затвора', шт(затвГод*d.camLife)],
@@ -5687,7 +5769,11 @@ var СПР_НОМЕР = {};
     });
   });
   корень.querySelectorAll('.печать').forEach(function(к){
-    к.addEventListener('click', function(){ window.print() });
+    к.addEventListener('click', function(){
+      var верхний=к.closest('.пункт[data-верх]');
+      var режим=верхний&&верхний.querySelector('[data-терм]')?'glossary':'details';
+      if(window.PHR_PRINT)window.PHR_PRINT(режим);else window.print();
+    });
   });
   корень.addEventListener('click', function(с){
     var a = с.target.closest && с.target.closest('a.спр');
@@ -5818,6 +5904,19 @@ var СПР_НОМЕР = {};
   });
 })();
 
+/* З-016 · режим печати задаётся до window.print и снимается afterprint. */
+(function(){
+  var классы=['print-main','print-glossary','print-details'];
+  function очистить(){классы.forEach(function(c){document.body.classList.remove(c)})}
+  window.PHR_PRINT=function(mode){
+    очистить();mode=mode||'main';document.body.classList.add('print-'+mode);if(window.PHR_SET_PRINT_META)window.PHR_SET_PRINT_META(mode);
+    try{document.title=window.PHR_FILENAME?window.PHR_FILENAME():document.title}catch(e){}
+    window.print();
+  };
+  window.PHR_PRINT_CLEANUP=очистить;
+  var авто=(location.search.match(/[?&]print=(main|glossary|details)/)||[])[1];
+  if(авто){очистить();document.body.classList.add('print-'+авто)}
+})();
 /* ===== ИМЯ ФАЙЛА ПРИ ПЕЧАТИ И СОХРАНЕНИИ В PDF =====
    Браузер берёт имя из <title>. Подставляем «2026-08-05 Счётикс для фотографа»
    на время печати и возвращаем прежний заголовок после. */
@@ -5829,15 +5928,13 @@ var СПР_НОМЕР = {};
     return t.getFullYear()+'-'+p(t.getMonth()+1)+'-'+p(t.getDate());
   }
   function fname(){
-    /* Дата и время составления прямо в имени файла: у человека может
-       накопиться несколько расчётов, и по имени видно, какой свежее. */
     var t=new Date(), p=function(n){return ('0'+n).slice(-2)};
-    var время=p(t.getHours())+'-'+p(t.getMinutes());
-    return stamp()+' '+время+' \u0421\u0447\u0451\u0442\u0438\u043a\u0441 \u0434\u043b\u044f '+PROF;
+    var дата=p(t.getDate())+'.'+p(t.getMonth()+1)+'.'+t.getFullYear();
+    return 'Расчёт от '+дата+' · Юнит-экономика для фотографов · Счётикс';
   }
   var prev=null;
   function before(){ prev=document.title; document.title=fname(); }
-  function after(){ if(prev!==null){document.title=prev; prev=null;} }
+  function after(){ if(prev!==null){document.title=prev; prev=null;} if(window.PHR_PRINT_CLEANUP)window.PHR_PRINT_CLEANUP(); }
   if(window.matchMedia){
     var mq=window.matchMedia('print');
     var h=function(e){ e.matches?before():after() };
@@ -5905,7 +6002,7 @@ var СПР_НОМЕР = {};
   },{threshold:.18,rootMargin:'0px 0px -8% 0px'});
   цели.forEach(function(e){наб.observe(e)});
 })();
-var _p=$('dlpdf'); if(_p)_p.onclick=function(){try{document.title=window.PHR_FILENAME()}catch(e){}window.print()};
+var _p=$('dlpdf'); if(_p)_p.onclick=function(){if(window.PHR_PRINT)window.PHR_PRINT('main');else window.print()};
 })();
 </script>
 <script>

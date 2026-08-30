@@ -9,6 +9,7 @@ from pathlib import Path
 import subprocess,sys
 ROOT=Path(__file__).resolve().parents[1]
 scripts=[
+ 'справочник_в_отчёт.py',
  'мигрировать_каталоги_в_чистую.py',
  'собрать_интерфейс.py',
  'собрать_тексты.py',

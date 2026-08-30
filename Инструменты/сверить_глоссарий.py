@@ -48,16 +48,14 @@ def текст(значение):
 
 
 def загрузить_справочник(корень):
-    путь = корень / 'Инструменты' / 'таблицы_прототип.py'
-    spec = importlib.util.spec_from_file_location('таблицы_прототип', путь)
-    модуль = importlib.util.module_from_spec(spec)
-    # Генератор при импорте печатает служебное «ok»; сверке оно не относится.
-    with redirect_stdout(io.StringIO()):
-        try:
-            spec.loader.exec_module(модуль)
-        except SystemExit:
-            pass
-    return модуль.СПРАВОЧНИК
+    """Читает фактически опубликованный массив СПР из report.html."""
+    import json
+    путь = корень / 'Веб' / 'report.html'
+    содержимое = путь.read_text(encoding='utf-8')
+    найдено = re.search(r'var СПР = (\[.*?\]);\n', содержимое, re.S)
+    if not найдено:
+        raise SystemExit(f'В отчёте не найден опубликованный массив СПР: {путь}')
+    return dict(json.loads(найдено.group(1)))
 
 
 def строки_глоссария(лист):

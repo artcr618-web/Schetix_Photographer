@@ -4,7 +4,7 @@
 Запускать после любой правки:  python3 проверить.py [корень]
 Численные проверки выполняют НАСТОЯЩИЙ код calc()/parts(), вырезанный из HTML.
 Код возврата: 0 — всё чисто, 1 — есть падения."""
-import json, subprocess, sys, os, re, io, collections, math
+import json, subprocess, sys, os, re, io, collections, math, zipfile
 
 КОРЕНЬ = sys.argv[1] if len(sys.argv) > 1 else '/home/user/schetix'
 ЗДЕСЬ  = os.path.dirname(os.path.abspath(__file__))
@@ -219,15 +219,97 @@ for имя, параметры in текущие_ветки:
     d = расчёт(**параметры)
     проверка(f'текущий сценарий сходится · {имя}', текущий_сходится(d))
 
+# Исключённые временные блоки не передают сырые ответы в report.
+d = расчёт(EXC_ВНЕШ={'FormClientTime':True})
+проверка('время · исключённая Проектная работа с клиентами не передаёт ответ',
+         d['cl'] == 0 and d['clT'] == 0
+         and not any(x['n']=='Проектная работа с клиентами' for x in d['answers']))
+d = расчёт(EXC_ВНЕШ={'FormPromoTime':True})
+проверка('время · исключённый Поиск заказов не передаёт сырой ответ',
+         d['promo'] == 0
+         and not any(x['n']=='Поиск заказов' for x in d['answers']))
 # Отключённый параметр остаётся в контракте, но даёт нулевой вклад.
+d = расчёт(поля={'regime':'usn6','npd_who':'jur'})
+проверка('налоги · УСН не передаёт сохранённый тип заказчиков НПД',
+         any(x['n']=='Налоговый режим' for x in d['answers'])
+         and not any(x['n']=='С кем вы чаще работаете' for x in d['answers']))
+d = расчёт(поля={'regime':'npd','npd_who':'jur'})
+проверка('налоги · активная ветка НПД передаёт тип заказчиков',
+         any(x['n']=='С кем вы чаще работаете' for x in d['answers']))
 d = расчёт(поля={'tax_off': True})
+налоговые_ответы={x['n']:x['v'] for x in d['answers'] if x['b']==2}
+проверка('налоги · исключённый блок явно сообщает «Не учитывается» без типа заказчиков',
+         налоговые_ответы.get('Налоговый режим')=='Не учитывается'
+         and 'С кем вы чаще работаете' not in налоговые_ответы
+         and d['taxAll']==0 and d['taxC']==0 and d['taxB']==0)
 проверка('эффективный ноль · отключённый налог', d['taxC'] == 0)
+d = расчёт(поля={'fm_on':False,'fund_on':False,'disc_on':False})
+имена_прямых={x['n'] for x in d['answers']}
+проверка('прямые галочки · выключенные параметры не передают ответы',
+         not ({'Резерв времени на простой и форс-мажоры','Фонд развития','Запас на скидку'} & имена_прямых)
+         and d['fmT']==0 and d['fundP']==0 and d['discP']==0)
+d = расчёт(поля={'fm_on':True,'fm_pct':'0','fund_on':True,'fund_pct':'0',
+                 'disc_on':True,'disc_pct':'15'})
+ответы_прямых={x['n']:x['v'] for x in d['answers']}
+проверка('прямые галочки · включённые параметры передают выбранный процент, включая 0',
+         ответы_прямых.get('Резерв времени на простой и форс-мажоры')==0
+         and ответы_прямых.get('Фонд развития')==0
+         and ответы_прямых.get('Запас на скидку')==15)
 d = расчёт(поля={'fund_on': False, 'disc_on': False})
 проверка('эффективный ноль · выключенные фонды',
          d['currentFund'] == 0 and d['currentDiscountReserve'] == 0)
 d = расчёт(радио={'site_mode': 'hired'})
 проверка('эффективный ноль · неактивная ветка собственного сайта',
          d['currentSelfSiteCost'] == 0)
+d = расчёт(EXC_ВНЕШ={'Form011':True})
+проверка('учёт · исключённый блок не передаёт способ, часы и стоимость',
+         d['accT']==0 and d['varAcc']==0
+         and not any(x['b']==17 for x in d['answers']))
+d = расчёт(радио={'acc_mode':'self'})
+имена_учёта={x['n'] for x in d['answers'] if x['b']==17}
+проверка('учёт · самостоятельная ветка не передаёт стоимость специалиста',
+         'Кто ведёт учёт' in имена_учёта
+         and 'Сколько часов в квартал уходит на отчётность' in имена_учёта
+         and 'Сколько стоит ведение учёта' not in имена_учёта)
+d = расчёт(радио={'acc_mode':'hired'})
+имена_учёта={x['n'] for x in d['answers'] if x['b']==17}
+проверка('учёт · наёмная ветка не передаёт сырые самостоятельные часы',
+         'Кто ведёт учёт' in имена_учёта
+         and 'Сколько стоит ведение учёта' in имена_учёта
+         and 'Сколько часов в квартал уходит на отчётность' not in имена_учёта)
+d = расчёт(EXC_ВНЕШ={'Form015b':True})
+проверка('банк · исключённый блок не передаёт платежи, Эквайринг и долю',
+         d['aq'] == 0 and d['aqC'] == 0
+         and not any(x['b']==16 for x in d['answers'])
+         and not any(x['b']==16 for x in d['catalog']))
+d = расчёт(BANK_ACQ_ON=False)
+проверка('банк · удалённый Эквайринг не передаёт ставку и долю',
+         not any(x['n'] in {'Эквайринг','Доля безналичных платежей'} for x in d['answers']))
+d = расчёт(допКомиссии=[['Комиссия за перевод',3.5],['',2],['Нулевая комиссия',0]])
+банковские_ответы={x['n']:x['v'] for x in d['answers'] if x['b']==16}
+проверка('банк · названные дополнительные комиссии передаются, пустая строка нет',
+         банковские_ответы.get('Комиссия за перевод')==3.5
+         and банковские_ответы.get('Нулевая комиссия')==0
+         and '' not in банковские_ответы)
+d = расчёт(EXC_ВНЕШ={'Form015b':True}, допКомиссии=[['Комиссия за перевод',3.5]])
+проверка('банк · дополнительные комиссии исключённого блока не передаются',
+         d['aq']==0 and not any(x['n']=='Комиссия за перевод' for x in d['answers']))
+d = расчёт(EXC_ВНЕШ={'Form009b':True})
+проверка('рабочее место · исключённый блок не передаёт пользовательские ответы',
+         not any(x['b']==12 for x in d['answers'])
+         and not any(x['b']==12 for x in d['catalog']))
+d = расчёт(радио={'ws_mode':'office'})
+имена_рабочего={x['n'] for x in d['answers'] if x['b']==12}
+проверка('рабочее место · report получает только выбранную ветку отдельного помещения',
+         {'Где находится рабочее место','Аренда помещения','Коммунальные платежи, интернет и связь'} <= имена_рабочего
+         and 'Сколько вы платите за жильё в месяц' not in имена_рабочего
+         and 'Общая площадь вашего жилья' not in имена_рабочего)
+d = расчёт(удалены=['home_util','cab_area'])
+имена_рабочего={x['n'] for x in d['answers'] if x['b']==12}
+проверка('рабочее место · удалённые домашние строки не передаются в report',
+         'Коммунальные платежи, интернет и связь' not in имена_рабочего
+         and 'Сколько метров выделено под рабочую зону' not in имена_рабочего
+         and 'Общая площадь вашего жилья' in имена_рабочего)
 d = расчёт(поля={'own_home': True})
 ответ_жильё = next((x['v'] for x in d['answers'] if x['n'] == 'Сколько вы платите за жильё в месяц'), None)
 проверка('рабочее место · собственное жильё: аренда или ипотека получает эффективный ноль',
@@ -245,20 +327,49 @@ d = расчёт(CAT={'Form006': {'k':'months','rows':[['Курс 1',80000,4],['
 проверка('обучение · несколько курсов: стоимость и периоды без дохода суммируются',
          abs(d['eduY']-ожид_обучение) < 0.01 and abs(d['depEdu']-ожид_обучение) < 0.01,
          f"{d['eduY']:,.2f} ₽/год")
+# Исключённые каталоги не должны оставаться сырыми строками в report.
+for имя_блока, exc, номера in (
+    ('Съёмочное оборудование', {'Form001':True}, {9}),
+    ('Офисное оборудование', {'Form002':True}, {10}),
+    ('Программное обеспечение', {'Form008b':True}, {11}),
+    ('Обустройство рабочего места', {'Form009b':True}, {12}),
+    ('Обучение', {'Form006':True}, {13}),
+    ('Реклама', {'Form010':True}, {15}),
+    ('Регулярные банковские платежи', {'Form015b':True}, {16}),
+):
+    x=расчёт(EXC_ВНЕШ=exc)
+    проверка(f'каталог · исключённый блок не передаёт позиции · {имя_блока}',
+             not any(p['b'] in номера for p in x['catalog']))
 d = расчёт(EXC_ВНЕШ={'Form006': True})
+проверка('обучение · исключённый блок не передаёт срок окупаемости',
+         not any(x['n']=='За сколько лет окупить вложения в обучение' for x in d['answers'])
+         and not any(x['b']==13 for x in d['catalog']))
 проверка('обучение · исключённый блок получает эффективный ноль',
          d['eduY'] == 0 and d['depEdu'] == 0)
 d = расчёт(поля={'edu_life':'0'})
 проверка('обучение · нулевой срок не вызывает деление на ноль', d['eduY'] == 0)
 d = расчёт(радио={'site_mode':'hired'})
+имена_ответов={x['n'] for x in d['answers']}
+проверка('сайт · ответы подрядчика не содержат сырое время самостоятельной ветки',
+         'Сколько вы заплатили за создание сайта' in имена_ответов
+         and 'Сколько времени вы потратили на создание сайта' not in имена_ответов)
 проверка('сайт · подрядчик: стоимость распределяется, Инвестиционное время равно нулю',
          abs(d['siteY']-10000) < 0.01 and d['goalSelfSiteCost'] == 0)
 d = расчёт(радио={'site_mode':'self'})
+имена_ответов={x['n'] for x in d['answers']}
+проверка('сайт · самостоятельная ветка не содержит сырую стоимость подрядчика',
+         'Сколько времени вы потратили на создание сайта' in имена_ответов
+         and 'Сколько вы заплатили за создание сайта' not in имена_ответов)
 ожид_сайт = d['R']*80/(7*d['NT'])
 проверка('сайт · самостоятельно: деньги равны нулю, Инвестиционное время компенсируется',
          d['siteY'] == 0 and abs(d['goalSelfSiteCost']-ожид_сайт) < 0.01,
          f"{d['goalSelfSiteCost']:,.2f} ₽/год")
 d = расчёт(EXC_ВНЕШ={'Form014': True})
+имена_ответов={x['n'] for x in d['answers']}
+проверка('сайт · исключённый блок не передаёт пользовательские ответы',
+         not ({'Кто делал сайт','Сколько вы заплатили за создание сайта',
+               'Сколько времени вы потратили на создание сайта',
+               'За сколько лет окупить вложения в сайт'} & имена_ответов))
 проверка('сайт · исключённый блок: деньги и Инвестиционное время получают ноль',
          d['siteY'] == 0 and d['goalSelfSiteCost'] == 0)
 d = расчёт(поля={'site_life':'0'}, радио={'site_mode':'self'})
@@ -486,7 +597,7 @@ shutter_per_hour_tag=re.search(r'<input[^>]*id="shutter_per_hour"[^>]*>',calc)
          and "var максимумСрока=f==='Form004'?10:30" in calc
          and "категорияСрока?' data-limit-live data-integer min=\"1\" max=\"'+максимумСрока+'\" step=\"1\"" in calc
          and 'Установлен минимум — 1 год службы' in calc
-         and "class=\"c3\"'+пределСрока" in calc)
+         and "class=\"c3\"'+пределСрока+пределМесяцев" in calc)
 проверка('Form004: срок службы Купленной программы 1–10 лет, целые годы, шаг 1',
          "f==='Form004'?'купленной программы'" in calc
          and "f==='Form004'?10:30" in calc
@@ -495,15 +606,20 @@ shutter_per_hour_tag=re.search(r'<input[^>]*id="shutter_per_hour"[^>]*>',calc)
          "f==='Form013'?'обустройства рабочего места'" in calc
          and "var максимумСрока=f==='Form004'?10:30" in calc
          and "Установлен максимум — '+максимумСрока+' лет службы" in calc)
+проверка('Form006: период обучения 0–60 месяцев, целые месяцы, шаг 1',
+         "var пределМесяцев=f==='Form006'?' data-limit-live data-integer min=\"0\" max=\"60\" step=\"1\"" in calc
+         and 'Установлен минимум — 0 месяцев обучения' in calc
+         and 'Установлен максимум — 60 месяцев обучения' in calc
+         and "пределСрока+пределМесяцев" in calc)
 проверка('Form001 и Form002: стоимость позиции 0–10 000 000 ₽, целые рубли, шаг 100',
          "f==='Form001'?'одну позицию съёмочного оборудования':(f==='Form002'?'одну позицию офисного оборудования'" in calc
-         and "var максимумСтоимости=(f==='Form003'||f==='Form004')?100000:(f==='Form013'?500000:10000000)" in calc
+         and "var максимумСтоимости=(f==='Form003'||f==='Form004'||f==='Form007')?100000:(f==='Form013'?500000:((f==='Form006'||f==='Form010')?1000000:10000000))" in calc
          and "описаниеСтоимости?' data-limit-live data-integer min=\"0\" max=\"'+максимумСтоимости+'\" step=\"100\"" in calc
          and 'Для указанной позиции стоимость равна 0 ₽' in calc
          and "#t_Form002 .c1,#t_Form002 .c2" in calc)
 проверка('Form003: платёж подписки 0–100 000 ₽, целые рубли, шаг 100',
          "f==='Form003'?'один платёж подписки'" in calc
-         and "(f==='Form003'||f==='Form004')?'100 000':(f==='Form013'?'500 000':'10 000 000')" in calc
+         and "(f==='Form003'||f==='Form004'||f==='Form007')?'100 000':(f==='Form013'?'500 000':((f==='Form006'||f==='Form010')?'1 000 000':'10 000 000'))" in calc
          and '#t_Form003 .c1,#t_Form003 .c2' in calc)
 проверка('Form004: купленная программа 0–100 000 ₽, целые рубли, шаг 100',
          "f==='Form004'?'одну купленную программу'" in calc
@@ -511,9 +627,127 @@ shutter_per_hour_tag=re.search(r'<input[^>]*id="shutter_per_hour"[^>]*>',calc)
          and 'проверитьНулевуюСтоимостьСтроки(e)' in calc)
 проверка('Form013: обустройство рабочего места 0–500 000 ₽, целые рубли, шаг 100',
          "f==='Form013'?'одну позицию обустройства рабочего места'" in calc
-         and "f==='Form013'?500000:10000000" in calc
-         and "f==='Form013'?'500 000':'10 000 000'" in calc
+         and "f==='Form013'?500000:((f==='Form006'||f==='Form010')?1000000:10000000)" in calc
+         and "f==='Form013'?'500 000':((f==='Form006'||f==='Form010')?'1 000 000':'10 000 000')" in calc
          and '#t_Form013 .c1,#t_Form013 .c2' in calc)
+проверка('Form006: стоимость обучения 0–1 000 000 ₽, целые рубли, шаг 100',
+         "f==='Form006'?'одну позицию обучения'" in calc
+         and "(f==='Form006'||f==='Form010')?1000000:10000000" in calc
+         and "(f==='Form006'||f==='Form010')?'1 000 000':'10 000 000'" in calc
+         and '#t_Form006 .c1,#t_Form006 .c2' in calc)
+проверка('Form010: рекламный платёж 0–1 000 000 ₽, целые рубли, шаг 100',
+         "f==='Form010'?'один рекламный платёж'" in calc
+         and "(f==='Form006'||f==='Form010')?1000000:10000000" in calc
+         and '#t_Form010 .c1,#t_Form010 .c2' not in calc)
+проверка('Form007: регулярный банковский платёж 0–100 000 ₽ без предупреждения о нуле',
+         "f==='Form007'?'один регулярный банковский платёж'" in calc
+         and "f==='Form003'||f==='Form004'||f==='Form007'" in calc
+         and '#t_Form007 .c1,#t_Form007 .c2' not in calc)
+проверка('bank_extra_rate: 0–100% с точным шагом 0,1 процентного пункта',
+         'data-limit-live data-step-live class="bank-extra-rate"' in calc
+         and 'min="0" max="100" step="0.1"' in calc
+         and 'Установлен максимум — 100% для одной дополнительной банковской комиссии' in calc
+         and "el.classList.contains('bank-extra-rate')" in calc)
+disc_values=set(re.findall(r'name="disc_lvl" value="(\d+)"',calc))
+проверка('Запас на скидку: только 5/10/15%, выбрано 15%, блок выключен',
+         disc_values == {'5','10','15'}
+         and bool(re.search(r'name="disc_lvl" value="15" checked',calc))
+         and not re.search(r'id="disc_on"[^>]*checked',calc)
+         and bool(re.search(r'id="disc_pct" value="15"',calc)))
+fund_pct_tag=re.search(r'<input[^>]*id="fund_pct"[^>]*>',calc)
+проверка('fund_pct: ползунок 0–20%, целые проценты, шаг 1, выключен по умолчанию',
+         bool(fund_pct_tag)
+         and 'type="range"' in fund_pct_tag.group(0)
+         and 'min="0"' in fund_pct_tag.group(0)
+         and 'max="20"' in fund_pct_tag.group(0)
+         and 'step="1"' in fund_pct_tag.group(0)
+         and 'value="10"' in fund_pct_tag.group(0)
+         and not re.search(r'id="fund_on"[^>]*checked',calc))
+fm_pct_tag=re.search(r'<input[^>]*id="fm_pct"[^>]*>',calc)
+проверка('fm_pct: ползунок 0–15%, целые проценты, шаг 1, выключен по умолчанию',
+         bool(fm_pct_tag)
+         and 'type="range"' in fm_pct_tag.group(0)
+         and 'min="0"' in fm_pct_tag.group(0)
+         and 'max="15"' in fm_pct_tag.group(0)
+         and 'step="1"' in fm_pct_tag.group(0)
+         and 'value="5"' in fm_pct_tag.group(0)
+         and not re.search(r'id="fm_on"[^>]*checked',calc))
+acc_cost_month_tag=re.search(r'<input[^>]*id="acc_cost_month"[^>]*>',calc)
+проверка('acc_cost_month: 0–500 000 ₽/мес, целые рубли, шаг 100',
+         bool(acc_cost_month_tag)
+         and 'data-integer' in acc_cost_month_tag.group(0)
+         and 'data-limit-live' in acc_cost_month_tag.group(0)
+         and 'min="0"' in acc_cost_month_tag.group(0)
+         and 'max="500000"' in acc_cost_month_tag.group(0)
+         and 'step="100"' in acc_cost_month_tag.group(0)
+         and 'Установлен максимум — 500 000 ₽ в месяц за ведение учёта' in calc)
+acc_per_quarter_tag=re.search(r'<input[^>]*id="acc_per_quarter"[^>]*>',calc)
+проверка('acc_per_quarter: 0–500 часов/квартал с точным шагом 0,5 часа',
+         bool(acc_per_quarter_tag)
+         and 'data-limit-live' in acc_per_quarter_tag.group(0)
+         and 'data-step-live' in acc_per_quarter_tag.group(0)
+         and 'min="0"' in acc_per_quarter_tag.group(0)
+         and 'max="500"' in acc_per_quarter_tag.group(0)
+         and 'step="0.5"' in acc_per_quarter_tag.group(0)
+         and 'Установлен максимум — 500 часов отчётности за квартал' in calc)
+acq_share_tag=re.search(r'<input[^>]*id="acq_share"[^>]*>',calc)
+проверка('acq_share: 0–100%, целые проценты, шаг стрелок 5 без жёсткой кратности',
+         bool(acq_share_tag)
+         and 'data-integer' in acq_share_tag.group(0)
+         and 'data-limit-live' in acq_share_tag.group(0)
+         and 'data-step-live' not in acq_share_tag.group(0)
+         and 'min="0"' in acq_share_tag.group(0)
+         and 'max="100"' in acq_share_tag.group(0)
+         and 'step="5"' in acq_share_tag.group(0)
+         and 'Установлен максимум — 100% безналичных платежей' in calc)
+acq_rate_tag=re.search(r'<input[^>]*id="acq_rate"[^>]*>',calc)
+проверка('acq_rate: 0–10% с точным шагом 0,1 процентного пункта',
+         bool(acq_rate_tag)
+         and 'data-limit-live' in acq_rate_tag.group(0)
+         and 'data-step-live' in acq_rate_tag.group(0)
+         and 'min="0"' in acq_rate_tag.group(0)
+         and 'max="10"' in acq_rate_tag.group(0)
+         and 'step="0.1"' in acq_rate_tag.group(0)
+         and 'Установлен максимум — 10% Эквайринга' in calc
+         and "(el.id==='acq_rate'||el.classList.contains('bank-extra-rate'))?'0,1 процентного пункта'" in calc)
+site_life_tag=re.search(r'<input[^>]*id="site_life"[^>]*>',calc)
+проверка('site_life: включённый блок 1–10 лет, целые годы, шаг 1',
+         bool(site_life_tag)
+         and 'data-integer' in site_life_tag.group(0)
+         and 'data-limit-live' in site_life_tag.group(0)
+         and 'min="1"' in site_life_tag.group(0)
+         and 'max="10"' in site_life_tag.group(0)
+         and 'step="1"' in site_life_tag.group(0)
+         and 'Чтобы не учитывать сайт, используйте галочку исключения блока' in calc
+         and 'Установлен максимум — 10 лет окупаемости сайта' in calc)
+site_hours_tag=re.search(r'<input[^>]*id="site_hours"[^>]*>',calc)
+проверка('site_hours: 0–10 000 часов, целое количество, шаг 1',
+         bool(site_hours_tag)
+         and 'data-integer' in site_hours_tag.group(0)
+         and 'data-limit-live' in site_hours_tag.group(0)
+         and 'min="0"' in site_hours_tag.group(0)
+         and 'max="10000"' in site_hours_tag.group(0)
+         and 'step="1"' in site_hours_tag.group(0)
+         and 'Установлен максимум — 10 000 часов самостоятельной работы над сайтом' in calc)
+site_cost_tag=re.search(r'<input[^>]*id="site_cost"[^>]*>',calc)
+проверка('site_cost: 0–1 000 000 ₽, целые рубли, шаг 100',
+         bool(site_cost_tag)
+         and 'data-integer' in site_cost_tag.group(0)
+         and 'data-limit-live' in site_cost_tag.group(0)
+         and 'min="0"' in site_cost_tag.group(0)
+         and 'max="1000000"' in site_cost_tag.group(0)
+         and 'step="100"' in site_cost_tag.group(0)
+         and 'Установлен максимум — 1 000 000 ₽ за создание сайта' in calc)
+edu_life_tag=re.search(r'<input[^>]*id="edu_life"[^>]*>',calc)
+проверка('edu_life: включённый блок 1–30 лет, целые годы, шаг 1',
+         bool(edu_life_tag)
+         and 'data-integer' in edu_life_tag.group(0)
+         and 'data-limit-live' in edu_life_tag.group(0)
+         and 'min="1"' in edu_life_tag.group(0)
+         and 'max="30"' in edu_life_tag.group(0)
+         and 'step="1"' in edu_life_tag.group(0)
+         and 'Чтобы не учитывать обучение, используйте галочку исключения блока' in calc
+         and 'Установлен максимум — 30 лет окупаемости обучения' in calc)
 office_util_tag=re.search(r'<input[^>]*id="office_util"[^>]*>',calc)
 проверка('office_util: 0–100 000 ₽/мес, целые рубли, шаг 100',
          bool(office_util_tag)
@@ -553,7 +787,7 @@ home_area_tag=re.search(r'<input[^>]*id="home_area"[^>]*>',calc)
          and 'step="0.1"' in home_area_tag.group(0)
          and 'Установлен минимум — 1 м² общей площади жилья' in calc
          and 'Установлен максимум — 1 000 м² общей площади жилья' in calc
-         and "(el.id==='home_area'||el.id==='cab_area')?'0,1 м²':'0,5 часа'" in calc)
+         and "(el.id==='home_area'||el.id==='cab_area')?'0,1 м²':((el.id==='acq_rate'||el.classList.contains('bank-extra-rate'))?'0,1 процентного пункта':'0,5 часа')" in calc)
 home_util_tag=re.search(r'<input[^>]*id="home_util"[^>]*>',calc)
 проверка('home_util: 0–100 000 ₽/мес, целые рубли, шаг 100',
          bool(home_util_tag)
@@ -627,14 +861,17 @@ shutter_life_tag=re.search(r'<input[^>]*id="shutter_life"[^>]*>',calc)
          "'Срок min', 'Срок max', 'Срок step'" in читать('Инструменты/значения_по_умолчанию.py')
          and "if form in ('Form001', 'Form002', 'Form013') and kind == 'life':" in читать('Инструменты/значения_по_умолчанию.py')
          and "elif form == 'Form004' and kind == 'life':" in читать('Инструменты/значения_по_умолчанию.py')
-         and "term_min, term_max, term_step = '1', '10', '1'" in читать('Инструменты/значения_по_умолчанию.py'))
-проверка('каталоги Form001–Form004 и Form013 публикуют пределы стоимости',
+         and "term_min, term_max, term_step = '1', '10', '1'" in читать('Инструменты/значения_по_умолчанию.py')
+         and "elif form == 'Form006' and kind == 'months':" in читать('Инструменты/значения_по_умолчанию.py')
+         and "term_min, term_max, term_step = '0', '60', '1'" in читать('Инструменты/значения_по_умолчанию.py'))
+проверка('каталоги Form001–Form004, Form006, Form007, Form010 и Form013 публикуют пределы стоимости',
          "if form in ('Form001', 'Form002'):" in читать('Инструменты/значения_по_умолчанию.py')
-         and "elif form in ('Form003', 'Form004'):" in читать('Инструменты/значения_по_умолчанию.py')
+         and "elif form in ('Form003', 'Form004', 'Form007'):" in читать('Инструменты/значения_по_умолчанию.py')
          and "elif form == 'Form013':" in читать('Инструменты/значения_по_умолчанию.py')
-         and "cost_min, cost_max, cost_step = '0', '500000', '100'" in читать('Инструменты/значения_по_умолчанию.py'))
+         and "elif form in ('Form006', 'Form010'):" in читать('Инструменты/значения_по_умолчанию.py')
+         and "cost_min, cost_max, cost_step = '0', '1000000', '100'" in читать('Инструменты/значения_по_умолчанию.py'))
 проверка('утверждённые числовые пределы применяются сразу возле поля',
-         len(re.findall(r'<input[^>]*data-limit-live',calc)) == 15
+         len(re.findall(r'<input[^>]*data-limit-live',calc)) == 24
          and "R.addEventListener('input'" in calc
          and "применитьПредел(e,'max')" in calc
          and "R.addEventListener('blur'" in calc
@@ -645,6 +882,57 @@ shutter_life_tag=re.search(r'<input[^>]*id="shutter_life"[^>]*>',calc)
          and 'Значение округлено до ближайшего целого. Проверьте значение.' in calc
          and "note.setAttribute('aria-live','polite')" in calc
          and 'Введённое значение приведено к допустимой границе' in calc)
+# З-038: пользовательский денежный формат не показывает отрицательный ноль.
+try:
+    m_f0s=re.search(r'var f0s=(function\(n\)\{.*?\n\});',rep,re.S)
+    js_f0s=(m_f0s.group(1) if m_f0s else '')
+    out=subprocess.check_output(['node','-e',
+        'var f0s='+js_f0s+'; console.log(JSON.stringify([f0s(-0.4),f0s(-0.6),f0s(0)]));'],text=True)
+    vals=json.loads(out)
+    проверка('З-038: округлённый финансовый результат не показывает отрицательный ноль',
+             vals==['0 ₽','−1 ₽','0 ₽'],str(vals))
+except Exception as e:
+    проверка('З-038: округлённый финансовый результат не показывает отрицательный ноль',False,str(e)[:100])
+проверка('report: З-016 задаёт горизонтальный A4, полные колонтитулы и три режима печати',
+         '@page{size:A4 landscape' in rep
+         and '@top-left{content:' in rep and '@top-center{content:' in rep and '@top-right{content:' in rep
+         and '@bottom-left{content:' in rep and '@bottom-center{content:' in rep and '@bottom-right{content:' in rep
+         and "style.id='printPageStyle'" in rep and 'schetiks.ru' in rep
+         and 'твоя юнит-экономика' in rep and 'Ставка часа  <tspan class="v">' in rep
+         and 'var верхКороткий=' in rep and 'var верхПолный=' in rep
+         and "var верхКороткийURL='url(" in rep and "var низURL='url(" in rep
+         and '}@page:first{@top-left{content:' in rep
+         and 'counter(page) " / " counter(pages)' in rep
+         and 'textLength="74" lengthAdjust="spacingAndGlyphs"' in rep
+         and 'padding:0!important;border:0!important;border-radius:0!important' in rep
+         and 'table.rt th.ш-хвост' in rep and 'table.rt td:last-child' in rep
+         and 'table.rt th.ш-код' in rep and 'table.rt td.код{text-align:left!important}' in rep
+         and '07.1 Показатели износа' in rep and '06.1 Показатели износа' not in rep
+         and "var дата=p(t.getDate())+'.'+p(t.getMonth()+1)+'.'+t.getFullYear()" in rep
+         and "return 'Расчёт от '+дата+' · Юнит-экономика для фотографов · Счётикс'" in rep
+         and "var классы=['print-main','print-glossary','print-details']" in rep
+         and "window.PHR_PRINT=function(mode)" in rep
+         and 'body.print-main #phr-root #спрдет>.пункт[data-верх]:first-child' in rep
+         and 'body.print-glossary #phr-root .wp>*:not(#спрдет)' in rep)
+pdf_expected={'Счётикс_основной_отчёт_демо.pdf':12,'Счётикс_справочник_демо.pdf':8,'Счётикс_детализация_демо.pdf':3}
+pdf_bad=[]
+for pdf_name,min_pages in pdf_expected.items():
+    pp=os.path.join(КОРЕНЬ,'PDF',pdf_name)
+    try:
+        raw=open(pp,'rb').read();pages=len(re.findall(rb'/Type\s*/Page\b',raw))
+        a4=bool(re.search(rb'/MediaBox\s*\[0 0 841\.[0-9]+ 594\.[0-9]+\]',raw))
+        if not raw.startswith(b'%PDF') or pages<min_pages or not a4:pdf_bad.append(f'{pdf_name}:{pages}/A4={a4}')
+    except Exception as e:pdf_bad.append(f'{pdf_name}:{e}')
+проверка('report: три контрольных PDF существуют, читаются и имеют горизонтальный формат A4',not pdf_bad,'; '.join(pdf_bad))
+pdf_sync=open(os.path.join(КОРЕНЬ,'Инструменты','справочник_в_отчёт.py'),encoding='utf-8').read()
+pdf_map=open(os.path.join(КОРЕНЬ,'Инструменты','карта.py'),encoding='utf-8').read()
+проверка('report: справочник и вводные PDF формируются из канонических данных',
+         "wb['01_Глоссарий']" in pdf_sync
+         and "purpose != 'user'" in pdf_sync
+         and "'справочник_в_отчёт.py'" in pdf_map
+         and '(d.answers || []).concat([]).forEach' in rep
+         and '(d.catalog || []).forEach' in rep
+         and os.path.exists(os.path.join(КОРЕНЬ,'Документация','АРХИТЕКТУРА_ДАННЫХ_PDF.md')))
 проверка('report: печатная версия раскрывает детализацию и скрывает служебные панели',
          '@media print' in rep
          and '#phr-root #спрдет .пункт .тело{display:block!important' in rep
@@ -714,6 +1002,23 @@ for bid,no in report_user_numbers.items():
     if not m or m.group(1)!=no:number_errors.append(f'{bid}→{m.group(1) if m else "—"}')
 проверка('report: пользовательские номера 01–08 соответствуют новому порядку',not number_errors,', '.join(number_errors))
 
+# З-038: все управляющие checkbox/radio должны иметь однозначную роль.
+проверка('З-038: сумма и ответы дополнительных комиссий используют один список',
+         'function списокДопКомиссий()' in calc
+         and 'списокДопКомиссий().reduce' in calc
+         and "списокДопКомиссий().forEach(function(x){if(x.name)" in calc)
+проверка('З-038: сумма и детализация каталогов используют один слой исключения',
+         'function каталогИсключён(f)' in calc
+         and 'if(каталогИсключён(f))return 0' in calc
+         and 'if(!c||каталогИсключён(имя))return' in calc)
+проверка('З-038: все checkbox и radio классифицируются по роли эффективного значения',
+         "return 'checkbox_unclassified'" in читать('Инструменты/собрать_интерфейс.py')
+         and "if el.get('data-exc') or dom == 'tax_off': return 'exclude_checkbox'" in читать('Инструменты/собрать_интерфейс.py')
+         and "if dom in {'fm_on','fund_on','disc_on'}: return 'include_checkbox'" in читать('Инструменты/собрать_интерфейс.py')
+         and "if typ == 'radio': return 'branch_switch'" in читать('Инструменты/собрать_интерфейс.py')
+         and "if dom == 'tax_auto': return 'service_checkbox'" in читать('Инструменты/собрать_интерфейс.py')
+         and "if dom == 'own_home': return 'context_switch'" in читать('Инструменты/собрать_интерфейс.py'))
+
 # Стабильная техническая нумерация страниц и всех смысловых блоков.
 index_html = читать('Веб/index.html')
 for имя, файл, page_id, count in (
@@ -766,6 +1071,23 @@ try:
     import openpyxl
     wb = openpyxl.load_workbook(os.path.join(КОРЕНЬ, 'Книга', 'Калькулятор_ставки_часа.xlsx'))
     ws = wb['calc']
+    glossary_expected={
+      'Результат':'Вычисленное значение, сформированное моделью расчёта и передаваемое для вывода в отчёт, таблицу или диаграмму.',
+      'Текстовое поле':'Поле для ввода произвольного текста, например названия оборудования, программы или банковской комиссии.',
+      'Ползунок':'Ползунок для выбора числового значения в установленном диапазоне.',
+      'Скрытое поле':'Служебное поле, которое хранит значение для скрипта, но не показывается пользователю как обычный элемент ввода.',
+      'Поле вывода':'Элемент интерфейса, который показывает пользователю рассчитанное или выбранное значение, но не предназначен для самостоятельного ввода.',
+      'Сырое значение':'Значение, хранящееся в поле анкеты до применения условий участия в расчёте.',
+      'Эффективное значение':'Значение параметра после применения галочек, исключений и выбранной ветки; именно оно используется в формулах.',
+      'Прямая галочка':'Галочка, которая включает параметр: снята — вклад нулевой; установлена — используется сохранённое значение.',
+      'Переключатель ветки':'Элемент выбора одной активной ветки; вклады остальных веток равны нулю.',
+      'Финансовый результат':'Разница между выручкой и всеми эффективными затратами модели. Может быть положительной, нулевой или отрицательной.',
+      'Убыток':'Отрицательный финансовый результат, возникающий, когда выручка меньше всех предусмотренных затрат. Показывается со знаком минус.',
+    }
+    glossary_actual={str(r[1] or '').strip():str(r[5] or '').strip() for r in wb['01_Глоссарий'].iter_rows(min_row=2,values_only=True)}
+    проверка('З-038: 11 meta-понятий архитектуры сохранены в глоссарии дословно',
+             all(glossary_actual.get(k)==v for k,v in glossary_expected.items()),
+             ', '.join(k for k,v in glossary_expected.items() if glossary_actual.get(k)!=v))
     СВЯЗЬ = {'income_month': 'income_month', 'current_rate': 'current_rate', 'frames_out': 'frames_out',
              'shoot_duration': 'shoot_manual', 'post_ratio': 'post_ratio', 'client_time': 'client_time',
              'promo_per_day': 'promo_per_day', 'acc_per_quarter': 'acc_per_quarter',
@@ -1067,6 +1389,46 @@ try:
                   ', '.join(сироты[:6]) + ('…' if len(сироты) > 6 else ''))
 except Exception as e:
     замечание('связи справочника не разобраны', str(e)[:80])
+
+# ══════════════════════════════ 4a. HEADLESS REPORT
+headless_js=os.path.join(КОРЕНЬ,'Инструменты','проверить_report_headless.js')
+jsdom_ok=subprocess.run(['node','-e','require.resolve("jsdom")'],cwd=КОРЕНЬ,
+                         capture_output=True,text=True).returncode==0
+if not jsdom_ok:
+    install=subprocess.run(['npm','ci','--silent'],cwd=КОРЕНЬ,capture_output=True,text=True)
+    jsdom_ok=install.returncode==0
+if jsdom_ok:
+    hp=subprocess.run(['node',headless_js,КОРЕНЬ],cwd=КОРЕНЬ,capture_output=True,text=True)
+    проверка('report: постоянный headless-прогон 8 сценариев',
+             hp.returncode==0 and '8 сценариев · 20 блоков · 12 таблиц · ошибок 0' in hp.stdout,
+             (hp.stderr or hp.stdout).strip().split('\n')[-1][:180])
+else:
+    проверка('report: постоянный headless-прогон 8 сценариев',False,
+             'jsdom не установлен и npm ci не выполнен')
+
+# ══════════════════════════════ 4b. ПЕРЕДАЧА МЕЖДУ СЕССИЯМИ
+handoff_dir=os.path.join(КОРЕНЬ,'Документация','Переезд_между_сессиями')
+handoff_required=['00_НАЧАТЬ_ЗДЕСЬ.md','01_ПРОТОКОЛ_ОБУЧЕНИЯ.md',
+ '02_ПРОМПТЫ_ДЛЯ_НОВОЙ_СЕССИИ.md','03_КАРТА_ИСТОЧНИКОВ.md',
+ '04_ОБНОВЛЕНИЕ_ТОЧКИ_И_АРХИВА.md','05_КРИТЕРИИ_ГОТОВНОСТИ.md',
+ 'ТОЧКА_ПРОДОЛЖЕНИЯ.md','ПАМЯТКА_ВЛАДЕЛЬЦУ.md','МАНИФЕСТ.json']
+проверка('передача сессии: все универсальные файлы и текущая точка существуют',
+         all(os.path.isfile(os.path.join(handoff_dir,x)) for x in handoff_required))
+try:
+    prompts=читать('Документация/Переезд_между_сессиями/02_ПРОМПТЫ_ДЛЯ_НОВОЙ_СЕССИИ.md')
+    проверка('передача сессии: записаны ровно шесть последовательных промптов',
+             len(re.findall(r'^## Промпт [1-6] ·',prompts,re.M))==6)
+    zpath=os.path.join(КОРЕНЬ,'Архив','Передача_между_сессиями','Счётикс_передача_АКТУАЛЬНАЯ.zip')
+    with zipfile.ZipFile(zpath) as z:
+        names=set(z.namelist());bad=z.testzip()
+        critical={'ПЕРЕДАЧА/МАНИФЕСТ.json','ПЕРЕДАЧА/README.md',
+          'ПЕРЕДАЧА/Документация/Переезд_между_сессиями/ТОЧКА_ПРОДОЛЖЕНИЯ.md',
+          'ПЕРЕДАЧА/Веб/calc.html','ПЕРЕДАЧА/Веб/report.html',
+          'ПЕРЕДАЧА/Книга/Калькулятор_ставки_часа.xlsx'}
+        проверка('передача сессии: актуальный ZIP читается и содержит критические файлы',
+                 bad is None and critical<=names,f'{len(names)} записей')
+except Exception as e:
+    проверка('передача сессии: актуальный ZIP читается и содержит критические файлы',False,str(e)[:120])
 
 # ══════════════════════════════ 5. ПУБЛИКАЦИОННЫЙ КОНТУР (замечания, не падения)
 print('▶ готовность к публикации')

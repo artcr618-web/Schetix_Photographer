@@ -1,50 +1,64 @@
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""Переносит справочник из инструменты/таблицы_прототип.py в отчёт.
+"""Публикует пользовательскую часть `01_Глоссарий` в report и PDF.
 
-Единственный источник — словарь СПРАВОЧНИК. Скрипт переписывает массив
-`var REFD=[...]` в report.html и части/каркас.html, ничего больше не трогая.
+Единственный источник терминов и определений — лист `01_Глоссарий` основной
+книги. В справочник автоматически попадают все строки с Назначением `user` и
+непустым определением, а также ранее утверждённое пользовательское meta-понятие
+«Значение по умолчанию». Скрипт обновляет оба массива справочника в report.html и
+его рабочем каркасе. Карта связей строк детализации сохраняется отдельно: её
+нельзя угадывать по совпадению слов, поэтому она остаётся явным реестром.
 
-Запуск: python3 Инструменты/справочник_в_отчёт.py
+Обычный запуск не нужен: скрипт входит в `Инструменты/карта.py`.
 """
-import re, json, importlib.util
+from pathlib import Path
+import json
+import re
 
-import os as _os
-def _найти_корень(старт):
-    п = _os.path.dirname(_os.path.abspath(старт))
-    while п != '/':
-        if (_os.path.exists(_os.path.join(п, 'Калькулятор_ставки_часа.xlsx'))
-            or _os.path.exists(_os.path.join(п, 'Книга', 'Калькулятор_ставки_часа.xlsx'))): return п
-        п = _os.path.dirname(п)
-    return '/home/user/Schetix_Photographer'
-КОРЕНЬ = _найти_корень(__file__)
+import openpyxl
 
-спец = importlib.util.spec_from_file_location('тп', КОРЕНЬ + '/Инструменты/таблицы_прототип.py')
-мод = importlib.util.module_from_spec(спец)
-try: спец.loader.exec_module(мод)
-except SystemExit: pass
-СПР = мод.СПРАВОЧНИК
+ROOT = Path(__file__).resolve().parents[1]
+BOOK = ROOT / 'Книга' / 'Калькулятор_ставки_часа.xlsx'
 
-строки = [f'   {json.dumps([т, о], ensure_ascii=False)}'
-          for т, о in sorted(СПР.items(), key=lambda п: п[0].lower())]
-новый = 'var REFD=[\n' + ',\n'.join(строки) + '\n  ];'
 
-# второй массив того же справочника — им пользуется детализация
-спр_один = 'var \u0421\u041f\u0420 = ' + json.dumps(
-    [[т, о] for т, о in sorted(СПР.items(), key=lambda п: п[0].lower())],
-    ensure_ascii=False) + ';'
-# карта «строка таблицы → запись справочника»
-связь_один = 'var \u0421\u0412\u042f\u0417\u042c = ' + json.dumps(
-    мод.СВЯЗЬ, ensure_ascii=False) + ';'
+PUBLIC_META = {'Значение по умолчанию'}
 
-for файл in ('/Веб/report.html', '/Веб/Части/каркас.html'):
-    путь = КОРЕНЬ + файл
-    т = open(путь, encoding='utf-8').read()
-    сделано = []
-    т, n1 = re.subn(r'var REFD=\[.*?\n *\];', новый, т, count=1, flags=re.S)
-    сделано.append(('REFD', n1))
-    т, n2 = re.subn(r'var \u0421\u041f\u0420 = \[.*?\];\n', спр_один + '\n', т, count=1, flags=re.S)
-    сделано.append(('СПР', n2))
-    т, n3 = re.subn(r'var \u0421\u0412\u042f\u0417\u042c = \{.*?\};\n', связь_один + '\n', т, count=1, flags=re.S)
-    сделано.append(('СВЯЗЬ', n3))
-    open(путь, 'w', encoding='utf-8').write(т)
-    print(f'{файл} — {len(СПР)} записей · ' + ', '.join(f'{и}:{к}' for и, к in сделано))
+
+def glossary_user_rows():
+    wb = openpyxl.load_workbook(BOOK, data_only=True, read_only=True)
+    ws = wb['01_Глоссарий']
+    rows = []
+    seen = set()
+    # A № · B Наименование · D Назначение · F Определение.
+    for r in range(2, ws.max_row + 1):
+        name = str(ws.cell(r, 2).value or '').strip()
+        purpose = str(ws.cell(r, 4).value or '').strip()
+        definition = re.sub(r'\s+', ' ', str(ws.cell(r, 6).value or '')).strip()
+        if purpose != 'user' and name not in PUBLIC_META:
+            continue
+        if not name or not definition:
+            raise SystemExit(f'01_Глоссарий, строка {r}: user-понятие без имени или определения')
+        key = name.casefold().replace('ё', 'е')
+        if key in seen:
+            raise SystemExit(f'01_Глоссарий, строка {r}: повтор user-понятия «{name}»')
+        seen.add(key)
+        rows.append((name, definition))
+    return sorted(rows, key=lambda item: item[0].casefold().replace('ё', 'е'))
+
+
+rows = glossary_user_rows()
+refd = 'var REFD=[\n' + ',\n'.join(
+    '   ' + json.dumps([name, definition], ensure_ascii=False)
+    for name, definition in rows
+) + '\n  ];'
+spr = 'var СПР = ' + json.dumps(rows, ensure_ascii=False) + ';'
+
+for relative in ('Веб/report.html', 'Веб/Части/каркас.html'):
+    path = ROOT / relative
+    text = path.read_text(encoding='utf-8')
+    text, n1 = re.subn(r'var REFD=\[.*?\n *\];', refd, text, count=1, flags=re.S)
+    text, n2 = re.subn(r'var СПР = \[.*?\];\n', spr + '\n', text, count=1, flags=re.S)
+    if n1 != 1 or n2 != 1:
+        raise SystemExit(f'{relative}: не найдены массивы REFD/СПР ({n1}/{n2})')
+    path.write_text(text, encoding='utf-8')
+    print(f'{relative}: опубликовано user-понятий {len(rows)}')

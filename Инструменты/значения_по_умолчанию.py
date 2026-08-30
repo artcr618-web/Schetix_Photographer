@@ -135,6 +135,28 @@ def условие(el):
     return ''
 
 
+def роль_управления(el):
+    typ, ident = el.get('type', ''), el.get('id', '')
+    if typ == 'radio': return 'branch_switch'
+    if typ != 'checkbox': return ''
+    if el.get('data-exc') or ident == 'tax_off': return 'exclude_checkbox'
+    if ident in {'fm_on','fund_on','disc_on'}: return 'include_checkbox'
+    if ident == 'tax_auto': return 'service_checkbox'
+    if ident == 'own_home': return 'context_switch'
+    return 'checkbox_unclassified'
+
+
+def правило_эффективности(el):
+    role=роль_управления(el)
+    return {
+        'exclude_checkbox':'снята — блок участвует; установлена — все эффективные результаты блока равны 0',
+        'include_checkbox':'снята — эффективное значение 0; установлена — используется сохранённое сырое значение',
+        'branch_switch':'выбранная ветка участвует; эффективные значения остальных веток равны 0',
+        'service_checkbox':'меняет поведение интерфейса; самостоятельного денежного или временного вклада нет',
+        'context_switch':'установлена — стоимость жилья равна 0; коммунальные расходы продолжают учитываться',
+    }.get(role,'')
+
+
 def основное_значение(el):
     typ = el.get('type', el.name)
     if typ in ('checkbox', 'radio'):
@@ -225,7 +247,8 @@ columns = [
     'Управляющий элемент', 'Форма / каталог', 'Источник',
     'Расчётное значение за год по умолчанию',
     'Эффективное числовое значение по умолчанию',
-    'Срок / период числом', 'Срок min', 'Срок max', 'Срок step'
+    'Срок / период числом', 'Срок min', 'Срок max', 'Срок step',
+    'Роль управления', 'Правило эффективного значения'
 ]
 rows = []
 forms_by_table = {}
@@ -255,7 +278,8 @@ for card in soup.select('#frm .card'):
             подпись(el, card, answers), raw, единица(el, answers),
             '', '', варианты(el), el.get('min', ''), el.get('max', ''), el.get('step', ''),
             условие(el), group, branch, active, effective, controller,
-            '', 'HTML: value / checked / selected', '', число_или_пусто(effective), '', '', '', ''
+            '', 'HTML: value / checked / selected', '', число_или_пусто(effective), '', '', '', '',
+            роль_управления(el), правило_эффективности(el)
         ])
 
 # Привязка Form → карточка по таблице t_FormXXX.
@@ -290,16 +314,20 @@ for form, data in cat.items():
             annual = cost * factor
         if form in ('Form001', 'Form002'):
             cost_min, cost_max, cost_step = '0', '10000000', '100'
-        elif form in ('Form003', 'Form004'):
+        elif form in ('Form003', 'Form004', 'Form007'):
             cost_min, cost_max, cost_step = '0', '100000', '100'
         elif form == 'Form013':
             cost_min, cost_max, cost_step = '0', '500000', '100'
+        elif form in ('Form006', 'Form010'):
+            cost_min, cost_max, cost_step = '0', '1000000', '100'
         else:
             cost_min, cost_max, cost_step = '', '', ''
         if form in ('Form001', 'Form002', 'Form013') and kind == 'life':
             term_min, term_max, term_step = '1', '30', '1'
         elif form == 'Form004' and kind == 'life':
             term_min, term_max, term_step = '1', '10', '1'
+        elif form == 'Form006' and kind == 'months':
+            term_min, term_max, term_step = '0', '60', '1'
         else:
             term_min, term_max, term_step = '', '', ''
         rows.append([
@@ -307,7 +335,7 @@ for form, data in cat.items():
             f'{form}[{n}]', name, value, unit, term_label, kind, '', cost_min, cost_max, cost_step,
             условие(table) if table else '', group, branch, active, effective, controller,
             form, 'JavaScript CAT в calc.html', annual, cost, factor,
-            term_min, term_max, term_step
+            term_min, term_max, term_step, '', ''
         ])
 
 # Стабильная нумерация: сначала блок, затем обычные поля, затем каталог.

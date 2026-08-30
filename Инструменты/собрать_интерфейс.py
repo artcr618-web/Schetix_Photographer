@@ -26,7 +26,8 @@ HEADERS = [
     'Пользовательский №', 'Название блока', 'Тип блока', 'Родительский блок',
     'Порядок блока', 'Порядок элемента', 'Тип элемента', 'DOM-ID', 'name',
     'data-t', 'Наименование / текст', 'Параметр calc', 'Поле d',
-    'Ветка ID', 'Название ветки', 'Условие показа', 'Источник', 'Статус'
+    'Ветка ID', 'Название ветки', 'Условие показа', 'Источник', 'Статус',
+    'Роль управления', 'Правило эффективного значения'
 ]
 
 
@@ -62,6 +63,28 @@ def element_type(el):
             'a':'ссылка','table':'таблица'}.get(el.name,'текст / вывод')
 
 
+def control_role(el):
+    if el.name != 'input': return ''
+    typ, dom = el.get('type',''), el.get('id','')
+    if typ == 'radio': return 'branch_switch'
+    if typ != 'checkbox': return ''
+    if el.get('data-exc') or dom == 'tax_off': return 'exclude_checkbox'
+    if dom in {'fm_on','fund_on','disc_on'}: return 'include_checkbox'
+    if dom == 'tax_auto': return 'service_checkbox'
+    if dom == 'own_home': return 'context_switch'
+    return 'checkbox_unclassified'
+
+
+def effective_rule(el):
+    role=control_role(el)
+    if role=='exclude_checkbox': return 'снята — блок участвует; установлена — все эффективные результаты блока равны 0'
+    if role=='include_checkbox': return 'снята — эффективное значение 0; установлена — используется сохранённое сырое значение'
+    if role=='branch_switch': return 'выбранная ветка участвует; эффективные значения остальных веток равны 0'
+    if role=='service_checkbox': return 'меняет поведение интерфейса; самостоятельного денежного или временного вклада нет'
+    if role=='context_switch': return 'установлена — стоимость жилья равна 0; коммунальные расходы продолжают учитываться'
+    return ''
+
+
 def label(el):
     if el.name in {'button','a'}: return short(el.get_text(' ',strip=True),300)
     if el.get('data-t'): return short(el.get_text(' ',strip=True),500)
@@ -92,7 +115,7 @@ for page_id,page_order,path,root_id in PAGES:
     # Строка страницы.
     rows.append([page_id,page_order,page_id.replace('PAGE-','')+'-PAGE','—','—',path.name,
                  'страница','','0','0','страница',root_id,'','','', '', '', '', '', '',
-                 str(path.relative_to(ROOT)),'фактически существует'])
+                 str(path.relative_to(ROOT)),'фактически существует','',''])
     # Строки блоков.
     for b in blocks:
         bid=b.get('data-block-id'); user_no=direct_bn(b)
@@ -102,7 +125,7 @@ for page_id,page_order,path,root_id in PAGES:
         rows.append([page_id,page_order,bid,tech,user_no or '—',name,block_type(b,user_no),
                      parent.get('data-block-id') if parent else '',block_order[id(b)],0,'блок',
                      b.get('id',''),' ',b.get('data-t',''),name,'','','','','',
-                     str(path.relative_to(ROOT)),'фактически существует'])
+                     str(path.relative_to(ROOT)),'фактически существует','',''])
     # Элементы назначаются ближайшему техническому блоку.
     element_order=defaultdict(int); seen=set()
     selector='input,select,textarea,button,a,table,[id],[data-t]'
@@ -123,7 +146,8 @@ for page_id,page_order,path,root_id in PAGES:
                      block_type(block,bno),block.find_parent(attrs={'data-block-id':True}).get('data-block-id') if block.find_parent(attrs={'data-block-id':True}) else '',
                      block_order[id(block)],element_order[bid],element_type(el),dom,ename,
                      el.get('data-t',''),label(el),param,'',branch_id,branch_name,
-                     visibility(el,branch_name),str(path.relative_to(ROOT)),'фактически существует'])
+                     visibility(el,branch_name),str(path.relative_to(ROOT)),'фактически существует',
+                     control_role(el),effective_rule(el)])
 
 wb=load_workbook(BOOK);ws=wb['Интерфейс'];ws.delete_rows(1,ws.max_row);ws.append(HEADERS)
 for r in rows:ws.append(r)
@@ -134,8 +158,8 @@ for row in ws.iter_rows(min_row=2):
     for c in row:
         c.alignment=Alignment(vertical='top',wrap_text=True);c.border=border
         if fill:c.fill=fill;c.font=Font(bold=True)
-ws.freeze_panes='A2';ws.auto_filter.ref=f'A1:V{ws.max_row}';ws.sheet_view.showGridLines=False
-widths=[16,10,22,12,14,42,24,22,12,12,22,24,20,18,65,22,18,22,34,38,28,24]
+ws.freeze_panes='A2';ws.auto_filter.ref=f'A1:X{ws.max_row}';ws.sheet_view.showGridLines=False
+widths=[16,10,22,12,14,42,24,22,12,12,22,24,20,18,65,22,18,22,34,38,28,24,24,75]
 for i,w in enumerate(widths,1):ws.column_dimensions[get_column_letter(i)].width=w
 readme=wb['00_Читать']
 for row in readme.iter_rows():

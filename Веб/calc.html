@@ -2286,7 +2286,7 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 <button data-t="add_06" class="add" data-add="Form006">+ Добавить обучение</button>
 <div class="qr" style="margin-top:8px"><div>
 <div data-t="q_14" class="q">За сколько лет вы хотите окупить вложения в обучение?</div>
-</div><div class="qf"><input type="number" id="edu_life" value="7"><span data-t="un_13" class="un">лет</span></div></div>
+</div><div class="qf"><input type="number" inputmode="numeric" data-integer data-limit-live id="edu_life" value="7" min="1" max="30" step="1"><span data-t="un_13" class="un">лет</span></div></div>
 <div data-t="qd_13" class="info-notice education-life-note">Стоимость обучения будет равномерно распределена на выбранный срок. Обычно для расчёта берут период от 5 до 10 лет.</div>
 <label class="exc"><input type="checkbox" data-exc="Form006">Не учитывать этот блок в расчёте</label></div>
 
@@ -2301,13 +2301,13 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 <label class="on"><input type="radio" name="site_mode" value="hired" checked>Нанимал (а) специалиста</label>
 <label><input type="radio" name="site_mode" value="self">Делал (а) самостоятельно</label></div>
 <div class="qr two-col-row" id="site_c_w" data-branch-id="CALC-B020-S01" data-branch-name="Сайт заказан"><div><div data-t="q_15" class="q">Сколько вы заплатили за создание сайта?</div>
-</div><div class="qf"><input type="text" inputmode="numeric" data-money id="site_cost" value="70000"><span class="un">₽</span></div></div>
+</div><div class="qf"><input type="text" inputmode="numeric" data-money data-integer data-limit-live id="site_cost" value="70000" min="0" max="1000000" step="100"><span class="un">₽</span></div></div>
 <div class="qr two-col-row" id="site_h_w" style="display:none" data-branch-id="CALC-B020-S02" data-branch-name="Сайт создан самостоятельно"><div>
 <div data-t="q_16" class="q">Сколько времени вы потратили на создание сайта?</div>
-</div><div class="qf"><input type="number" id="site_hours" value="80"><span data-t="un_14" class="un">часов</span></div></div>
+</div><div class="qf"><input type="number" inputmode="numeric" data-integer data-limit-live id="site_hours" value="80" min="0" max="10000" step="1"><span data-t="un_14" class="un">часов</span></div></div>
 <div class="qr two-col-row"><div><div data-t="q_17" class="q">За сколько лет окупить вложения в сайт?</div>
 <div data-t="qd_16" class="qd">Через этот срок сайт устареет и потребует переделки.</div>
-</div><div class="qf"><input type="number" id="site_life" value="7"><span data-t="un_15" class="un">лет</span></div></div>
+</div><div class="qf"><input type="number" inputmode="numeric" data-integer data-limit-live id="site_life" value="7" min="1" max="10" step="1"><span data-t="un_15" class="un">лет</span></div></div>
 <label class="exc"><input type="checkbox" data-exc="Form014">Не учитывать этот блок в расчёте</label></div>
 
 <div class="card" id="c_Form010" data-block-id="CALC-B021" data-block-name="Вопрос 15"><div class="bn">15</div>
@@ -2334,7 +2334,7 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 <div class="bank-rate-head"><div>Позиция</div><div>Ставка</div><div aria-hidden="true"></div></div>
 <div class="bank-commission-row bank-acq-group" id="bank_acq_group" data-branch-id="CALC-B022-S01" data-branch-name="Эквайринг">
 <div class="bank-name-field"><input type="text" id="acq_name" value="Эквайринг" readonly aria-label="Позиция комиссии"></div>
-<div class="qf"><input type="number" id="acq_rate" value="2.7" step="0.1"><span class="un">%</span></div>
+<div class="qf"><input type="number" inputmode="decimal" data-limit-live data-step-live id="acq_rate" value="2.7" min="0" max="10" step="0.1"><span class="un">%</span></div>
 <button class="del" id="acq_delete" type="button" aria-label="Удалить эквайринг">×</button>
 </div>
 <div class="bank-extra-list" id="bank_extra_list"></div>
@@ -2344,7 +2344,7 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 </div>
 <div class="bank-share-question" id="bank_share_row" data-branch-id="CALC-B022-S02" data-branch-name="Доля безналичных платежей">
 <div data-t="q_19" class="bank-share-label-field">Какая доля оплат проходит через эквайринг?</div>
-<div class="qf"><input type="number" id="acq_share" value="100" step="5"><span class="un">%</span></div>
+<div class="qf"><input type="number" inputmode="numeric" data-integer data-limit-live id="acq_share" value="100" min="0" max="100" step="5"><span class="un">%</span></div>
 <div class="bank-cell-placeholder" aria-hidden="true"></div>
 </div>
 </div>
@@ -2358,12 +2358,12 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 <div class="accounting-self-scope" id="acc_h_w" data-branch-id="CALC-B023-S01" data-branch-name="Учёт самостоятельно">
 <div class="qr accounting-row"><div>
 <div data-t="q_20" class="q">Сколько часов в квартал уходит на отчётность?</div>
-</div><div class="qf"><input type="number" id="acc_per_quarter" value="3"><span data-t="un_16" class="un">часа</span></div></div>
+</div><div class="qf"><input type="number" inputmode="decimal" data-limit-live data-step-live id="acc_per_quarter" value="3" min="0" max="500" step="0.5"><span data-t="un_16" class="un">часа</span></div></div>
 
 </div>
 <div class="qr accounting-row" id="acc_c_w" style="display:none" data-branch-id="CALC-B023-S02" data-branch-name="Учёт ведёт специалист"><div>
 <div data-t="q_21" class="q">Сколько стоит ведение учёта?</div>
-</div><div class="qf"><input type="text" inputmode="numeric" data-money id="acc_cost_month" value="10000"><span data-t="un_17" class="un">₽/мес</span></div></div>
+</div><div class="qf"><input type="text" inputmode="numeric" data-money data-integer data-limit-live id="acc_cost_month" value="10000" min="0" max="500000" step="100"><span data-t="un_17" class="un">₽/мес</span></div></div>
 <details class="more2 post-details accounting-details"><summary><svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-t="exp_04">Вот что мы заложили как основные этапы ведения учёта и бухгалтерии</span></summary><div class="in2 post-in2">
 <div class="post-stages accounting-stages">
 <div class="post-stage"><div class="post-stage-title"><i>1</i><b>Учёт доходов и расходов</b></div><ul><li>фиксация доходов и расходов;</li><li>ведение книги учёта;</li><li>сверка операций с банковской выпиской.</li></ul></div>
@@ -2659,7 +2659,15 @@ var ТЕКСТЫ_ПРЕДЕЛОВ={
   home_area:{min:'Вы ввели значение ниже допустимого. Установлен минимум — 1 м² общей площади жилья. Чтобы не учитывать поле, удалите строку крестиком. Проверьте значение.',max:'Вы ввели значение выше допустимого. Установлен максимум — 1 000 м² общей площади жилья. Проверьте значение.'},
   cab_area:{min:'Вы ввели значение ниже допустимого. Установлен минимум — 0,1 м² рабочей зоны. Чтобы не учитывать поле, удалите строку крестиком. Проверьте значение.',max:'Вы ввели значение выше допустимого. Установлен абсолютный максимум — 100 м² рабочей зоны. Проверьте значение.'},
   office_rent:{min:'Вы ввели отрицательное значение. Установлен минимум — 0 ₽ в месяц. Проверьте значение.',max:'Вы ввели значение выше допустимого. Установлен максимум — 500 000 ₽ в месяц за аренду отдельного помещения. Проверьте значение.'},
-  office_util:{min:'Вы ввели отрицательное значение. Установлен минимум — 0 ₽ в месяц. Проверьте значение.',max:'Вы ввели значение выше допустимого. Установлен максимум — 100 000 ₽ в месяц на коммунальные платежи, интернет и связь отдельного помещения. Проверьте значение.'}
+  office_util:{min:'Вы ввели отрицательное значение. Установлен минимум — 0 ₽ в месяц. Проверьте значение.',max:'Вы ввели значение выше допустимого. Установлен максимум — 100 000 ₽ в месяц на коммунальные платежи, интернет и связь отдельного помещения. Проверьте значение.'},
+  edu_life:{min:'Вы ввели значение ниже допустимого. Установлен минимум — 1 год окупаемости обучения. Чтобы не учитывать обучение, используйте галочку исключения блока. Проверьте значение.',max:'Вы ввели значение выше допустимого. Установлен максимум — 30 лет окупаемости обучения. Проверьте значение.'},
+  site_cost:{min:'Вы ввели отрицательное значение. Установлен минимум — 0 ₽ за создание сайта. Проверьте значение.',max:'Вы ввели значение выше допустимого. Установлен максимум — 1 000 000 ₽ за создание сайта. Проверьте значение.'},
+  site_hours:{min:'Вы ввели отрицательное значение. Установлен минимум — 0 часов самостоятельной работы над сайтом. Проверьте значение.',max:'Вы ввели значение выше допустимого. Установлен максимум — 10 000 часов самостоятельной работы над сайтом. Проверьте значение.'},
+  site_life:{min:'Вы ввели значение ниже допустимого. Установлен минимум — 1 год окупаемости сайта. Чтобы не учитывать сайт, используйте галочку исключения блока. Проверьте значение.',max:'Вы ввели значение выше допустимого. Установлен максимум — 10 лет окупаемости сайта. Проверьте значение.'},
+  acq_rate:{min:'Вы ввели отрицательное значение. Установлен минимум — 0% Эквайринга. Проверьте значение.',max:'Вы ввели значение выше допустимого. Установлен максимум — 10% Эквайринга. Проверьте значение.'},
+  acq_share:{min:'Вы ввели отрицательное значение. Установлен минимум — 0% безналичных платежей. Проверьте значение.',max:'Вы ввели значение выше допустимого. Установлен максимум — 100% безналичных платежей. Проверьте значение.'},
+  acc_per_quarter:{min:'Вы ввели отрицательное значение. Установлен минимум — 0 часов отчётности за квартал. Проверьте значение.',max:'Вы ввели значение выше допустимого. Установлен максимум — 500 часов отчётности за квартал. Проверьте значение.'},
+  acc_cost_month:{min:'Вы ввели отрицательное значение. Установлен минимум — 0 ₽ в месяц за ведение учёта. Проверьте значение.',max:'Вы ввели значение выше допустимого. Установлен максимум — 500 000 ₽ в месяц за ведение учёта. Проверьте значение.'}
 };
 function плашкаПредела(el,текст){
   var qf=el.closest('.qf'), ячейка=el.closest('td'), note=qf?qf.nextElementSibling:(ячейка&&ячейка.querySelector('.field-limit-note'));
@@ -2712,7 +2720,7 @@ function привестиКШагу(el){
   приведённое=Math.round(приведённое*1000000)/1000000;
   if(Math.abs(n-приведённое)<1e-9)return false;
   el.value=String(приведённое);
-  var шагТекст=(el.id==='home_area'||el.id==='cab_area')?'0,1 м²':'0,5 часа';
+  var шагТекст=(el.id==='home_area'||el.id==='cab_area')?'0,1 м²':((el.id==='acq_rate'||el.classList.contains('bank-extra-rate'))?'0,1 процентного пункта':'0,5 часа');
   плашкаПредела(el,'Значение приведено к ближайшему шагу — '+шагТекст+'. Проверьте значение.');
   return true;
 }
@@ -2830,17 +2838,18 @@ function mkRow(f,d,индекс){
   var c=CAT[f],tr=document.createElement('tr');
   var фикс=(НЕСНОСИМЫЕ[f]||[])[индекс];
   var per='<select class="c3"><option value="1">\u0413\u043E\u0434</option><option value="4">\u041A\u0432\u0430\u0440\u0442\u0430\u043B</option><option value="12">\u041C\u0435\u0441\u044F\u0446</option></select>';
-  var описаниеСтоимости=f==='Form001'?'одну позицию съёмочного оборудования':(f==='Form002'?'одну позицию офисного оборудования':(f==='Form003'?'один платёж подписки':(f==='Form004'?'одну купленную программу':(f==='Form013'?'одну позицию обустройства рабочего места':''))));
-  var максимумСтоимости=(f==='Form003'||f==='Form004')?100000:(f==='Form013'?500000:10000000);
-  var максимумСтоимостиТекст=(f==='Form003'||f==='Form004')?'100 000':(f==='Form013'?'500 000':'10 000 000');
+  var описаниеСтоимости=f==='Form001'?'одну позицию съёмочного оборудования':(f==='Form002'?'одну позицию офисного оборудования':(f==='Form003'?'один платёж подписки':(f==='Form004'?'одну купленную программу':(f==='Form013'?'одну позицию обустройства рабочего места':(f==='Form006'?'одну позицию обучения':(f==='Form010'?'один рекламный платёж':(f==='Form007'?'один регулярный банковский платёж':'')))))));
+  var максимумСтоимости=(f==='Form003'||f==='Form004'||f==='Form007')?100000:(f==='Form013'?500000:((f==='Form006'||f==='Form010')?1000000:10000000));
+  var максимумСтоимостиТекст=(f==='Form003'||f==='Form004'||f==='Form007')?'100 000':(f==='Form013'?'500 000':((f==='Form006'||f==='Form010')?'1 000 000':'10 000 000'));
   var пределСтоимости=описаниеСтоимости?' data-limit-live data-integer min="0" max="'+максимумСтоимости+'" step="100" data-max-message="Вы ввели значение выше допустимого. Установлен максимум — '+максимумСтоимостиТекст+' ₽ за '+описаниеСтоимости+'. Проверьте значение."':'';
   var категорияСрока=f==='Form001'?'съёмочного оборудования':(f==='Form002'?'офисного оборудования':(f==='Form004'?'купленной программы':(f==='Form013'?'обустройства рабочего места':'')));
   var максимумСрока=f==='Form004'?10:30;
   var пределСрока=категорияСрока?' data-limit-live data-integer min="1" max="'+максимумСрока+'" step="1" data-min-message="Вы ввели значение ниже допустимого. Установлен минимум — 1 год службы '+категорияСрока+'. Проверьте значение." data-max-message="Вы ввели значение выше допустимого. Установлен максимум — '+максимумСрока+' лет службы '+категорияСрока+'. Проверьте значение."':'';
+  var пределМесяцев=f==='Form006'?' data-limit-live data-integer min="0" max="60" step="1" data-min-message="Вы ввели отрицательное значение. Установлен минимум — 0 месяцев обучения. Проверьте значение." data-max-message="Вы ввели значение выше допустимого. Установлен максимум — 60 месяцев обучения. Проверьте значение."':'';
   tr.innerHTML='<td><input type="text" class="c1"'+(фикс?' placeholder="'+фикс+'"':'')+'></td>'+
    '<td><input type="text" inputmode="numeric" data-money class="c2"'+пределСтоимости+
    (фикс?' placeholder="\u0421\u0442\u043e\u0438\u043c\u043e\u0441\u0442\u044c"':'')+'></td>'+
-   '<td>'+(c.k==='per'?per:'<input type="number" inputmode="numeric" class="c3"'+пределСрока+'>')+'</td>'+
+   '<td>'+(c.k==='per'?per:'<input type="number" inputmode="numeric" class="c3"'+пределСрока+пределМесяцев+'>')+'</td>'+
    '<td><button class="del" type="button">\u00D7</button></td>';
   if(фикс)tr.classList.add('несносимая');
   tr.querySelector('.c1').value=d[0];
@@ -2864,7 +2873,7 @@ function mkRow(f,d,индекс){
   return tr;
 }
 function проверитьНулевуюСтоимостьСтроки(el){
-  var row=el&&el.closest&&el.closest('#t_Form001 tr,#t_Form002 tr,#t_Form003 tr,#t_Form004 tr,#t_Form013 tr'); if(!row)return;
+  var row=el&&el.closest&&el.closest('#t_Form001 tr,#t_Form002 tr,#t_Form003 tr,#t_Form004 tr,#t_Form013 tr,#t_Form006 tr'); if(!row)return;
   var имя=row.querySelector('.c1'), стоимость=row.querySelector('.c2');
   if(!имя||!стоимость)return;
   if(String(имя.value||'').trim()&&число(стоимость.value)===0){
@@ -2875,7 +2884,7 @@ function проверитьНулевуюСтоимостьСтроки(el){
 }
 R.addEventListener('blur',function(ev){
   var e=ev.target;
-  if(e&&e.matches&&e.matches('#t_Form001 .c1,#t_Form001 .c2,#t_Form002 .c1,#t_Form002 .c2,#t_Form003 .c1,#t_Form003 .c2,#t_Form004 .c1,#t_Form004 .c2,#t_Form013 .c1,#t_Form013 .c2'))проверитьНулевуюСтоимостьСтроки(e);
+  if(e&&e.matches&&e.matches('#t_Form001 .c1,#t_Form001 .c2,#t_Form002 .c1,#t_Form002 .c2,#t_Form003 .c1,#t_Form003 .c2,#t_Form004 .c1,#t_Form004 .c2,#t_Form013 .c1,#t_Form013 .c2,#t_Form006 .c1,#t_Form006 .c2'))проверитьНулевуюСтоимостьСтроки(e);
 },true);
 
 Object.keys(CAT).forEach(function(f){
@@ -2902,7 +2911,7 @@ function mkBankExtraRow(d){
     '<input type="text" class="bank-extra-name" id="'+nameId+'" aria-label="Название комиссии" '+
     'placeholder="Название комиссии"></div>'+
     '<div class="bank-extra-rate-field"><div class="qf">'+
-    '<input type="number" class="bank-extra-rate" id="'+rateId+'" aria-label="Ставка комиссии" min="0" step="0.1">'+
+    '<input type="number" inputmode="decimal" data-limit-live data-step-live class="bank-extra-rate" id="'+rateId+'" aria-label="Ставка комиссии" min="0" max="100" step="0.1" data-min-message="Вы ввели отрицательное значение. Установлен минимум — 0% банковской комиссии. Проверьте значение." data-max-message="Вы ввели значение выше допустимого. Установлен максимум — 100% для одной дополнительной банковской комиссии. Проверьте значение.">'+
     '<span class="un">%</span></div></div>'+
     '<button class="del" type="button" aria-label="Удалить комиссию">\u00D7</button>';
   row.querySelector('.bank-extra-name').value=d[0]||'';
@@ -2914,10 +2923,17 @@ function mkBankExtraRow(d){
   };
   return row;
 }
+function списокДопКомиссий(){
+  var список=[];
+  R.querySelectorAll('.bank-extra-row').forEach(function(row){
+    var имя=row.querySelector('.bank-extra-name'), ставка=row.querySelector('.bank-extra-rate');
+    if(!ставка)return;
+    список.push({name:имя?String(имя.value||'').trim():'',rate:число(ставка.value)});
+  });
+  return список;
+}
 function суммаДопКомиссий(){
-  var s=0;
-  R.querySelectorAll('.bank-extra-rate').forEach(function(e){s+=число(e.value)});
-  return s;
+  return списокДопКомиссий().reduce(function(s,x){return s+x.rate},0);
 }
 var BANK_ADD=$('bank_add'), BANK_LIST=$('bank_extra_list');
 var BANK_ACQ_GROUP=$('bank_acq_group'), BANK_ACQ_DELETE=$('acq_delete'),
@@ -2987,11 +3003,17 @@ R.querySelectorAll('[data-exc]').forEach(function(cb){
   применитьИсключение(cb);
   cb.onchange=function(){применитьИсключение(cb);recalc()};
 });
+/* Единый слой участия каталогов: это условие используют и финансовая
+   сумма, и пользовательская детализация report. */
+function каталогИсключён(f){
+  if(EXC[f])return true;
+  if((f==='Form003'||f==='Form004')&&EXC['Form008b'])return true;
+  if(f==='Form013'&&EXC['Form009b'])return true;
+  if(f==='Form007'&&EXC['Form015b'])return true;
+  return false;
+}
 function sumF(f){
-  if(EXC[f])return 0;
-  if(f==='Form003'||f==='Form004'){if(EXC['Form008b'])return 0}
-  if(f==='Form013'){if(EXC['Form009b'])return 0}
-  if(f==='Form007'){if(EXC['Form015b'])return 0}
+  if(каталогИсключён(f))return 0;
   var tb=$('t_'+f); if(!tb)return 0; var s=0,k=CAT[f].k;
   tb.querySelectorAll('tr').forEach(function(tr){
     var c=число(tr.querySelector('.c2').value),
@@ -3443,7 +3465,7 @@ function calc(){
   var ответы=[], позиции=[];
   function отв(б,им,зн,ед){ ответы.push({b:б,n:им,v:зн,u:ед||''}) }
   function позКаталога(б,имя){
-    var c=CAT[имя]; if(!c)return;
+    var c=CAT[имя]; if(!c||каталогИсключён(имя))return;
     var tb=$('t_'+имя), стр=tb?tb.querySelectorAll('tr'):[];
     if(стр.length){                       /* что реально стоит в анкете */
       for(var i=0;i<стр.length;i++){
@@ -3458,45 +3480,67 @@ function calc(){
     }
   }
   отв(1,'Желаемый доход',V('income_month'),'₽/мес');
-  отв(2,'Налоговый режим',regimeName(rg),'');
-  отв(2,'С кем вы чаще работаете',
-      ($('npd_who')&&$('npd_who').selectedIndex>=0)?$('npd_who').options[$('npd_who').selectedIndex].text:'','');
+  if(БЕЗ_НАЛОГОВ){
+    отв(2,'Налоговый режим','Не учитывается','');
+  }else{
+    отв(2,'Налоговый режим',regimeName(rg),'');
+    if(/^npd[456]$/.test(rg))отв(2,'С кем вы чаще работаете',
+        ($('npd_who')&&$('npd_who').selectedIndex>=0)?$('npd_who').options[$('npd_who').selectedIndex].text:'','');
+  }
   отв(3,'Текущая ставка',cur,'₽/ч');
   отв(4,'Готовых кадров за 1 час',framesOut,'шт');
   отв(4,'Срабатываний затвора за 1 час',shPerHour,'шт');
   отв(4,'Ресурс затвора',shLife,'шт');
   отв(5,'Минимальный заказ',S,'ч');
   отв(6,'Время на постпродакшн',K,'× ч');
-  отв(7,'Проектная работа с клиентами',cl,'ч');
-  отв(8,'Поиск заказов',V('promo_per_day'),'ч/день');
+  if(!EXC['FormClientTime'])отв(7,'Проектная работа с клиентами',cl,'ч');
+  if(!EXC['FormPromoTime'])отв(8,'Поиск заказов',V('promo_per_day'),'ч/день');
   позКаталога(9,'Form001'); позКаталога(10,'Form002');
   позКаталога(11,'Form003'); позКаталога(11,'Form004');
+  function полеУдалено(id){
+    var e=$(id), row=e&&e.closest?e.closest('.removable-field-row'):null;
+    return !!(row&&row.classList&&row.classList.contains('field-row-removed'));
+  }
   var дома=rad('ws_mode')==='home';
-  отв(12,'Где находится рабочее место',дома?'Дома':'Отдельное помещение','');
-  if(дома){
-    отв(12,'Сколько вы платите за жильё в месяц',homeHousing,'₽/мес');
-    отв(12,'Коммунальные платежи, интернет и связь',V('home_util'),'₽/мес');
-    отв(12,'Общая площадь вашего жилья',V('home_area'),'м²');
-    отв(12,'Сколько метров выделено под рабочую зону',V('cab_area'),'м²');
-  }else{
-    отв(12,'Аренда помещения',V('office_rent'),'₽/мес');
-    отв(12,'Коммунальные платежи, интернет и связь',V('office_util'),'₽/мес');
+  if(!wsEx){
+    отв(12,'Где находится рабочее место',дома?'Дома':'Отдельное помещение','');
+    if(дома){
+      отв(12,'Сколько вы платите за жильё в месяц',homeHousing,'₽/мес');
+      if(!полеУдалено('home_util'))отв(12,'Коммунальные платежи, интернет и связь',V('home_util'),'₽/мес');
+      if(!полеУдалено('home_area'))отв(12,'Общая площадь вашего жилья',V('home_area'),'м²');
+      if(!полеУдалено('cab_area'))отв(12,'Сколько метров выделено под рабочую зону',V('cab_area'),'м²');
+    }else{
+      отв(12,'Аренда помещения',V('office_rent'),'₽/мес');
+      отв(12,'Коммунальные платежи, интернет и связь',V('office_util'),'₽/мес');
+    }
   }
   позКаталога(12,'Form013'); позКаталога(13,'Form006');
-  отв(13,'За сколько лет окупить вложения в обучение',V('edu_life'),'лет');
-  отв(14,'Кто делал сайт',rad('site_mode')==='self'?'Делал сам':'Заказывал у специалистов','');
-  отв(14,'Сколько вы заплатили за создание сайта',V('site_cost'),'₽');
-  отв(14,'Сколько времени вы потратили на создание сайта',V('site_hours'),'ч');
-  отв(14,'За сколько лет окупить вложения в сайт',V('site_life'),'лет');
+  if(!eduEx)отв(13,'За сколько лет окупить вложения в обучение',V('edu_life'),'лет');
+  /* В пользовательские ответы передаём только активную эффективную ветку
+     сайта. Сырые значения другой ветки сохраняются в анкете, но report их
+     не получает; при исключении блока весь набор ответов сайта отсутствует. */
+  if(!siteEx){
+    отв(14,'Кто делал сайт',siteSelf?'Делал сам':'Заказывал у специалистов','');
+    if(siteSelf)отв(14,'Сколько времени вы потратили на создание сайта',V('site_hours'),'ч');
+    else отв(14,'Сколько вы заплатили за создание сайта',V('site_cost'),'₽');
+    отв(14,'За сколько лет окупить вложения в сайт',V('site_life'),'лет');
+  }
   позКаталога(15,'Form010'); позКаталога(16,'Form007');
-  отв(16,($('acq_name')&&$('acq_name').value)||'Эквайринг',V('acq_rate'),'%');
-  отв(16,'Доля безналичных платежей',V('acq_share'),'%');
-  отв(17,'Кто ведёт учёт',self?'Веду сам':'Нанимаю бухгалтера','');
-  if(self)отв(17,'Сколько часов в квартал уходит на отчётность',V('acc_per_quarter'),'ч');
-  else отв(17,'Сколько стоит ведение учёта',V('acc_cost_month'),'₽/мес');
-  отв(18,'Резерв времени на простой и форс-мажоры',$('fm_on').checked?V('fm_pct'):null,'%');
-  отв(19,'Фонд развития',fundP>0?fundP*100:null,'%');
-  отв(20,'Запас на скидку',discP>0?discP*100:null,'%');
+  if(!EXC['Form015b']){
+    if(BANK_ACQ_ON){
+      отв(16,($('acq_name')&&$('acq_name').value)||'Эквайринг',V('acq_rate'),'%');
+      отв(16,'Доля безналичных платежей',V('acq_share'),'%');
+    }
+    списокДопКомиссий().forEach(function(x){if(x.name)отв(16,x.name,x.rate,'%')});
+  }
+  if(!accEx){
+    отв(17,'Кто ведёт учёт',self?'Веду сам':'Нанимаю бухгалтера','');
+    if(self)отв(17,'Сколько часов в квартал уходит на отчётность',V('acc_per_quarter'),'ч');
+    else отв(17,'Сколько стоит ведение учёта',V('acc_cost_month'),'₽/мес');
+  }
+  if(CHK('fm_on'))отв(18,'Резерв времени на простой и форс-мажоры',V('fm_pct'),'%');
+  if(CHK('fund_on'))отв(19,'Фонд развития',fundP*100,'%');
+  if(CHK('disc_on'))отв(20,'Запас на скидку',discP*100,'%');
 
   return{answers:ответы,catalog:позиции,
     frames:framesOut,NT:NT,idle:idle,pool:pool,

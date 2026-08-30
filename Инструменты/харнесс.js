@@ -32,6 +32,7 @@ const КОНСТ1 = срез(CJS, 'var FIX=', 'WM=11;');
 const КОНСТ2 = срез(CJS, 'var WD=', 'DW=5;');
 const КОНСТ3 = срез(CJS, 'var ND=WD-VAC-SICK', ';');
 const КАТ    = срез(CJS, 'var CAT={', '\nvar EXC={').replace('\nvar EXC={', '');
+const ФКАТИСКЛ = функция(CJS, 'каталогИсключён');
 const ФКАЛК  = функция(CJS, 'calc')
   + (CJS.includes('function посчитать(') ? '\nvar _кэш=null;\nfunction сброситьКэш(){_кэш=null}\n' + функция(CJS, 'посчитать') : '');
 const ФПАРТС = функция(RJS, 'parts');
@@ -73,11 +74,18 @@ Object.keys(CAT_OVERRIDE).forEach(function(k){CAT[k]=CAT_OVERRIDE[k]});
 var ПОЛЯ=${JSON.stringify(ПОЛЯ_ВНЕШ)}, РАДИО=${JSON.stringify(РАДИО_ВНЕШ)}, EXC=${JSON.stringify(EXC_ВНЕШ)};
 var BANK_ACQ_ON = ${ПЕРЕОПР.BANK_ACQ_ON === false ? 'false' : 'true'};
 var ДОПКОМИССИИ = ${JSON.stringify(ПЕРЕОПР.допКомиссии || 0)};
+var УДАЛЕНЫ = ${JSON.stringify(ПЕРЕОПР.удалены || [])};
 function число(v){ v=String(v==null?'':v).replace(/\\s|\\u00a0/g,'').replace(',', '.'); var n=parseFloat(v); return isFinite(n)?n:0 }
 function V(id){ return число(ПОЛЯ[id]) }
 function CHK(id){ return !!ПОЛЯ[id] }
 function rad(n){ return РАДИО[n] || '' }
-function суммаДопКомиссий(){ return ДОПКОМИССИИ }
+function списокДопКомиссий(){
+  if(Array.isArray(ДОПКОМИССИИ))return ДОПКОМИССИИ.map(function(x){
+    return Array.isArray(x)?{name:String(x[0]||''),rate:число(x[1])}:{name:String(x.name||''),rate:число(x.rate)};
+  });
+  return число(ДОПКОМИССИИ)?[{name:'Дополнительная комиссия',rate:число(ДОПКОМИССИИ)}]:[];
+}
+function суммаДопКомиссий(){ return списокДопКомиссий().reduce(function(s,x){return s+x.rate},0) }
 function $(id){
   if(id==='regime') return {value: ПОЛЯ.regime};
   if(id==='npd_who') return {value: ПОЛЯ.npd_who};
@@ -85,14 +93,17 @@ function $(id){
   if(id==='t_Form006') return {querySelectorAll:function(){ 
       return CAT.Form006.rows.map(function(r){ return {querySelector:function(s){ 
         return {value: s==='.c2'? r[1] : r[2]} }} }) }};
+  if(id in ПОЛЯ) return {value:ПОЛЯ[id],checked:!!ПОЛЯ[id],closest:function(sel){
+      if(sel==='.removable-field-row'&&УДАЛЕНЫ.indexOf(id)>=0)
+        return {classList:{contains:function(c){return c==='field-row-removed'}}};
+      return null;
+    }};
   return null;
 }
-/* sumF поверх CAT — правила исключений те же, что в оригинале */
+${ФКАТИСКЛ}
+/* sumF поверх CAT использует тот же слой исключения, что оригинал. */
 function sumF(f){
-  if(EXC[f]) return 0;
-  if((f==='Form003'||f==='Form004') && EXC['Form008b']) return 0;
-  if(f==='Form013' && EXC['Form009b']) return 0;
-  if(f==='Form007' && EXC['Form015b']) return 0;
+  if(каталогИсключён(f)) return 0;
   var c=CAT[f]; if(!c) return 0; var s=0;
   c.rows.forEach(function(r){ var цена=r[1], x=r[2];
     if(c.k==='months') return;
