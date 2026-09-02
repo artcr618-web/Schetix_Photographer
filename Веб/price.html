@@ -4,6 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Прайс фотографа — Счётикс</title>
+<!-- html2pdf.js — формирование PDF-файла кнопкой «Скачать» (CDN). Если сеть
+     недоступна (офлайн/предпросмотр), скрипт мягко откатывается на диалог
+     печати «Сохранить как PDF». -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" defer></script>
 </head><body>
 
 <!-- ══════════════════════════════════════════════════════════════════
@@ -43,14 +47,32 @@ padding:40px clamp(8px,2.5vw,16px) 60px;display:block;min-height:100vh}
 
 /* ---------- карточки (канон отчёта) ---------- */
 #phr-root .card{background:#fff;border-radius:var(--r);padding:26px 28px;box-shadow:var(--sh);
-margin-bottom:16px;position:relative;padding-bottom:62px}
-#phr-root .bn{position:absolute;left:30px;right:30px;bottom:18px;
-padding-top:14px;border-top:1px solid var(--c-ln2);
-font-size:13px;font-weight:800;color:rgba(31,41,55,.34);
-letter-spacing:.06em;line-height:1;text-align:right;
-mix-blend-mode:multiply;pointer-events:none}
-@media(max-width:700px){#phr-root .bn{left:20px;right:20px;bottom:16px}
-#phr-root .card{padding-bottom:58px}}
+margin-bottom:16px;position:relative}
+
+/* ---------- нижняя строка блока: галочка «не учитывать» + номер + разделитель ----------
+   Канон calc.html (.card-foot/.exc/.bn): линия внизу каждого блока, слева
+   галочка исключения, справа номер блока. Есть и у блоков на фоне (.pc-sect),
+   и у карточек (.card). */
+#phr-root .card-foot{display:flex;align-items:center;width:100%;min-height:18px;
+margin-top:22px;padding-top:18px;border-top:1px solid var(--c-ln)}
+#phr-root .pc-sect > .card-foot{border-top:1px solid var(--c-ln)}
+#phr-root .card-foot .exc{flex:1;min-width:0;margin:0;padding:0;border:0}
+#phr-root .exc{display:flex;align-items:center;gap:9px;color:var(--gr);font-size:13.5px;cursor:pointer}
+#phr-root .exc input{width:17px;height:17px;accent-color:var(--c-r-500);
+cursor:pointer;flex:none;transition:filter .15s;margin:0}
+#phr-root .exc:hover input{filter:brightness(1.15) saturate(1.3)}
+#phr-root .exc:has(input:checked){color:var(--c-r-600);font-weight:600}
+#phr-root .bn{flex:none;margin-left:auto;padding-left:18px;
+font-size:13px;font-weight:800;color:rgba(31,41,55,.42);
+letter-spacing:.04em;line-height:1;white-space:nowrap;text-align:right}
+@media(max-width:700px){#phr-root .card-foot{margin-top:20px;padding-top:16px}
+#phr-root .bn{padding-left:12px}}
+
+/* Исключённый из прайса блок: приглушаем содержимое и запираем ввод; нижняя
+   строка (галочка + номер) остаётся активной, чтобы блок можно было вернуть. */
+#phr-root .card.off > :not(.card-foot),
+#phr-root .pc-sect.off > :not(.card-foot){opacity:.5;transition:opacity .18s;pointer-events:none}
+#phr-root .card.off > .card-foot,#phr-root .pc-sect.off > .card-foot{opacity:1}
 
 /* ---------- заголовки и подводки (канон) ---------- */
 #phr-root h2{font-size:20px;font-weight:600;margin-bottom:5px;letter-spacing:-.01em}
@@ -328,21 +350,40 @@ padding:6px 18px 18px;background:var(--c-white);box-shadow:0 2px 10px rgba(16,24
    значок «!», янтарный фон, пунктирная рамка. Первый абзац виден всегда;
    остальное раскрывается по клику. Работает без JS (details/summary).
    Значок «!» и рамку/фон даёт общий класс .note.warn — здесь только раскладка. */
-#phr-root .pc-explain{margin:16px 0 4px;overflow:hidden}
+/* Уведомление «как считаются цены» — ГОЛУБОЕ (info-notice, канон calc.html):
+   голубая рамка/фон, синий значок «!». Это информация, а не предупреждение
+   (жёлтый цвет в проекте зарезервирован под предупреждения). Внутри —
+   разворачивающийся список: заголовок + первый абзац видны всегда, остальное
+   раскрывается по ссылке «Показать ещё». Работает без JS (details/summary). */
+#phr-root .pc-explain.info-notice{position:relative;margin:16px 0 4px;
+padding:15px 18px 15px 50px;border:1.5px solid var(--c-b-400);border-radius:14px;
+background:var(--c-b-50);color:var(--c-ink2);overflow:hidden}
+#phr-root .pc-explain.info-notice:before{content:'!';position:absolute;
+left:16px;top:15px;width:22px;height:22px;border-radius:50%;display:flex;
+align-items:center;justify-content:center;background:var(--c-b-500);color:var(--c-white);
+font-size:13px;font-weight:700}
 #phr-root .pc-explain>summary{display:block;cursor:pointer;list-style:none;user-select:none}
 #phr-root .pc-explain>summary::-webkit-details-marker{display:none}
 #phr-root .pc-explain .pce-head{display:flex;align-items:center;gap:10px;
-font-size:13.5px;font-weight:700;color:var(--c-a-900)}
+font-size:14px;font-weight:700;color:var(--c-b-800)}
 #phr-root .pc-explain .pce-head .pce-ch{width:18px;height:18px;flex:none;
-margin-left:auto;color:var(--c-a-800);transition:transform .2s}
+margin-left:auto;color:var(--c-b-700);transition:transform .2s}
 #phr-root .pc-explain[open] .pce-head .pce-ch{transform:rotate(180deg)}
-#phr-root .pc-explain .pce-lead{display:block;margin-top:8px;font-size:13px;
-line-height:1.6;color:var(--c-a-800)}
-#phr-root .pc-explain[open] .pce-lead{display:none}
+#phr-root .pc-explain .pce-first{margin:8px 0 0;font-size:13px;line-height:1.6;color:var(--c-ink2)}
+#phr-root .pc-explain .pce-more{display:inline-block;margin-top:8px;font-size:13px;
+font-weight:600;color:var(--c-b-700);text-decoration:underline;text-underline-offset:2px}
+#phr-root .pc-explain[open] .pce-more{display:none}
 #phr-root .pc-explain .pce-body{padding:0}
-#phr-root .pc-explain .pce-body p{font-size:13px;line-height:1.6;color:var(--c-a-800);margin:8px 0 0}
+#phr-root .pc-explain .pce-body p{font-size:13px;line-height:1.6;color:var(--c-ink2);margin:8px 0 0}
 #phr-root .pc-explain .pce-body p:first-child{margin-top:8px}
-#phr-root .pc-explain .pce-body b{color:var(--c-a-900);font-weight:700}
+#phr-root .pc-explain .pce-body b{color:var(--c-b-900);font-weight:700}
+#phr-root .pc-explain .pce-body a.refl{color:var(--c-b-700);font-weight:600}
+
+/* ---------- заголовок смыслового РАЗДЕЛА (канон calc.html .sect) ---------- */
+#phr-root .sect{margin:44px 0 22px;position:relative}
+#phr-root .sect h2{font-size:30px;font-weight:700;letter-spacing:-.02em;margin-bottom:8px;padding:0}
+#phr-root .sect .ss{color:var(--gr);font-size:15px;max-width:760px;line-height:1.55}
+@media(max-width:700px){#phr-root .sect{margin:32px 0 18px}#phr-root .sect h2{font-size:24px}}
 
 /* Базовая ставка — плашка по правилам проекта (заголовок сверху,
    крупная цифра, линия, описание снизу). Не «зелёная строка». */
@@ -819,6 +860,55 @@ display:flex;justify-content:space-between;text-transform:lowercase}
 #phr-root .wp > .pc-print-wide{margin-top:8px}
 @media print{#phr-root .pc-print-wide{display:none!important}}
 
+/* ═══════════ ОКНО «ПОДЕЛИТЬСЯ» (канон report.html .shm) ═══════════ */
+#phr-root .shm{position:fixed;inset:0;z-index:90;display:none;
+align-items:center;justify-content:center;padding:20px;overflow:auto}
+#phr-root .shm.on{display:flex}
+html.shm-стоп,html.shm-стоп body{overflow:hidden}
+#phr-root .shm,#phr-root .shm *{box-sizing:border-box}
+#phr-root .shm-фон{position:fixed;inset:0;background:rgba(26,26,26,.55);
+backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+#phr-root .shm-окно{position:relative;z-index:1;width:100%;max-width:500px;min-width:296px;
+margin:auto;background:var(--c-white);border-radius:var(--r);padding:34px 34px 30px;
+box-shadow:0 18px 60px rgba(16,24,40,.28);text-align:center}
+#phr-root .shm button.shm-крестик{position:absolute;top:14px;right:16px;z-index:2;width:34px;height:34px;
+border:0;border-radius:12px;background:rgba(16,24,40,.05);color:var(--c-gr);
+font-size:22px;line-height:1;cursor:pointer;transition:background .18s,color .18s}
+#phr-root .shm button.shm-крестик:hover{background:rgba(16,24,40,.09);color:var(--c-ink)}
+#phr-root .shm-заголовок{font-size:21px;font-weight:600;letter-spacing:-.02em;
+line-height:1.25;color:var(--c-ink3);margin-bottom:8px}
+#phr-root .shm-слоган{max-width:28em;margin:0 auto;font-size:13.5px;line-height:1.6;color:var(--c-gr)}
+#phr-root .shm-ряд{display:flex;justify-content:center;gap:16px;margin-top:26px}
+#phr-root .shm button.shm-знак{position:relative;display:flex;align-items:center;justify-content:center;
+width:44px;height:44px;padding:0;border:0;background:transparent;cursor:pointer}
+#phr-root .shm button.shm-знак svg{display:block;width:44px;height:44px;border-radius:14px}
+#phr-root .shm button.shm-знак:active svg{opacity:.85}
+#phr-root .shm button.shm-знак:after,#phr-root .shm button.shm-копия:after{content:attr(data-подпись);position:absolute;
+top:calc(100% + 9px);left:50%;transform:translateX(-50%) translateY(-4px);
+padding:9px 13px;border-radius:12px;background:var(--c-white);color:var(--c-ink);
+border:1px solid var(--c-ln);font-size:12.5px;font-weight:600;white-space:nowrap;
+opacity:0;pointer-events:none;z-index:3;
+box-shadow:0 8px 28px rgba(16,24,40,.16);transition:opacity .16s,transform .16s}
+#phr-root .shm button.shm-знак:hover:after{opacity:1;transform:translateX(-50%)}
+#phr-root .shm button.shm-копия:after{top:auto;bottom:calc(100% + 9px);transform:translateX(-50%) translateY(4px)}
+#phr-root .shm button.shm-копия:hover:after{opacity:1;transform:translateX(-50%)}
+#phr-root .shm-строка{display:flex;align-items:center;gap:10px;margin-top:24px}
+#phr-root .shm input.shm-поле{flex:1 1 auto;min-width:0;height:46px;padding:0 15px;
+border:1.5px solid var(--c-ln);border-radius:14px;background:var(--c-white);
+font-family:inherit;font-size:13.5px;color:var(--c-gr);
+text-overflow:ellipsis;outline:none;cursor:text}
+#phr-root .shm input.shm-поле:focus{border-color:var(--c-b-300);color:var(--c-ink3)}
+#phr-root .shm button.shm-копия{position:relative;display:flex;align-items:center;justify-content:center;
+width:46px;height:46px;flex:none;padding:0;border:1.5px solid var(--c-ln);
+border-radius:14px;background:var(--c-white);color:var(--c-ink3);cursor:pointer;
+transition:border-color .16s,color .16s}
+#phr-root .shm button.shm-копия svg{width:20px;height:20px}
+#phr-root .shm button.shm-копия:hover{border-color:var(--c-b-300);color:var(--c-b-700)}
+@media(max-width:600px){#phr-root .shm{padding:14px}
+#phr-root .shm-окно{padding:28px 20px 26px}
+#phr-root .shm-заголовок{font-size:19px}
+#phr-root .shm-ряд{gap:12px}}
+
 </style>
 
 
@@ -895,11 +985,10 @@ display:flex;justify-content:space-between;text-transform:lowercase}
 </div>
 </div>
 
-<!-- ═══ БЛОК: КОММЕРЧЕСКАЯ ФОТОСЪЁМКА (основной раздел, на фоне без подложки) ═══ -->
-<section class="pc-sect" data-block-id="PRICE-B003" data-block-name="Коммерческая фотосъёмка">
+<!-- ═══ БЛОК 1: КОММЕРЧЕСКАЯ ФОТОСЪЁМКА (основной раздел, на фоне без подложки, БЕЗ рамки) ═══ -->
+<section class="pc-sect" id="pcBlockVol" data-block-id="PRICE-B003" data-block-name="Коммерческая фотосъёмка" data-exc="vol">
 <h2 class="big-h">Коммерческая фотосъёмка</h2>
 <p class="hint ctr">Стоимость съёмочного проекта по длительности. Цены рассчитаны из вашей базовой ставки часа — той же, что и во всех расчётах, — со скидкой за объём и вариантом срочного заказа.</p>
-<div class="pc-box">
 <table class="dt voltab" id="pcVol"><thead><tr>
 <th style="width:28%">Длительность съёмки, часов</th>
 <th style="width:18%">Цена за час</th>
@@ -907,11 +996,11 @@ display:flex;justify-content:space-between;text-transform:lowercase}
 <th style="width:18%" class="th-fast">Срочный заказ</th>
 <th style="width:16%">Скидка за объём</th>
 </tr></thead><tbody id="pcVolBody"></tbody></table>
-</div>
+<div class="card-foot"><label class="exc"><input type="checkbox" data-exc-cb="vol">Не учитывать этот блок в прайсе</label><span class="bn">Блок 1</span></div>
 </section>
 
-<!-- ═══ БЛОК: ДОПОЛНИТЕЛЬНЫЕ УСЛУГИ К СЪЁМКЕ (с подложкой) ═══════════ -->
-<section class="card" data-block-id="PRICE-B004" data-block-name="Дополнительные услуги к съёмке">
+<!-- ═══ БЛОК 2: ДОПОЛНИТЕЛЬНЫЕ УСЛУГИ К СЪЁМКЕ (с подложкой, редактируемый) ═══════════ -->
+<section class="card" id="pcBlockT1" data-block-id="PRICE-B004" data-block-name="Дополнительные услуги к съёмке" data-exc="t1">
 <h2>Дополнительные услуги к заказанной съёмке</h2>
 <p class="hint">Услуги, которые идут вместе с заказанной съёмкой. Общение с клиентом уже оплачено съёмочным часом — надбавки за ведение нет. Добавляйте свои позиции: цену посчитает конструктор.</p>
 <div class="pc-box">
@@ -941,21 +1030,32 @@ display:flex;justify-content:space-between;text-transform:lowercase}
 </tbody></table>
 <button type="button" class="add" data-add="pcT1">+ Добавить услугу</button>
 </div>
+<div class="card-foot"><label class="exc"><input type="checkbox" data-exc-cb="t1">Не учитывать этот блок в прайсе</label><span class="bn">Блок 2</span></div>
 </section>
 
-<!-- ═══ БЛОК: ОТДЕЛЬНЫЕ УСЛУГИ — консультация + услуги отдельным заказом (с подложкой) ═══ -->
-<section class="card" data-block-id="PRICE-B005" data-block-name="Отдельные услуги">
+<!-- ═══ РАЗДЕЛ: ОТДЕЛЬНЫЕ УСЛУГИ (заголовок раздела в стиле calc.html; ниже — отдельные блоки) ═══ -->
+<div class="sect pc-secthead" data-block-id="PRICE-B0S1" data-block-name="Отдельные услуги">
 <h2>Отдельные услуги</h2>
-<p class="hint">Услуги, которые заказывают без съёмки. Консультация оплачивается по времени; к услугам отдельным заказом добавляется 40 минут на ведение клиента — один раз на весь заказ.</p>
-<div class="pc-cap first">Консультация</div>
+<p class="ss">Услуги, которые заказывают без съёмки: консультация по времени и услуги отдельным заказом. К услугам отдельным заказом добавляется 40 минут на ведение клиента — один раз на весь заказ.</p>
+</div>
+
+<!-- ═══ БЛОК 3: КОНСУЛЬТАЦИЯ (отдельный блок с подложкой) ═══ -->
+<section class="card" id="pcBlockCons" data-block-id="PRICE-B005" data-block-name="Консультация" data-exc="cons">
+<h2>Консультация</h2>
+<p class="hint">Консультация оплачивается по времени. Срочная надбавка к консультации не применяется.</p>
 <div class="pc-box">
 <table class="dt constab" id="pcCons"><thead><tr>
 <th style="width:50%">Длительность консультации</th>
 <th style="width:50%">Цена</th>
 </tr></thead><tbody id="pcConsBody"></tbody></table>
 </div>
-<div class="pc-splitrule" role="separator" aria-hidden="true"></div>
-<div class="pc-cap">Услуги отдельным заказом</div>
+<div class="card-foot"><label class="exc"><input type="checkbox" data-exc-cb="cons">Не учитывать этот блок в прайсе</label><span class="bn">Блок 3</span></div>
+</section>
+
+<!-- ═══ БЛОК 4: УСЛУГИ ОТДЕЛЬНЫМ ЗАКАЗОМ (отдельный блок с подложкой, редактируемый) ═══ -->
+<section class="card" id="pcBlockT2" data-block-id="PRICE-B006" data-block-name="Услуги отдельным заказом" data-exc="t2">
+<h2>Услуги отдельным заказом</h2>
+<p class="hint">Услуги без съёмки. К заказу добавляется 40 минут на ведение клиента — один раз на весь заказ, сколько бы кадров в нём ни было.</p>
 <div class="pc-box">
 <table class="dt" id="pcT2" data-mode="order"><thead><tr>
 <th style="width:32%">Услуга</th><th style="width:20%">Тратите времени</th>
@@ -983,14 +1083,22 @@ display:flex;justify-content:space-between;text-transform:lowercase}
 </tbody></table>
 <button type="button" class="add" data-add="pcT2">+ Добавить услугу</button>
 </div>
+<div class="card-foot"><label class="exc"><input type="checkbox" data-exc-cb="t2">Не учитывать этот блок в прайсе</label><span class="bn">Блок 4</span></div>
 </section>
 
-<!-- ═══ БЛОК: УВЕДОМЛЕНИЕ «как считаются цены» (на фоне без подложки) ═══ -->
-<section class="pc-sect" data-block-id="PRICE-B006" data-block-name="Как считаются цены">
-<details class="pc-explain note warn">
+<!-- ═══ БОЛЬШАЯ КНОПКА ПЕЧАТИ (сразу после блоков, НАД уведомлением) ═══════════════════ -->
+<button type="button" class="pc-print-wide js-print-price" data-block-id="PRICE-B007" data-block-name="Распечатать прайс">
+<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 9V4h10v5M7 19h10v-5H7v5Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M7 15H4v-6h16v6h-3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+Распечатать прайс
+</button>
+
+<!-- ═══ БЛОК: УВЕДОМЛЕНИЕ «как считаются цены» (голубое, разворачивающийся список) ═══ -->
+<section class="pc-sect" data-block-id="PRICE-B009" data-block-name="Как считаются цены">
+<details class="pc-explain info-notice">
 <summary>
 <span class="pce-head">Как считаются цены, срочный заказ и работа в выходные?<svg class="pce-ch" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-<span class="pce-lead">Цены в прайсе — не выдумка: они посчитаны из вашей базовой ставки часа, той же, что и во всех расчётах. Нажмите, чтобы увидеть, откуда берётся каждая сумма, чем отличается срочный заказ и работа в выходные.</span>
+<p class="pce-first">Цены в прайсе — не выдумка: они посчитаны из вашей базовой ставки часа, той же, что и во всех расчётах.</p>
+<span class="pce-more">Показать ещё</span>
 </summary>
 <div class="pce-body">
 <p>Цена каждой услуги считается из вашей базовой ставки часа: сколько времени уходит на одну единицу работы (например, на один кадр), умноженное на количество единиц. «Тратите времени» — это время на одну единицу, а «Кол-во» — сколько их в пакете: для ретуши пяти кадров укажите время одного кадра и количество 5.</p>
@@ -1002,12 +1110,6 @@ display:flex;justify-content:space-between;text-transform:lowercase}
 </div>
 </details>
 </section>
-
-<!-- ═══ БОЛЬШАЯ КНОПКА ПЕЧАТИ (под всеми блоками) ═══════════════════ -->
-<button type="button" class="pc-print-wide js-print-price" data-block-id="PRICE-B007" data-block-name="Распечатать прайс">
-<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 9V4h10v5M7 19h10v-5H7v5Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M7 15H4v-6h16v6h-3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-Распечатать прайс
-</button>
 
 <!-- ═══ ПОДВАЛ (канон report.html) ══════════════════════════════════ -->
 <div class="foot" data-block-id="PRICE-B008" data-block-name="Подвал"><span class="lgs" title="Счётикс — твоя юнит-экономика"><span class="btx"><span class="bt">счётикс</span><span class="bd" data-t="bt_02"><i>т</i><i>в</i><i>о</i><i>я</i><i>&nbsp;</i><i>ю</i><i>н</i><i>и</i><i>т</i><i>-</i><i>э</i><i>к</i><i>о</i><i>н</i><i>о</i><i>м</i><i>и</i><i>к</i><i>а</i></span></span><svg class="lx" viewBox="0 0 32 32" fill="none" aria-hidden="true"><rect x="10.95" y="2.09" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 7.14)" fill="var(--c-gr3)"/><rect x="19.81" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 24.86 16)" fill="var(--c-g-500)"/><rect x="10.95" y="19.81" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 24.86)" fill="var(--c-gr3)"/><rect x="2.09" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 7.14 16)" fill="var(--c-gr3)"/></svg></span>
@@ -1025,6 +1127,37 @@ display:flex;justify-content:space-between;text-transform:lowercase}
      в стиле «Подробной детализации» report.html: заголовок + строки,
      без полей ввода и без рамок конструктора. -->
 <div id="pc-print-view" aria-hidden="true"></div>
+
+<!-- ═══ ОКНО «ПОДЕЛИТЬСЯ» (канон report.html .shm) — делимся ссылкой ═══ -->
+<div class="shm" id="shModal">
+  <div class="shm-фон" data-шзакрыть></div>
+  <div class="shm-окно" role="dialog" aria-modal="true" aria-labelledby="shmЗаголовок">
+    <button class="shm-крестик" type="button" data-шзакрыть aria-label="Закрыть">×</button>
+
+    <div class="shm-заголовок" id="shmЗаголовок">Поделиться прайсом</div>
+    <div class="shm-слоган">Отправьте клиенту ссылку на этот прайс — он откроется с теми же ценами.</div>
+
+    <div class="shm-ряд">
+      <button type="button" class="shm-знак shm-vk" data-куда="vk" data-подпись="Поделиться ВКонтакте" aria-label="Поделиться ВКонтакте">
+        <svg viewBox="0 0 48 48" fill="none" aria-hidden="true"><rect width="48" height="48" rx="14" fill="#0077FF"/><path d="M25.4 33.2c-9.4 0-15.5-6.7-15.7-17.8h4.9c.1 8.1 3.8 11.5 6.6 12.2V15.4h4.7v6.9c2.7-.3 5.6-3.5 6.6-6.9h4.6c-.8 4.2-3.8 7.4-5.9 8.7 2.1 1.1 5.5 3.9 6.8 9.1h-5.1c-1-3.2-3.6-5.7-7-6v6H25.4Z" fill="#fff"/></svg>
+      </button>
+      <button type="button" class="shm-знак shm-tg" data-куда="tg" data-подпись="Поделиться в Telegram" aria-label="Поделиться в Telegram">
+        <svg viewBox="0 0 48 48" fill="none" aria-hidden="true"><rect width="48" height="48" rx="14" fill="#29A9EB"/><path d="M35.6 14.1 31.2 34c-.3 1.4-1.2 1.8-2.4 1.1l-6.6-4.9-3.2 3.1c-.4.4-.7.6-1.3.6l.5-6.7 12.2-11c.5-.5-.1-.7-.8-.3L14.4 26 7.9 24c-1.4-.4-1.4-1.4.3-2l25.1-9.7c1.2-.4 2.2.3 1.8 1.8Z" fill="#fff"/></svg>
+      </button>
+      <button type="button" class="shm-знак shm-wa" data-куда="max" data-подпись="Ещё…" aria-label="Другие способы">
+        <svg viewBox="0 0 48 48" fill="none" aria-hidden="true"><rect width="48" height="48" rx="14" fill="#158026"/><path d="M18 24a6 6 0 1 1 0 .1M30 15.5a3 3 0 1 1 0 .1M30 32.5a3 3 0 1 1 0 .1" stroke="#fff" stroke-width="2.2"/><path d="m21.5 21.5 6-3.8M21.5 26.5l6 3.8" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+
+    <div class="shm-строка">
+      <input class="shm-поле" id="shmАдрес" type="text" readonly value="" aria-label="Ссылка на прайс">
+      <button type="button" class="shm-копия" data-куда="copy" data-подпись="Скопировать ссылку" aria-label="Скопировать ссылку">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2.6" stroke="currentColor" stroke-width="1.9"/><path d="M15 5.6A2.6 2.6 0 0 0 12.4 3H6.6A2.6 2.6 0 0 0 4 5.6v5.8A2.6 2.6 0 0 0 6.6 14" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+
+  </div>
+</div>
 
 </div><!-- /phr-root -->
 <script>
@@ -1518,10 +1651,13 @@ function ИНИЦ_ПРАЙСА(){
      заголовок и её строки. Пустые таблицы пропускаем целиком. */
   function секцииТаблиц(пусто){
     var есть = 0;
+    var EXC = КОРЕНЬ.EXC || {};
     /* Секция конструктора (T1/T2) → печатный HTML c заголовком таблицы. */
     function отКонструктора(id){
       var т = document.getElementById(id);
       if(!т) return '';
+      var блок = т.closest('[data-exc]');
+      if(блок && EXC[блок.getAttribute('data-exc')]) return '';   /* блок исключён из прайса */
       var таблицаHTML = печатнаяТаблица(т);
       if(!таблицаHTML) return '';           /* нет данных — секцию не создаём */
       var бокс = т.closest('.pc-box');
@@ -1543,12 +1679,12 @@ function ИНИЦ_ПРАЙСА(){
     }
     /* ── РАЗДЕЛ 1: съёмка + доп. услуги к съёмке ── */
     var г1 = '';
-    var vt = печатнаяТаблицаОбъём();
+    var vt = EXC['vol'] ? '' : печатнаяТаблицаОбъём();
     if(vt){ г1 += '<div class="pv-sect">' + vt + '</div>'; есть++; }
     г1 += отКонструктора('pcT1');
     /* ── РАЗДЕЛ 2: консультация (отдельным разделом, перед отдельными заказами) ── */
     var гк = '';
-    var ct = печатнаяТаблицаКонс();
+    var ct = EXC['cons'] ? '' : печатнаяТаблицаКонс();
     if(ct){ гк += '<div class="pv-sect">' + ct + '</div>'; есть++; }
     /* ── РАЗДЕЛ 3: услуги отдельным заказом ── */
     var г2 = отКонструктора('pcT2');
@@ -1680,13 +1816,54 @@ function ИНИЦ_ПРАЙСА(){
       }catch(e){ мимо(); }
     }
   }
-  function поделитьсяПрайсом(){
-    if(navigator.share){
-      navigator.share({ title: титулПрайса(), url: location.href })
-        .catch(function(){ /* пользователь отменил — ничего не делаем */ });
-      return;
+  /* ── Окно «Поделиться» (канон report.html .shm): делимся ССЫЛКОЙ.
+        Всегда показываем модальное окно (не полагаемся только на системный
+        Web Share, которого на десктопе может не быть). Внутри — кнопки VK,
+        Telegram, «Ещё…» (системное окно, где есть) и копирование ссылки. ── */
+  (function(){
+    var окно = document.getElementById('shModal');
+    if(!окно) return;
+    var поле = document.getElementById('shmАдрес');
+    function ссылка(){ return location.href; }
+    function показатьАдрес(){ if(поле) поле.value = ссылка().replace(/^https?:\/\//,''); }
+    показатьАдрес();
+    function открыть(){ окно.classList.add('on'); document.documentElement.classList.add('shm-стоп'); показатьАдрес(); }
+    function закрыть(){ окно.classList.remove('on'); document.documentElement.classList.remove('shm-стоп'); }
+    window.__открытьПоделиться = открыть;
+    окно.querySelectorAll('[data-шзакрыть]').forEach(function(э){ э.onclick = закрыть; });
+    document.addEventListener('keydown', function(e){ if(e.key === 'Escape' && окно.classList.contains('on')) закрыть(); });
+    if(поле) поле.onclick = function(){ this.select(); };
+    function тост(текст){ alert(текст); }
+    function копировать(тихо){
+      var url = ссылка();
+      var ок = function(){ if(!тихо) тост('Ссылка скопирована'); };
+      var мимо = function(){ тост('Не получилось скопировать — выделите адрес и скопируйте вручную'); };
+      if(navigator.clipboard && navigator.clipboard.writeText){
+        navigator.clipboard.writeText(url).then(ок, мимо);
+      }else if(поле){
+        поле.removeAttribute('readonly'); поле.value = url; поле.select();
+        try{ document.execCommand('copy'); ок(); }catch(e){ мимо(); }
+        поле.setAttribute('readonly','readonly'); показатьАдрес();
+      }else{ мимо(); }
     }
-    /* Системного окна нет (десктоп/старый браузер) — копируем ссылку. */
+    окно.querySelectorAll('[data-куда]').forEach(function(б){
+      б.onclick = function(){
+        var куда = б.getAttribute('data-куда');
+        var url = encodeURIComponent(ссылка());
+        var txt = encodeURIComponent(титулПрайса());
+        if(куда === 'vk'){ window.open('https://vk.com/share.php?url=' + url + '&title=' + txt, '_blank', 'noopener'); закрыть(); return; }
+        if(куда === 'tg'){ window.open('https://t.me/share/url?url=' + url + '&text=' + txt, '_blank', 'noopener'); закрыть(); return; }
+        if(куда === 'max'){
+          if(navigator.share){ navigator.share({ title: титулПрайса(), url: ссылка() }).then(закрыть, function(){}); }
+          else{ копировать(true); тост('Ссылка скопирована — вставьте её, куда нужно'); закрыть(); }
+          return;
+        }
+        копировать(); закрыть();
+      };
+    });
+  })();
+  function поделитьсяПрайсом(){
+    if(window.__открытьПоделиться){ window.__открытьПоделиться(); return; }
     копироватьСсылку();
   }
 
@@ -1702,10 +1879,65 @@ function ИНИЦ_ПРАЙСА(){
     window.print();
   }
 
+  /* ── Скачать PDF: формируем настоящий PDF-файл библиотекой html2pdf из
+        печатного слепка #pc-print-view. Если библиотека не загрузилась
+        (офлайн/предпросмотр) — мягко откатываемся на диалог печати
+        «Сохранить как PDF». ── */
+  function скачатьPDF(){
+    собратьПечать();
+    if(typeof window.html2pdf === 'undefined'){ печатьПрайса(); return; }
+    var вид = document.getElementById('pc-print-view');
+    if(!вид){ печатьПрайса(); return; }
+    /* Слепок скрыт (display:none) — на время экспорта делаем его видимым
+       за пределами экрана, чтобы html2pdf отрисовал его в canvas. */
+    var прежн = вид.getAttribute('style') || '';
+    вид.setAttribute('style', 'display:block;position:fixed;left:-10000px;top:0;width:186mm;background:#fff;padding:6mm;');
+    var имяФайла = (function(){
+      var имяЭл = document.getElementById('phName');
+      var имя = имяЭл ? имяЭл.textContent.trim() : '';
+      return (имя ? 'Прайс — ' + имя : 'Прайс фотографа') + '.pdf';
+    })();
+    var opt = {
+      margin:[10,10,14,10],
+      filename: имяФайла,
+      image:{ type:'jpeg', quality:0.98 },
+      html2canvas:{ scale:2, useCORS:true, backgroundColor:'#ffffff' },
+      jsPDF:{ unit:'mm', format:'a4', orientation:'portrait' },
+      pagebreak:{ mode:['css','legacy'], avoid:['.pv-sect','tr'] }
+    };
+    var вернуть = function(){ if(прежн) вид.setAttribute('style', прежн); else вид.removeAttribute('style'); };
+    /* Колонтитулы в PDF: jsPDF не читает @page margin boxes, поэтому штампуем
+       верхний и нижний колонтитул на КАЖДОЙ странице сами (как report.html:
+       слева назначение прайса, справа — номер страницы и schetiks.ru). */
+    var печДата = new Date().toLocaleDateString('ru-RU');
+    function колонтитулы(pdf){
+      var всего = pdf.internal.getNumberOfPages();
+      var W = pdf.internal.pageSize.getWidth();
+      var H = pdf.internal.pageSize.getHeight();
+      for(var i = 1; i <= всего; i++){
+        pdf.setPage(i);
+        pdf.setFont('helvetica','normal'); pdf.setFontSize(8.5); pdf.setTextColor(107,114,128);
+        /* верхний колонтитул — со 2-й страницы (на 1-й сверху обложка-баннер) */
+        if(i > 1){
+          pdf.text('Прайс фотографа', 10, 8);
+          pdf.text('стр. ' + i + ' / ' + всего, W - 10, 8, { align:'right' });
+          pdf.setDrawColor(229,231,235); pdf.setLineWidth(0.2); pdf.line(10, 10, W - 10, 10);
+        }
+        /* нижний колонтитул — на всех страницах */
+        pdf.setDrawColor(229,231,235); pdf.setLineWidth(0.2); pdf.line(10, H - 10, W - 10, H - 10);
+        pdf.setTextColor(107,114,128); pdf.text('от ' + печДата, 10, H - 6);
+        pdf.setTextColor(21,128,38); pdf.text('schetiks.ru', W - 10, H - 6, { align:'right' });
+      }
+    }
+    try{
+      window.html2pdf().set(opt).from(вид).toPdf().get('pdf').then(function(pdf){
+        колонтитулы(pdf);
+      }).save().then(вернуть, function(){ вернуть(); печатьПрайса(); });
+    }catch(e){ вернуть(); печатьПрайса(); }
+  }
+
   /* ── Кнопки действий: меню-шапка (.tbar), плавающая плашка (.fbar) и
-        большая кнопка печати снизу. Все делают одно и то же, поэтому
-        обработчики вешаем сразу на группы одинаковых id/классов.
-        Страница сама является «прайсом» — печатаем/делимся напрямую. ── */
+        большая кнопка печати снизу. ── */
   function навесить(ids, fn){
     ids.forEach(function(id){
       var b = document.getElementById(id);
@@ -1714,12 +1946,43 @@ function ИНИЦ_ПРАЙСА(){
   }
   навесить(['printBtn','printBtn2'], печатьПрайса);
   навесить(['shareBtn','shareBtn2'], поделитьсяПрайсом);
-  /* «Сохранить в PDF» — то же системное окно печати (пункт «Сохранить как PDF»). */
-  навесить(['dlBtn','dlBtn2'], печатьПрайса);
+  /* «Скачать» — формирует и скачивает PDF-файл. */
+  навесить(['dlBtn','dlBtn2'], скачатьPDF);
   /* Большая кнопка «Распечатать прайс» под всеми блоками. */
   КОРЕНЬ.querySelectorAll('.js-print-price').forEach(function(b){
     b.addEventListener('click', печатьПрайса);
   });
+
+  /* ── Блокировка блоков: галочка «Не учитывать этот блок в прайсе» гасит
+        блок на экране, запирает его ввод и исключает из печати/PDF.
+        Канон calc.html (заперетьБлок + класс .off). ── */
+  (function(){
+    function заперетьБлок(блок, выкл){
+      if(!блок) return;
+      блок.querySelectorAll('input,select,textarea,button').forEach(function(e){
+        if(e.closest('.card-foot')) return;   /* галочку и номер не трогаем */
+        if(выкл){
+          if(e.getAttribute('data-lock')) return;
+          if(e.disabled) return;
+          e.setAttribute('data-lock','1'); e.disabled = true;
+        }else if(e.getAttribute('data-lock')){
+          e.removeAttribute('data-lock'); e.disabled = false;
+        }
+      });
+    }
+    КОРЕНЬ.EXC = КОРЕНЬ.EXC || {};
+    КОРЕНЬ.querySelectorAll('[data-exc-cb]').forEach(function(cb){
+      var ключ = cb.getAttribute('data-exc-cb');
+      var блок = cb.closest('[data-exc]');
+      function применить(){
+        КОРЕНЬ.EXC[ключ] = cb.checked;
+        if(блок) блок.classList.toggle('off', cb.checked);
+        заперетьБлок(блок, cb.checked);
+      }
+      cb.addEventListener('change', применить);
+      применить();
+    });
+  })();
 
   /* ── Плавающая плашка (.fbar): показываем после порога прокрутки, прячем
         крестиком до перезагрузки. Логика и порог — как в report.html. ── */
@@ -1748,5 +2011,5 @@ if(document.readyState === 'loading'){
 }
 
 </script>
-</body>
+<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a3450294ce303685',t:'MTc4ODI3MzQxNg=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
