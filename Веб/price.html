@@ -1148,9 +1148,11 @@ transition:background .18s,color .18s,transform .12s}
 #phr-root .fbar .fbi svg{width:20px;height:20px}
 #phr-root .fbar .fbi:hover{background:var(--c-white);color:var(--c-ink2)}
 #phr-root .fbar .fbi:active{transform:translateY(1px)}
-/* Канон calc.html: сердечко фирменно-розовое, при наведении — розовая подложка. */
-#phr-root .fbar .fbh{color:var(--c-ig-3)}
-#phr-root .fbar .fbh:hover{background:#FDF4FB;color:var(--c-ig-2)}
+/* То же и в плавающей плашке: до нажатия сердечко серое, как соседние
+   иконки; розовое — только нажатое (.thx-горит). Эталон — report.html
+   (решение владельца 27.08 и 03.09); параметры: Документация/CSS/Сердечки.md. */
+#phr-root .fbar .fbh{color:var(--c-gr)}
+#phr-root .fbar .fbh:hover{background:var(--c-white);color:var(--c-ink2)}
 #phr-root .fbar .fbi:after{content:attr(data-tip);position:absolute;
 top:calc(100% + 9px);left:50%;padding:8px 11px;border-radius:12px;
 background:var(--c-white);color:var(--c-ink);border:1px solid var(--c-ln);

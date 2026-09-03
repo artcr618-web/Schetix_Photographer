@@ -1285,8 +1285,11 @@ transition:background .18s,color .18s,transform .12s}
 #phc-root .tbar .fbi svg{width:20px;height:20px}
 #phc-root .tbar .fbi:hover{background:var(--c-white);color:var(--c-ink2)}
 #phc-root .tbar .fbi:active{transform:translateY(1px)}
-#phc-root .tbar .fbh{color:var(--c-ig-3)}
-#phc-root .tbar .fbh:hover{background:#FDF4FB;color:var(--c-ig-2)}
+/* Сердечко в меню — такое же серое, как соседние иконки. Розовый цвет
+   остаётся только для нажатого состояния (.thx-горит) — решение 27.08.
+   Эталон — report.html; параметры: Документация/CSS/Сердечки.md. */
+#phc-root .tbar .fbh{color:var(--c-gr)}
+#phc-root .tbar .fbh:hover{background:var(--c-white);color:var(--c-ink2)}
 /* Подсказка оформлена как .segtip — плашка на диаграмме блока 01:
    белый фон, светлая рамка, тот же радиус и тень. */
 #phc-root .tbar .fbi:after{content:attr(data-tip);position:absolute;
@@ -1348,7 +1351,10 @@ background:transparent;color:var(--c-gr);cursor:pointer;padding:0;position:relat
 text-decoration:none;transition:background .18s,color .18s,transform .12s}
 #phc-root .trustbar-action svg{width:20px;height:20px}
 #phc-root .trustbar-action:hover,#phc-root .trustbar-close:hover{background:var(--c-white);color:var(--c-ink2)}
-#phc-root .trustbar-thanks{color:var(--c-ig-3)}
+/* То же и в плавающей плашке: до нажатия сердечко серое, как соседние
+   иконки (наследует цвет .trustbar-action). Эталон — report.html .fbar .fbh;
+   параметры: Документация/CSS/Сердечки.md. */
+#phc-root .trustbar-thanks{color:var(--c-gr)}
 /* Общий сброс продублирован в плавающей плашке. Первое нажатие
    предупреждает — кнопка краснеет, второе выполняет. Логика та же,
    что у нижней кнопки «Вернуть значения по умолчанию». */
@@ -1890,7 +1896,9 @@ text-transform:lowercase;color:var(--c-gr2)}
    и удаляются сами. Разметку кнопок оба класса не требуют. */
 [data-thx]{transition:color .2s}
 [data-thx].thx-горит{color:var(--c-ig-3)}
-[data-thx].thx-горит svg path{fill:currentColor;stroke:currentColor}
+/* Нажатое сердечко везде одинаковое: сплошная розово-красная заливка
+   без обводки — решение владельца 27.08. Эталон — report.html. */
+[data-thx].thx-горит svg path{fill:var(--c-ig-3);stroke:none}
 .thx-искра{--dx:0px;--dy:0px;--rot:0deg;--s:1;--t:1.05s;
 position:fixed;z-index:120;pointer-events:none;width:22px;height:22px;
 margin:-11px 0 0 -11px;color:var(--c-ig-3,#E1306C);will-change:transform,opacity;
