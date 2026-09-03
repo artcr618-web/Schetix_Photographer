@@ -4,6 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Прайс фотографа — Счётикс</title>
+<style>/* Поля страницы печати обязаны жить в HEAD: Chromium игнорирует
+@page:first (узкое верхнее поле первой страницы), если базовый @page объявлен
+в style внутри BODY (проверено повторным прогоном 02.09). */
+@page{size:A4 portrait;margin:20mm 12mm 22mm}
+@page:first{margin-top:10mm}</style>
 </head><body>
 
 <!-- ══════════════════════════════════════════════════════════════════
@@ -26,7 +31,7 @@
 --c-g-50:#F5FBF7;--c-g-100:#EAF6EE;--c-g-200:#D8EEDF;--c-g-300:#A9DDB8;
 --c-g-500:#21A038;--c-g-600:#1B9331;--c-g-700:#158026;--c-g-800:#0B6B22;
 --c-a-50:#FFFBEF;--c-a-300:#F2C48A;--c-a-400:#F5B301;--c-a-800:#92400E;--c-a-900:#7A5309;
---c-b-50:#F6FAFE;--c-b-100:#DCEAFF;--c-b-300:#8FC7E8;--c-b-400:#5CA8E0;--c-b-500:#3B82F6;--c-b-600:#2F80C4;--c-b-700:#2A6FAB;--c-b-800:#1D4ED8;
+--c-b-50:#F6FAFE;--c-b-100:#DCEAFF;--c-b-300:#8FC7E8;--c-b-400:#5CA8E0;--c-b-500:#3B82F6;--c-b-600:#2F80C4;--c-b-700:#2A6FAB;--c-b-800:#1D4ED8;--c-b-900:#3B6398; /* канон calc.html */
 --c-r-50:#FEF2F2;--c-r-500:#EF4444;--c-r-600:#DC2626;
 --c-ig-1:#833AB4;--c-ig-2:#C13584;--c-ig-3:#E1306C;--c-ig-4:#F56040;
 
@@ -73,6 +78,16 @@ letter-spacing:.04em;line-height:1;white-space:nowrap;text-align:right}
 /* ---------- заголовки и подводки (канон) ---------- */
 #phr-root h2{font-size:20px;font-weight:600;margin-bottom:5px;letter-spacing:-.01em}
 #phr-root .hint{color:var(--gr);font-size:14px;margin-bottom:20px;line-height:1.55}
+/* Сворачивание описаний под заголовками (решение владельца 02.09): на узком
+   экране видно только первое предложение, остальное — под «Показать ещё».
+   На планшете/десктопе текст показан целиком, кнопки нет. Шрифт не меняем. */
+#phr-root .hint-more{display:none}
+#phr-root .hint-rest{display:inline}
+@media(max-width:760px){
+#phr-root .hint-cut.hint-closed .hint-rest{display:none}
+#phr-root .hint-more{display:inline;margin-left:4px;padding:0;border:0;background:none;
+font:inherit;color:var(--c-b-700);text-decoration:underline;text-underline-offset:2px;cursor:pointer}
+}
 #phr-root .txh{font-size:17px;font-weight:700;color:var(--c-ink);
 margin:38px 0 4px}
 #phr-root .txhs{font-size:13px;color:var(--c-gr);margin-bottom:14px}
@@ -396,12 +411,12 @@ padding:8px 13px;cursor:pointer;transition:background .15s,color .15s}
    разворачивающийся список: заголовок + первый абзац видны всегда, остальное
    раскрывается по ссылке «Показать ещё». Работает без JS (details/summary). */
 #phr-root .pc-explain.info-notice{position:relative;margin:16px 0 4px;
-padding:15px 18px 15px 50px;border:1.5px solid var(--c-b-400);border-radius:14px;
-background:transparent;color:var(--c-ink2);overflow:hidden}
+padding:13px 16px 13px 48px;border:1.5px solid var(--c-b-400);border-radius:12px;
+background:var(--c-b-50);color:var(--c-ink2);font-size:13px;line-height:1.6;overflow:hidden}
 #phr-root .pc-explain.info-notice:before{content:'!';position:absolute;
-left:16px;top:15px;width:22px;height:22px;border-radius:50%;display:flex;
+left:15px;top:13px;width:21px;height:21px;border-radius:50%;display:flex;
 align-items:center;justify-content:center;background:var(--c-b-500);color:var(--c-white);
-font-size:13px;font-weight:700}
+font-size:12px;font-weight:700}
 #phr-root .pc-explain>summary{display:block;cursor:pointer;list-style:none;user-select:none}
 #phr-root .pc-explain>summary::-webkit-details-marker{display:none}
 #phr-root .pc-explain .pce-head{display:flex;align-items:center;gap:10px;
@@ -488,9 +503,15 @@ color:#fff;white-space:nowrap;font-variant-numeric:tabular-nums}
 /* Стиль печатных таблиц полностью повторяет table.rt отчёта */
 #phr-root #pc-print-view .wrap{overflow:visible;border:0;background:#fff}
 /* Смысловые разделы на печати: заголовок раздела + линия-разделитель. */
-#phr-root .pv-group + .pv-group{margin-top:9mm;padding-top:7mm;border-top:.5mm solid var(--c-ln)}
-#phr-root .pv-group-head{font-size:9pt;font-weight:800;letter-spacing:.09em;
-text-transform:uppercase;color:var(--c-g-700);margin:0 0 4mm}
+#phr-root .pv-group + .pv-group{margin-top:16mm} /* линии между разделами убраны (решение владельца 02.09) */
+#phr-root .pv-group-head{font-size:13pt;font-weight:700;letter-spacing:-.01em;
+color:var(--c-ink);margin:0 0 2mm}
+#phr-root .pv-note{font-size:9pt;color:var(--c-gr);margin:0 0 3mm;line-height:1.5}
+/* Заголовок + пояснение раздела — единый неразрывный блок, не отрывается
+   от «своей» таблицы: все трое уезжают на следующую страницу вместе. */
+#phr-root #pc-print-view .pv-group-intro{break-inside:avoid;page-break-inside:avoid;
+break-after:avoid;page-break-after:avoid}
+#phr-root .pcm-прайс .pv-note{font-size:12.5px;margin:-2px 0 12px}
 #phr-root #pc-print-view h3{font-size:13px;font-weight:700;color:var(--c-ink);
 margin:18px 0 8px;letter-spacing:-.01em}
 #phr-root #pc-print-view table.rt{width:100%;border-collapse:collapse;font-size:13px;table-layout:fixed}
@@ -503,49 +524,40 @@ font-variant-numeric:tabular-nums;vertical-align:middle;white-space:normal;overf
 #phr-root .pv-head{font-size:19px;font-weight:700;letter-spacing:-.02em;
 color:var(--c-ink);margin:0 0 4px}
 #phr-root .pv-sub{font-size:12.5px;color:var(--c-gr);margin:0 0 6px}
-/* Персональный баннер на печатном прайсе — обложка сверху: фото + имя */
-/* Печатный баннер — та же обложка calc.html: фото на всю ширину, текст
-   слева, лёгкое притенение. Пропорция 16/8.25. Цвет текста (светлый/тёмный)
-   и притенение зависят от яркости фото — класс .pv-light ставит скрипт. */
-#phr-root .pv-banner{position:relative;width:100%;aspect-ratio:16/8.25;
-overflow:hidden;margin:0 0 8mm;background:#111;
-display:flex;flex-direction:column;justify-content:space-between;
-padding:11mm 9mm 5mm 9mm}
-#phr-root .pv-banner img{position:absolute;inset:0;z-index:0;width:100%;height:100%;
-object-fit:cover;object-position:center 28%}
-#phr-root .pv-banner:after{content:'';position:absolute;inset:0;z-index:1;
-background:linear-gradient(90deg,rgba(0,0,0,.42) 0%,rgba(0,0,0,.24) 45%,rgba(0,0,0,.08) 72%,rgba(0,0,0,.02) 100%)}
-#phr-root .pv-banner.pv-light:after{
-background:linear-gradient(90deg,rgba(255,255,255,.5) 0%,rgba(255,255,255,.28) 45%,rgba(255,255,255,.1) 72%,rgba(255,255,255,.02) 100%)}
-/* Текст обложки — В ПОТОКЕ (flex), не абсолютно: Chromium дублировал
-   абсолютные слои на следующей странице при разбивке на страницы. */
-#phr-root .pv-banner-copy{position:relative;z-index:2;
-width:60%;text-align:left;color:#fff;text-shadow:0 1px 14px rgba(0,0,0,.35)}
-#phr-root .pv-banner.pv-light .pv-banner-copy{color:#141414;text-shadow:0 1px 12px rgba(255,255,255,.5)}
-#phr-root .pv-banner.pv-right .pv-banner-copy{margin-left:auto;text-align:right}
-#phr-root .pv-banner-kicker{font-size:13pt;font-weight:400;color:inherit;opacity:.96;margin-bottom:4mm}
-#phr-root .pv-banner-name{font-family:'PHC Prata','Times New Roman',serif;
-font-size:30pt;font-weight:400;line-height:1.12;letter-spacing:-.035em;text-transform:uppercase;color:inherit}
-/* Наименование документа + дата — ОДНОЙ строкой по низу обложки
-   (flex space-between держит её внизу, как и на экране). */
-#phr-root .pv-banner-meta{position:relative;z-index:2;width:100%;
-margin-top:auto;font-weight:400;color:inherit;opacity:.96}
-#phr-root .pv-banner.pv-right .pv-banner-meta{text-align:right}
-#phr-root .pv-banner-meta .pv-meta-title{display:inline;font-size:13pt;line-height:1.35}
-#phr-root .pv-banner-meta .pv-meta-date{display:inline;font-size:11pt;line-height:1.4;opacity:.82}
-/* Контакты на обложке — тоже в потоке: flex space-between держит их внизу */
-#phr-root .pv-banner-contacts{position:relative;z-index:2;width:100%;
-margin-top:4mm;display:flex;flex-wrap:wrap;gap:2mm 6mm;color:inherit;font-size:10.5pt;font-weight:600}
-/* Дополнительная информация — под контактами */
-#phr-root .pv-banner-extra{position:relative;z-index:2;width:100%;
-margin-top:2mm;color:inherit;font-size:10.5pt;opacity:.9}
-#phr-root .pv-banner.pv-right .pv-banner-extra{text-align:right}
-#phr-root .pv-banner.pv-right .pv-banner-contacts{justify-content:flex-end}
-#phr-root .pv-banner-contacts .pv-contact{color:inherit;text-decoration:none}
+/* ── Печатная обложка = ЖИВОЙ баннер страницы (решение владельца 03.09).
+   Раньше для PDF собирали ОТДЕЛЬНУЮ разметку (.pv-banner …) и вёрстка
+   расходилась с экранной: не было иконок контактов, другие кегли. Теперь
+   скрипт клонирует настоящий .pc-hero-wrap (см. клонПечБаннера) и вычищает
+   из клона только интерактив. Два нюанса:
+   1) Ширина полосы печати A4 = 210−12×2 = 186мм = 703 CSS-px, а брейкпоинт
+      «мобильной» вёрстки баннера — 760px. Без прямого указания печати влез бы
+      мобильный вид. Поэтому клону задаём проектную ширину баннера канона
+      (1080px — ровно столько .pc-hero-wrap на десктопе) и уменьшаем до
+      ширины печати через zoom: 702.99/1080 = .65092.
+   2) vw-значения в печати считаются от 703px, а не от окна, — экранную
+      типографику закрепляем явными значениями (они равны расчёту при окне
+      1280px, на котором и подбирался канон). min-height фиксируем в px,
+      чтобы не зависеть от cqi внутри zoom-контейнера. */
+#phr-root #pc-print-view .pv-клон{width:1080px;zoom:.65092}
+#phr-root #pc-print-view .pv-клон .price-hero{min-height:557px}
+#phr-root #pc-print-view .pv-клон .ph-copy{padding:6.08% 4.7% 2.78%}
+#phr-root #pc-print-view .pv-клон .price-hero img.ph-bg{object-position:center 28%}
+#phr-root #pc-print-view .pv-клон .ph-kicker{font-size:19px;margin-bottom:14px}
+#phr-root #pc-print-view .pv-клон .ph-name{font-size:58px}
+#phr-root #pc-print-view .pv-клон .ph-contacts-wrap{margin-top:19px}
+#phr-root #pc-print-view .pv-клон .ph-contact{font-size:14px}
+#phr-root #pc-print-view .pv-клон .ph-meta{margin-top:auto;padding-top:14px;padding-bottom:0}
+#phr-root #pc-print-view .pv-клон .ph-meta-title{font-size:19px}
+#phr-root #pc-print-view .pv-клон .ph-meta-date{font-size:16px}
+/* Контакты на печати — кликабельные ссылки (tel:/mailto:/сайт), цвет свой. */
+#phr-root #pc-print-view .pv-клон .ph-c-link{color:inherit;text-decoration:none}
+/* Отступ между обложкой и первой таблицей задаём СНАРУЖИ zoom: внутри клона
+   любая величина уменьшилась бы вместе с баннером. */
+#phr-root #pc-print-view .pv-клон+.pv-group{margin-top:8mm}
 
 /* ══ Предпросмотр печатного вида обложки (кнопка-глазик). ══
-   Баннер рендерится тем же CSS, что и печатная обложка (#phr-root .pv-banner):
-   те же пропорции, шрифты и притенение — только на экране, без полей ввода. */
+   В окне лежит ТОТ ЖЕ клон баннера, что и в печати (#phr-root .pv-клон), —
+   только на экранной ширине, без уменьшения до полосы печати. */
 #phr-root .pv-prev{position:fixed;inset:0;z-index:300;display:flex;
 align-items:center;justify-content:center;padding:18px}
 #phr-root .pv-prev[hidden]{display:none}
@@ -562,8 +574,8 @@ width:32px;height:32px;flex:none;border-radius:9px;border:1px solid #e3e6ea;
 background:#fff;color:#555;cursor:pointer;transition:.15s}
 #phr-root .pv-prev-close:hover{background:#f4f5f7;color:#111}
 #phr-root .pv-prev-close svg{width:15px;height:15px;display:block}
-/* В предпросмотре у обложки нет нижнего отступа на следующую секцию */
-#phr-root .pv-prev-body .pv-banner{margin-bottom:0}
+/* В предпросмотре клон живёт на ширине окна — без уменьшения до полосы печати */
+#phr-root .pv-prev-body .pv-клон{width:100%}
 @media(max-width:620px){
 #phr-root .pv-prev{padding:10px}
 #phr-root .pv-prev-card{padding:12px 10px 14px}
@@ -572,18 +584,21 @@ background:#fff;color:#555;cursor:pointer;transition:.15s}
 
 /* Базовые поля страницы. Колонтитулы (верхний/нижний) добавляются
    скриптом как @page margin boxes — один в один с report.html. */
-@page{size:A4 portrait;margin:30mm 12mm 22mm}
+/* @page переехал в <head> (см. причину там); здесь остаются только print-правила */
 @media print{
 /* Показываем только печатный слепок; всё остальное — прочь */
 body.print-price #phr-root>*{display:none!important}
 body.print-price #phr-root #pc-print-view{display:block!important}
-body.print-price{background:#fff}
+/* Поле <body> в 8px по умолчанию сдвигало бы слепок внутрь страницы
+   на ~2мм с каждой стороны — обложка вышла бы уже линии колонтитула. */
+body.print-price{background:#fff;margin:0}
 body.print-price #phr-root{max-width:none;width:auto;margin:0;padding:0;background:#fff}
 /* Каждая таблица не рвётся между страницами по возможности */
 body.print-price #pc-print-view .pv-sect{break-inside:avoid;page-break-inside:avoid;margin-bottom:10mm}
-/* Обложка-баннер не рвётся между страницами: абсолютный текст внутри
-   разорванной вёрстки Chromium дублировал на следующей странице. */
-body.print-price #pc-print-view .pv-banner{break-inside:avoid;page-break-inside:avoid}
+/* Обложка-баннер целиком держится на своей странице: разорванный zoom-клон
+   выглядел бы как обрубленная обложка (абсолютные слои внутри разрыва
+   Chromium вообще дублировал на следующем листе). */
+body.print-price #pc-print-view .pv-клон{break-inside:avoid!important;page-break-inside:avoid!important}
 body.print-price #pc-print-view *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
 /* Таблицы всегда влезают по ширине страницы: фиксированная раскладка +
    компактный шрифт, заголовки и длинные значения переносятся на строку. */
@@ -632,9 +647,9 @@ font-size:22px;line-height:1;cursor:pointer;transition:background .18s,color .18
 /* Смысловые разделы прайса в предпросмотре: заголовок + линия-разделитель.
    Отступы по обе стороны линии одинаковые (конец таблицы → линия и
    линия → заголовок), чтобы разделитель читался ровно и не «провисал». */
-#phr-root .pcm-прайс .pv-group + .pv-group{margin-top:16px;padding-top:16px;border-top:2px solid var(--c-ln)}
+#phr-root .pcm-прайс .pv-group + .pv-group{margin-top:32px} /* без разделительных линий, как на печати */
 #phr-root .pcm-прайс .pv-group-head{font-size:11px;font-weight:800;letter-spacing:.09em;
-text-transform:uppercase;color:var(--c-g-700);margin:0 0 10px}
+color:var(--c-ink);margin:0 0 10px}
 #phr-root .pcm-прайс .pv-sect{margin-bottom:14px}
 #phr-root .pcm-прайс .pv-sect:last-child{margin-bottom:0}
 #phr-root .pcm-прайс h3{font-size:13px;font-weight:700;color:var(--c-ink);
@@ -712,8 +727,10 @@ font-size:12.5px;font-weight:600;line-height:1.4;box-shadow:0 8px 28px rgba(16,2
    что и на главном экране calc.html. Prata — локальный шрифт проекта. */
 @font-face{font-family:'PHC Prata';font-style:normal;font-weight:400;font-display:swap;
 src:url('fonts/Prata-Regular.ttf') format('truetype')}
-#phr-root .price-hero{position:relative;width:100%;margin:0 0 4px;
-overflow:hidden;aspect-ratio:16/8.25;background:#111;border-radius:0;isolation:isolate}
+#phr-root .price-hero{position:relative;width:100%;aspect-ratio:auto;margin:0 0 4px;display:flex;flex-direction:column;
+overflow:hidden;min-height:calc(100cqi*0.515625);background:#111;border-radius:0;isolation:isolate}
+/* cqi-единицы для высоты баннера считаем от обёртки. */
+#phr-root .pc-hero-wrap{container-type:inline-size}
 #phr-root .price-hero img.ph-bg{position:absolute;inset:0;z-index:0;display:block;width:100%;height:100%;
 object-fit:cover;object-position:center 28%}
 /* Лёгкое общее притенение фото — чтобы текст читался при любой картинке. */
@@ -722,8 +739,8 @@ background:linear-gradient(90deg,rgba(0,0,0,.42) 0%,rgba(0,0,0,.24) 45%,rgba(0,0
 /* Светлый вариант притенения — включается, когда фото светлое (текст тёмный). */
 #phr-root .price-hero.ph-light:after{
 background:linear-gradient(90deg,rgba(255,255,255,.5) 0%,rgba(255,255,255,.28) 45%,rgba(255,255,255,.1) 72%,rgba(255,255,255,.02) 100%)}
-#phr-root .price-hero .ph-copy{position:absolute;z-index:2;top:11.8%;left:4.7%;right:4.7%;
-bottom:5.4%;display:flex;flex-direction:column;width:auto;color:#fff;text-align:left;
+#phr-root .price-hero .ph-copy{position:relative;z-index:2;flex:1;padding:6.08% 4.7% 2.78%;
+display:flex;flex-direction:column;width:auto;color:#fff;text-align:left;
 text-shadow:0 1px 14px rgba(0,0,0,.35)}
 /* Тёмный текст на светлом фото */
 #phr-root .price-hero.ph-light .ph-copy{color:#141414;text-shadow:0 1px 12px rgba(255,255,255,.5)}
@@ -732,7 +749,7 @@ font-size:clamp(15px,1.55vw,19px);font-weight:400;letter-spacing:-.015em;
 color:inherit;opacity:.96;margin-bottom:clamp(10px,1.1vw,16px);outline:none;caret-color:currentColor}
 #phr-root .price-hero .ph-kicker:empty:before{content:attr(data-placeholder);opacity:.55}
 #phr-root .price-hero .ph-name{font-family:'PHC Prata','Times New Roman',serif;
-font-size:clamp(38px,4.8vw,58px);font-weight:400;line-height:1.12;
+font-size:58px;font-weight:400;line-height:1.12;
 letter-spacing:-.035em;text-transform:uppercase;outline:none;caret-color:currentColor;color:inherit}
 #phr-root .price-hero .ph-name:empty:before{content:attr(data-placeholder);opacity:.55}
 #phr-root .price-hero .ph-role{margin-top:clamp(10px,1.1vw,15px);
@@ -753,6 +770,12 @@ font-size:clamp(15px,1.55vw,19px);line-height:1.35}
 font-size:clamp(13px,1.35vw,16px);line-height:1.4;opacity:.82}
 /* Выравнивание текста баннера вправо (ручной переключатель) */
 #phr-root .price-hero.ph-right .ph-copy{text-align:right}
+/* В режиме правки под панелью настроек одинаковый резерв на любой ширине
+   (без скачка на шве 761/760); край выравнивания остаётся краем изображения. */
+@media(min-width:761px){#phr-root .pc-hero-wrap:not(.ph-view) .price-hero .ph-copy{padding-bottom:62px}}
+/* Кикер не заходит под капсулу переключателя режима ни при каком выравнивании
+   (капсула на баннере всегда) — резерв справа на любой ширине. */
+#phr-root .price-hero .ph-kicker{margin-right:80px}
 /* ── Строки ввода на баннере. Каждое редактируемое поле (.ph-field) обводится
    рамкой, как поля в таблицах конструктора; при фокусе — зелёная подсветка
    (тот же приём, что у table.dt input:focus). Рамка и подсветка читаемы и на
@@ -784,7 +807,7 @@ font-family:-apple-system,BlinkMacSystemFont,'SB Sans Text','Segoe UI',Roboto,Ar
 #phr-root .price-hero.ph-right .ph-contact-extra{justify-content:flex-end}
 /* Нижняя строка в правом выравнивании: не заезжает под панель настроек
    баннера (правый нижний угол) — держим зазор справа */
-@media(min-width:761px){#phr-root .price-hero.ph-right .ph-meta{padding-right:340px}}
+
 #phr-root .price-hero .ph-contact{display:inline-flex;align-items:center;gap:7px;
 font-size:clamp(12px,1.35vw,14px);font-weight:600;line-height:1.2}
 #phr-root .price-hero .ph-contact svg{width:16px;height:16px;flex:none;opacity:.92}
@@ -796,13 +819,36 @@ font-size:clamp(12px,1.35vw,14px);font-weight:600;line-height:1.2}
 /* Сайт — после e-mail, немного выделен, как ссылка */
 #phr-root .price-hero .ph-c-site .ph-c-val{text-decoration:underline;
 text-underline-offset:3px;text-decoration-thickness:1px;text-decoration-color:currentColor}
-/* Удаление необязательного поля: крестик виден при наведении (или фокусе) */
+/* Границы полей обложки (решение владельца 02.09): любой текст упирается в те же
+   рамки, что у поля «Имя Фамилия»; контактные плашки и доп. строка — не шире 80%
+   его ширины, иначе плашка целиком уходит на новую строку. Слово без пробелов,
+   шире строки, — мягкий разрыв БЕЗ дефиса, чтобы не вылезать за рамки. */
+/* Однострочный текст в inline-flex не переносится — переводим текстовые поля
+   в inline-block, иначе слово-монстр раскидывало баннер по горизонтали. */
+#phr-root .price-hero .ph-kicker,#phr-root .price-hero .ph-name{display:inline-block;box-sizing:border-box}
+#phr-root .price-hero .ph-name{max-width:100%}
+#phr-root .price-hero .ph-kicker{max-width:calc(100% - 80px)}
+#phr-root .price-hero .ph-kicker,#phr-root .price-hero .ph-name{overflow-wrap:break-word}
+#phr-root .price-hero .ph-contact{max-width:80%;box-sizing:border-box}
+/* Длина поля фиксирована (плашка ≤80% от ширины поля «Имя Фамилия»); что не
+   влезает — переносится ВНУТРИ поля на новую строку, при нужде посимвольно
+   (решение владельца 02.09). За пределы поля текст не выходит никогда. */
+#phr-root .price-hero .ph-contact .ph-c-val{display:inline-block;min-width:14px;max-width:100%;overflow-wrap:break-word}
+/* Некорректный e-mail/сайт не блокируем — мягкая красная волна-подсказка. */
+#phr-root .price-hero .ph-c-val.ph-invalid{text-decoration:underline wavy rgba(239,68,68,.95);
+text-decoration-thickness:1.5px;text-underline-offset:3px}
+/* Удаление необязательного поля: крестик виден при наведении (или фокусе).
+   Выведен из счёта ширины плашки — значок-бейдж у верхнего правого угла плашки,
+   текст не перекрывает, клики по полю не перехватывает; при правом выравнивании
+   все поля ровняются в одну линейку ПО ПОЛЯМ (решение владельца 02.09). */
+#phr-root .price-hero .ph-contact{position:relative}
 #phr-root .price-hero .ph-c-x{display:inline-flex;align-items:center;justify-content:center;
+position:absolute;top:-5px;right:-5px;margin-left:0;pointer-events:none;
 width:20px;height:20px;flex:none;margin-left:2px;border:0;border-radius:7px;
 background:rgba(127,127,127,.22);color:inherit;font-size:13px;line-height:1;cursor:pointer;
 opacity:0;transition:opacity .15s,background .15s}
 #phr-root .price-hero .ph-contact:hover .ph-c-x,
-#phr-root .price-hero .ph-contact:focus-within .ph-c-x{opacity:1}
+#phr-root .price-hero .ph-contact:focus-within .ph-c-x{opacity:1;pointer-events:auto}
 #phr-root .price-hero .ph-c-x:hover{background:rgba(239,68,68,.85);color:#fff}
 /* Плавающая подсказка «Отредактируйте введённые данные» — та же матовая
    плашка, что и плашки блока с фотоаппаратом (.cam-chip/.fbar). На десктопе
@@ -817,7 +863,13 @@ background:rgba(255,255,255,.62);backdrop-filter:blur(14px) saturate(140%);
 -webkit-backdrop-filter:blur(14px) saturate(140%);border:1px solid rgba(255,255,255,.55);
 box-shadow:0 8px 28px rgba(16,24,40,.16);color:var(--c-ink);
 font-family:-apple-system,BlinkMacSystemFont,'SB Sans Text','Segoe UI',Roboto,Arial,sans-serif;
-font-size:13px;font-weight:600;white-space:nowrap;pointer-events:none}
+font-size:13px;font-weight:600;white-space:normal;text-align:center;cursor:pointer;transition:.15s}
+/* Это кнопка перехода к редактированию (решение владельца 02.09): заметнее
+   маленького пера в углу баннера. */
+#phr-root .ph-edit-hint:hover{background:rgba(255,255,255,.85);border-color:rgba(255,255,255,.85);
+box-shadow:0 10px 32px rgba(16,24,40,.22)}
+#phr-root .ph-edit-hint:active{transform:translateY(1px)}
+#phr-root .ph-edit-hint:focus-visible{outline:2px solid var(--c-g-500);outline-offset:2px}
 #phr-root .ph-edit-hint svg{width:15px;height:15px;flex:none;color:var(--c-g-700)}
 /* Панель управления баннером — не печатается, живёт в правом нижнем углу */
 #phr-root .pc-hero-wrap .ph-tools{position:absolute;z-index:3;right:14px;bottom:14px;
@@ -829,8 +881,11 @@ cursor:pointer;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);trans
 #phr-root .pc-hero-wrap .ph-btn:hover{background:rgba(17,17,17,.78);border-color:rgba(255,255,255,.6)}
 #phr-root .pc-hero-wrap .ph-btn svg{width:16px;height:16px;flex:none}
 /* Группа переключателей (шрифт светлый/тёмный, выравнивание лево/право) */
-#phr-root .pc-hero-wrap .ph-seg{display:inline-flex;border-radius:11px;overflow:hidden;
+#phr-root .pc-hero-wrap .ph-seg{display:inline-flex;border-radius:11px;overflow:visible;
 border:1px solid rgba(255,255,255,.35);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+/* overflow открыт ради фирменных тултипов; скругление краёв капсулы — на крайних кнопках */
+#phr-root .pc-hero-wrap .ph-seg button:first-child{border-radius:10px 0 0 10px}
+#phr-root .pc-hero-wrap .ph-seg button:last-child{border-radius:0 10px 10px 0}
 #phr-root .pc-hero-wrap .ph-seg button{border:0;background:rgba(17,17,17,.55);color:#fff;
 width:36px;height:36px;display:inline-flex;align-items:center;justify-content:center;
 cursor:pointer;transition:.15s;padding:0}
@@ -838,43 +893,117 @@ cursor:pointer;transition:.15s;padding:0}
 #phr-root .pc-hero-wrap .ph-seg button:hover{background:rgba(17,17,17,.78)}
 #phr-root .pc-hero-wrap .ph-seg button[aria-pressed="true"]{background:#fff;color:#111}
 #phr-root .pc-hero-wrap .ph-seg button svg{width:17px;height:17px;display:block}
-/* Глазик — печатный вид обложки: та же оптика, что у группы переключателей */
-#phr-root .pc-hero-wrap .ph-eye{display:inline-flex;align-items:center;justify-content:center;
-width:36px;height:36px;border-radius:11px;border:1px solid rgba(255,255,255,.35);
-background:rgba(17,17,17,.55);color:#fff;cursor:pointer;padding:0;
-backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);transition:.15s}
-#phr-root .pc-hero-wrap .ph-eye:hover{background:rgba(17,17,17,.78);border-color:rgba(255,255,255,.6)}
-#phr-root .pc-hero-wrap .ph-eye svg{width:17px;height:17px;display:block}
+/* Переключатель режима баннера — правый верхний угол. ОДНА сегментированная
+   кнопка, ровно в стиле групп .ph-seg (светлый/тёмный, лево/право): общая обводка
+   и закругление, разделитель между сегментами, активный — белая плашка. */
+#phr-root .pc-hero-wrap .ph-mode{position:absolute;z-index:4;top:14px;right:14px;
+display:inline-flex;border-radius:11px;overflow:visible;border:1px solid rgba(255,255,255,.35);
+backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+#phr-root .pc-hero-wrap .ph-mode button:first-child{border-radius:10px 0 0 10px}
+#phr-root .pc-hero-wrap .ph-mode button:last-child{border-radius:0 10px 10px 0}
+#phr-root .pc-hero-wrap .ph-mode button{border:0;border-radius:0;background:rgba(17,17,17,.55);color:#fff;
+width:36px;height:36px;display:inline-flex;align-items:center;justify-content:center;
+cursor:pointer;transition:.15s;padding:0}
+#phr-root .pc-hero-wrap .ph-mode button+button{border-left:1px solid rgba(255,255,255,.28)}
+#phr-root .pc-hero-wrap .ph-mode button:hover{background:rgba(17,17,17,.78)}
+#phr-root .pc-hero-wrap .ph-mode button[aria-pressed="true"]{background:#fff;color:#111}
+#phr-root .pc-hero-wrap .ph-mode button svg{width:17px;height:17px;display:block}
+/* Подсказки кнопок баннера — фирменный тултип (канон .tbar .fbi:after):
+   белая плашка, тонкая рамка, фирменная тень, текст из data-tip.
+   Нижний ряд (.ph-tools) раскрывает тултип ВВЕРХ, верхняя капсула (.ph-mode) — ВНИЗ. */
+#phr-root .pc-hero-wrap .ph-btn,
+#phr-root .pc-hero-wrap .ph-seg button,
+#phr-root .pc-hero-wrap .ph-mode button{position:relative}
+#phr-root .pc-hero-wrap .ph-tools button:after{content:attr(data-tip);position:absolute;
+bottom:calc(100% + 9px);left:50%;padding:10px 14px;border-radius:12px;
+background:var(--c-white);color:var(--c-ink);border:1px solid var(--c-ln);
+font-size:12.5px;font-weight:600;white-space:nowrap;opacity:0;pointer-events:none;
+transform:translateX(-50%) translateY(4px);
+transition:opacity .16s,transform .16s;box-shadow:0 8px 28px rgba(16,24,40,.16);z-index:5}
+#phr-root .pc-hero-wrap .ph-tools button:hover:after,
+#phr-root .pc-hero-wrap .ph-tools button:focus-visible:after{opacity:1;transform:translateX(-50%)}
+#phr-root .pc-hero-wrap .ph-mode button:after{content:attr(data-tip);position:absolute;
+top:calc(100% + 9px);left:50%;padding:10px 14px;border-radius:12px;
+background:var(--c-white);color:var(--c-ink);border:1px solid var(--c-ln);
+font-size:12.5px;font-weight:600;white-space:nowrap;opacity:0;pointer-events:none;
+transform:translateX(-50%) translateY(-4px);
+transition:opacity .16s,transform .16s;box-shadow:0 8px 28px rgba(16,24,40,.16);z-index:5}
+#phr-root .pc-hero-wrap .ph-mode button:hover:after,
+#phr-root .pc-hero-wrap .ph-mode button:focus-visible:after{opacity:1;transform:translateX(-50%)}
+/* Крайние справа кнопки: тултип не вылезает за край экрана (приём .tip-r канона fbar) */
+#phr-root .pc-hero-wrap .ph-tools button.tip-r:after{left:auto;right:0;transform:translateY(4px)}
+#phr-root .pc-hero-wrap .ph-tools button.tip-r:hover:after,
+#phr-root .pc-hero-wrap .ph-tools button.tip-r:focus-visible:after{transform:translateY(0)}
+#phr-root .pc-hero-wrap .ph-mode button.tip-r:after{left:auto;right:0;transform:translateY(-4px)}
+#phr-root .pc-hero-wrap .ph-mode button.tip-r:hover:after,
+#phr-root .pc-hero-wrap .ph-mode button.tip-r:focus-visible:after{transform:translateY(0)}
+/* Тултипы-названия полей обложки (решение владельца 02.09): та же фирменная
+   плашка; показываем при наведении на само поле. Шрифт принудительно
+   интерфейсный — поле имени иначе наследовало бы Prata/uppercase. */
+#phr-root .pc-hero-wrap .price-hero .ph-field[data-tip]{position:relative}
+#phr-root .pc-hero-wrap .price-hero .ph-field[data-tip]:after{content:attr(data-tip);position:absolute;
+bottom:calc(100% + 9px);left:50%;padding:10px 14px;border-radius:12px;
+background:var(--c-white);color:var(--c-ink);border:1px solid var(--c-ln);
+font-family:-apple-system,BlinkMacSystemFont,'SB Sans Text','Segoe UI',Roboto,Arial,sans-serif;
+font-size:12.5px;font-weight:600;letter-spacing:0;text-transform:none;white-space:nowrap;
+opacity:0;pointer-events:none;transform:translateX(-50%) translateY(4px);
+transition:opacity .16s,transform .16s;box-shadow:0 8px 28px rgba(16,24,40,.16);z-index:6}
+#phr-root .pc-hero-wrap .price-hero .ph-field[data-tip]:hover:after{opacity:1;transform:translateX(-50%)}
+/* Контакты прижаты к правому краю — плашка открывается влево от края поля */
+#phr-root .pc-hero-wrap .price-hero .ph-contact .ph-field[data-tip]:after{left:auto;right:0;transform:translateY(4px)}
+#phr-root .pc-hero-wrap .price-hero .ph-contact .ph-field[data-tip]:hover:after{transform:translateY(0)}
+/* Режим просмотра отличается от правки ТОЛЬКО отсутствием выделения полей ввода:
+   контакты и плейсхолдеры на месте (решение владельца 02.09). Технические органы —
+   панель настроек и крестики удаления — не показываем; подсказка-приглашение
+   «Отредактируйте введённые данные», наоборот, живёт только в просмотре. */
+#phr-root .pc-hero-wrap.ph-view .ph-tools{display:none}
+#phr-root .pc-hero-wrap:not(.ph-view) .ph-edit-hint{display:none}
+#phr-root .pc-hero-wrap.ph-view .price-hero .ph-field{border-style:none;cursor:default;
+padding-left:0;padding-right:0}
+#phr-root .pc-hero-wrap.ph-view .ph-c-x{display:none}
+@media(max-width:620px){#phr-root .pc-hero-wrap .ph-mode{top:10px;right:10px}}
+@media print{#phr-root .pc-hero-wrap .ph-mode{display:none!important}}
+@media print{#phr-root .ph-edit-hint{display:none!important}}
 /* Подсказка под баннером, со стороны кнопки (справа) — читается лучше, чем на фото */
 #phr-root .price-hero-hint{display:flex;justify-content:flex-end;text-align:right;
 margin:0 0 22px;font-size:12.5px;line-height:1.4;color:var(--c-gr)}
 @media(max-width:760px){
-#phr-root .price-hero{aspect-ratio:16/9}
+/* Баннер растёт по высоте динамически: контент идёт в потоке, насколько строк
+   перенеслось — настолько выше баннер. Кнопки настроек остаются НА баннере
+   (решение владельца 02.09) — за них отвечает резерв снизу в режиме правки. */
+/* Та же пропорция, что на десктопе: баннер сжимается плавно (решение владельца
+   02.09). Без самопроизвольного роста: увеличивается ТОЛЬКО когда контенту нужно
+   больше места (контакты встали столбиком, перенёсся текст, несколько строк
+   доп. информации). Верхнее поле — в тех же долях, что на десктопе (11.8%),
+   поэтому «подпрыгивания» разметки на границе ширин нет. Свободное место, как
+   и на десктопе, собирается над строкой даты (её нижний край — по баннеру). */
 #phr-root .price-hero img.ph-bg{object-position:70% 25%}
-#phr-root .price-hero .ph-copy{top:10.5%;left:5%;right:5%;bottom:auto;
-padding-bottom:54px} /* низ держим пустым под панель настроек баннера */
-/* На мобильных строка «Стоимость услуг <дата>» — В ПОТОКЕ под контактами,
-   а не прижатая к низу баннера: внизу живёт панель настроек (.ph-tools),
-   и при разном росте имени (шрифт Prata) нижняя строка могла уходить под неё. */
-#phr-root .price-hero .ph-meta{margin-top:12px;padding-top:0}
-#phr-root .price-hero .ph-name{font-size:clamp(32px,5.4vw,42px);line-height:1.14}
+#phr-root .price-hero .ph-copy{padding:max(6.08%,26px) 5% 0}
+/* Строка «Стоимость услуг <дата>» прижата к нижнему краю баннера на всех экранах. */
+/* Минимальное расстояние от последней строки доп. информации до строки
+   «Стоимость услуг <дата>» — 4 строки (решение владельца 02.09), сколько бы
+   строк ни перенеслось выше. */
+#phr-root .price-hero .ph-meta{margin-top:auto;padding-top:4em;padding-bottom:max(2.78%,16px)}
 #phr-root .price-hero .ph-role{margin-top:12px;font-size:clamp(13px,2.15vw,16px)}
+/* Перенос только целыми словами, слоги запрещены (решение владельца 02.09):
+   на узком экране шрифт имени слегка ужимается так, чтобы «ИМЯ» / «ФАМИЛИЯ»
+   помещались на строке целиком в вертикальном формате. */
+#phr-root .price-hero .ph-name{font-size:clamp(45px,12.6vw,58px)}
+#phr-root .pc-hero-wrap .ph-tools{right:10px;bottom:10px}
+/* Режим редактирования: под панелью настроек резерв, строка даты не заезжает под кнопки. */
+#phr-root .pc-hero-wrap:not(.ph-view) .price-hero .ph-copy{padding-bottom:62px}
 }
 @media(max-width:620px){
-#phr-root .price-hero{aspect-ratio:4/3}
 #phr-root .price-hero img.ph-bg{object-position:78% 22%}
-/* Панель настроек баннера — ПОД баннером (в потоке, по правому краю):
-   на узком экране она не должна перекрывать фото и строку «Стоимость услуг». */
-#phr-root .pc-hero-wrap .ph-tools{position:static;justify-content:flex-end;
-margin:10px 2px 0;gap:8px}
-#phr-root .price-hero .ph-copy{top:9.5%;left:5%;width:82%}
-#phr-root .price-hero .ph-name{font-size:clamp(28px,7.6vw,36px);line-height:1.18;letter-spacing:-.04em}
+/* Плашки контактов переносятся ЦЕЛИКО (иконка с текстом) и встают столбиком;
+   при правом выравнивании столбик ровняется по правому краю вместе с текстом. */
+#phr-root .price-hero .ph-contacts{flex-direction:column;align-items:flex-start;gap:8px}
+#phr-root .price-hero.ph-right .ph-contacts{align-items:flex-end}
+
 #phr-root .price-hero .ph-role{margin-top:11px;font-size:clamp(12.5px,3vw,14px);line-height:1.5}
 #phr-root .price-hero-hint{justify-content:flex-start;text-align:left}
 }
 @media(max-width:420px){
-#phr-root .price-hero .ph-copy{top:8.5%;left:5.5%;width:86%}
-#phr-root .price-hero .ph-name{font-size:clamp(25px,7.5vw,31px)}
 #phr-root .price-hero .ph-role{margin-top:9px;font-size:12.5px}
 /* На узких экранах кнопка «Загрузить фото» — только иконка:
    панель настроек должна помещаться в одну строку. */
@@ -987,20 +1116,21 @@ box-shadow:0 8px 28px rgba(16,24,40,.16)}
 #phr-root .brand .bx{display:block;flex:none;width:62px;height:62px}
 
 /* ---------- плавающая плашка (канон calc.html .trustbar — 1:1) ---------- */
-#phr-root .fbar{position:fixed;top:16px;left:50%;z-index:60;
+#phr-root .fbar{position:fixed;top:16px;left:50%;z-index:58;
 display:flex;align-items:center;gap:10px;max-width:calc(100vw - 32px);padding:10px 16px;
 border-radius:var(--r);background:rgba(255,255,255,.62);
 backdrop-filter:blur(14px) saturate(140%);-webkit-backdrop-filter:blur(14px) saturate(140%);
 border:1px solid rgba(255,255,255,.55);box-shadow:0 8px 28px rgba(16,24,40,.16);
-opacity:0;visibility:hidden;transform:translateX(-50%) translateY(-14px);
-transition:opacity .28s ease,transform .28s ease,visibility .28s}
-#phr-root .fbar.on{opacity:1;visibility:visible;transform:translateX(-50%)}
+opacity:0;visibility:hidden;pointer-events:none;transform:translateX(-50%) translateY(-14px);
+transition:opacity .2s,transform .22s,visibility 0s linear .22s}
+#phr-root .fbar.on{opacity:1;visibility:visible;pointer-events:auto;transform:translateX(-50%);
+transition-delay:0s}
 #phr-root .fbrand{display:flex;align-items:center;justify-content:center;gap:7px;
 height:46px;margin-right:14px;padding-right:14px;line-height:1;white-space:nowrap;
 border-right:1px solid var(--c-ln)}
 #phr-root .fbmark{width:46px;height:46px;flex:none}
 #phr-root .fbname{display:flex;align-items:center;height:46px;
-font-size:14px;font-weight:700;letter-spacing:.11em;text-transform:lowercase;color:var(--c-ink)}
+font-size:14px;font-weight:700;letter-spacing:.11em;text-transform:lowercase;color:var(--c-gr)}
 #phr-root .fbclose{display:inline-flex;align-items:center;justify-content:center;
 width:34px;height:34px;border:0;border-radius:12px;background:transparent;
 color:var(--c-gr);font-size:20px;line-height:1;cursor:pointer;
@@ -1009,8 +1139,8 @@ transition:background .18s,color .18s}
 @media(max-width:620px){#phr-root .fbar{top:10px;gap:5px;padding:8px 9px}
 #phr-root .fbrand{gap:5px;height:38px;margin-right:1px}
 #phr-root .fbmark{width:38px;height:38px}
-#phr-root .fbname{display:none}
-#phr-root .fbclose{width:30px;height:30px}}
+#phr-root .fbname{height:38px;font-size:12.5px}
+#phr-root .fbar .fbi,#phr-root .fbclose{width:30px;height:30px}}
 #phr-root .fbar .fbi{display:inline-flex;align-items:center;justify-content:center;
 width:34px;height:34px;border:0;border-radius:12px;background:transparent;
 color:var(--c-gr);cursor:pointer;padding:0;position:relative;
@@ -1018,9 +1148,9 @@ transition:background .18s,color .18s,transform .12s}
 #phr-root .fbar .fbi svg{width:20px;height:20px}
 #phr-root .fbar .fbi:hover{background:var(--c-white);color:var(--c-ink2)}
 #phr-root .fbar .fbi:active{transform:translateY(1px)}
-/* То же и в плавающей плашке: до нажатия сердечко серое. */
-#phr-root .fbar .fbh{color:var(--c-gr)}
-#phr-root .fbar .fbh:hover{background:var(--c-white);color:var(--c-ink2)}
+/* Канон calc.html: сердечко фирменно-розовое, при наведении — розовая подложка. */
+#phr-root .fbar .fbh{color:var(--c-ig-3)}
+#phr-root .fbar .fbh:hover{background:#FDF4FB;color:var(--c-ig-2)}
 #phr-root .fbar .fbi:after{content:attr(data-tip);position:absolute;
 top:calc(100% + 9px);left:50%;padding:8px 11px;border-radius:12px;
 background:var(--c-white);color:var(--c-ink);border:1px solid var(--c-ln);
@@ -1029,13 +1159,11 @@ transform:translateX(-50%) translateY(-4px);
 transition:opacity .16s,transform .16s;box-shadow:0 8px 28px rgba(16,24,40,.16)}
 #phr-root .fbar .fbi:hover:after{opacity:1;transform:translateX(-50%)}
 /* Крайние кнопки панелей: тултип не вылезает за край экрана — левая
-   («назад») раскрывается вправо от края кнопки, правая («Поделиться») — влево. */
+   («назад») раскрывается вправо от края кнопки, правая (крайняя справа) — влево. */
 #phr-root .tbar .fbi.tip-l:after,#phr-root .fbar .fbi.tip-l:after{left:0;transform:translateY(-4px)}
 #phr-root .tbar .fbi.tip-l:hover:after,#phr-root .fbar .fbi.tip-l:hover:after{transform:translateY(0)}
 #phr-root .tbar .fbi.tip-r:after,#phr-root .fbar .fbi.tip-r:after{left:auto;right:0;transform:translateY(-4px)}
 #phr-root .tbar .fbi.tip-r:hover:after,#phr-root .fbar .fbi.tip-r:hover:after{transform:translateY(0)}
-@media(max-width:700px){#phr-root .fbar{top:10px;gap:8px;padding:10px 12px;
-max-width:min(calc(100vw - 20px),calc(320px - 20px))}}
 @media print{#phr-root .fbar{display:none!important}}
 
 /* ---------- блок-баннер (обложка) ---------- */
@@ -1406,33 +1534,35 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 <!-- ═══ ВЕРХНЕЕ МЕНЮ (канон report.html: логотип + действия) ══════════ -->
 <div class="tbar" id="topbar" data-block-id="PRICE-B001" data-block-name="Верхняя панель">
 <nav class="tbn">
-<button class="fbi tip-l" id="reportBtn" type="button" data-tip="Вернуться к отчёту" aria-label="Вернуться к отчёту">
-<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M15.5 5.5c3 .6 4.5 2.8 4.5 6.5H8" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/><path d="M13.5 7 8 12l5.5 5" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+<button class="fbi tip-l" id="reportBtn" type="button" data-tip="Назад к отчёту" aria-label="Назад к отчёту">
+<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 12H4.5" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/><path d="M10.5 5.5 4.5 12l6 6.5" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
 <button class="fbi" id="editBtn" type="button" data-tip="Редактировать анкету" aria-label="Редактировать анкету">
 <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 20h4.2L19 9.2a2.1 2.1 0 0 0 0-3l-1.2-1.2a2.1 2.1 0 0 0-3 0L4 15.8V20Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M13.6 6.4l4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
 <button class="fbi" id="saveBtn" type="button" data-tip="Сохранить прайс" aria-label="Сохранить прайс">
 <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 4h11l3 3v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M8 4v5h7V4" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><rect x="8" y="13" width="8" height="6" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></button>
-<a class="fbi fbh" href="#thanks" data-thx="price-menu" data-tip="Поблагодарить проект" aria-label="Поблагодарить проект">
-<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 00-7.8 0l-1 1-1-1a5.5 5.5 0 00-7.8 7.8l1 1 7.8 7.8 7.8-7.8 1-1a5.5 5.5 0 000-7.8z" fill="none" stroke="currentColor" stroke-width="2"/></svg></a>
-<button class="fbi tip-r" id="shareBtn" type="button" data-tip="Поделиться" aria-label="Поделиться">
+
+<button class="fbi" id="shareBtn" type="button" data-tip="Поделиться" aria-label="Поделиться">
 <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="18" cy="5" r="2.6" stroke="currentColor" stroke-width="1.8"/><circle cx="6" cy="12" r="2.6" stroke="currentColor" stroke-width="1.8"/><circle cx="18" cy="19" r="2.6" stroke="currentColor" stroke-width="1.8"/><path d="M8.4 10.8l7.2-4.2M8.4 13.2l7.2 4.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+<a class="fbi fbh tip-r" href="#thanks" data-thx="price-menu" data-tip="Поблагодарить проект" aria-label="Поблагодарить проект">
+<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 00-7.8 0l-1 1-1-1a5.5 5.5 0 00-7.8 7.8l1 1 7.8 7.8 7.8-7.8 1-1a5.5 5.5 0 000-7.8z" fill="none" stroke="currentColor" stroke-width="2"/></svg></a>
 </nav>
 <a class="brand" id="brandLink" href="https://schetiks.ru" target="_blank" rel="noopener" data-tip="На главную" aria-label="Счётикс — на главную страницу"><span class="btx"><span class="bt">счётикс</span><span class="bd" data-t="bt_02"><i>т</i><i>в</i><i>о</i><i>я</i><i>&nbsp;</i><i>ю</i><i>н</i><i>и</i><i>т</i><i>-</i><i>э</i><i>к</i><i>о</i><i>н</i><i>о</i><i>м</i><i>и</i><i>к</i><i>а</i></span></span><svg class="bx" viewBox="0 0 32 32" fill="none" aria-hidden="true"><rect x="10.95" y="2.09" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 7.14)" fill="var(--c-gr3)"/><rect x="19.81" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 24.86 16)" fill="var(--c-g-500)"/><rect x="10.95" y="19.81" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 24.86)" fill="var(--c-gr3)"/><rect x="2.09" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 7.14 16)" fill="var(--c-gr3)"/></svg></a>
 </div>
 
 <!-- Плавающая плашка действий: появляется после прокрутки, канон report.html -->
-<div class="fbar" id="fbar">
+<div class="fbar" id="fbar" role="navigation" aria-label="Быстрые действия">
 <div class="fbrand"><svg class="fbmark" viewBox="0 0 32 32" fill="none" aria-hidden="true"><rect x="10.95" y="2.09" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 7.14)" fill="var(--c-gr3)"/><rect x="19.81" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 24.86 16)" fill="var(--c-g-500)"/><rect x="10.95" y="19.81" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 24.86)" fill="var(--c-gr3)"/><rect x="2.09" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 7.14 16)" fill="var(--c-gr3)"/></svg><span class="fbname">счётикс</span></div>
-<button class="fbi tip-l" id="reportBtn2" type="button" data-tip="Вернуться к отчёту" aria-label="Вернуться к отчёту">
-<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M15.5 5.5c3 .6 4.5 2.8 4.5 6.5H8" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/><path d="M13.5 7 8 12l5.5 5" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+<button class="fbi tip-l" id="reportBtn2" type="button" data-tip="Назад к отчёту" aria-label="Назад к отчёту">
+<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 12H4.5" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/><path d="M10.5 5.5 4.5 12l6 6.5" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
 <button class="fbi" id="editBtn2" type="button" data-tip="Редактировать анкету" aria-label="Редактировать анкету">
 <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 20h4.2L19 9.2a2.1 2.1 0 0 0 0-3l-1.2-1.2a2.1 2.1 0 0 0-3 0L4 15.8V20Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M13.6 6.4l4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
 <button class="fbi" id="saveBtn2" type="button" data-tip="Сохранить прайс" aria-label="Сохранить прайс">
 <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 4h11l3 3v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M8 4v5h7V4" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><rect x="8" y="13" width="8" height="6" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></button>
-<a class="fbi fbh" href="#thanks" data-thx="price-float" data-tip="Поблагодарить проект" aria-label="Поблагодарить проект">
-<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 00-7.8 0l-1 1-1-1a5.5 5.5 0 00-7.8 7.8l1 1 7.8 7.8 7.8-7.8 1-1a5.5 5.5 0 000-7.8z" fill="none" stroke="currentColor" stroke-width="2"/></svg></a>
-<button class="fbi tip-r" id="shareBtn2" type="button" data-tip="Поделиться" aria-label="Поделиться">
+
+<button class="fbi" id="shareBtn2" type="button" data-tip="Поделиться" aria-label="Поделиться">
 <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="18" cy="5" r="2.6" stroke="currentColor" stroke-width="1.8"/><circle cx="6" cy="12" r="2.6" stroke="currentColor" stroke-width="1.8"/><circle cx="18" cy="19" r="2.6" stroke="currentColor" stroke-width="1.8"/><path d="M8.4 10.8l7.2-4.2M8.4 13.2l7.2 4.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+<a class="fbi fbh tip-r" href="#thanks" data-thx="price-float" data-tip="Поблагодарить проект" aria-label="Поблагодарить проект">
+<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 00-7.8 0l-1 1-1-1a5.5 5.5 0 00-7.8 7.8l1 1 7.8 7.8 7.8-7.8 1-1a5.5 5.5 0 000-7.8z" fill="none" stroke="currentColor" stroke-width="2"/></svg></a>
 <button class="fbclose" id="fbarClose" type="button" aria-label="Скрыть">×</button>
 </div>
 
@@ -1449,7 +1579,7 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 <div class="pc-hero-wrap" data-block-id="PRICE-B002" data-block-name="Персональный баннер">
 <!-- Плавающая подсказка «отредактируйте данные»: на десктопе висит над баннером,
      на мобильном встаёт над баннером в потоке (см. .ph-edit-hint). -->
-<div class="ph-edit-hint" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 20h4.2L19 9.2a2.1 2.1 0 0 0 0-3l-1.2-1.2a2.1 2.1 0 0 0-3 0L4 15.8V20Z" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/><path d="M13.6 6.4l4 4" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg><span>Отредактируйте введённые данные</span></div>
+<button type="button" class="ph-edit-hint" id="phGoEdit" aria-label="Перейти к редактированию обложки"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 20h4.2L19 9.2a2.1 2.1 0 0 0 0-3l-1.2-1.2a2.1 2.1 0 0 0-3 0L4 15.8V20Z" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/><path d="M13.6 6.4l4 4" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg><span>Соберите свою фирменную обложку прайса под свой стиль</span></button>
 <div class="price-hero" data-block-name="Персональный баннер прайса">
 <img class="ph-bg" src="data:image/jpeg;base64,
 /9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAkGBwgHBgkIBwgKCgkLDRYPDQwMDRsUFRAWIB0iIiAd
@@ -2746,8 +2876,8 @@ g06xW6GXG+VixBX51kXa5zqIrdYsQUGUd7S6xYgxGgb5gsWILEsAjBScmxWLEEAtgrFiCVlbDiSs
 WIJXsgy8WsWIFwN01E0LFiD/2Q==
 " alt="Баннер фотографа" id="phHeroImg" data-default="1">
 <div class="ph-copy">
-<div class="ph-kicker ph-field" id="phRole" contenteditable="true" spellcheck="false" data-placeholder="Например: коммерческий фотограф">Коммерческий фотограф</div>
-<div class="ph-name ph-field" id="phName" contenteditable="true" spellcheck="false" data-placeholder="Имя Фамилия">Имя Фамилия</div>
+<div class="ph-kicker ph-field" id="phRole" contenteditable="true" spellcheck="false" data-tip="Ваше направление съёмки" data-placeholder="Например: коммерческий фотограф">Коммерческий фотограф</div>
+<div class="ph-name ph-field" id="phName" contenteditable="true" spellcheck="false" data-tip="Ваше имя" data-placeholder="Имя Фамилия">Имя Фамилия</div>
 <!-- Контакты фотографа — ПОД ИМЕНЕМ. Строка 1 — телефон (постоянный),
      e-mail (постоянный), сайт (необязательный, убирается крестиком).
      Строка 2 — дополнительное поле свободной информации. Все поля — строки
@@ -2756,22 +2886,22 @@ WIJXsgy8WsWIFwN01E0LFiD/2Q==
 <div class="ph-contacts">
 <span class="ph-contact">
 <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6.6 3.5h3l1.4 4-2 1.5a12 12 0 005.5 5.5l1.5-2 4 1.4v3a2 2 0 01-2.2 2A16.5 16.5 0 014.6 5.7 2 2 0 016.6 3.5z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>
-<span class="ph-c-val ph-field" id="phPhone" contenteditable="true" spellcheck="false" data-placeholder="+7 000 000-00-00"></span>
+<span class="ph-c-val ph-field" id="phPhone" contenteditable="true" spellcheck="false" data-tip="Номер телефона" data-placeholder="+7 000 000-00-00"></span>
 </span>
 <span class="ph-contact">
 <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3.5" y="5.5" width="17" height="13" rx="2" stroke="currentColor" stroke-width="1.7"/><path d="M4.2 6.7 12 12.4l7.8-5.7" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>
-<span class="ph-c-val ph-field" id="phEmail" contenteditable="true" spellcheck="false" data-placeholder="e-mail"></span>
+<span class="ph-c-val ph-field" id="phEmail" contenteditable="true" spellcheck="false" data-tip="E-mail" data-placeholder="e-mail"></span>
 </span>
 <span class="ph-contact ph-c-site">
 <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="1.7"/><path d="M3.5 12h17M12 3.5c2.4 2.3 3.7 5.4 3.7 8.5S14.4 18.2 12 20.5C9.6 18.2 8.3 15.1 8.3 12S9.6 5.8 12 3.5z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>
-<span class="ph-c-val ph-field" id="phSite" contenteditable="true" spellcheck="false" data-placeholder="сайт"></span>
+<span class="ph-c-val ph-field" id="phSite" contenteditable="true" spellcheck="false" data-tip="Сайт" data-placeholder="сайт"></span>
 <button type="button" class="ph-c-x" data-удалить="phSite" aria-label="Удалить сайт">×</button>
 </span>
 </div>
 <div class="ph-contacts ph-contacts-extra">
 <span class="ph-contact ph-contact-extra">
 <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 4.5h12a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-13a1 1 0 0 1 1-1Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M8.5 9.5h7M8.5 13h7M8.5 16.5h4.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
-<span class="ph-c-val ph-field" id="phExtra" contenteditable="true" spellcheck="false" data-placeholder="Дополнительная информация"></span>
+<span class="ph-c-val ph-field" id="phExtra" contenteditable="true" spellcheck="false" data-tip="Дополнительная информация" data-placeholder="Дополнительная информация"></span>
 <button type="button" class="ph-c-x" data-удалить="phExtra" aria-label="Удалить">×</button>
 </span>
 </div>
@@ -2781,33 +2911,42 @@ WIJXsgy8WsWIFwN01E0LFiD/2Q==
      при запуске JS заменяется на актуальную текущую дату. -->
 <div class="ph-meta"><span class="ph-meta-title">Стоимость услуг</span> <span class="ph-meta-date"><span id="phDate">02.09.2026</span></span></div>
 </div>
+<!-- Переключатель режима баннера: просмотр (по умолчанию) / редактирование.
+     Правый верхний угол; различия режимов — только технические элементы. -->
+<div class="ph-mode" role="group" aria-label="Режим баннера">
+<button type="button" class="ph-eye" id="phEye" data-режим="view" data-tip="Просмотр" aria-label="Просмотр баннера" aria-pressed="true">
+<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M2.7 12S6.2 5.8 12 5.8 21.3 12 21.3 12 17.8 18.2 12 18.2 2.7 12 2.7 12z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.8"/></svg>
+</button>
+<button type="button" class="ph-eye tip-r" id="phEdit" data-режим="edit" data-tip="Редактировать" aria-label="Редактировать баннер" aria-pressed="false">
+<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 20h4.2L19 9.2a2.1 2.1 0 0 0 0-3l-1.2-1.2a2.1 2.1 0 0 0-3 0L4 15.8V20Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M13.6 6.4l4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+</button>
+</div>
 </div><!-- /price-hero — панель .ph-tools вынесена в .pc-hero-wrap:
      на узких экранах она встаёт под баннером, а не закрывает его низ -->
 
 <div class="ph-tools" aria-label="Настройка баннера">
 <!-- Цвет шрифта: светлый / тёмный (ручной выбор поверх авто-определения) -->
 <div class="ph-seg" id="phFontSeg" role="group" aria-label="Цвет шрифта">
-<button type="button" data-font="light" aria-pressed="true" title="Светлый шрифт" aria-label="Светлый шрифт">
+<button type="button" data-font="light" aria-pressed="true" data-tip="Светлый шрифт" aria-label="Светлый шрифт">
 <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="4.2" stroke="currentColor" stroke-width="1.8"/><path d="M12 2.6v2.4M12 19v2.4M4.4 4.4l1.7 1.7M17.9 17.9l1.7 1.7M2.6 12h2.4M19 12h2.4M4.4 19.6l1.7-1.7M17.9 6.1l1.7-1.7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
 </button>
-<button type="button" data-font="dark" aria-pressed="false" title="Тёмный шрифт" aria-label="Тёмный шрифт">
+<button type="button" data-font="dark" aria-pressed="false" data-tip="Тёмный шрифт" aria-label="Тёмный шрифт">
 <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 14.4A8 8 0 019.6 4a7 7 0 100 14.9 8 8 0 0010.4-4.5z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
 </button>
 </div>
 <!-- Выравнивание: по левому / по правому краю -->
 <div class="ph-seg" id="phAlignSeg" role="group" aria-label="Выравнивание">
-<button type="button" data-align="left" aria-pressed="true" title="По левому краю" aria-label="По левому краю">
+<button type="button" data-align="left" aria-pressed="true" data-tip="По левому краю" aria-label="По левому краю">
 <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 6h16M4 10h10M4 14h16M4 18h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
 </button>
-<button type="button" data-align="right" aria-pressed="false" title="По правому краю" aria-label="По правому краю">
+<button type="button" data-align="right" aria-pressed="false" data-tip="По правому краю" aria-label="По правому краю">
 <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 6h16M10 10h10M4 14h16M10 18h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
 </button>
 </div>
-<!-- Глазик: печатный вид обложки — баннер без полей ввода, как в PDF -->
-<button type="button" class="ph-eye" id="phEye" title="Печатный вид обложки" aria-label="Печатный вид обложки">
-<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M2.7 12S6.2 5.8 12 5.8 21.3 12 21.3 12 17.8 18.2 12 18.2 2.7 12 2.7 12z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.8"/></svg>
+<button type="button" class="ph-btn" id="phReset" data-tip="Сбросить оформление" aria-label="Сбросить оформление">
+<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4.6 10a7.6 7.6 0 1 1 2.2 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M4.4 4.6V10h5.4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
 </button>
-<button type="button" class="ph-btn" id="phUpload" aria-label="Загрузить своё фото" title="Загрузить фото">
+<button type="button" class="ph-btn tip-r" id="phUpload" aria-label="Загрузить своё фото" data-tip="Загрузить фото">
 <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 16V4m0 0L8 8m4-4 4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
 <span class="ph-btn-txt">Загрузить фото</span>
 </button>
@@ -2821,7 +2960,7 @@ WIJXsgy8WsWIFwN01E0LFiD/2Q==
 <div class="pv-prev-backdrop"></div>
 <div class="pv-prev-card" role="dialog" aria-modal="true" aria-label="Печатный вид обложки">
 <div class="pv-prev-head">
-<span>Печатный вид — так обложка будет выглядеть в PDF</span>
+<span>Прайс — так он будет выглядеть в PDF</span>
 <button type="button" class="pv-prev-close" id="pvPrevClose" aria-label="Закрыть предпросмотр">
 <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
 </button>
@@ -2977,6 +3116,25 @@ WIJXsgy8WsWIFwN01E0LFiD/2Q==
 Сохранить прайс
 </button>
 
+<!-- ═══ ФИНАЛЬНЫЙ БАННЕР «ПОБЛАГОДАРИТЬ ПРОЕКТ» (канон report.html .cta.thx) ═══ -->
+<div class="cta thx" data-block-id="PRICE-B00T" data-block-name="Поблагодарить проект">
+<svg class="dec" style="right:-60px;top:-50px" width="280" height="280" viewBox="0 0 100 100" fill="none">
+<circle cx="50" cy="50" r="50" fill="#fff"/></svg>
+<svg class="dec" style="right:90px;bottom:-70px" width="180" height="180" viewBox="0 0 100 100" fill="none">
+<circle cx="50" cy="50" r="50" fill="#fff"/></svg>
+<svg class="dec" style="right:214px;top:24px;opacity:.22" width="54" height="54" viewBox="0 0 24 24" fill="none">
+<path d="M20.8 4.6a5.5 5.5 0 00-7.8 0l-1 1-1-1a5.5 5.5 0 00-7.8 7.8l1 1 7.8 7.8 7.8-7.8 1-1a5.5 5.5 0 000-7.8z" fill="#fff"/></svg>
+<div class="in">
+<div class="kick">Спасибо, что пользуетесь сервисом!</div>
+<h3>Поблагодарить проект</h3>
+<p>Ваша поддержка помогает нам видеть реальную пользу нашей работы и направлять ресурсы на то, чтобы делать инструмент ещё удобнее для вас.</p>
+<a class="btn2" href="#thanks" data-thx="price-block">
+<svg width="19" height="19" viewBox="0 0 24 24" fill="none">
+<path d="M20.8 4.6a5.5 5.5 0 00-7.8 0l-1 1-1-1a5.5 5.5 0 00-7.8 7.8l1 1 7.8 7.8 7.8-7.8 1-1a5.5 5.5 0 000-7.8z" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+Поблагодарить</a>
+</div>
+</div>
+
 <!-- ═══ БЛОК: УВЕДОМЛЕНИЕ «как считаются цены» (голубое, разворачивающийся список) ═══ -->
 <section class="pc-sect" data-block-id="PRICE-B009" data-block-name="Как считаются цены">
 <details class="pc-explain info-notice">
@@ -2997,25 +3155,6 @@ WIJXsgy8WsWIFwN01E0LFiD/2Q==
 </div>
 </details>
 </section>
-
-<!-- ═══ ФИНАЛЬНЫЙ БАННЕР «ПОБЛАГОДАРИТЬ ПРОЕКТ» (канон report.html .cta.thx) ═══ -->
-<div class="cta thx" data-block-id="PRICE-B00T" data-block-name="Поблагодарить проект">
-<svg class="dec" style="right:-60px;top:-50px" width="280" height="280" viewBox="0 0 100 100" fill="none">
-<circle cx="50" cy="50" r="50" fill="#fff"/></svg>
-<svg class="dec" style="right:90px;bottom:-70px" width="180" height="180" viewBox="0 0 100 100" fill="none">
-<circle cx="50" cy="50" r="50" fill="#fff"/></svg>
-<svg class="dec" style="right:214px;top:24px;opacity:.22" width="54" height="54" viewBox="0 0 24 24" fill="none">
-<path d="M20.8 4.6a5.5 5.5 0 00-7.8 0l-1 1-1-1a5.5 5.5 0 00-7.8 7.8l1 1 7.8 7.8 7.8-7.8 1-1a5.5 5.5 0 000-7.8z" fill="#fff"/></svg>
-<div class="in">
-<div class="kick">Спасибо, что пользуетесь сервисом!</div>
-<h3>Поблагодарить проект</h3>
-<p>Ваша поддержка помогает нам видеть реальную пользу нашей работы и направлять ресурсы на то, чтобы делать инструмент ещё удобнее для вас.</p>
-<a class="btn2" href="#thanks" data-thx="price-block">
-<svg width="19" height="19" viewBox="0 0 24 24" fill="none">
-<path d="M20.8 4.6a5.5 5.5 0 00-7.8 0l-1 1-1-1a5.5 5.5 0 00-7.8 7.8l1 1 7.8 7.8 7.8-7.8 1-1a5.5 5.5 0 000-7.8z" fill="none" stroke="currentColor" stroke-width="2"/></svg>
-Поблагодарить</a>
-</div>
-</div>
 
 <!-- ═══ ПОДВАЛ (канон report.html) ══════════════════════════════════ -->
 <div class="foot" data-block-id="PRICE-B008" data-block-name="Подвал"><a class="lgs" href="https://schetiks.ru" target="_blank" rel="noopener" data-tip="На главную" aria-label="Счётикс — на главную страницу"><span class="btx"><span class="bt">счётикс</span><span class="bd" data-t="bt_02"><i>т</i><i>в</i><i>о</i><i>я</i><i>&nbsp;</i><i>ю</i><i>н</i><i>и</i><i>т</i><i>-</i><i>э</i><i>к</i><i>о</i><i>н</i><i>о</i><i>м</i><i>и</i><i>к</i><i>а</i></span></span><svg class="lx" viewBox="0 0 32 32" fill="none" aria-hidden="true"><rect x="10.95" y="2.09" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 7.14)" fill="var(--c-gr3)"/><rect x="19.81" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 24.86 16)" fill="var(--c-g-500)"/><rect x="10.95" y="19.81" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 24.86)" fill="var(--c-gr3)"/><rect x="2.09" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 7.14 16)" fill="var(--c-gr3)"/></svg></a>
@@ -3316,6 +3455,14 @@ function ИНИЦ_ПРАЙСА(){
         сохранитьОбложку();
       });
     });
+    /* Кнопка «Сбросить» (панель настроек баннера): возвращает заводское
+       состояние — очищаем сохранение обложки и перечитываем страницу. */
+    var сбросЭл=document.getElementById('phReset');
+    if(сбросЭл) сбросЭл.addEventListener('click', function(){
+      if(!confirm('Сбросить обложку к значениям по умолчанию?\nИмя, контакты, фото, цвет шрифта и выравнивание вернутся к исходным.')) return;
+      try{ localStorage.removeItem(ХРАНИЛИЩЕ); }catch(e){}
+      location.reload();
+    });
     /* Восстановление сохранённой обложки */
     var сохрОбл = null;
     try{ сохрОбл = JSON.parse(localStorage.getItem(ХРАНИЛИЩЕ) || 'null'); }catch(e){}
@@ -3344,6 +3491,79 @@ function ИНИЦ_ПРАЙСА(){
     /* Дата формирования прайса */
     var датаЭл = document.getElementById('phDate');
     if(датаЭл) датаЭл.textContent = new Date().toLocaleDateString('ru-RU');
+  })();
+
+  /* ── Лимиты и маски полей обложки (решение владельца 02.09). Телефон вводится
+        маской «+7 000 000-00-00» — ровно 11 цифр (8… и 9… приводятся к +7);
+        e-mail — без пробелов, с «@» и зоной; сайт — без пробелов, протокол и
+        «www.» срезаются, нужна доменная зона (.ru и др.); имя/роль/доп. строка
+        ограничены по длине (Enter выше уже отключён). Некорректное значение НЕ
+        блокируем — поле помечается красной волной (класс .ph-invalid) на случай,
+        если человек осознанно пишет экзотику; сохранение и печать работают как
+        раньше — берут текст поля. ── */
+  (function(){
+    var имяЭл=document.getElementById('phName'), рольЭл=document.getElementById('phRole'),
+        телЭл=document.getElementById('phPhone'), почтаЭл=document.getElementById('phEmail'),
+        сайтЭл=document.getElementById('phSite'), допЭл=document.getElementById('phExtra');
+    if(!телЭл) return;
+    var гонка=false;
+    function кареткуВконец(эл){ if(document.activeElement!==эл) return;
+      var р=document.createRange(); р.selectNodeContents(эл); р.collapse(false);
+      var з=window.getSelection(); з.removeAllRanges(); з.addRange(р); }
+    function усечь(v,м){ v=String(v).replace(/[\r\n\t]+/g,' ').replace(/ {2,}/g,' ');
+      return v.length>м ? v.slice(0,м) : v; }
+    function маскаТел(v){ var d=String(v).replace(/\D/g,'');
+      if(!d) return '';
+      if(d[0]==='8') d='7'+d.slice(1);
+      if(d[0]!=='7') d='7'+d;
+      d=d.slice(0,11); var г=d.slice(1), r='+7';
+      if(г.length>0) r+=' '+г.slice(0,3);
+      if(г.length>3) r+=' '+г.slice(3,6);
+      if(г.length>6) r+='-'+г.slice(6,8);
+      if(г.length>8) r+='-'+г.slice(8,10);
+      return r; }
+    var ЗОНЫ=['ru','рф','su','com','net','org','io','pro','me','art','photo','photos','online','store','site','studio','agency'];
+    function валПочта(v){ return /^[^\s@]+@[^\s@]+\.[a-zа-яё]{2,}$/iu.test(v); }
+    function валСайт(v){ var m=String(v).match(/^([\wа-яё-]+(?:\.[\wа-яё-]+)+)(\/\S*)?$/iu);
+      return !!m && ЗОНЫ.indexOf(m[1].split('.').pop().toLowerCase())>-1; }
+    function нормСайт(v){ return String(v).replace(/\s+/g,'')
+      .replace(/^https?:\/\//i,'').replace(/^www\./i,'')
+      .replace(/\/.*$/,'').toLowerCase().slice(0,45); }
+    function вязать(эл, наВвод, наБлюр, валид){ if(!эл) return;
+      эл.addEventListener('input', function(){ if(гонка) return; гонка=true;
+        var было=эл.textContent, стало=наВвод(было);
+        /* «Кружочек» лечится тут: если вводимого текста фактически нет (часто
+           остаётся служебный <br>), узел обнуляем — показывается значение
+           по умолчанию из data-placeholder. */
+        if(!стало.replace(/[\s\u00a0\u200b]+/g,'')) стало='';
+        if(стало==='' && эл.childNodes.length) эл.textContent=''; /* служебный <br> убираем — иначе :empty/плейсхолдер не сработает */
+        if(стало!==было){ эл.textContent=стало; кареткуВконец(эл);
+          эл.dispatchEvent(new Event('input')); }
+        гонка=false; });
+      эл.addEventListener('blur', function(){ гонка=true;
+        var было=эл.textContent, стало=(наБлюр||наВвод)(было);
+        if(!стало.replace(/[\s\u00a0\u200b]+/g,'')) стало='';
+        if(стало==='' && эл.childNodes.length) эл.textContent=''; /* служебный <br> убираем — иначе :empty/плейсхолдер не сработает */
+        if(стало!==было){ эл.textContent=стало; эл.dispatchEvent(new Event('input')); }
+        if(валид) эл.classList.toggle('ph-invalid', стало!=='' && !валид(стало));
+        гонка=false; }); }
+    вязать(имяЭл,  function(v){ return усечь(v,40); });
+    вязать(рольЭл, function(v){ return усечь(v,48); });
+    /* Доп. информация — БЕЗ лимита символов (решение владельца 02.09). */
+    вязать(допЭл,  function(v){ return String(v).replace(/[\r\n\t]+/g,' '); });
+    вязать(телЭл,  маскаТел, null);
+    вязать(почтаЭл,function(v){ return String(v).replace(/\s+/g,'').slice(0,45); }, null, валПочта);
+    вязать(сайтЭл, function(v){ return String(v).replace(/\s+/g,'').slice(0,45); }, нормСайт, валСайт);
+    /* Подчистка восстановленных из хранилища значений до старых неотформатированных. */
+    [имяЭл,рольЭл,телЭл,почтаЭл,сайтЭл,допЭл].forEach(function(эл){
+      if(эл && !эл.textContent.replace(/[\s\u00a0\u200b]+/g,'')) эл.textContent=''; });
+    if(телЭл.textContent.trim()){ var т=маскаТел(телЭл.textContent);
+      if(т!==телЭл.textContent) телЭл.textContent=т; }
+    if(сайтЭл && сайтЭл.textContent.trim()){ var с=нормСайт(сайтЭл.textContent);
+      if(с!==сайтЭл.textContent) сайтЭл.textContent=с;
+      сайтЭл.classList.toggle('ph-invalid', с!=='' && !валСайт(с)); }
+    if(почтаЭл && почтаЭл.textContent.trim())
+      почтаЭл.classList.toggle('ph-invalid', !валПочта(почтаЭл.textContent.replace(/\s+/g,'')));
   })();
 
   /* ── Канал данных анкеты. Источник правды один — анкета (calc.html):
@@ -3500,16 +3720,16 @@ function ИНИЦ_ПРАЙСА(){
   }
   function создатьСтроку(таблица, данные){
     var tr = document.createElement('tr');
-    var ч = '<option value="\u0447">\u0447</option>', м = '<option value="\u043c\u0438\u043d">\u043c\u0438\u043d</option>';
+    var ч = '<option value="\u0447">\u0447<\/option>', м = '<option value="\u043c\u0438\u043d">\u043c\u0438\u043d<\/option>';
     if(таблица.getAttribute('data-mode') === 'cons'){
       /* Консультация: единая сетка прайса — длительность (столбец 1),
          единица мин/ч (столбец 2), цена (столбец 3), «×». Без количества
          и без столбца срочности (к консультации не применяется). */
       tr.innerHTML =
-        '<td class="c2"><input type="text" inputmode="decimal" class="cv" placeholder="0"></td>' +
-        '<td class="c3"><select class="cu">' + м + ч + '</select></td>' +
-        '<td class="pc-price"><span class="pc-out empty">\u2014</span></td>' +
-        '<td><button type="button" class="del" aria-label="\u0423\u0434\u0430\u043b\u0438\u0442\u044c">\u00D7</button></td>';
+        '<td class="c2"><input type="text" inputmode="decimal" class="cv" placeholder="0"><\/td>' +
+        '<td class="c3"><select class="cu">' + м + ч + '<\/select><\/td>' +
+        '<td class="pc-price"><span class="pc-out empty">\u2014<\/span><\/td>' +
+        '<td><button type="button" class="del" aria-label="\u0423\u0434\u0430\u043b\u0438\u0442\u044c">\u00D7<\/button><\/td>';
       if(данные){
         tr.querySelector('.cv').value = данные[0];
         tr.querySelector('.cu').value = данные[1] || '\u043c\u0438\u043d';
@@ -3520,23 +3740,23 @@ function ИНИЦ_ПРАЙСА(){
     }
     if(таблица.getAttribute('data-mode') === 'turnkey'){
       tr.innerHTML =
-        '<td><input type="text" class="c1" placeholder="\u041d\u0430\u0437\u0432\u0430\u043d\u0438\u0435 \u0443\u0441\u043b\u0443\u0433\u0438"></td>' +
+        '<td><input type="text" class="c1" placeholder="\u041d\u0430\u0437\u0432\u0430\u043d\u0438\u0435 \u0443\u0441\u043b\u0443\u0433\u0438"><\/td>' +
         '<td class="c2"><input type="text" inputmode="decimal" class="cv" placeholder="0">' +
-          '<select class="cu">' + ч + м + '</select></td>' +
+          '<select class="cu">' + ч + м + '<\/select><\/td>' +
         '<td class="c2"><input type="text" inputmode="decimal" class="cp" placeholder="0">' +
-          '<select class="cpu">' + ч + м + '</select></td>' +
-        '<td class="pc-price"><span class="pc-out empty">\u2014</span></td>' +
-        '<td class="pc-price2"><span class="pc-out2 empty">\u2014</span></td>' +
-        '<td><button type="button" class="del" aria-label="\u0423\u0434\u0430\u043b\u0438\u0442\u044c">\u00D7</button></td>';
+          '<select class="cpu">' + ч + м + '<\/select><\/td>' +
+        '<td class="pc-price"><span class="pc-out empty">\u2014<\/span><\/td>' +
+        '<td class="pc-price2"><span class="pc-out2 empty">\u2014<\/span><\/td>' +
+        '<td><button type="button" class="del" aria-label="\u0423\u0434\u0430\u043b\u0438\u0442\u044c">\u00D7<\/button><\/td>';
     } else {
       tr.innerHTML =
-        '<td><input type="text" class="c1" placeholder="\u041d\u0430\u0437\u0432\u0430\u043d\u0438\u0435 \u0443\u0441\u043b\u0443\u0433\u0438"></td>' +
+        '<td><input type="text" class="c1" placeholder="\u041d\u0430\u0437\u0432\u0430\u043d\u0438\u0435 \u0443\u0441\u043b\u0443\u0433\u0438"><\/td>' +
         '<td class="c2"><input type="text" inputmode="decimal" class="cv" placeholder="0">' +
-          '<select class="cu">' + м + ч + '</select></td>' +
-        '<td class="c3"><input type="text" inputmode="numeric" class="cq" value="1"></td>' +
-        '<td class="pc-price"><span class="pc-out empty">\u2014</span></td>' +
-        '<td class="pc-price2"><span class="pc-out2 empty">\u2014</span></td>' +
-        '<td><button type="button" class="del" aria-label="\u0423\u0434\u0430\u043b\u0438\u0442\u044c">\u00D7</button></td>';
+          '<select class="cu">' + м + ч + '<\/select><\/td>' +
+        '<td class="c3"><input type="text" inputmode="numeric" class="cq" value="1"><\/td>' +
+        '<td class="pc-price"><span class="pc-out empty">\u2014<\/span><\/td>' +
+        '<td class="pc-price2"><span class="pc-out2 empty">\u2014<\/span><\/td>' +
+        '<td><button type="button" class="del" aria-label="\u0423\u0434\u0430\u043b\u0438\u0442\u044c">\u00D7<\/button><\/td>';
     }
     if(данные){
       tr.querySelector('.c1').value = данные[0];
@@ -3642,12 +3862,12 @@ function ИНИЦ_ПРАЙСА(){
       var условие = (idx === 0 && r.S === 1) ? '1 час' : 'от ' + r.S + ' ' + словоЧас(r.S);
       var скидкаТекст = r.скидка > 0.0005 ? '−' + процент(r.скидка * 100) + '%' : '—';
       return '<tr>' +
-        '<td>' + условие + '</td>' +
-        '<td>' + рубли(r.час) + '<span class="vt-u">/ч</span></td>' +
-        '<td>' + рубли(r.съёмка) + '</td>' +
-        '<td>' + рубли(r.срочно) + '</td>' +
-        '<td>' + скидкаТекст + '</td>' +
-        '</tr>';
+        '<td>' + условие + '<\/td>' +
+        '<td>' + рубли(r.час) + '<span class="vt-u">/ч<\/span><\/td>' +
+        '<td>' + рубли(r.съёмка) + '<\/td>' +
+        '<td>' + рубли(r.срочно) + '<\/td>' +
+        '<td>' + скидкаТекст + '<\/td>' +
+        '<\/tr>';
     }).join('');
   }
   построитьОбъём();
@@ -3737,77 +3957,87 @@ function ИНИЦ_ПРАЙСА(){
         ];
       };
     }
-    var th = шапка.map(function(h){ return '<th>' + экранированный(h) + '</th>'; }).join('');
+    var th = шапка.map(function(h){ return '<th>' + экранированный(h) + '<\/th>'; }).join('');
     var tr = строки.map(function(r){
-      return '<tr>' + ячейки(r).map(function(v){ return '<td>' + v + '</td>'; }).join('') + '</tr>';
+      return '<tr>' + ячейки(r).map(function(v){ return '<td>' + v + '<\/td>'; }).join('') + '<\/tr>';
     }).join('');
     if(режим === 'turnkey'){
       /* Фотосъёмка «под ключ» строится другим сборщиком; на всякий случай
          оставляем таблицу во всю ширину, без общей сетки. */
       return '<div class="wrap"><table class="rt"><thead><tr>' + th +
-             '</tr></thead><tbody>' + tr + '</tbody></table></div>';
+             '<\/tr><\/thead><tbody>' + tr + '<\/tbody><\/table><\/div>';
     }
     /* Услуги (к съёмке / отдельным заказом) — 3 столбца в ОБЩЕЙ сетке
        (см. СЕТКА_УСЛУГ): Услуга · Цена · Срочный заказ. Таблица во всю ширину,
        строки не обрываются; «Цена» стоит там же, что и в консультации. */
     return '<div class="wrap"><table class="rt rt-svc">' +
-           '<colgroup><col style="width:' + СЕТКА_УСЛУГ.c1 + '"><col style="width:' + СЕТКА_УСЛУГ.c2 + '"><col style="width:' + СЕТКА_УСЛУГ.c3 + '"><col style="width:' + СЕТКА_УСЛУГ.c4 + '"></colgroup>' +
-           '<thead><tr>' + th + '</tr></thead><tbody>' + tr + '</tbody></table></div>';
+           '<colgroup><col style="width:' + СЕТКА_УСЛУГ.c1 + '"><col style="width:' + СЕТКА_УСЛУГ.c2 + '"><col style="width:' + СЕТКА_УСЛУГ.c3 + '"><col style="width:' + СЕТКА_УСЛУГ.c4 + '"><\/colgroup>' +
+           '<thead><tr>' + th + '<\/tr><\/thead><tbody>' + tr + '<\/tbody><\/table><\/div>';
   }
-  /* Контакты фотографа для печатного слепка/PDF → кликабельные ссылки.
-     Телефон → tel:, e-mail → mailto:, сайт → https://. Пустые поля не выводим. */
-  function печатныеКонтакты(){
-    function значение(id){ var э = document.getElementById(id); return э ? э.textContent.trim() : ''; }
-    var тел = значение('phPhone'), сайт = значение('phSite'), почта = значение('phEmail');
-    var части = [];
-    if(тел){
-      var телHref = 'tel:' + тел.replace(/[^\d+]/g, '');
-      части.push('<a class="pv-contact" href="' + экранированный(телHref) + '">' + экранированный(тел) + '</a>');
+  /* ── Печатная обложка = ЖИВОЙ баннер страницы, а не его пересказ
+     (решение владельца 03.09). Разметку не пересобираем: берём .pc-hero-wrap
+     целиком (вместе с контейнерным контекстом, от которого считаются cqi),
+     глубоко клонируем и вычищаем из клона только интерфейсное — панель
+     настроек, переключатель режима, крестики удаления, подсказку-приглашение,
+     тултипы, contenteditable, id. Дальше:
+       · пустые поля удаляем вместе со строкой: на экране в них виден
+         плейсхолдер (:empty:before), на бумаге он стал бы вымышленным данными;
+       · контакты становятся ссылками tel:/mailto:/https: — как делал старый
+         сборщик, но рядом остаётся фирменная иконка;
+       · класс ph-view включает читательский вид: без рамок вокруг полей.
+     Размер и типографика клона — в CSS (.pv-клон): проектная ширина 1080px и
+     zoom до полосы печати. Поэтому PDF = тот же баннер, что на экране. */
+  function клонПечБаннера(){
+    var обёртка = КОРЕНЬ.querySelector('.pc-hero-wrap');
+    if(!обёртка) return null;
+    var к = обёртка.cloneNode(true);
+    к.className = 'pc-hero-wrap pv-клон ph-view';
+    к.removeAttribute('data-block-id'); к.removeAttribute('data-block-name');
+    var пол = {};                                    /* id полей — до их удаления */
+    [].forEach.call(к.querySelectorAll('[id]'), function(э){ пол[э.id] = э; });
+    [].forEach.call(к.querySelectorAll('.ph-tools,.ph-mode,.ph-edit-hint,.ph-c-x,button'),
+      function(э){ э.remove(); });
+    [].forEach.call(к.querySelectorAll('.ph-kicker,.ph-name,.ph-c-val'), function(э){
+      if(э.textContent.trim()) return;
+      var строка = э.closest('.ph-contact');
+      (строка || э).remove();
+    });
+    [].forEach.call(к.querySelectorAll('[data-tip],[data-placeholder],[contenteditable],' +
+        '[spellcheck],[aria-pressed],[aria-label],[role],[tabindex],[data-удалить]'), function(э){
+      ['data-tip','data-placeholder','contenteditable','spellcheck','aria-pressed','aria-label',
+       'role','tabindex','data-удалить'].forEach(function(а){ э.removeAttribute(а); });
+    });
+    [].forEach.call(к.querySelectorAll('[id]'), function(э){ э.removeAttribute('id'); });
+    var фон = к.querySelector('img.ph-bg');
+    if(фон && !фон.getAttribute('src')) фон.remove();   /* фото нет — не тянем пустой img */
+    /* Контакты → кликабельные ссылки, классы (и вёрстка строки) сохраняются. */
+    function вСсылку(э, href){
+      if(!э || !к.contains(э) || !href) return;
+      var a = document.createElement('a');
+      a.className = э.className + ' ph-c-link';
+      a.setAttribute('href', href);
+      while(э.firstChild) a.appendChild(э.firstChild);
+      э.parentNode.replaceChild(a, э);
     }
-    /* Порядок как на экране: телефон, e-mail, сайт */
-    if(почта){
-      части.push('<a class="pv-contact" href="mailto:' + экранированный(почта) + '">' + экранированный(почта) + '</a>');
-    }
-    if(сайт){
-      var сайтHref = /^https?:\/\//i.test(сайт) ? сайт : 'https://' + сайт.replace(/^\/+/, '');
-      части.push('<a class="pv-contact" href="' + экранированный(сайтHref) + '">' + экранированный(сайт.replace(/^https?:\/\//i, '')) + '</a>');
-    }
-    if(!части.length) return '';
-    return '<div class="pv-banner-contacts">' + части.join('') + '</div>';
-  }
-  /* HTML печатного баннера (обложки): одна и та же разметка для PDF и для
-     предпросмотра по кнопке-глазику. Собирается из живого баннера страницы —
-     без полей ввода, как будет выглядеть на бумаге. */
-  function htmlПечБаннера(){
-    var баннерЭл = КОРЕНЬ.querySelector('.price-hero');
-    var картинка = document.getElementById('phHeroImg');
-    var имяЭл = document.getElementById('phName');
-    var рольЭл = document.getElementById('phRole');
-    var допЭл = document.getElementById('phExtra');
-    var датаЭл = document.getElementById('phDate');
-    var имя = имяЭл ? имяЭл.textContent.trim() : '';
-    var роль = рольЭл ? рольЭл.textContent.trim() : '';
-    var доп = допЭл ? допЭл.textContent.trim() : '';
-    var дата = (датаЭл && датаЭл.textContent.trim()) || new Date().toLocaleDateString('ru-RU');
-    var светлый = баннерЭл && баннерЭл.classList.contains('ph-light');
-    var поПравому = баннерЭл && баннерЭл.classList.contains('ph-right');
-    if(!картинка || !картинка.src) return '';
-    return '<div class="pv-banner' + (светлый ? ' pv-light' : '') + (поПравому ? ' pv-right' : '') + '">' +
-            '<img src="' + экранированный(картинка.src) + '" alt="">' +
-            '<div class="pv-banner-copy">' +
-              (роль ? '<div class="pv-banner-kicker">' + экранированный(роль) + '</div>' : '') +
-              (имя ? '<div class="pv-banner-name">' + экранированный(имя) + '</div>' : '') +
-            '</div>' + печатныеКонтакты() +
-            (доп ? '<div class="pv-banner-extra">' + экранированный(доп) + '</div>' : '') +
-            '<div class="pv-banner-meta"><span class="pv-meta-title">Стоимость услуг</span> <span class="pv-meta-date">' + экранированный(дата) + '</span></div>' +
-            '</div>';
+    /* Клон ещё не в document — isConnected не годится, проверяем через
+       contains: удалённый элемент из клона выпадает. */
+    function чisto(э){ return э && к.contains(э) ? э.textContent.trim() : ''; }
+    var тел = чisto(пол.phPhone), почта = чisto(пол.phEmail), сайт = чisto(пол.phSite);
+    вСсылку(пол.phPhone, тел ? 'tel:' + тел.replace(/[^\d+]/g, '') : '');
+    вСсылку(пол.phEmail, почта ? 'mailto:' + почта : '');
+    var сайтHref = сайт ? (/^https?:\/\//i.test(сайт) ? сайт : 'https://' + сайт.replace(/^\/+/, '')) : '';
+    вСсылку(пол.phSite, сайтHref);
+    return к;
   }
   function собратьПечать(){
     var вид = document.getElementById('pc-print-view');
     if(!вид) return;
-    var html = htmlПечБаннера();
-    html += секцииТаблиц('<p class="pv-sub">Прайс пока не заполнен.</p>');
-    вид.innerHTML = html;
+    вид.textContent = '';
+    var баннер = клонПечБаннера();
+    if(баннер) вид.appendChild(баннер);
+    var хвост = document.createElement('div');
+    хвост.innerHTML = секцииТаблиц('<p class="pv-sub">Прайс пока не заполнен.<\/p>');
+    while(хвост.firstChild) вид.appendChild(хвост.firstChild);
   }
   /* Секции заполненных таблиц (общий сборщик для печати и предпросмотра).
      Выводим СТОЛЬКО таблиц, сколько реально заполнено: у каждой — свой
@@ -3835,27 +4065,32 @@ function ИНИЦ_ПРАЙСА(){
         if(h2) имяСекции = h2.textContent.trim();
       }
       var h = '<div class="pv-sect">';
-      if(имяСекции) h += '<h3>' + экранированный(имяСекции) + '</h3>';
-      h += таблицаHTML + '</div>';
+      if(имяСекции) h += '<h3>' + экранированный(имяСекции) + '<\/h3>';
+      h += таблицаHTML + '<\/div>';
       есть++;
       return h;
     }
     /* ── РАЗДЕЛ 1: съёмка + доп. услуги к съёмке ── */
     var г1 = '';
     var vt = EXC['vol'] ? '' : печатнаяТаблицаОбъём();
-    if(vt){ г1 += '<div class="pv-sect">' + vt + '</div>'; есть++; }
+    if(vt){ г1 += '<div class="pv-sect">' + vt + '<\/div>'; есть++; }
     г1 += отКонструктора('pcT1');
-    /* ── РАЗДЕЛ 2: консультация (отдельным разделом, перед отдельными заказами) ── */
-    var гк = '';
+    /* ── РАЗДЕЛ 2: «Услуги отдельным заказом» — порядок печати СТРОГО как в
+       анкете (решение владельца 02.09): заголовок раздела + нейтральное
+       пояснение, затем Консультация, затем Дополнительные услуги. ── */
+    var г2 = '';
     var ct = EXC['cons'] ? '' : печатнаяТаблицаКонс();
-    if(ct){ гк += '<div class="pv-sect">' + ct + '</div>'; есть++; }
-    /* ── РАЗДЕЛ 3: услуги отдельным заказом ── */
-    var г2 = отКонструктора('pcT2');
+    if(ct){ г2 += '<div class="pv-sect">' + ct + '<\/div>'; есть++; }
+    var t2 = отКонструктора('pcT2');
+    if(ct || t2){
+      г2 = '<div class="pv-group-intro"><div class="pv-group-head">Услуги отдельным заказом<\/div>' +
+        '<p class="pv-note">Услуги этого раздела заказываются отдельно от фотосъёмки — как самостоятельные задачи без съёмочного дня. Стоимость каждой позиции уже включает время на согласование деталей, внесение правок и передачу готового материала.<\/p><\/div>' +
+        г2 + t2;
+    }
 
     var html = '';
-    if(г1) html += '<div class="pv-group">' + г1 + '</div>';
-    if(гк) html += '<div class="pv-group">' + гк + '</div>';
-    if(г2) html += '<div class="pv-group">' + г2 + '</div>';
+    if(г1) html += '<div class="pv-group">' + г1 + '<\/div>';
+    if(г2) html += '<div class="pv-group">' + г2 + '<\/div>';
     return есть ? html : (пусто || '');
   }
   /* Печатный вид таблицы «Консультация»: длительность + цена, чистые значения. */
@@ -3875,24 +4110,24 @@ function ИНИЦ_ПРАЙСА(){
     if(!т) return '';
     var телоСтр = [].slice.call(т.querySelectorAll('tbody tr')).filter(строкаЗаполнена);
     if(!телоСтр.length) return '';
-    var th = ['<th>' + экранированный('Длительность консультации') + '</th>',
-              '<th>' + экранированный('Цена') + '</th>',
-              '<th aria-hidden="true"></th>',
-              '<th aria-hidden="true"></th>'].join('');
+    var th = ['<th>' + экранированный('Длительность консультации') + '<\/th>',
+              '<th>' + экранированный('Цена') + '<\/th>',
+              '<th aria-hidden="true"><\/th>',
+              '<th aria-hidden="true"><\/th>'].join('');
     var tr = телоСтр.map(function(r){
       var дл = подписьДлительности(r.querySelector('.cv') ? r.querySelector('.cv').value : '',
                                     r.querySelector('.cu') ? r.querySelector('.cu').value : 'мин');
-      return '<tr><td>' + экранированный(дл) + '</td>' +
-             '<td>' + экранированный(значениеСтроки(r,'.pc-out')) + '</td><td></td><td></td></tr>';
+      return '<tr><td>' + экранированный(дл) + '<\/td>' +
+             '<td>' + экранированный(значениеСтроки(r,'.pc-out')) + '<\/td><td><\/td><td><\/td><\/tr>';
     }).join('');
     /* Консультация — в той же ОБЩЕЙ сетке, что услуги: столбцы 1 и 2 совпадают
        по ширине (Длительность = Услуга, Цена = Цена), поэтому «Цена» стоит
        ровно на одном месте. Столбца «Срочный заказ» у консультации нет (к ней
        срочность не применяется), но добавлен ПУСТОЙ третий столбец, чтобы
        строки шли во всю ширину таблицы, как в «Коммерческой фотосъёмке». */
-    return '<h3>Консультация</h3><div class="wrap"><table class="rt rt-svc">' +
-           '<colgroup><col style="width:' + СЕТКА_УСЛУГ.c1 + '"><col style="width:' + СЕТКА_УСЛУГ.c2 + '"><col style="width:' + СЕТКА_УСЛУГ.c3 + '"><col style="width:' + СЕТКА_УСЛУГ.c4 + '"></colgroup>' +
-           '<thead><tr>' + th + '</tr></thead><tbody>' + tr + '</tbody></table></div>';
+    return '<h3>Консультация<\/h3><div class="wrap"><table class="rt rt-svc">' +
+           '<colgroup><col style="width:' + СЕТКА_УСЛУГ.c1 + '"><col style="width:' + СЕТКА_УСЛУГ.c2 + '"><col style="width:' + СЕТКА_УСЛУГ.c3 + '"><col style="width:' + СЕТКА_УСЛУГ.c4 + '"><\/colgroup>' +
+           '<thead><tr>' + th + '<\/tr><\/thead><tbody>' + tr + '<\/tbody><\/table><\/div>';
   }
   /* Печатный вид таблицы скидки за объём: те же столбцы, чистые значения. */
   function печатнаяТаблицаОбъём(){
@@ -3905,23 +4140,23 @@ function ИНИЦ_ПРАЙСА(){
     var телоСтр = [].slice.call(т.querySelectorAll('tbody tr'));
     if(!телоСтр.length) return '';
     var th = ['Длительность съёмки, часов','Цена за час','Цена за весь проект','Срочный заказ','Скидка за объём']
-      .map(function(h){ return '<th>' + экранированный(h) + '</th>'; }).join('');
+      .map(function(h){ return '<th>' + экранированный(h) + '<\/th>'; }).join('');
     var tr = телоСтр.map(function(r){
       var td = [].slice.call(r.querySelectorAll('td')).map(function(c){
-        return '<td>' + экранированный(c.textContent.trim()) + '</td>';
+        return '<td>' + экранированный(c.textContent.trim()) + '<\/td>';
       }).join('');
-      return '<tr>' + td + '</tr>';
+      return '<tr>' + td + '<\/tr>';
     }).join('');
-    return '<h3>Коммерческая фотосъёмка</h3><div class="wrap"><table class="rt rt-svc">' +
-           '<colgroup><col style="width:28%"><col style="width:18%"><col style="width:20%"><col style="width:18%"><col style="width:16%"></colgroup>' +
-           '<thead><tr>' + th + '</tr></thead><tbody>' + tr + '</tbody></table></div>';
+    return '<h3>Коммерческая фотосъёмка<\/h3><div class="wrap"><table class="rt rt-svc">' +
+           '<colgroup><col style="width:28%"><col style="width:18%"><col style="width:20%"><col style="width:18%"><col style="width:16%"><\/colgroup>' +
+           '<thead><tr>' + th + '<\/tr><\/thead><tbody>' + tr + '<\/tbody><\/table><\/div>';
   }
   /* Наполнить предпросмотр прайса внутри окна печати (только таблицы —
      обложка в окне живая и редактируемая). */
   function обновитьПредпросмотр(){
     var вид = document.getElementById('pcPreviewTables');
     if(!вид) return;
-    вид.innerHTML = секцииТаблиц('<p class="pv-empty">Прайс пока не заполнен — добавьте услуги в таблицах.</p>');
+    вид.innerHTML = секцииТаблиц('<p class="pv-empty">Прайс пока не заполнен — добавьте услуги в таблицах.<\/p>');
   }
   /* ── Колонтитулы печати: строятся как @page margin boxes с встроенными
      SVG (data-URI) — один в один с report.html. Так они печатаются даже
@@ -3931,54 +4166,80 @@ function ИНИЦ_ПРАЙСА(){
   function b64(x){ return btoa(unescape(encodeURIComponent(x))); }
   function установитьКолонтитулы(){
     var печДата = new Date().toLocaleDateString('ru-RU');
-    /* Верхний колонтитул (со 2-й страницы) — КОПИЯ шапки баннера в том же
-       порядке, что и на обложке: роль → крупно Имя Фамилия → контакты
-       (телефон · e-mail · сайт) → «Стоимость услуг от <дата>» одной строкой
-       по низу. Данные берём из живого баннера. Первая страница верхнего
-       колонтитула не имеет — там баннер-обложка целиком. */
+    /* Верхний колонтитул (со 2-й страницы) — ОДНА строка: «Имя Фамилия —
+       направление съёмки» слева, «Стоимость услуг <дата>» и номер страницы
+       справа, на одной базовой линии. Контакты и дополнительная информация в
+       колонтитул НЕ выносятся (решение владельца 03.09): они на обложке, и
+       повторять их на каждом листе — значит резать полезное место. Данные
+       берём из живого баннера. Первая страница верхнего колонтитула не имеет —
+       там баннер-обложка целиком. */
     function значПоId(id){ var э = document.getElementById(id); return э ? э.textContent.trim() : ''; }
     var роль = значПоId('phRole');
     var имя  = значПоId('phName');
-    var тел  = значПоId('phPhone'), сайт = значПоId('phSite'), почта = значПоId('phEmail');
-    var контактыСтр = [тел, сайт.replace(/^https?:\/\//i,''), почта].filter(Boolean).join('   \u00b7   ');
-    var стильВерха = '<style>text{font-family:Arial,sans-serif;fill:#1A1A1A}' +
-      '.role{font-size:12px;fill:#4B5563}' +
-      '.name{font-size:24px;font-weight:700;fill:#111111}' +
-      '.meta{font-size:12px;fill:#374151}.metad{font-size:11px;fill:#6B7280}' +
-      '.cnt{font-size:10.5px;fill:#374151}</style>';
-    var y = 22;
-    var строки = '';
-    if(роль){ строки += '<text class="role" x="0" y="' + y + '">' + xmlА(роль) + '</text>'; }
-    y = роль ? y + 26 : y + 4;
-    if(имя){ строки += '<text class="name" x="0" y="' + y + '">' + xmlА(имя) + '</text>'; y += 20; }
-    /* Контакты — под именем; наименование документа — последней строкой, по низу шапки */
-    if(контактыСтр){ строки += '<text class="cnt" x="0" y="' + y + '">' + xmlА(контактыСтр) + '</text>'; y += 18; }
-    строки += '<text class="meta" x="0" y="' + y + '">\u0421\u0442\u043e\u0438\u043c\u043e\u0441\u0442\u044c \u0443\u0441\u043b\u0443\u0433 <tspan class="metad">' + xmlА(печДата) + '</tspan></text>';
-    var верхКороткий = '<svg xmlns="http://www.w3.org/2000/svg" width="170mm" height="26mm" viewBox="0 0 640 104" preserveAspectRatio="xMinYMin meet">' + стильВерха +
-      строки + '</svg>';
-    /* Нижний колонтитул — точная копия референса: фирменный знак «счётикс». */
+    /* Направление после тире — со строчной: в строке оно середина
+       предложения, на обложке же остаётся как ввёл фотограф. */
+    var рольСтр = роль ? роль.charAt(0).toLowerCase() + роль.slice(1) : '';
+    var шапкаВерха = [имя, рольСтр].filter(Boolean).join(' \u2014 ');
+    /* Решение владельца 02.09: колонтитул одним спокойным шрифтом, без
+       выделения имени; строка «Стоимость услуг <дата>» — в правой части,
+       выровнена по правому краю.
+       Решение владельца 03.09: разрыв между текстом и подчёркиванием убрать —
+       линия идёт прямо под последней строкой, а «Стоимость услуг <дата>»
+       стоит на одной базовой линии с номером страницы. Поэтому высота
+       картинки больше не фиксированные 26мм, а ровно столько строк, сколько
+       набралось (+2мм под строчку) — поле @top-* прижато к нижнему краю
+       картинки (vertical-align:bottom), линия печатается по нему. */
+    var стильВерха = '<style>text{font-family:Arial,sans-serif}' +
+      '.t{font-size:12px;fill:#374151}' +
+      '.meta{font-size:12px;fill:#374151}.metad{font-size:12px;fill:#6B7280}<\/style>';
+    /* Одна строка слева: «Имя Фамилия — направление съёмки». Height картинки
+       = базовая линии + 8 условных единиц (2,1мм) — ровно настолько
+       подчёркивание будет ниже текста. Картинка прижата к нижнему краю поля
+       (vertical-align:bottom), линию рисует border-bottom этого поля. */
+    var послСтр = 24;
+    /* Ширины полосы (170мм) на имя+направление хватает примерно до 70
+       знаков; если длиннее — уменьшаем кегль, чтобы строка не наехала на
+       дату и номер страницы (Svg-текст не переносится). */
+    var кегль = 12, оценка = шапкаВерха.length * 6;
+    if(оценка > 420) кегль = +(12 * 420 / оценка).toFixed(2);
+    var строки = шапкаВерха ? '<text class="t" x="0" y="' + послСтр + '" style="font-size:' +
+      кегль + 'px">' + xmlА(шапкаВерха) + '<\/text>' : '';
+    /* Дата — той же базовой линией, что и номер страницы в @top-right. */
+    строки += '<text class="meta" x="640" y="' + послСтр + '" text-anchor="end">\u0421\u0442\u043e\u0438\u043c\u043e\u0441\u0442\u044c \u0443\u0441\u043b\u0443\u0433 <tspan class="metad">' + xmlА(печДата) + '<\/tspan><\/text>';
+    var висВв = послСтр + 8;
+    var висМм = (висВв * 170 / 640).toFixed(2);
+    var верхКороткий = '<svg xmlns="http://www.w3.org/2000/svg" width="170mm" height="' + висМм + 'mm" viewBox="0 0 640 ' + висВв + '" preserveAspectRatio="xMinYMin meet">' + стильВерха +
+      строки + '<\/svg>';
+    /* Нижнее поле верхних колонтитулов: линия = верхнее поле страницы − отступ.
+       6мм — между линией и таблицами; единственная строка колонтитула при этом
+       начинается с ≈10мм листа, как баннер-обложка на первой странице. */
+    var верхОтступ = 6;
+    /* Нижний колонтитул — фирменный знак «счётикс».
+       Решение владельца 03.09: знак читается только когда один лепесток
+       выделен (как в каноне calc.html — правый), остальные три светлее;
+       наименование и подпись ещё светлее, чтобы не перетягивали внимание. */
     var низ = '<svg xmlns="http://www.w3.org/2000/svg" width="46mm" height="9mm" viewBox="0 0 190 38" preserveAspectRatio="xMinYMin meet">' +
-      '<rect x="10.95" y="2.09" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 7.14)" fill="#B6BCC4"/>' +
-      '<rect x="19.81" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 24.86 16)" fill="#21A038"/>' +
-      '<rect x="10.95" y="19.81" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 24.86)" fill="#B6BCC4"/>' +
-      '<rect x="2.09" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 7.14 16)" fill="#B6BCC4"/>' +
-      '<text x="40" y="17" textLength="74" lengthAdjust="spacingAndGlyphs" font-family="Arial,sans-serif" font-size="15" font-weight="700" fill="#1A1A1A">\u0441\u0447\u0451\u0442\u0438\u043a\u0441</text>' +
-      '<text x="40" y="31" textLength="74" lengthAdjust="spacingAndGlyphs" font-family="Arial,sans-serif" font-size="8" fill="#6B7280">\u0442\u0432\u043e\u044f \u044e\u043d\u0438\u0442-\u044d\u043a\u043e\u043d\u043e\u043c\u0438\u043a\u0430</text></svg>';
+      '<rect x="10.95" y="2.09" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 7.14)" fill="#DDE1E6"/>' +
+      '<rect x="19.81" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 24.86 16)" fill="#B6BCC4"/>' +
+      '<rect x="10.95" y="19.81" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 24.86)" fill="#DDE1E6"/>' +
+      '<rect x="2.09" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 7.14 16)" fill="#DDE1E6"/>' +
+      '<text x="40" y="17" textLength="74" lengthAdjust="spacingAndGlyphs" font-family="Arial,sans-serif" font-size="15" font-weight="700" fill="#9CA3AF">\u0441\u0447\u0451\u0442\u0438\u043a\u0441<\/text>' +
+      '<text x="40" y="31" textLength="74" lengthAdjust="spacingAndGlyphs" font-family="Arial,sans-serif" font-size="8" fill="#B6BCC4">\u0442\u0432\u043e\u044f \u044e\u043d\u0438\u0442-\u044d\u043a\u043e\u043d\u043e\u043c\u0438\u043a\u0430<\/text><\/svg>';
     var верхКороткийURL = 'url(data:image/svg+xml;base64,' + b64(верхКороткий) + ')';
     var низURL = 'url(data:image/svg+xml;base64,' + b64(низ) + ')';
     var style = document.getElementById('pcPrintPageStyle');
     if(!style){ style = document.createElement('style'); style.id = 'pcPrintPageStyle'; document.head.appendChild(style); }
-    style.textContent = '@page{size:A4 portrait;margin:30mm 12mm 22mm;' +
-      '@top-left{content:' + верхКороткийURL + ';text-align:left;vertical-align:bottom;margin-bottom:4mm;border-bottom:.3mm solid #E5E7EB;}' +
-      '@top-center{content:"";margin-bottom:4mm;border-bottom:.3mm solid #E5E7EB;}' +
-      '@top-right{content:counter(page) " / " counter(pages);text-align:right;vertical-align:bottom;margin-bottom:4mm;padding-bottom:1mm;border-bottom:.3mm solid #E5E7EB;font:600 8.5pt/1.2 Arial,sans-serif;color:#6B7280;}' +
+    style.textContent = '@page{size:A4 portrait;margin:20mm 12mm 22mm;' +
+      '@top-left{content:' + верхКороткийURL + ';text-align:left;vertical-align:bottom;font-size:0;line-height:0;margin-bottom:' + верхОтступ + 'mm;border-bottom:.3mm solid #E5E7EB;}' +
+      '@top-center{content:"";margin-bottom:' + верхОтступ + 'mm;border-bottom:.3mm solid #E5E7EB;}' +
+      '@top-right{content:counter(page) " / " counter(pages);text-align:right;vertical-align:bottom;margin-bottom:' + верхОтступ + 'mm;padding-bottom:1.5mm;border-bottom:.3mm solid #E5E7EB;font:600 8.5pt/1 Arial,sans-serif;color:#6B7280;}' +
       '@bottom-left{content:' + низURL + ';text-align:left;vertical-align:top;margin-top:4mm;padding-top:3mm;border-top:.3mm solid #E5E7EB;}' +
       '@bottom-center{content:"";margin-top:4mm;border-top:.3mm solid #E5E7EB;}' +
-      '@bottom-right{content:"schetiks.ru";text-align:right;vertical-align:top;margin-top:4mm;padding-top:3mm;border-top:.3mm solid #E5E7EB;font:600 8.5pt/1.2 Arial,sans-serif;color:#158026;}' +
+      '@bottom-right{content:"schetiks.ru";text-align:right;vertical-align:top;margin-top:4mm;padding-top:3mm;border-top:.3mm solid #E5E7EB;font:400 8.5pt/1.2 Arial,sans-serif;color:#9CA3AF;}' +
       /* На ПЕРВОЙ странице верхний колонтитул убран целиком: его данные
          (имя, назначение, ставка, дата) теперь на баннере-обложке сверху.
          Гасим все три верхних поля и их линии. */
-      '}@page:first{margin-top:14mm;' +
+      '}@page:first{margin-top:10mm;' +
       '@top-left{content:none;border-bottom:0;}' +
       '@top-center{content:none;border-bottom:0;}' +
       '@top-right{content:none;border-bottom:0;}}';
@@ -4064,8 +4325,15 @@ function ИНИЦ_ПРАЙСА(){
     собратьПечать();
     установитьКолонтитулы();
     document.body.classList.add('print-price');
+    /* Опознаваемое имя PDF-файла (берётся из заголовка окна печати):
+       «Прайс — <Имя>» — иначе браузер сохраняет «Прайс фотографа — Счётикс.pdf»
+       (решение владельца 02.09). */
+    var прежнийТитул = document.title;
+    var имяП = (function(){ var э=document.getElementById('phName'); return э ? э.textContent.trim() : ''; })();
+    document.title = 'Прайс' + (имяП && имяП.toUpperCase() !== 'ИМЯ ФАМИЛИЯ' ? ' — ' + имяП : '');
     var снять = function(){
       document.body.classList.remove('print-price');
+      document.title = прежнийТитул;
       window.removeEventListener('afterprint', снять);
     };
     window.addEventListener('afterprint', снять);
@@ -4126,15 +4394,23 @@ function ИНИЦ_ПРАЙСА(){
     async function собратьФайлHTML(){
       await встроитьФото();
       собратьПечать();
+      /* Колонтитулы пишутся в #pcPrintPageStyle этим же вызовом, что и печать:
+         без него сохранённый файл печатался бы без верхнего и нижнего
+         колонтитула и без полей @page. */
+      установитьКолонтитулы();
       var вид = document.getElementById('pc-print-view');
-      var стиль = '';
-      var s = document.querySelector('style'); if(s) стиль = s.textContent;
+      /* СТИЛИ — ВСЕ, подряд: @page из <head>, дизайн страницы и служебный
+         #pcPrintPageStyle с колонтитулами. Раньше брался только первый
+         <style> (а это крошечный блок @page в head) — сохранённый файл
+         открывался без вёрстки и без колонтитулов (найдено 03.09). */
+      var стиль = [].map.call(document.querySelectorAll('style'),
+        function(s){ return s.textContent; }).join('\n');
       return '<!doctype html><html lang="ru"><head><meta charset="utf-8">' +
         '<meta name="viewport" content="width=device-width,initial-scale=1">' +
-        '<title>' + xmlА(титулПрайса()) + '</title><style>' + стиль +
+        '<title>' + xmlА(титулПрайса()) + '<\/title><style>' + стиль +
         'body{margin:0;background:#fff;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}' +
-        '#pc-print-view{display:block!important;max-width:800px;margin:0 auto;padding:24px}</style></head>' +
-        '<body><div id="phr-root"><div id="pc-print-view">' + (вид ? вид.innerHTML : '') + '</div></div></body></html>';
+        '#pc-print-view{display:block!important;max-width:800px;margin:0 auto;padding:24px}<\/style><\/head>' +
+        '<body><div id="phr-root"><div id="pc-print-view">' + (вид ? вид.innerHTML : '') + '<\/div><\/div><\/body><\/html>';
     }
     async function отправитьФайл(){
       try{
@@ -4305,18 +4581,41 @@ function ИНИЦ_ПРАЙСА(){
     setTimeout(обновить, 300);
   })();
 
-  /* ── Кнопка-глазик: печатный вид обложки. Открывает оверлей с копией
-        печатного баннера (та же разметка, что уходит в PDF) — БЕЗ полей ввода,
-        чтобы увидеть, как обложка будет выглядеть в напечатанном прайсе. ── */
+  /* ── Режим баннера: просмотр (по умолчанию) / редактирование. Различаются
+        только выделением полей ввода и техническими органами (панель настроек,
+        крестики, подсказка-приглашение). Изображение, текст, контакты и
+        плейсхолдеры — те же самые, без оверлеев. ── */
   (function(){
-    var глаз = document.getElementById('phEye');
+    var обёртка = КОРЕНЬ.querySelector('.pc-hero-wrap');
+    var кнП = document.getElementById('phEye'), кнР = document.getElementById('phEdit');
+    if(!обёртка || !кнП || !кнР) return;
+    var поля = [].slice.call(обёртка.querySelectorAll('.ph-field'));
+    function режим(просмотр){
+      обёртка.classList.toggle('ph-view', просмотр);
+      поля.forEach(function(п){ п.contentEditable = просмотр ? 'false' : 'true'; });
+      кнП.setAttribute('aria-pressed', String(просмотр));
+      кнР.setAttribute('aria-pressed', String(!просмотр));
+    }
+    кнП.addEventListener('click', function(){ режим(true); });
+    кнР.addEventListener('click', function(){ режим(false); });
+    /* Пилюля-приглашение над баннером — тоже вход в правку. */
+    var приглашение=document.getElementById('phGoEdit');
+    if(приглашение) приглашение.addEventListener('click', function(){ режим(false); this.blur(); });
+    режим(true);
+  })();
+
+  /* ── Оверлей печатной обложки спит: глазик теперь переключает режим баннера.
+        Разметка и стили оверлея оставлены нетронутыми. ── */
+  (function(){
     var окно = document.getElementById('pvPrev');
-    if(!глаз || !окно) return;
+    if(!окно) return;
     var тело = document.getElementById('pvPrevBody');
     function открыть(){
       if(тело){
-        тело.innerHTML = htmlПечБаннера() ||
-          '<p class="pv-sub">Нет фото — печатная обложка не будет показана.</p>';
+        тело.textContent = '';
+        var к = клонПечБаннера();
+        if(к) тело.appendChild(к);
+        else тело.innerHTML = '<p class="pv-sub">Баннер не найден — печатная обложка не будет показана.<\/p>';
       }
       окно.hidden = false;
       document.body.style.overflow = 'hidden';
@@ -4327,7 +4626,6 @@ function ИНИЦ_ПРАЙСА(){
       окно.hidden = true;
       document.body.style.overflow = '';
     }
-    глаз.addEventListener('click', открыть);
     var кнопкаЗакрытия = document.getElementById('pvPrevClose');
     if(кнопкаЗакрытия) кнопкаЗакрытия.addEventListener('click', закрыть);
     окно.addEventListener('click', function(e){
@@ -4343,6 +4641,15 @@ function ИНИЦ_ПРАЙСА(){
         печатный слепок без нажатия кнопки. На обычном открытии не срабатывает. ── */
   if(/[?&]print=1/.test(location.search)){
     setTimeout(function(){
+      if(/[?&]demo=1/.test(location.search)){
+        /* Демо-набор для контрольного PDF (PDF/Счётикс_прайс_демо.pdf): чтобы
+           в превью были видны ВСЕ элементы вёрстки, баннер заполняем
+           нейтральным примером. На обычную печать (?print=1) не влияет. */
+        var демо={phName:'Анна Лунёва',phRole:'Коммерческий фотограф',
+          phPhone:'+7 921 346-85-12',phEmail:'anna@lunieva.ru',phSite:'lunieva.ru',
+          phExtra:'Отдача готовых фотографий — до 7 дней после съёмки.'};
+        Object.keys(демо).forEach(function(id){ var э=document.getElementById(id); if(э) э.textContent=демо[id]; });
+      }
       собратьПечать();
       установитьКолонтитулы();
       document.body.classList.add('print-price');
@@ -4355,6 +4662,33 @@ if(document.readyState === 'loading'){
 }else{
   ИНИЦ_ПРАЙСА();
 }
+
+/* ── Описания под заголовками: на узких экранах (≤760px) видно только первое
+     предложение, остальное — под кнопкой «Показать ещё» (решение владельца
+     02.09). Размер шрифта не меняется. Делим по первому [.!?] + пробелу. ── */
+(function(){
+  var список = document.querySelectorAll('#phr-root .hint, #phr-root .ss');
+  список.forEach(function(эл){
+    if(эл.classList.contains('hint-cut')) return;
+    var t = эл.textContent.replace(/\s+/g,' ').trim();
+    if(!t) return;
+    var m = t.match(/^([\s\S]*?[.!?][)\]\u00bb"']?)(\s+)([\s\S]+)$/);
+    if(!m || !m[3].trim()) return;   /* одно предложение — кнопка не нужна */
+    эл.textContent = '';
+    var перв = document.createElement('span'); перв.textContent = m[1];
+    var ост = document.createElement('span'); ост.className = 'hint-rest'; ост.textContent = ' ' + m[3].trim();
+    var кнп = document.createElement('button');
+    кнп.type = 'button'; кнп.className = 'hint-more';
+    кнп.textContent = 'Показать ещё'; кнп.setAttribute('aria-expanded','false');
+    эл.appendChild(перв); эл.appendChild(ост); эл.appendChild(кнп);
+    эл.classList.add('hint-cut','hint-closed');
+    кнп.addEventListener('click', function(){
+      var закрыто = эл.classList.toggle('hint-closed');
+      кнп.textContent = закрыто ? 'Показать ещё' : 'Скрыть';
+      кнп.setAttribute('aria-expanded', String(!закрыто));
+    });
+  });
+})();
 
 </script>
 
@@ -4372,7 +4706,7 @@ if(document.readyState === 'loading'){
 
   /* ── салют сердечек ── */
   var СЕРДЦЕ='<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" '+
-    'd="M20.8 4.6a5.5 5.5 0 0 0-7.8 0l-1 1-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1 7.8 7.8 7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8Z"/></svg>';
+    'd="M20.8 4.6a5.5 5.5 0 0 0-7.8 0l-1 1-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1 7.8 7.8 7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8Z"/><\/svg>';
   var ГАММА=['#E1306C','#FF3B5C','#C13584','#F56040','#FF7AB0','#E0245E'];
   function искра(x,y){
     var и=document.createElement('span');
@@ -4585,6 +4919,6 @@ if(document.readyState === 'loading'){
 })();
 
 </script>
-<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a34bfc3dedd44daf',t:'MTc4ODM0NjU1Nw=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</body>
 </html>
 
