@@ -39,8 +39,8 @@ async function render(name,override){
   assert(fail,errors.length===0,'ошибки JS: '+errors.join(' | '));
   assert(fail,ignoredPageMarginCss<=1,'неожиданные ошибки CSS: '+ignoredPageMarginCss);
   assert(fail,d.querySelector('#phr-root')?.dataset.pageId==='PAGE-REPORT','нет PAGE-REPORT');
-  assert(fail,ids.length===20&&new Set(ids).size===20,'не 20 уникальных блоков');
-  assert(fail,d.querySelector('.wp')?.children.length===20,'не 20 прямых блоков .wp');
+  assert(fail,ids.length===23&&new Set(ids).size===23,'не 23 уникальных блока');
+  assert(fail,d.querySelector('.wp')?.children.length===23,'не 23 прямых блока .wp');
   assert(fail,text(d.querySelector('#dns')).length>100,'не отрисованы три сценария');
   assert(fail,d.querySelectorAll('table').length===12,'ожидалось 12 таблиц');
   assert(fail,d.querySelectorAll('table tbody tr').length>=150,'меньше 150 строк таблиц');
@@ -96,5 +96,5 @@ async function render(name,override){
     else console.log('✓ '+name);
   }
   if(failed.length){console.error(failed.map(x=>'✗ '+x).join('\n'));process.exit(1)}
-  console.log(`Headless report: ${scenarios.length} сценариев · 20 блоков · 12 таблиц · ошибок 0`);
+  console.log(`Headless report: ${scenarios.length} сценариев · 23 блока · 12 таблиц · ошибок 0`);
 })().catch(e=>{console.error(e.stack||e);process.exit(2)});

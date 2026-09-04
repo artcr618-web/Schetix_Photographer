@@ -593,8 +593,15 @@ body.print-price #phr-root #pc-print-view{display:block!important}
    на ~2мм с каждой стороны — обложка вышла бы уже линии колонтитула. */
 body.print-price{background:#fff;margin:0}
 body.print-price #phr-root{max-width:none;width:auto;margin:0;padding:0;background:#fff}
-/* Каждая таблица не рвётся между страницами по возможности */
-body.print-price #pc-print-view .pv-sect{break-inside:avoid;page-break-inside:avoid;margin-bottom:10mm}
+/* Решение владельца 03.09: правило «одна таблица — один лист» НЕ применяется.
+   Секция может рваться между страницами: влезающие строки остаются на текущем
+   листе, остальные переносятся. Заголовок секции при этом не отрывается от
+   таблицы, а строка таблицы не режется пополам. */
+body.print-price #pc-print-view .pv-sect{break-inside:auto;page-break-inside:auto;margin-bottom:10mm}
+body.print-price #pc-print-view .pv-sect h3{break-after:avoid;page-break-after:avoid}
+body.print-price #pc-print-view table.rt tr{break-inside:avoid;page-break-inside:avoid}
+/* На листе-продолжении шапка таблицы повторяется силами Chromium (thead). */
+body.print-price #pc-print-view table.rt thead{display:table-header-group}
 /* Обложка-баннер целиком держится на своей странице: разорванный zoom-клон
    выглядел бы как обрубленная обложка (абсолютные слои внутри разрыва
    Chromium вообще дублировал на следующем листе). */
@@ -2989,7 +2996,7 @@ WIJXsgy8WsWIFwN01E0LFiD/2Q==
 <div class="свайп" aria-hidden="true"><div class="свайп-полоса"><svg class="свайп-рука" viewBox="0 0 64 64" fill="none"><path d="M58.9 29.6c-2.8-2.1-6.8-1.9-9.4.3-1.1.9-2 2.1-3 3.2l-1.5 1.7c0-6.2 0-12.5 0-18.7 0-1.8.1-3.5-1.1-5.1-2.5-3.3-7.9-3.2-10.1.3-1 1.5-.8 3.2-.8 4.9v5.4c-2-.5-4.3 0-5.7 1.8-.4.5-.6.9-.8 1.5-.6-.2-1.1-.3-1.7-.3-2.4 0-4.2 1.4-4.9 3.4-2-.6-4.3-.2-5.8 1.5-1.6 1.8-1.2 4.3-1.2 6.5v3.7c0 4.1-.6 8.8 1.7 12.5 1 1.6 1.9 3.2 3.1 4.6 2.1 2.4 5.2 3.6 8.3 3.7h5.4c2 0 4 .1 5.9-.4 4-1.2 6.9-4.7 9.5-7.8 4.3-5.1 8.6-10.2 12.8-15.3 2.1-2.6 2-5.6-.5-7.5z" fill="currentColor"/></svg></div></div>
 <div class="pc-box">
 <table class="dt voltab" id="pcVol"><thead><tr>
-<th style="width:28%">Длительность съёмки, часов</th>
+<th style="width:28%">Длительность съёмки</th>
 <th style="width:18%">Цена за час</th>
 <th style="width:20%">Цена за весь проект</th>
 <th style="width:18%" class="th-fast">Срочный заказ</th>
@@ -3021,23 +3028,82 @@ WIJXsgy8WsWIFwN01E0LFiD/2Q==
 <th style="width:20%">Кол-во</th><th style="width:18%">Цена</th>
 <th style="width:16%" class="th-fast">Срочный заказ</th><th style="width:40px"></th>
 </tr></thead><tbody>
+<!-- Решение владельца 03.09: каждая услуга ретуши по умолчанию продублирована
+     четырьмя позициями — 1, 5, 10 и 15 кадров. Название не меняется, количество
+     живёт в своём столбце «Кол-во». Цены статичных строк посчитаны той же
+     формулой, что живой пересчёт (время × кол-во × базовая ставка 1 332 ₽/ч):
+     при запуске JS числа совпадают один в один. -->
 <tr><td><input type="text" class="c1" placeholder="Название услуги" value="Быстрая ретушь кадра"></td>
-<td class="c2"><input type="text" inputmode="decimal" class="cv" value="5"><select class="cu"><option value="мин">мин</option><option value="ч">ч</option></select></td>
+<td class="c2"><input type="text" inputmode="decimal" class="cv" value="5"><select class="cu"><option value="мин">мин</option><option value="ч">час</option></select></td>
 <td class="c3"><input type="text" inputmode="numeric" class="cq" value="1"></td>
 <td class="pc-price"><span class="pc-out">111 ₽</span></td>
 <td class="pc-price2"><span class="pc-out2">222 ₽</span></td>
 <td><button type="button" class="del" aria-label="Удалить">×</button></td></tr>
+<tr><td><input type="text" class="c1" placeholder="Название услуги" value="Быстрая ретушь кадра"></td>
+<td class="c2"><input type="text" inputmode="decimal" class="cv" value="5"><select class="cu"><option value="мин">мин</option><option value="ч">час</option></select></td>
+<td class="c3"><input type="text" inputmode="numeric" class="cq" value="5"></td>
+<td class="pc-price"><span class="pc-out">555 ₽</span></td>
+<td class="pc-price2"><span class="pc-out2">1 110 ₽</span></td>
+<td><button type="button" class="del" aria-label="Удалить">×</button></td></tr>
+<tr><td><input type="text" class="c1" placeholder="Название услуги" value="Быстрая ретушь кадра"></td>
+<td class="c2"><input type="text" inputmode="decimal" class="cv" value="5"><select class="cu"><option value="мин">мин</option><option value="ч">час</option></select></td>
+<td class="c3"><input type="text" inputmode="numeric" class="cq" value="10"></td>
+<td class="pc-price"><span class="pc-out">1 110 ₽</span></td>
+<td class="pc-price2"><span class="pc-out2">2 220 ₽</span></td>
+<td><button type="button" class="del" aria-label="Удалить">×</button></td></tr>
+<tr><td><input type="text" class="c1" placeholder="Название услуги" value="Быстрая ретушь кадра"></td>
+<td class="c2"><input type="text" inputmode="decimal" class="cv" value="5"><select class="cu"><option value="мин">мин</option><option value="ч">час</option></select></td>
+<td class="c3"><input type="text" inputmode="numeric" class="cq" value="15"></td>
+<td class="pc-price"><span class="pc-out">1 665 ₽</span></td>
+<td class="pc-price2"><span class="pc-out2">3 330 ₽</span></td>
+<td><button type="button" class="del" aria-label="Удалить">×</button></td></tr>
 <tr><td><input type="text" class="c1" placeholder="Название услуги" value="Углублённая ретушь кадра"></td>
-<td class="c2"><input type="text" inputmode="decimal" class="cv" value="20"><select class="cu"><option value="мин">мин</option><option value="ч">ч</option></select></td>
+<td class="c2"><input type="text" inputmode="decimal" class="cv" value="20"><select class="cu"><option value="мин">мин</option><option value="ч">час</option></select></td>
 <td class="c3"><input type="text" inputmode="numeric" class="cq" value="1"></td>
 <td class="pc-price"><span class="pc-out">444 ₽</span></td>
 <td class="pc-price2"><span class="pc-out2">888 ₽</span></td>
 <td><button type="button" class="del" aria-label="Удалить">×</button></td></tr>
+<tr><td><input type="text" class="c1" placeholder="Название услуги" value="Углублённая ретушь кадра"></td>
+<td class="c2"><input type="text" inputmode="decimal" class="cv" value="20"><select class="cu"><option value="мин">мин</option><option value="ч">час</option></select></td>
+<td class="c3"><input type="text" inputmode="numeric" class="cq" value="5"></td>
+<td class="pc-price"><span class="pc-out">2 220 ₽</span></td>
+<td class="pc-price2"><span class="pc-out2">4 440 ₽</span></td>
+<td><button type="button" class="del" aria-label="Удалить">×</button></td></tr>
+<tr><td><input type="text" class="c1" placeholder="Название услуги" value="Углублённая ретушь кадра"></td>
+<td class="c2"><input type="text" inputmode="decimal" class="cv" value="20"><select class="cu"><option value="мин">мин</option><option value="ч">час</option></select></td>
+<td class="c3"><input type="text" inputmode="numeric" class="cq" value="10"></td>
+<td class="pc-price"><span class="pc-out">4 440 ₽</span></td>
+<td class="pc-price2"><span class="pc-out2">8 880 ₽</span></td>
+<td><button type="button" class="del" aria-label="Удалить">×</button></td></tr>
+<tr><td><input type="text" class="c1" placeholder="Название услуги" value="Углублённая ретушь кадра"></td>
+<td class="c2"><input type="text" inputmode="decimal" class="cv" value="20"><select class="cu"><option value="мин">мин</option><option value="ч">час</option></select></td>
+<td class="c3"><input type="text" inputmode="numeric" class="cq" value="15"></td>
+<td class="pc-price"><span class="pc-out">6 660 ₽</span></td>
+<td class="pc-price2"><span class="pc-out2">13 320 ₽</span></td>
+<td><button type="button" class="del" aria-label="Удалить">×</button></td></tr>
 <tr><td><input type="text" class="c1" placeholder="Название услуги" value="Журнальная ретушь кадра"></td>
-<td class="c2"><input type="text" inputmode="decimal" class="cv" value="40"><select class="cu"><option value="мин">мин</option><option value="ч">ч</option></select></td>
+<td class="c2"><input type="text" inputmode="decimal" class="cv" value="40"><select class="cu"><option value="мин">мин</option><option value="ч">час</option></select></td>
 <td class="c3"><input type="text" inputmode="numeric" class="cq" value="1"></td>
 <td class="pc-price"><span class="pc-out">888 ₽</span></td>
 <td class="pc-price2"><span class="pc-out2">1 776 ₽</span></td>
+<td><button type="button" class="del" aria-label="Удалить">×</button></td></tr>
+<tr><td><input type="text" class="c1" placeholder="Название услуги" value="Журнальная ретушь кадра"></td>
+<td class="c2"><input type="text" inputmode="decimal" class="cv" value="40"><select class="cu"><option value="мин">мин</option><option value="ч">час</option></select></td>
+<td class="c3"><input type="text" inputmode="numeric" class="cq" value="5"></td>
+<td class="pc-price"><span class="pc-out">4 440 ₽</span></td>
+<td class="pc-price2"><span class="pc-out2">8 880 ₽</span></td>
+<td><button type="button" class="del" aria-label="Удалить">×</button></td></tr>
+<tr><td><input type="text" class="c1" placeholder="Название услуги" value="Журнальная ретушь кадра"></td>
+<td class="c2"><input type="text" inputmode="decimal" class="cv" value="40"><select class="cu"><option value="мин">мин</option><option value="ч">час</option></select></td>
+<td class="c3"><input type="text" inputmode="numeric" class="cq" value="10"></td>
+<td class="pc-price"><span class="pc-out">8 880 ₽</span></td>
+<td class="pc-price2"><span class="pc-out2">17 760 ₽</span></td>
+<td><button type="button" class="del" aria-label="Удалить">×</button></td></tr>
+<tr><td><input type="text" class="c1" placeholder="Название услуги" value="Журнальная ретушь кадра"></td>
+<td class="c2"><input type="text" inputmode="decimal" class="cv" value="40"><select class="cu"><option value="мин">мин</option><option value="ч">час</option></select></td>
+<td class="c3"><input type="text" inputmode="numeric" class="cq" value="15"></td>
+<td class="pc-price"><span class="pc-out">13 320 ₽</span></td>
+<td class="pc-price2"><span class="pc-out2">26 640 ₽</span></td>
 <td><button type="button" class="del" aria-label="Удалить">×</button></td></tr>
 </tbody></table>
 <button type="button" class="add" data-add="pcT1">+ Добавить услугу</button>
@@ -3067,7 +3133,7 @@ WIJXsgy8WsWIFwN01E0LFiD/2Q==
 </tr></thead><tbody id="pcConsBody">
 <!-- Статичные демо-строки: видны даже там, где скрипты не запускаются
      (превью). При запуске JS tbody пересобирается — дублей нет. -->
-<tr><td class="c2"><input type="text" inputmode="decimal" class="cv" value="30" placeholder="0"></td><td class="c3"><select class="cu"><option value="мин">мин</option><option value="ч">ч</option></select></td><td class="pc-price"><span class="pc-out">1 110 ₽</span></td><td><button type="button" class="del" aria-label="Удалить">×</button></td></tr>
+<tr><td class="c2"><input type="text" inputmode="decimal" class="cv" value="30" placeholder="0"></td><td class="c3"><select class="cu"><option value="мин">мин</option><option value="ч">час</option></select></td><td class="pc-price"><span class="pc-out">1 110 ₽</span></td><td><button type="button" class="del" aria-label="Удалить">×</button></td></tr>
 <tr><td class="c2"><input type="text" inputmode="decimal" class="cv" value="1" placeholder="0"></td><td class="c3"><select class="cu"><option value="мин">мин</option><option value="ч" selected>ч</option></select></td><td class="pc-price"><span class="pc-out">1 776 ₽</span></td><td><button type="button" class="del" aria-label="Удалить">×</button></td></tr>
 <tr><td class="c2"><input type="text" inputmode="decimal" class="cv" value="2" placeholder="0"></td><td class="c3"><select class="cu"><option value="мин">мин</option><option value="ч" selected>ч</option></select></td><td class="pc-price"><span class="pc-out">3 108 ₽</span></td><td><button type="button" class="del" aria-label="Удалить">×</button></td></tr>
 </tbody></table>
@@ -3088,23 +3154,81 @@ WIJXsgy8WsWIFwN01E0LFiD/2Q==
 <th style="width:20%">Кол-во</th><th style="width:18%">Цена</th>
 <th style="width:16%" class="th-fast">Срочный заказ</th><th style="width:40px"></th>
 </tr></thead><tbody>
+<!-- Решение владельца 03.09: те же четыре позиции количества (1, 5, 10,
+     15 кадров) для каждой услуги. Формула отдельного заказа: (время × кол-во
+     + 40 минут ведения ОДИН РАЗ на заказ) × базовая ставка 1 332 ₽/ч. Цены
+     статичных строк совпадают с живым пересчётом один в один. -->
 <tr><td><input type="text" class="c1" placeholder="Название услуги" value="Быстрая ретушь кадра"></td>
-<td class="c2"><input type="text" inputmode="decimal" class="cv" value="5"><select class="cu"><option value="мин">мин</option><option value="ч">ч</option></select></td>
+<td class="c2"><input type="text" inputmode="decimal" class="cv" value="5"><select class="cu"><option value="мин">мин</option><option value="ч">час</option></select></td>
 <td class="c3"><input type="text" inputmode="numeric" class="cq" value="1"></td>
 <td class="pc-price"><span class="pc-out">999 ₽</span></td>
 <td class="pc-price2"><span class="pc-out2">1 998 ₽</span></td>
 <td><button type="button" class="del" aria-label="Удалить">×</button></td></tr>
+<tr><td><input type="text" class="c1" placeholder="Название услуги" value="Быстрая ретушь кадра"></td>
+<td class="c2"><input type="text" inputmode="decimal" class="cv" value="5"><select class="cu"><option value="мин">мин</option><option value="ч">час</option></select></td>
+<td class="c3"><input type="text" inputmode="numeric" class="cq" value="5"></td>
+<td class="pc-price"><span class="pc-out">1 443 ₽</span></td>
+<td class="pc-price2"><span class="pc-out2">2 886 ₽</span></td>
+<td><button type="button" class="del" aria-label="Удалить">×</button></td></tr>
+<tr><td><input type="text" class="c1" placeholder="Название услуги" value="Быстрая ретушь кадра"></td>
+<td class="c2"><input type="text" inputmode="decimal" class="cv" value="5"><select class="cu"><option value="мин">мин</option><option value="ч">час</option></select></td>
+<td class="c3"><input type="text" inputmode="numeric" class="cq" value="10"></td>
+<td class="pc-price"><span class="pc-out">1 998 ₽</span></td>
+<td class="pc-price2"><span class="pc-out2">3 996 ₽</span></td>
+<td><button type="button" class="del" aria-label="Удалить">×</button></td></tr>
+<tr><td><input type="text" class="c1" placeholder="Название услуги" value="Быстрая ретушь кадра"></td>
+<td class="c2"><input type="text" inputmode="decimal" class="cv" value="5"><select class="cu"><option value="мин">мин</option><option value="ч">час</option></select></td>
+<td class="c3"><input type="text" inputmode="numeric" class="cq" value="15"></td>
+<td class="pc-price"><span class="pc-out">2 553 ₽</span></td>
+<td class="pc-price2"><span class="pc-out2">5 106 ₽</span></td>
+<td><button type="button" class="del" aria-label="Удалить">×</button></td></tr>
 <tr><td><input type="text" class="c1" placeholder="Название услуги" value="Углублённая ретушь кадра"></td>
-<td class="c2"><input type="text" inputmode="decimal" class="cv" value="20"><select class="cu"><option value="мин">мин</option><option value="ч">ч</option></select></td>
+<td class="c2"><input type="text" inputmode="decimal" class="cv" value="20"><select class="cu"><option value="мин">мин</option><option value="ч">час</option></select></td>
 <td class="c3"><input type="text" inputmode="numeric" class="cq" value="1"></td>
 <td class="pc-price"><span class="pc-out">1 332 ₽</span></td>
 <td class="pc-price2"><span class="pc-out2">2 664 ₽</span></td>
 <td><button type="button" class="del" aria-label="Удалить">×</button></td></tr>
+<tr><td><input type="text" class="c1" placeholder="Название услуги" value="Углублённая ретушь кадра"></td>
+<td class="c2"><input type="text" inputmode="decimal" class="cv" value="20"><select class="cu"><option value="мин">мин</option><option value="ч">час</option></select></td>
+<td class="c3"><input type="text" inputmode="numeric" class="cq" value="5"></td>
+<td class="pc-price"><span class="pc-out">3 108 ₽</span></td>
+<td class="pc-price2"><span class="pc-out2">6 216 ₽</span></td>
+<td><button type="button" class="del" aria-label="Удалить">×</button></td></tr>
+<tr><td><input type="text" class="c1" placeholder="Название услуги" value="Углублённая ретушь кадра"></td>
+<td class="c2"><input type="text" inputmode="decimal" class="cv" value="20"><select class="cu"><option value="мин">мин</option><option value="ч">час</option></select></td>
+<td class="c3"><input type="text" inputmode="numeric" class="cq" value="10"></td>
+<td class="pc-price"><span class="pc-out">5 328 ₽</span></td>
+<td class="pc-price2"><span class="pc-out2">10 656 ₽</span></td>
+<td><button type="button" class="del" aria-label="Удалить">×</button></td></tr>
+<tr><td><input type="text" class="c1" placeholder="Название услуги" value="Углублённая ретушь кадра"></td>
+<td class="c2"><input type="text" inputmode="decimal" class="cv" value="20"><select class="cu"><option value="мин">мин</option><option value="ч">час</option></select></td>
+<td class="c3"><input type="text" inputmode="numeric" class="cq" value="15"></td>
+<td class="pc-price"><span class="pc-out">7 548 ₽</span></td>
+<td class="pc-price2"><span class="pc-out2">15 096 ₽</span></td>
+<td><button type="button" class="del" aria-label="Удалить">×</button></td></tr>
 <tr><td><input type="text" class="c1" placeholder="Название услуги" value="Журнальная ретушь кадра"></td>
-<td class="c2"><input type="text" inputmode="decimal" class="cv" value="40"><select class="cu"><option value="мин">мин</option><option value="ч">ч</option></select></td>
+<td class="c2"><input type="text" inputmode="decimal" class="cv" value="40"><select class="cu"><option value="мин">мин</option><option value="ч">час</option></select></td>
 <td class="c3"><input type="text" inputmode="numeric" class="cq" value="1"></td>
 <td class="pc-price"><span class="pc-out">1 776 ₽</span></td>
 <td class="pc-price2"><span class="pc-out2">3 552 ₽</span></td>
+<td><button type="button" class="del" aria-label="Удалить">×</button></td></tr>
+<tr><td><input type="text" class="c1" placeholder="Название услуги" value="Журнальная ретушь кадра"></td>
+<td class="c2"><input type="text" inputmode="decimal" class="cv" value="40"><select class="cu"><option value="мин">мин</option><option value="ч">час</option></select></td>
+<td class="c3"><input type="text" inputmode="numeric" class="cq" value="5"></td>
+<td class="pc-price"><span class="pc-out">5 328 ₽</span></td>
+<td class="pc-price2"><span class="pc-out2">10 656 ₽</span></td>
+<td><button type="button" class="del" aria-label="Удалить">×</button></td></tr>
+<tr><td><input type="text" class="c1" placeholder="Название услуги" value="Журнальная ретушь кадра"></td>
+<td class="c2"><input type="text" inputmode="decimal" class="cv" value="40"><select class="cu"><option value="мин">мин</option><option value="ч">час</option></select></td>
+<td class="c3"><input type="text" inputmode="numeric" class="cq" value="10"></td>
+<td class="pc-price"><span class="pc-out">9 768 ₽</span></td>
+<td class="pc-price2"><span class="pc-out2">19 536 ₽</span></td>
+<td><button type="button" class="del" aria-label="Удалить">×</button></td></tr>
+<tr><td><input type="text" class="c1" placeholder="Название услуги" value="Журнальная ретушь кадра"></td>
+<td class="c2"><input type="text" inputmode="decimal" class="cv" value="40"><select class="cu"><option value="мин">мин</option><option value="ч">час</option></select></td>
+<td class="c3"><input type="text" inputmode="numeric" class="cq" value="15"></td>
+<td class="pc-price"><span class="pc-out">14 208 ₽</span></td>
+<td class="pc-price2"><span class="pc-out2">28 416 ₽</span></td>
 <td><button type="button" class="del" aria-label="Удалить">×</button></td></tr>
 </tbody></table>
 <button type="button" class="add" data-add="pcT2">+ Добавить услугу</button>
@@ -3722,7 +3846,7 @@ function ИНИЦ_ПРАЙСА(){
   }
   function создатьСтроку(таблица, данные){
     var tr = document.createElement('tr');
-    var ч = '<option value="\u0447">\u0447<\/option>', м = '<option value="\u043c\u0438\u043d">\u043c\u0438\u043d<\/option>';
+    var ч = '<option value="\u0447">\u0447\u0430\u0441<\/option>', м = '<option value="\u043c\u0438\u043d">\u043c\u0438\u043d<\/option>';
     if(таблица.getAttribute('data-mode') === 'cons'){
       /* Консультация: единая сетка прайса — длительность (столбец 1),
          единица мин/ч (столбец 2), цена (столбец 3), «×». Без количества
@@ -3934,7 +4058,7 @@ function ИНИЦ_ПРАЙСА(){
     if(!строки.length) return '';           /* пустую таблицу не выводим */
     var шапка, ячейки;
     if(режим === 'turnkey'){
-      шапка = ['Наименование','Длительность съёмки, часов','Цена'];
+      шапка = ['Наименование','Длительность съёмки','Цена'];
       ячейки = function(tr){
         return [
           экранированный(tr.querySelector('.c1').value || '\u2014'),
@@ -3943,16 +4067,20 @@ function ИНИЦ_ПРАЙСА(){
         ];
       };
     } else {
-      /* Для заказчика скрываем «служебные» столбцы — время на услугу и
-         количество: клиенту это знать не нужно. Количество (если больше 1)
-         сворачиваем прямо в наименование: «…, пакет из N кадров». */
-      шапка = ['Услуга','Цена','Срочный заказ',''];
+      /* Для заказчика скрываем «служебный» столбец времени на услугу.
+         Количество заказанных кадров — ОТДЕЛЬНЫМ столбцом «Кол-во», как на
+         экране (решение владельца 03.09: раньше количество сворачивалось в
+         название «…, пакет из N кадров» — теперь у него свой столбец). */
+      шапка = ['Услуга','Кол-во','Цена','Срочный заказ',''];
       ячейки = function(tr){
         var имя = (tr.querySelector('.c1').value || '\u2014').trim();
         var кол = tr.querySelector('.cq') ? parseInt(tr.querySelector('.cq').value, 10) : 1;
-        if(кол > 1) имя = имя + ', пакет из ' + кол + ' ' + словоКадр(кол);
+        if(!(кол > 0)) кол = 1;
+        /* Решение владельца 03.09: количество выводится с единицей —
+           «N шт» в каждой строке, голое число читается плохо. */
         return [
           экранированный(имя),
+          экранированный(кол + ' шт'),
           экранированный(значениеСтроки(tr,'.pc-out')),
           экранированный(значениеСтроки(tr,'.pc-out2')),
           ''
@@ -3969,11 +4097,12 @@ function ИНИЦ_ПРАЙСА(){
       return '<div class="wrap"><table class="rt"><thead><tr>' + th +
              '<\/tr><\/thead><tbody>' + tr + '<\/tbody><\/table><\/div>';
     }
-    /* Услуги (к съёмке / отдельным заказом) — 3 столбца в ОБЩЕЙ сетке
-       (см. СЕТКА_УСЛУГ): Услуга · Цена · Срочный заказ. Таблица во всю ширину,
-       строки не обрываются; «Цена» стоит там же, что и в консультации. */
+    /* Услуги (к съёмке / отдельным заказом) — 4 столбца в ОБЩЕЙ сетке:
+       Услуга · Кол-во · Цена · Срочный заказ. «Кол-во» отрезается от первого
+       столбца сетки (46% = 34% + 12%), поэтому «Цена» (46–66%) и «Срочный
+       заказ» (66–84%) стоят ровно там же, что и в остальных таблицах. */
     return '<div class="wrap"><table class="rt rt-svc">' +
-           '<colgroup><col style="width:' + СЕТКА_УСЛУГ.c1 + '"><col style="width:' + СЕТКА_УСЛУГ.c2 + '"><col style="width:' + СЕТКА_УСЛУГ.c3 + '"><col style="width:' + СЕТКА_УСЛУГ.c4 + '"><\/colgroup>' +
+           '<colgroup><col style="width:34%"><col style="width:12%"><col style="width:' + СЕТКА_УСЛУГ.c2 + '"><col style="width:' + СЕТКА_УСЛУГ.c3 + '"><col style="width:' + СЕТКА_УСЛУГ.c4 + '"><\/colgroup>' +
            '<thead><tr>' + th + '<\/tr><\/thead><tbody>' + tr + '<\/tbody><\/table><\/div>';
   }
   /* ── Печатная обложка = ЖИВОЙ баннер страницы, а не его пересказ
@@ -4097,13 +4226,22 @@ function ИНИЦ_ПРАЙСА(){
   }
   /* Печатный вид таблицы «Консультация»: длительность + цена, чистые значения. */
   /* Красивая подпись длительности: «30 мин», «1 ч», «1 ч 30 мин». */
+  /* Решение владельца 03.09: «час» пишем полностью со склонением
+     (1 час, 2 часа, 5 часов), «мин» — сокращённо. */
+  function словоЧасИм(n){
+    var i = Math.floor(Math.abs(n)), d1 = i % 10, d2 = i % 100;
+    if(d2 > 10 && d2 < 20) return '\u0447\u0430\u0441\u043e\u0432';
+    if(d1 === 1) return '\u0447\u0430\u0441';
+    if(d1 > 1 && d1 < 5) return '\u0447\u0430\u0441\u0430';
+    return '\u0447\u0430\u0441\u043e\u0432';
+  }
   function подписьДлительности(значение, единица){
     var v = parseFloat(String(значение).replace(',', '.')) || 0;
     if(v <= 0) return '\u2014';
     var всегоМин = единица === 'ч' ? Math.round(v * 60) : Math.round(v);
     var ч = Math.floor(всегоМин / 60), м = всегоМин % 60;
     var части = [];
-    if(ч > 0) части.push(ч + ' \u0447');
+    if(ч > 0) части.push(ч + ' ' + словоЧасИм(ч));
     if(м > 0) части.push(м + ' \u043c\u0438\u043d');
     return части.length ? части.join(' ') : '\u2014';
   }
@@ -4141,7 +4279,7 @@ function ИНИЦ_ПРАЙСА(){
     if(бокс && бокс.style.display === 'none') return '';   /* нет данных анкеты */
     var телоСтр = [].slice.call(т.querySelectorAll('tbody tr'));
     if(!телоСтр.length) return '';
-    var th = ['Длительность съёмки, часов','Цена за час','Цена за весь проект','Срочный заказ','Скидка за объём']
+    var th = ['Длительность съёмки','Цена за час','Цена за весь проект','Срочный заказ','Скидка за объём']
       .map(function(h){ return '<th>' + экранированный(h) + '<\/th>'; }).join('');
     var tr = телоСтр.map(function(r){
       var td = [].slice.call(r.querySelectorAll('td')).map(function(c){
@@ -4178,36 +4316,44 @@ function ИНИЦ_ПРАЙСА(){
     function значПоId(id){ var э = document.getElementById(id); return э ? э.textContent.trim() : ''; }
     var роль = значПоId('phRole');
     var имя  = значПоId('phName');
-    /* Направление после тире — со строчной: в строке оно середина
-       предложения, на обложке же остаётся как ввёл фотограф. */
-    var рольСтр = роль ? роль.charAt(0).toLowerCase() + роль.slice(1) : '';
-    var шапкаВерха = [имя, рольСтр].filter(Boolean).join(' \u2014 ');
+    /* Решение владельца 03.09 (вечер): имя и направление выводятся КАК ЕСТЬ
+       из анкеты прайса — направление с заглавной буквы, без тире и других
+       разделительных знаков, просто через пробел: «Имя Фамилия Коммерческий
+       фотограф». Строка «Стоимость услуг <дата>» переносится ПОД эту строку
+       и выравнивается по левому краю. */
+    var шапкаВерха = [имя, роль].filter(Boolean).join(' ');
     /* Решение владельца 02.09: колонтитул одним спокойным шрифтом, без
-       выделения имени; строка «Стоимость услуг <дата>» — в правой части,
-       выровнена по правому краю.
+       выделения имени.
        Решение владельца 03.09: разрыв между текстом и подчёркиванием убрать —
-       линия идёт прямо под последней строкой, а «Стоимость услуг <дата>»
-       стоит на одной базовой линии с номером страницы. Поэтому высота
-       картинки больше не фиксированные 26мм, а ровно столько строк, сколько
-       набралось (+2мм под строчку) — поле @top-* прижато к нижнему краю
-       картинки (vertical-align:bottom), линия печатается по нему. */
+       линия идёт прямо под последней строкой; номер страницы в @top-right
+       стоит на одной базовой линии с последней строкой колонтитула. Высота
+       картинки — ровно столько строк, сколько набралось (+2мм под строчку),
+       поле @top-* прижато к нижнему краю картинки (vertical-align:bottom),
+       линия печатается по нему. */
+    /* Решение владельца 03.09: верхний колонтитул — того же цвета, что
+       нижний: основной текст #9CA3AF (как «счётикс» и schetiks.ru),
+       второстепенная дата #B6BCC4 (как подпись «твоя юнит-экономика»). */
     var стильВерха = '<style>text{font-family:Arial,sans-serif}' +
-      '.t{font-size:12px;fill:#374151}' +
-      '.meta{font-size:12px;fill:#374151}.metad{font-size:12px;fill:#6B7280}<\/style>';
-    /* Одна строка слева: «Имя Фамилия — направление съёмки». Height картинки
-       = базовая линии + 8 условных единиц (2,1мм) — ровно настолько
-       подчёркивание будет ниже текста. Картинка прижата к нижнему краю поля
-       (vertical-align:bottom), линию рисует border-bottom этого поля. */
-    var послСтр = 24;
-    /* Ширины полосы (170мм) на имя+направление хватает примерно до 70
-       знаков; если длиннее — уменьшаем кегль, чтобы строка не наехала на
-       дату и номер страницы (Svg-текст не переносится). */
+      '.t{font-size:12px;fill:#9CA3AF}' +
+      '.meta{font-size:12px;fill:#9CA3AF}.metad{font-size:12px;fill:#B6BCC4}<\/style>';
+    /* Две строки слева: первая — «Имя Фамилия Направление», вторая —
+       «Стоимость услуг <дата>». Если имени и направления нет — остаётся
+       одна строка со стоимостью, базовая линия опускается на её место. */
+    var перваяСтр = 14, межстрочье = 18;
+    /* Полоса 170мм = 640 условных единиц. Первая строка теперь одна на всю
+       ширину; если она длиннее полосы — уменьшаем кегль (SVG-текст не
+       переносится). */
     var кегль = 12, оценка = шапкаВерха.length * 6;
-    if(оценка > 420) кегль = +(12 * 420 / оценка).toFixed(2);
-    var строки = шапкаВерха ? '<text class="t" x="0" y="' + послСтр + '" style="font-size:' +
-      кегль + 'px">' + xmlА(шапкаВерха) + '<\/text>' : '';
-    /* Дата — той же базовой линией, что и номер страницы в @top-right. */
-    строки += '<text class="meta" x="640" y="' + послСтр + '" text-anchor="end">\u0421\u0442\u043e\u0438\u043c\u043e\u0441\u0442\u044c \u0443\u0441\u043b\u0443\u0433 <tspan class="metad">' + xmlА(печДата) + '<\/tspan><\/text>';
+    if(оценка > 630) кегль = +(12 * 630 / оценка).toFixed(2);
+    var строки = '', послСтр = перваяСтр;
+    if(шапкаВерха){
+      строки += '<text class="t" x="0" y="' + перваяСтр + '" style="font-size:' +
+        кегль + 'px">' + xmlА(шапкаВерха) + '<\/text>';
+      послСтр = перваяСтр + межстрочье;
+    }
+    /* «Стоимость услуг <дата>» — второй строкой, по левому краю, под именем
+       и направлением (решение владельца 03.09). */
+    строки += '<text class="meta" x="0" y="' + послСтр + '">\u0421\u0442\u043e\u0438\u043c\u043e\u0441\u0442\u044c \u0443\u0441\u043b\u0443\u0433 <tspan class="metad">' + xmlА(печДата) + '<\/tspan><\/text>';
     var висВв = послСтр + 8;
     var висМм = (висВв * 170 / 640).toFixed(2);
     var верхКороткий = '<svg xmlns="http://www.w3.org/2000/svg" width="170mm" height="' + висМм + 'mm" viewBox="0 0 640 ' + висВв + '" preserveAspectRatio="xMinYMin meet">' + стильВерха +

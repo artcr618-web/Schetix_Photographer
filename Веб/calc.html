@@ -3420,6 +3420,15 @@ function calc(){
   var varRent=wsY;                         /* аренда и коммунальные    */
   var varAcc=accM;                         /* бухгалтер                */
 
+  /* ── Прямые расходы на готовый кадр (решение владельца 04.09, блок 09
+     отчёта). Группа листа «Состав»: часть финансовых расходов, напрямую
+     участвующая в создании и обработке фотографий — съёмочное и офисное
+     оборудование, рабочий софт, подписки, обустройство и содержание
+     рабочего места. НЕ входят: реклама, сайт, обучение, банк, бухгалтерия.
+     Считается из уже готовых эффективных слагаемых — исключённые блоки
+     уже дали ноль выше. */
+  var directFrameCosts=depShoot+depOffice+depSoft+varSoft+depWs+varRent;
+
   /* ── величины, которые раньше считались в отчёте и в прототипе
      детализации. Источник правды один: считаем здесь, наружу отдаём
      готовыми. Календарь 2026: 365 = 104 выходных + 14 праздничных + 247 рабочих. */
@@ -3578,6 +3587,7 @@ function calc(){
     fundY:goalFund,discY:goalDiscountReserve,fundP:fundP,discP:discP,
     /* разбивка расходов */
     depShoot:depShoot,depOffice:depOffice,depSoft:depSoft,depEdu:depEdu,depSite:depSite,depWs:depWs,
+    directFrameCosts:directFrameCosts,
     varAds:varAds,varSoft:varSoft,varBank:varBank,varRent:varRent,varAcc:varAcc,
     /* параметры модели и сравнение с текущей ставкой */
     NW:NW,K:K,cl:cl,curRate:cur,regime:regimeName(rg),regimeCode:rg,
