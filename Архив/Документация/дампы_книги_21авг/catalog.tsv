@@ -1,0 +1,40 @@
+форма	позиция	книга_цена	книга_срок	код_цена	код_срок	статус	строка_книги
+Form001	Canon EOS R6 Mark II Body	166999	3	166999.0	3.0	ok	5
+Form001	Canon RF 24–105mm f/4.0 L IS USM	130999	5	130999.0	5.0	ok	6
+Form001	Godox V1Pro C	36990	5	36990.0	5.0	ok	7
+Form001	Godox XPro II C	9355	5	9355.0	5.0	ok	8
+Form001	Аккумулятор LP-E6NH	12978	3	12978.0	3.0	ok	9
+Form001	SanDisk Extreme PRO 256 ГБ #1	6990	2	6990.0	2.0	ok	10
+Form001	SanDisk Extreme PRO 256 ГБ #2	6990	2	6990.0	2.0	ok	11
+Form001	Рюкзак Lowepro ProTactic	27962	7	27962.0	7.0	ok	12
+Form001	Godox RFT-05 отражатель	3000	5	3000.0	5.0	ok	13
+Form001	X-Rite ColorChecker	5000	7	5000.0	7.0	ok	14
+Form002	Системный блок	180000	5	180000.0	5.0	ok	15
+Form002	Монитор ASUS ProArt	55000	5	55000.0	5.0	ok	16
+Form002	Calibrite ColorChecker	30000	5	30000.0	5.0	ok	17
+Form002	Колонки Logitech Z207	5000	5	5000.0	5.0	ok	18
+Form002	Клавиатура Logitech K380	3500	7	3500.0	7.0	ok	19
+Form002	Мышь Logitech M650	4000	3	4000.0	3.0	ok	20
+Form002	Веб-камера Logitech Brio	15999	5	15999.0	5.0	ok	21
+Form002	Микрофон FIFINE K669B	3500	5	3500.0	5.0	ok	22
+Form002	Принтер Canon PIXMA G640	29999	5	29999.0	5.0	ok	23
+Form004	Retouch4me Heal	6900	3	6900.0	3.0	ok	24
+Form004	Retouch4me Dodge & Burn	6900	3	6900.0	3.0	ok	25
+Form004	Retouch4me Fabric	6900	3	6900.0	3.0	ok	26
+Form004	Retouch4me Clean Backdrop	6900	3	6900.0	3.0	ok	27
+Form004	Retouch4me Dust	6900	3	6900.0	3.0	ok	28
+Form013	Мебель	35000	7	35000.0	7.0	ok	29
+Form013	Косметический ремонт	30000	7	30000.0	7.0	ok	30
+Form003	Adobe CC Photography	2000	12	2000.0	12.0	ok	31
+Form003	Яндекс Диск 1 ТБ	250	12	250.0	12.0	ok	32
+Form007	Обслуживание счёта (РКО)	0	12	0.0	12.0	ok	33
+Form007	СМС-уведомления	150	12	150.0	12.0	ok	34
+Form010	Домен сайта	1500	1	1500.0	1.0	ok	35
+Form010	Хостинг сайта	6000	1	6000.0	1.0	ok	36
+Form010	Яндекс Директ	15000	12	15000.0	12.0	ok	37
+Form010	Авито	0	12	0.0	12.0	ok	38
+Form010	Таргетированная реклама	0	12	0.0	12.0	ok	39
+Form010	Платные размещения у блогеров	0	Месяц	—	—	НЕТ_В_КОДЕ	40
+Form010	Отклики на Profi.ru	0	12	0.0	12.0	ok	41
+Form006	Курс по фотографии	—	—	80000.0	4.0	НЕТ_В_КНИГЕ	
+Form010	Размещения у блогеров	—	—	0.0	12.0	НЕТ_В_КНИГЕ	

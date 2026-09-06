@@ -1254,14 +1254,16 @@ break-inside:avoid;page-break-inside:avoid;margin-bottom:12px}
 @media(max-width:700px){#phc-root .g2{grid-template-columns:1fr}
 #phc-root h1{font-size:26px}#phc-root .hero .big{font-size:40px}#phc-root .card{padding:20px}
 #phc-root table.dt{font-size:13px}#phc-root .wk{grid-template-columns:40px repeat(5,1fr)}}
-/* ---------- строка со знаком ----------
-   То же место и та же геометрия, что в отчёте: знак справа, над ним 28 px.
-   Считается так: отступ страницы 32 − 12 + свой 8. В отчёте слева от знака
-   стоят кнопки, в анкете их нет — строка та же, содержимое одно. */
+/* ---------- верхнее меню (стандартное) ----------
+   КОПИЯ ЭТАЛОНА report.html «верхнее меню» — решение владельца 03.09:
+   вёрстка одна, свой у анкеты только набор значков (сброс, поделиться,
+   сердечко). Правила расписаны в Документация/CSS/Меню.md.
+   Та же геометрия, что в отчёте: знак справа, над ним 28 px
+   (отступ страницы 32 − 12 + свой 8), значки слева. */
 #phc-root .tbar{display:flex;align-items:center;justify-content:space-between;
 gap:24px;padding:8px 0 16px;margin:-12px 0 26px;background:var(--c-bg)}
 #phc-root .tbar .brand{margin-top:0}
-#phc-root .tbn{display:flex;align-items:center;gap:10px;flex:none;min-width:0}
+#phc-root .tbn{display:flex;align-items:center;gap:10px;flex:none}
 /* Кнопки меню — те же, что в отчёте, правила перенесены дословно */
 /* Надзаголовок над «Юнит-экономика фотографа»: статус сервиса.
    Ведёт к блоку внизу страницы, где объяснено, что это значит. */
@@ -1270,14 +1272,9 @@ font-size:12.5px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;
 color:var(--c-gr2);text-decoration:none;transition:color .18s}
 #phc-root .kick-trial:hover{color:var(--c-gr)}
 #phc-root .kick-ic{width:16px;height:16px;flex:none;display:block}
-/* Главное действие страницы — текстовой кнопкой, остальное значками. */
-#phc-root .tbar .fbl{font-size:14px;font-weight:600;color:var(--c-gr);
-text-decoration:none;white-space:nowrap;padding:7px 12px;border-radius:12px;
-margin-right:auto;cursor:pointer;border:0;background:transparent;font-family:inherit;
-transition:background .18s,color .18s,transform .12s}
-#phc-root .tbar .fbl:hover{background:var(--c-white);color:var(--c-ink2)}
-#phc-root .tbar .fbl:active{transform:translateY(1px)}
-#phc-root .tbar .fbl.ask{color:var(--c-r-700);background:var(--c-r-50)}
+/* Текстовой кнопки .fbl в меню анкеты нет (все действия — значками);
+   её правила сняты 03.09 как мёртвые. Состояние «переспросить» у сброса —
+   .fbi.ask, объявлено рядом с плавающей плашкой. */
 #phc-root .tbar .fbi{display:inline-flex;align-items:center;justify-content:center;
 width:34px;height:34px;border:0;border-radius:12px;background:transparent;
 color:var(--c-gr);cursor:pointer;padding:0;position:relative;
@@ -1299,79 +1296,114 @@ font-size:12.5px;font-weight:600;white-space:nowrap;opacity:0;pointer-events:non
 transform:translateX(-50%) translateY(-4px);
 transition:opacity .16s,transform .16s;box-shadow:0 8px 28px rgba(16,24,40,.16)}
 #phc-root .tbar .fbi:hover:after{opacity:1;transform:translateX(-50%)}
-/* Пометка о пробном режиме — слева в меню, просто текст со значком.
-   Ни подложки, ни рамки: сообщение, а не предупреждение об ошибке.
-   Значок тот же треугольник, что в меню отчёта. */
-/* Пометка — ссылка на объяснение внизу страницы. Подсказка при
-   наведении оформлена как у значков меню отчёта: белая плашка,
-   светлая рамка, тот же радиус и тень. */
-#phc-root .tbar .trial{display:inline-flex;align-items:center;gap:8px;
-font-size:13.5px;line-height:1.35;color:var(--c-gr);white-space:nowrap;
-padding:7px 10px;border-radius:12px;text-decoration:none;position:relative;
-transition:background .18s,color .18s}
-#phc-root .tbar .trial:hover{background:var(--c-white);color:var(--c-ink2)}
-#phc-root .tbar .trial:after{content:attr(data-tip);position:absolute;
-top:calc(100% + 9px);left:50%;padding:10px 14px;border-radius:12px;
-background:var(--c-white);color:var(--c-ink);border:1px solid var(--c-ln);
-font-size:12.5px;font-weight:600;white-space:nowrap;opacity:0;pointer-events:none;
-transform:translateX(-50%) translateY(-4px);z-index:5;
-transition:opacity .16s,transform .16s;box-shadow:0 8px 28px rgba(16,24,40,.16)}
-#phc-root .tbar .trial:hover:after{opacity:1;transform:translateX(-50%)}
+/* Пометки о пробном режиме в меню нет: она стоит надзаголовком шапки
+   (.kick-trial). Правила .tbar .trial сняты 03.09 как мёртвые. */
 /* подсветка блока, когда на него перешли по ссылке */
 #phc-root .trb:target{animation:phctr 2.4s ease}
 @keyframes phctr{0%,42%{background:var(--c-a-50)}100%{background:transparent}}
 #phc-root .tri{width:17px;height:17px;flex:none;display:block}
-@media(max-width:620px){#phc-root .tbar .trial{display:none}}
 @media(max-width:700px){#phc-root .tbar{gap:12px;padding:6px 0 12px;margin-top:-8px}
 #phc-root .tbar .brand .bx{width:46px;height:46px}
 #phc-root .tbar .brand .bt{font-size:16px}}
-@media print{#phc-root .tbar{position:static;border-bottom:0}}
-/* Плавающее меню повторяет .fbar отчёта: бренд и основные действия. */
-#phc-root .trustbar{position:fixed;top:16px;left:50%;z-index:58;
-display:flex;align-items:center;gap:10px;max-width:calc(100vw - 32px);
-padding:10px 16px;border-radius:var(--r);background:rgba(255,255,255,.62);
+/* МОБИЛЬНОЕ МЕНЮ — по эталону report.html (решение владельца 26.08,
+   перенесено в анкету 03.09): ниже 620px зазоры 8px и надпись 15px,
+   ниже 400px знак 38px, надпись 13.5px, расшифровка 7.4px. */
+@media(max-width:620px){#phc-root .tbar{gap:8px}
+#phc-root .tbar .brand{gap:8px}
+#phc-root .tbar .brand .bt{font-size:15px}}
+@media(max-width:400px){
+#phc-root .tbar .brand .bx{width:38px;height:38px}
+#phc-root .tbar .brand .bt{font-size:13.5px}
+#phc-root .tbar .brand .bd{font-size:7.4px}}
+@media print{#phc-root .tbar{position:static;border-bottom:0}
+#phc-root .tbn{display:none}}
+/* ---------- плавающая плашка (плавающее меню) ----------
+   КОПИЯ ЭТАЛОНА report.html «плавающая плашка» — решение владельца 03.09:
+   вёрстка плашки на всех страницах одна (размеры, зазоры, поля, прозрачность,
+   точки перелома), свой у анкеты только набор значков: «Вернуть значения
+   по умолчанию», «Поделиться», сердечко. Имена классов здесь свои
+   (.trustbar-* вместо .fbar/.fbi) — они прописаны в скриптах и на
+   листе «Интерфейс» книги; соответствие: .trustbar = .fbar,
+   .trustbar-brand = .fbrand, .trustbar-mark = .fbmark, .trustbar-name = .fbname,
+   .trustbar-action = .fbar .fbi, .trustbar-thanks = .fbh.
+   Правила расписаны в Документация/CSS/Меню.md. Не править здесь отдельно:
+   сначала эталон, потом перенос сюда и в price.html.
+   Появляется после 500px прокрутки, висит по центру сверху. */
+#phc-root .trustbar{position:fixed;--fb-top:16px;--fb-peek:12px;top:var(--fb-top);left:50%;z-index:60;
+touch-action:none;user-select:none;-webkit-user-select:none;
+display:flex;align-items:center;gap:10px;padding:12px 20px;
+border-radius:var(--r);background:rgba(255,255,255,.62);
 backdrop-filter:blur(14px) saturate(140%);-webkit-backdrop-filter:blur(14px) saturate(140%);
 border:1px solid rgba(255,255,255,.55);box-shadow:0 8px 28px rgba(16,24,40,.16);
-opacity:0;visibility:hidden;pointer-events:none;transform:translateX(-50%) translateY(-14px);
-transition:opacity .2s,transform .22s,visibility 0s linear .22s}
-#phc-root .trustbar.on{opacity:1;visibility:visible;pointer-events:auto;
-transform:translateX(-50%);transition-delay:0s}
-/* Между знаком и кнопками — заметный промежуток и тонкая линия:
+opacity:0;visibility:hidden;transform:translateX(-50%) translateY(-14px);
+transition:opacity .28s ease,transform .28s ease,visibility .28s}
+#phc-root .trustbar.on{opacity:1;visibility:visible;transform:translateX(-50%)}
+/* ШИРИНА ПЛАШКИ — ДИНАМИЧЕСКАЯ, решение владельца 03.09. Плашка ровно
+   такой ширины, сколько занимают её элементы: поля 20px (на мобильном 12),
+   знак, N значков по 34px с зазорами 10px (8) и крестик. Больше значков —
+   шире плашка; ничего не сжимается (flex:none у знака, значков и крестика),
+   верхнего предела ширины нет. Прежний max-width на ≤700px снят: он
+   заставлял значки ужиматься. Следствие: на 320px плашка прайса с шестью
+   кнопками (329px) выходит за экран на 4–5px с каждой стороны, от 340px
+   всё помещается — см. Документация/CSS/Меню.md §8. */
+/* Между знаком и кнопками — промежуток и тонкая линия:
    слева марка, справа действия, взгляд не путается. */
-#phc-root .trustbar-brand{display:flex;align-items:center;justify-content:center;gap:7px;
+#phc-root .trustbar-brand{display:flex;align-items:center;justify-content:center;gap:7px;flex:none;
 height:46px;margin-right:14px;padding-right:14px;line-height:1;white-space:nowrap;
 border-right:1px solid var(--c-ln)}
 /* Пропорция слова и знака повторяет основной логотип: 19/62 ≈ 14/46. */
 #phc-root .trustbar-mark{width:46px;height:46px;flex:none}
-#phc-root .trustbar-name{display:flex;align-items:center;height:46px;font-size:14px;
-font-weight:700;line-height:1;letter-spacing:.11em;text-transform:lowercase;color:var(--c-gr)}
-#phc-root .trustbar-action,#phc-root .trustbar-close{display:inline-flex;align-items:center;
-justify-content:center;align-self:center;width:34px;height:34px;flex:none;border:0;border-radius:12px;
-background:transparent;color:var(--c-gr);cursor:pointer;padding:0;position:relative;
-text-decoration:none;transition:background .18s,color .18s,transform .12s}
+#phc-root .trustbar-name{display:flex;align-items:center;height:46px;
+font-size:14px;font-weight:700;letter-spacing:.11em;text-transform:lowercase;
+color:var(--c-ink)}
+/* ЖЕСТ ВМЕСТО КРЕСТИКА — решение владельца 03.09. Свайп вверх по плашке
+   убирает её под верхний край экрана; снаружи остаётся полоска высотой
+   в нижнее поле плашки (12px, на мобильном 10px) с ручкой. Свайп вниз
+   (или тап) по полоске возвращает плашку. Положение убранной плашки
+   считает CSS: сдвиг = −высота − отступ сверху + полоска. Правило стоит
+   после .on и без него: убранная плашка и гаснет, и появляется убранной,
+   а не выезжает целиком. Логика жеста — в скрипте «жест плавающей плашки». */
+#phc-root .trustbar.убрана{transform:translateX(-50%) translateY(calc(var(--fb-peek) - var(--fb-top) - 100%))}
+#phc-root .trustbar.убрана:after{content:'';position:absolute;left:50%;bottom:3px;width:36px;height:4px;
+margin-left:-18px;border-radius:2px;background:var(--c-gr3)}
+/* невидимая зона под полоской — чтобы за неё было удобно взяться пальцем */
+#phc-root .trustbar.убрана:before{content:'';position:absolute;left:0;right:0;top:100%;height:24px}
+/* Надпись «счётикс» — только на десктопе и горизонтальном планшете
+   (решение владельца 03.09), граница 820px — как в эталоне. */
+@media(max-width:820px){#phc-root .trustbar-name{display:none}}
+/* Ниже 620px плавающее меню компактное: знак 38px, крестик 30px,
+   промежуток и черта у знака 8px. */
+@media(max-width:620px){#phc-root .trustbar-brand{gap:0;height:38px;margin-right:8px;padding-right:8px}
+#phc-root .trustbar-mark{width:38px;height:38px}}
+/* кнопки те же, что в меню: подложка и радиус при наведении */
+#phc-root .trustbar-action{display:inline-flex;align-items:center;justify-content:center;
+width:34px;height:34px;flex:none;border:0;border-radius:12px;background:transparent;
+color:var(--c-gr);cursor:pointer;padding:0;position:relative;text-decoration:none;
+transition:background .18s,color .18s,transform .12s}
 #phc-root .trustbar-action svg{width:20px;height:20px}
-#phc-root .trustbar-action:hover,#phc-root .trustbar-close:hover{background:var(--c-white);color:var(--c-ink2)}
+#phc-root .trustbar-action:hover{background:var(--c-white);color:var(--c-ink2)}
+#phc-root .trustbar-action:active{transform:translateY(1px)}
 /* То же и в плавающей плашке: до нажатия сердечко серое, как соседние
    иконки (наследует цвет .trustbar-action). Эталон — report.html .fbar .fbh;
    параметры: Документация/CSS/Сердечки.md. */
 #phc-root .trustbar-thanks{color:var(--c-gr)}
+#phc-root .trustbar-thanks:hover{background:var(--c-white);color:var(--c-ink2)}
 /* Общий сброс продублирован в плавающей плашке. Первое нажатие
    предупреждает — кнопка краснеет, второе выполняет. Логика та же,
-   что у нижней кнопки «Вернуть значения по умолчанию». */
+   что у нижней кнопки «Вернуть значения по умолчанию». Состояние
+   только анкеты: в отчёте и прайсе кнопки сброса нет. */
 #phc-root .trustbar-reset.ask,
 #phc-root .tbar .fbi.ask{color:var(--c-r-700);background:var(--c-r-50)}
-#phc-root .trustbar-close{font-size:20px;line-height:1}
-#phc-root .trustbar-action:after{content:attr(data-tip);position:absolute;top:calc(100% + 9px);
-left:50%;padding:8px 11px;border-radius:12px;background:var(--c-white);color:var(--c-ink);
-border:1px solid var(--c-ln);font-size:12px;font-weight:600;white-space:nowrap;opacity:0;
-pointer-events:none;transform:translateX(-50%) translateY(-4px);box-shadow:0 8px 28px rgba(16,24,40,.16)}
+/* подсказка — как у кнопок верхнего меню */
+#phc-root .trustbar-action:after{content:attr(data-tip);position:absolute;
+top:calc(100% + 9px);left:50%;padding:10px 14px;border-radius:12px;
+background:var(--c-white);color:var(--c-ink);border:1px solid var(--c-ln);
+font-size:12.5px;font-weight:600;white-space:nowrap;opacity:0;pointer-events:none;
+transform:translateX(-50%) translateY(-4px);
+transition:opacity .16s,transform .16s;box-shadow:0 8px 28px rgba(16,24,40,.16)}
 #phc-root .trustbar-action:hover:after{opacity:1;transform:translateX(-50%)}
-@media(max-width:620px){#phc-root .trustbar{top:10px;gap:5px;padding:8px 9px}
-#phc-root .trustbar-brand{gap:5px;height:38px;margin-right:1px}
-#phc-root .trustbar-mark{width:38px;height:38px}
-#phc-root .trustbar-name{height:38px;font-size:12.5px}
-#phc-root .trustbar-action,#phc-root .trustbar-close{width:30px;height:30px}}
-@media print{#phc-root .trustbar{display:none}}
+@media(max-width:700px){#phc-root .trustbar{--fb-top:10px;--fb-peek:10px;gap:8px;padding:10px 12px}}
+@media print{#phc-root .trustbar{display:none!important}}
 
 /* ---------- знак ---------- */
 #phc-root .brand{display:flex;align-items:center;gap:12px;flex:none;line-height:1;margin-top:-4px}
@@ -1932,7 +1964,6 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 <button class="trustbar-action trustbar-reset" id="trustResetBtn" type="button" data-tip="Вернуть значения по умолчанию" aria-label="Вернуть значения по умолчанию"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20.5 3.6v4.4h-4.4" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/><path d="M20.1 8A8.5 8.5 0 1 0 20.5 12" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg></button>
 <button class="trustbar-action" id="trustShareBtn" type="button" data-tip="Поделиться" aria-label="Поделиться"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="18" cy="5" r="2.6" stroke="currentColor" stroke-width="1.8"/><circle cx="6" cy="12" r="2.6" stroke="currentColor" stroke-width="1.8"/><circle cx="18" cy="19" r="2.6" stroke="currentColor" stroke-width="1.8"/><path d="M8.4 10.8l7.2-4.2M8.4 13.2l7.2 4.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
 <a class="trustbar-action trustbar-thanks" href="#thanks" data-thx="calc-float" data-tip="Поблагодарить проект" aria-label="Поблагодарить проект"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0l-1 1-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1 7.8 7.8 7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8Z" stroke="currentColor" stroke-width="2"/></svg></a>
-<button class="trustbar-close" id="trustBarClose" type="button" aria-label="Скрыть">×</button>
 </div>
 
 <div class="hdr" data-block-id="CALC-B003" data-block-name="Шапка анкеты">
@@ -3420,15 +3451,6 @@ function calc(){
   var varRent=wsY;                         /* аренда и коммунальные    */
   var varAcc=accM;                         /* бухгалтер                */
 
-  /* ── Прямые расходы на готовый кадр (решение владельца 04.09, блок 09
-     отчёта). Группа листа «Состав»: часть финансовых расходов, напрямую
-     участвующая в создании и обработке фотографий — съёмочное и офисное
-     оборудование, рабочий софт, подписки, обустройство и содержание
-     рабочего места. НЕ входят: реклама, сайт, обучение, банк, бухгалтерия.
-     Считается из уже готовых эффективных слагаемых — исключённые блоки
-     уже дали ноль выше. */
-  var directFrameCosts=depShoot+depOffice+depSoft+varSoft+depWs+varRent;
-
   /* ── величины, которые раньше считались в отчёте и в прототипе
      детализации. Источник правды один: считаем здесь, наружу отдаём
      готовыми. Календарь 2026: 365 = 104 выходных + 14 праздничных + 247 рабочих. */
@@ -3587,7 +3609,6 @@ function calc(){
     fundY:goalFund,discY:goalDiscountReserve,fundP:fundP,discP:discP,
     /* разбивка расходов */
     depShoot:depShoot,depOffice:depOffice,depSoft:depSoft,depEdu:depEdu,depSite:depSite,depWs:depWs,
-    directFrameCosts:directFrameCosts,
     varAds:varAds,varSoft:varSoft,varBank:varBank,varRent:varRent,varAcc:varAcc,
     /* параметры модели и сравнение с текущей ставкой */
     NW:NW,K:K,cl:cl,curRate:cur,regime:regimeName(rg),regimeCode:rg,
@@ -4059,7 +4080,7 @@ Object.keys(CAT).forEach(function(f){
     /* Своё окно показываем всегда: оно предсказуемо и одинаково
        выглядит везде. Системное окно остаётся запасным путём и
        вызывается изнутри — плиткой MAX. */
-    var url=location.href, ttl=document.title;
+    var url='https://schetiks.ru', ttl='Счётикс — юнит-экономика для фотографа';   /* ссылка на сервис, как в окне */
     if(window.СЧХПоделиться){СЧХПоделиться();return}
     if(navigator.share){navigator.share({title:ttl,url:url}).catch(function(){});return}
     if(navigator.clipboard&&navigator.clipboard.writeText){
@@ -4094,16 +4115,68 @@ Object.keys(CAT).forEach(function(f){
   });
 })();
 
-/* Плавающая плашка доверия появляется после первого экрана и может быть
-   закрыта до следующей загрузки страницы. */
+/* Плавающая плашка появляется после первого экрана (500px, как в отчёте).
+   Крестика нет — плашку убирают под край экрана жестом, см. СЧХЖестПлашки
+   (копия эталона report.html). */
 (function(){
-  var bar=$('trustBar'), close=$('trustBarClose'), закрыта=false;
+  var bar=$('trustBar');
   if(!bar)return;
-  function обновить(){bar.classList.toggle('on',!закрыта&&window.pageYOffset>500)}
-  if(close)close.onclick=function(){закрыта=true;bar.classList.remove('on')};
+  function обновить(){bar.classList.toggle('on',window.pageYOffset>500)}
   window.addEventListener('scroll',обновить,{passive:true});
   обновить();
+  СЧХЖестПлашки(bar);
 })();
+
+/* --- жест плавающей плашки (решение владельца 03.09, вместо крестика) ---
+   Свайп вверх по плашке убирает её под верхний край экрана, снаружи
+   остаётся полоска с ручкой; свайп вниз или тап по полоске возвращает.
+   Плашка следует за пальцем (Pointer Events, мышь тоже работает);
+   решение принимается по пройденному пути: больше 24px — жест, меньше —
+   обычное нажатие на значок. Состояние «убрана» помнится до перезагрузки:
+   если человек убрал плашку, то после ухода наверх и нового появления
+   она снова появится убранной, а не развёрнутой.
+   Одна и та же функция во всех трёх страницах: report.html — эталон. */
+function СЧХЖестПлашки(bar){
+  if(!bar||!window.PointerEvent)return;
+  var ПОРОГ=24, старт=null, путь=0, идёт=false;
+  function сдвигУбранной(){
+    var cs=getComputedStyle(bar);
+    return bar.offsetHeight+parseFloat(cs.getPropertyValue('--fb-top'))-parseFloat(cs.getPropertyValue('--fb-peek'));
+  }
+  function положить(y){bar.style.transition='none';bar.style.transform='translateX(-50%) translateY('+(-y)+'px)'}
+  function отпустить(){bar.style.transition='';bar.style.transform=''}
+  bar.addEventListener('pointerdown',function(e){
+    if(e.pointerType==='mouse'&&e.button!==0)return;
+    старт={y:e.clientY,id:e.pointerId,убрана:bar.classList.contains('убрана')};путь=0;идёт=false;
+  });
+  bar.addEventListener('pointermove',function(e){
+    if(!старт||e.pointerId!==старт.id)return;
+    var dy=e.clientY-старт.y;
+    if(!идёт&&Math.abs(dy)<8)return;
+    if(!идёт){идёт=true;try{bar.setPointerCapture(e.pointerId)}catch(x){}}
+    путь=dy;
+    var макс=сдвигУбранной(), база=старт.убрана?макс:0;
+    положить(Math.min(макс,Math.max(0,база-dy)));
+  });
+  function конец(e){
+    if(!старт||e.pointerId!==старт.id)return;
+    var было=старт.убрана, тап=!идёт;
+    старт=null;отпустить();
+    if(тап){
+      /* тап по полоске убранной плашки — вернуть; тап по значкам — не наш */
+      if(было&&!e.target.closest('a,button')){bar.classList.remove('убрана');}
+      return;
+    }
+    if(путь<-ПОРОГ&&!было){bar.classList.add('убрана');}
+    else if(путь>ПОРОГ&&было){bar.classList.remove('убрана');}
+    /* после жеста подавляем клик по значку, на котором отпустили палец */
+    var глушить=function(ev){ev.stopPropagation();ev.preventDefault();bar.removeEventListener('click',глушить,true)};
+    bar.addEventListener('click',глушить,true);
+    setTimeout(function(){bar.removeEventListener('click',глушить,true)},0);
+  }
+  bar.addEventListener('pointerup',конец);
+  bar.addEventListener('pointercancel',function(e){if(старт&&e.pointerId===старт.id){старт=null;отпустить()}});
+}
 
 /* ---- «Вернуть значения» в каждом блоке ----
    Все локальные сбросы стоят в правом верхнем углу рядом с заголовком.
@@ -4523,7 +4596,7 @@ function сбросить(){
     </div>
 
     <div class="shm-строка">
-      <input class="shm-поле" id="shmАдрес" type="text" readonly value="calc.schetix.ru" aria-label="Ссылка на калькулятор">
+      <input class="shm-поле" id="shmАдрес" type="text" readonly value="schetiks.ru" aria-label="Ссылка на Счётикс">
       <button type="button" class="shm-копия" data-куда="copy" data-подпись="Скопировать ссылку" aria-label="Скопировать ссылку">
         <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2.6" stroke="currentColor" stroke-width="1.9"/><path d="M15 5.6A2.6 2.6 0 0 0 12.4 3H6.6A2.6 2.6 0 0 0 4 5.6v5.8A2.6 2.6 0 0 0 6.6 14" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg>
       </button>
@@ -4634,8 +4707,12 @@ function сбросить(){
   var окно=document.getElementById('shModal'); if(!окно)return;
   var поле=document.getElementById('shmАдрес');
 
-  function ссылка(){return location.href}
-  function заголовок(){return document.title||'Счётикс — расчёт стоимости часа';}
+  /* Делимся ссылкой на САМ СЕРВИС, а не на текущую страницу (решение
+     владельца 04.09): у отчёта адрес с данными, у прайса — адрес без данных,
+     получатель ничего полезного по ним не увидит. Адрес сервиса один. */
+  var СЕРВИС_URL='https://schetiks.ru', СЕРВИС_ТЕКСТ='Счётикс — юнит-экономика для фотографа';
+  function ссылка(){return СЕРВИС_URL}
+  function заголовок(){return СЕРВИС_ТЕКСТ}
   function показатьАдрес(){if(поле)поле.value=ссылка().replace(/^https?:\/\//,'')}
   показатьАдрес();
 

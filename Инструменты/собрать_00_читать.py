@@ -31,6 +31,7 @@ rows=[
  ['Интерфейс','Страницы, блоки, элементы, DOM-ID, data-t и ветки','index.html + calc.html + report.html',f'{wb["Интерфейс"].max_row-1} записей; report — 20 технических блоков'],
  ['Тексты','Пользовательские тексты анкеты и отчёта с местами использования','фактические calc.html + report.html',f'{wb["Тексты"].max_row-1} строк из двух страниц'],
  ['CSS_и_компоненты','Токены, селекторы, адаптив и печать анкеты и отчёта','фактические calc.html + report.html',f'{wb["CSS_и_компоненты"].max_row-1} деклараций из двух страниц'],
+ ['Адаптивность','Контрольные точки, общие правила перестроения и исключения по блокам под ширину экрана','паспорт Документация/CSS/Адаптивность.md + решения владельца','структура без параметров (03.09.2026); параметры вносятся после утверждения'],
  ['Программа_лояльности','Внутренняя модель фонда, постоянных клиентов, сертификатов и Скидки за объём','calc.html + report.html + паспорт',f'{wb["Программа_лояльности"].max_row-1} строк; {formulas(wb["Программа_лояльности"])} формул; контроль 5/10/15%'],
  ['Полный_отчёт','Пользовательские показатели, данные диаграмм и полный контракт d','настоящий calc() + паспорта',f'{wb["Полный_отчёт"].max_row-1} строк; 101 поле d; 16 колонок; RULE связаны'],
  [],
@@ -48,9 +49,9 @@ for row in rows: ws.append(row)
 # Оформление.
 green='1B9331'; white='FFFFFF'; light='E8F5EA'; blue='EAF3FA'; border=Border(bottom=Side(style='thin',color='E5E7EB'))
 ws.merge_cells('A1:D1'); ws['A1'].font=Font(size=19,bold=True,color=green)
-for r in (8,22):
+for r in (8,23):
     for c in ws[r]: c.fill=PatternFill('solid',fgColor=green); c.font=Font(color=white,bold=True)
-for r in (2,3,4,5,6,20,26,27):
+for r in (2,3,4,5,6,21,27,28):
     ws.cell(r,1).fill=PatternFill('solid',fgColor=light); ws.cell(r,1).font=Font(bold=True,color=green)
 for row in ws.iter_rows():
     for c in row: c.alignment=Alignment(vertical='top',wrap_text=True); c.border=border

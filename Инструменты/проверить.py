@@ -993,17 +993,17 @@ def детей(s):
             гл += 1
     return дети
 n = детей(rep)
-проверка("в .wp ровно 24 блока по контракту report (З-027 + Инвестиции: B021–B024)", n == 24, f"{n}")
-report_story=['REPORT-B007','REPORT-B008','REPORT-B012','REPORT-B010','REPORT-B013','REPORT-B009','REPORT-B022','REPORT-B011','REPORT-B021','REPORT-B023','REPORT-B024','REPORT-B014','REPORT-B015']
+проверка("в .wp ровно 20 блоков по контракту report", n == 20, f"{n}")
+report_story=['REPORT-B007','REPORT-B008','REPORT-B012','REPORT-B010','REPORT-B013','REPORT-B009','REPORT-B011','REPORT-B014','REPORT-B015']
 report_positions=[rep.find(f'data-block-id="{x}"') for x in report_story]
 проверка('report: маршрут бюджет → время → сценарии → благодарность → загрузка → скидка → налоги',
          all(x>=0 for x in report_positions) and report_positions==sorted(report_positions))
-report_user_numbers={'REPORT-B007':'01','REPORT-B008':'02','REPORT-B012':'03','REPORT-B013':'04','REPORT-B009':'05','REPORT-B022':'06','REPORT-B011':'07','REPORT-B021':'08','REPORT-B023':'09','REPORT-B024':'10','REPORT-B014':'11','REPORT-B015':'12'}
+report_user_numbers={'REPORT-B007':'01','REPORT-B008':'02','REPORT-B012':'03','REPORT-B013':'04','REPORT-B009':'05','REPORT-B011':'06','REPORT-B014':'07','REPORT-B015':'08'}
 number_errors=[]
 for bid,no in report_user_numbers.items():
     m=re.search(rf'data-block-id="{bid}"[^>]*>.*?<div class="bn">(\d{{2}})</div>',rep,re.S)
     if not m or m.group(1)!=no:number_errors.append(f'{bid}→{m.group(1) if m else "—"}')
-проверка('report: пользовательские номера 01–12 соответствуют новому порядку',not number_errors,', '.join(number_errors))
+проверка('report: пользовательские номера 01–08 соответствуют новому порядку',not number_errors,', '.join(number_errors))
 
 # З-038: все управляющие checkbox/radio должны иметь однозначную роль.
 проверка('З-038: сумма и ответы дополнительных комиссий используют один список',
@@ -1027,7 +1027,7 @@ index_html = читать('Веб/index.html')
 for имя, файл, page_id, count in (
     ('index', index_html, 'PAGE-INDEX', 2),
     ('calc', calc, 'PAGE-CALC', 39),
-    ('report', rep, 'PAGE-REPORT', 24),
+    ('report', rep, 'PAGE-REPORT', 20),
 ):
     ids = re.findall(r'data-block-id="([^"]+)"', файл)
     проверка(f'{имя}: все смысловые блоки имеют уникальный технический ID',
@@ -1206,8 +1206,8 @@ try:
              '; '.join(clean_formula_errors[:5]))
     expected_clean = ['00_Читать', '01_Глоссарий', 'calc', 'Состав',
                       'Значения_по_умолчанию', 'Интерфейс', 'Тексты',
-                      'CSS_и_компоненты', 'Программа_лояльности', 'Полный_отчёт']
-    проверка('чистая книга: ровно 10 утверждённых листов', clean.sheetnames == expected_clean,
+                      'CSS_и_компоненты', 'Адаптивность', 'Программа_лояльности', 'Полный_отчёт']
+    проверка('чистая книга: ровно 11 утверждённых листов', clean.sheetnames == expected_clean,
              f'{len(clean.sheetnames)} листов')
     old_refs = []
     for sh in clean.worksheets:
@@ -1264,7 +1264,7 @@ try:
              current_formula == '=revenue_current-current_costs_total_model',
              str(current_formula))
     full = clean['Полный_отчёт']
-    full_ok = full.max_row == 119 and full.max_column == 16 and all(full.cell(r, 14).value == 'да' for r in range(2, 120))  # 119: контракт расширен полем d.directFrameCosts (решение владельца 04.09)
+    full_ok = full.max_row == 118 and full.max_column == 16 and all(full.cell(r, 14).value == 'да' for r in range(2, 119))
     проверка('чистая книга: Полный_отчёт содержит показатели, диаграммы и полный контракт d', full_ok,
              f'{full.max_row-1} строк')
     contract_fields=set()
@@ -1404,7 +1404,7 @@ if not jsdom_ok:
 if jsdom_ok:
     hp=subprocess.run(['node',headless_js,КОРЕНЬ],cwd=node_cwd,capture_output=True,text=True)
     проверка('report: постоянный headless-прогон 8 сценариев',
-             hp.returncode==0 and '8 сценариев · 24 блока · 12 таблиц · ошибок 0' in hp.stdout,
+             hp.returncode==0 and '8 сценариев · 20 блоков · 12 таблиц · ошибок 0' in hp.stdout,
              (hp.stderr or hp.stdout).strip().split('\n')[-1][:180])
 else:
     проверка('report: постоянный headless-прогон 8 сценариев',False,
