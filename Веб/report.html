@@ -468,8 +468,12 @@ max-width:250px;text-align:center;transition:opacity .12s;opacity:0}
 #phr-root .segtip .v{font-size:19px;font-weight:800;letter-spacing:-.02em;line-height:1.1;
 font-variant-numeric:tabular-nums;white-space:nowrap;padding-bottom:7px;margin-bottom:7px;
 border-bottom:1px solid var(--c-ln)}
-#phr-root .segtip b{display:block;font-size:13px;font-weight:700;line-height:1.3;white-space:nowrap}
-#phr-root .segtip span{display:block;font-size:11.5px;color:var(--c-gr);margin-top:2px;white-space:nowrap}
+/* 08.09 (слово владельца): длинная подпись обязана переноситься, а не
+   вылезать за плашку. nowrap снят; ширину по-прежнему задаёт замер. */
+#phr-root .segtip b{display:block;font-size:13px;font-weight:700;line-height:1.3;
+white-space:normal;overflow-wrap:break-word}
+#phr-root .segtip span{display:block;font-size:11.5px;color:var(--c-gr);margin-top:2px;
+white-space:normal;overflow-wrap:break-word}
 #phr-root .dn{position:relative;display:inline-block;margin:0 auto}
 #phr-root .dn .mid{position:absolute;inset:0;display:flex;flex-direction:column;
 align-items:center;justify-content:center;pointer-events:none}
@@ -1464,7 +1468,9 @@ margin-left:-20px;margin-right:-20px}}
 /* Вступление, диаграмма и плашка логистики лежат на фоне страницы,
    детализация — в белой карточке 01 (решение владельца 07.09). */
 /* заголовок диаграммы (слово владельца 08.09): не подсказка, а название, как .wkh-h */
-#phr-root .dnh{text-align:center;max-width:680px;margin:26px auto 0;font-size:17px;font-weight:700;letter-spacing:-.015em;line-height:1.3;color:var(--c-ink)}
+/* 08.09 (слово владельца): подзаголовок отделён от заголовка и от
+   плашки-уведомления — тем же серым, что у .hint во всех блоках. */
+#phr-root .dnh{text-align:center;max-width:680px;margin:26px auto 0;font-size:17px;font-weight:600;letter-spacing:-.01em;line-height:1.4;color:var(--c-gr)}
 /* Один и тот же отступ 24px: подзаголовок → диаграмма → плашка логистики → карточка 01 */
 #phr-root .wnote .dnwrap{margin:24px 0}
 /* условные обозначения под кольцом (07.09): градиентные метки — доход и расходы */
@@ -2064,6 +2070,59 @@ color:var(--c-g-800)}
 
 /* ---------- легенда плашками ---------- */
 #phr-root .lgd{display:flex;flex-direction:column;gap:8px}
+/* ═══ БЛОК 04 «Ваш доход за месяц» (REPORT-B030, 08.09, слово владельца):
+   кольцевая 3D-диаграмма по центру, вокруг — четыре выносные плашки по
+   углам. Механика выносок взята целиком из блока «Потенциал вашей
+   камеры»: точка на диаграмме зафиксирована, второй конец линии
+   закреплён за плашкой и следует за ней при перетаскивании.
+   Секторы — четыре контрастных цвета, не оттенки одного. */
+#phr-root .monfig{position:relative;margin:26px 12px 30px;min-height:620px}
+#phr-root .mon-dn{display:flex;justify-content:center;align-items:center;
+padding:132px 0 128px}
+#phr-root .mon-dn .dn.big{max-width:300px;width:100%}
+/* Объём: мягкая тень-подушка под кольцом. Диск не рисуем — отверстие
+   кольца должно оставаться прозрачным. */
+#phr-root .mon-dn .dn.big:before{content:"";position:absolute;
+left:50%;top:52%;width:96%;height:96%;transform:translate(-50%,-50%);
+border-radius:50%;pointer-events:none;z-index:-1;
+box-shadow:0 18px 38px rgba(11,61,23,.26),0 4px 12px rgba(11,61,23,.14)}
+#phr-root .mon-dn .dn.big svg{position:relative;filter:saturate(105%)}
+#phr-root .monfig-svg{position:absolute;inset:0;width:100%;height:100%;
+overflow:visible;pointer-events:none}
+/* Цвет плашки = цвет её сектора. Четыре разных тона палитры отчёта. */
+#phr-root .cam-chip.mon-1{--cc-t:#21A038;--cc-b:rgba(33,160,56,.45)}
+#phr-root .cam-chip.mon-2{--cc-t:#3B82F6;--cc-b:rgba(59,130,246,.45)}
+#phr-root .cam-chip.mon-3{--cc-t:#C4551F;--cc-b:rgba(196,85,31,.45)}
+#phr-root .cam-chip.mon-4{--cc-t:#7C3AED;--cc-b:rgba(124,58,237,.45)}
+/* Позиции по четырём углам поля */
+#phr-root .monfig .cam-chip.p-tl{left:0;top:0;width:25%;min-width:178px}
+#phr-root .monfig .cam-chip.p-tr{right:0;top:0;width:25%;min-width:178px}
+#phr-root .monfig .cam-chip.p-bl{left:0;bottom:0;width:25%;min-width:178px}
+#phr-root .monfig .cam-chip.p-br{right:0;bottom:0;width:25%;min-width:178px}
+/* Перетаскивание — те же правила, что у камеры и «Инвестиций» */
+@media(min-width:721px){
+#phr-root .monfig .cam-chip{cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none}
+#phr-root .monfig .cam-chip.dragging{cursor:grabbing;z-index:20;
+box-shadow:0 16px 40px rgba(16,24,40,.26)}
+#phr-root .monfig .cam-chip .cc-drag{position:absolute;top:8px;right:9px;
+width:15px;height:15px;opacity:.35;color:var(--c-ink2);pointer-events:none}
+}
+@media(max-width:720px){
+  /* Узкий экран: сетка 2×2 под кольцом, коннекторы скрыты,
+     перетаскивание отключено — как в блоке камеры. */
+  #phr-root .monfig{min-height:0;margin:20px 0 6px;
+  display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  #phr-root .monfig-svg{display:none}
+  #phr-root .monfig .cam-chip .cc-drag{display:none}
+  #phr-root .mon-dn{grid-column:1/-1;padding:0 0 20px}
+  #phr-root .monfig .cam-chip{position:relative!important;width:auto!important;
+  left:auto!important;right:auto!important;top:auto!important;bottom:auto!important;
+  transform:none!important;cursor:default!important;z-index:auto!important;
+  min-width:0!important}
+}
+}
+}
+}
 #phr-root .lggrp{font-size:12px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;
 color:var(--c-gr2);margin:20px 0 4px}
 #phr-root .lggrp:first-child{margin-top:0}
@@ -2883,7 +2942,7 @@ html,body{background:#fff!important;width:auto!important;min-width:0!important}
 #phr-root .wp{max-width:none!important;margin:0!important}
 #phr-root .card,#phr-root .hwrap,#phr-root .wnote,#phr-root .logi{box-shadow:none!important;border:1px solid var(--c-ln)!important}
 #phr-root .card{break-inside:auto!important;page-break-inside:auto!important}
-#phr-root #card01,#phr-root #card01e,#phr-root #card01r,#phr-root #накопления,#phr-root #card02,#phr-root #card04,#phr-root #card05,#phr-root #card06,#phr-root #card07,#phr-root #card09,#phr-root #card10,#phr-root #спрдет{break-before:page;page-break-before:always}
+#phr-root #card01,#phr-root #card01e,#phr-root #card01r,#phr-root #card01m,#phr-root #накопления,#phr-root #card02,#phr-root #card04,#phr-root #card05,#phr-root #card06,#phr-root #card07,#phr-root #card09,#phr-root #card10,#phr-root #спрдет{break-before:page;page-break-before:always}
 #phr-root svg{max-width:100%}
 body.print-main #phr-root #спрдет>.пункт[data-верх]:first-child{display:none!important}
 body.print-glossary #phr-root .wp>*:not(#спрдет),body.print-details #phr-root .wp>*:not(#спрдет){display:none!important}
@@ -3358,6 +3417,24 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 <div class="dnsum" id="dnSum"></div>
 <div class="lgd" id="lg1"></div>
 </div>
+<!-- Уведомление «Неэффективное рабочее время» (REPORT-B027) — после блока 03 (слово владельца 08.09) -->
+<div class="logi" data-block-id="REPORT-B027" data-block-name="Неэффективное рабочее время">
+<div class="logii" aria-hidden="true">
+<!-- 08.09 (слово владельца): подложка-кружок убрана — оставлена только
+     сама иконка. Циферблат увеличен на освободившееся поле. -->
+<svg viewBox="0 0 64 64">
+  <circle cx="32" cy="32" r="26" fill="none" stroke="var(--c-gr3)" stroke-width="5"/>
+  <g fill="var(--c-gr2)">
+    <rect x="23.5" y="20" width="6.5" height="24" rx="2.8"/>
+    <rect x="34" y="20" width="6.5" height="24" rx="2.8"/>
+  </g>
+</svg>
+</div>
+<div class="logit">
+<b>Неэффективное рабочее время</b>
+<span>Часть рабочего дня, которая уходит на перерывы, личные потребности, отдых, подготовку и обслуживание рабочего места и другие отвлечения, не связанные напрямую с оплачиваемой работой. Это естественная часть организации труда, и при нормировании нагрузки она учитывается всегда. В расчёте это <b>1 из 8 часов</b> рабочего дня — <b><i id="паузыНед">5 часов</i> в неделю</b>. Клиент не оплачивает этот час отдельно, но он заложен в ставку и входит в ваш доход.<em class="mblink"><a class="спр" href="#спр-35">Смотреть пункт 35 справочника</a></em></span>
+</div>
+</div>
 <div class="card dcard" id="card01e" data-block-id="REPORT-B025" data-block-name="Ваши расходы"><div class="bn">02</div>
 <div class="dnsum exp" id="dnExp"></div>
 <div class="lgd" id="lg2"></div>
@@ -3382,39 +3459,75 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 </div>
 <div class="logit">
 <b data-t="rlg_01">Логистика в расчёт не входит</b>
-<span data-t="rlg_02">В соответствии с базовыми условиями труда ТК РФ время и расходы на дорогу до места работы относятся к личным расходам работника и не включаются в расчёт. <b>Совет от Счётикс:</b> определите зону, в пределах которой вы работаете по базовой стоимости, а за её пределами добавляйте к смете стоимость логистики в обе стороны и время в пути. <b>Час в пути — это тоже рабочий час.</b></span>
+<span data-t="rlg_02">В соответствии с базовыми условиями труда ТК РФ время и расходы на дорогу до места работы относятся к личным расходам работника и не включаются в расчёт. <b>Совет от Счётикс:</b> определите зону, в пределах которой вы работаете по базовой стоимости, а за её пределами добавляйте к смете стоимость логистики в обе стороны и время в пути.</span>
 </div>
 </div>
 <div class="card dcard" id="card01r" data-block-id="REPORT-B026" data-block-name="Отложите в резерв"><div class="bn">03</div>
 <div class="dnsum res" id="dnRes"></div>
 <div class="lgd" id="lg3"></div>
 </div>
-<!-- Уведомление «Неэффективное рабочее время» (REPORT-B027) — после блока 03 (слово владельца 08.09) -->
-<div class="logi" data-block-id="REPORT-B027" data-block-name="Неэффективное рабочее время">
+<!-- Уведомление «Прибыль предпринимателя» (REPORT-B029) — после блока 03
+     (слово владельца 08.09). Стилистика — строго по образцу B006. -->
+<div class="logi" data-block-id="REPORT-B029" data-block-name="Прибыль предпринимателя">
 <div class="logii" aria-hidden="true">
 <svg viewBox="0 0 64 64">
   <circle cx="32" cy="32" r="29" fill="var(--c-ln2)"/>
-  <circle cx="32" cy="32" r="19" fill="none" stroke="var(--c-gr3)" stroke-width="4"/>
-  <g fill="var(--c-gr2)">
-    <rect x="25" y="23" width="5" height="18" rx="2.2"/>
-    <rect x="34" y="23" width="5" height="18" rx="2.2"/>
+  <g fill="var(--c-gr3)">
+    <path d="M20 27h24a3 3 0 0 1 3 3v14a3 3 0 0 1-3 3H20a3 3 0 0 1-3-3V30a3 3 0 0 1 3-3z"/>
   </g>
+  <g fill="var(--c-gr2)">
+    <path d="M26 27v-3.5a3.5 3.5 0 0 1 3.5-3.5h5a3.5 3.5 0 0 1 3.5 3.5V27h-4v-3h-4v3z"/>
+    <rect x="28.8" y="31.5" width="6.4" height="15" rx="3.2"/>
+  </g>
+  <path d="M13 51L51 13" stroke="var(--c-r-500)" stroke-width="5.5"
+        stroke-linecap="round"/>
 </svg>
 </div>
 <div class="logit">
-<b>Что такое неэффективное рабочее время</b>
-<span><b>Неэффективное рабочее время</b> — часть рабочего дня, которая уходит на перерывы, личные потребности, отдых, подготовку и обслуживание рабочего места и другие отвлечения, не связанные напрямую с оплачиваемой работой. Это естественная часть организации труда, и при нормировании нагрузки она учитывается всегда. В расчёте это <b>1 из 8 часов</b> рабочего дня — <b><i id="паузыНед">5 часов</i> в неделю</b>. Клиент не оплачивает этот час отдельно, но он заложен в ставку и входит в ваш доход.<em class="mblink"><a class="спр" href="#спр-35">Смотреть пункт 35 справочника</a></em></span>
+<b data-t="rpp_01">Прибыль предпринимателя в расчёт не заложена</b>
+<span data-t="rpp_02">Как предприниматель вы не зарабатываете ничего: за принятие рисков и организацию процессов вознаграждения в этой схеме нет — даже несмотря на то, что процессы эти ваши собственные. Оплата труда фотографа — это фонд оплаты труда, а не доход компании. Резервы предпринимательской прибыли не заложены, схема посчитана в ноль. <b>Совет от Счётикс:</b> решите отдельно, какую прибыль как владелец дела вы хотите получать сверх оплаты своего труда.<em class="mblink"><a class="спр" href="#спр-99">Смотреть пункт 99 справочника</a></em></span>
 </div>
+</div>
+<!-- ═══ СКОЛЬКО ВЫ ЗАРАБАТЫВАЕТЕ В МЕСЯЦ (REPORT-B030, 08.09, слово
+     владельца) — тот же состав ролей, что в блоке 01, но пересчитанный
+     на месяц. Доходные секторы покрывают 11 месяцев трат, поэтому
+     деление на 11 даёт ровно Ny/12 — желаемый доход на руки за месяц. -->
+<div class="card" id="card01m" data-block-id="REPORT-B030" data-block-name="Сколько вы зарабатываете в месяц"><div class="bn">04</div>
+<h2>Ваш доход за месяц</h2>
+<p class="hint">Сколько вы зарабатываете каждый месяц по направлениям своей работы</p>
+
+<!-- Кольцо — то же, что в блоке 01 (функция donut). Секторы окрашены
+     четырьмя разными цветами фирменной палитры: четыре оттенка одного
+     зелёного сливались и диаграмма не читалась (слово владельца 08.09).
+     Легенда — строгий столбец справа, как в остальных блоках отчёта. -->
+<div class="monfig" id="monFig">
+<svg class="monfig-svg" viewBox="0 0 1200 860" aria-hidden="true" fill="none">
+<polyline points="190,150 190,215 505,330" stroke="#21A038" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
+<polyline points="1010,150 1010,215 695,330" stroke="#3B82F6" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
+<polyline points="190,710 190,645 505,530" stroke="#C4551F" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
+<polyline points="1010,710 1010,645 695,530" stroke="#7C3AED" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
+<circle cx="505" cy="330" r="11" fill="#21A038" stroke="var(--c-white)" stroke-width="4"/>
+<circle cx="695" cy="330" r="11" fill="#3B82F6" stroke="var(--c-white)" stroke-width="4"/>
+<circle cx="505" cy="530" r="11" fill="#C4551F" stroke="var(--c-white)" stroke-width="4"/>
+<circle cx="695" cy="530" r="11" fill="#7C3AED" stroke="var(--c-white)" stroke-width="4"/>
+</svg>
+<div class="mon-dn"><div class="dn big" id="dnMon"></div></div>
+<div class="cam-chip mon-1 p-tl" id="monC0"></div>
+<div class="cam-chip mon-2 p-tr" id="monC1"></div>
+<div class="cam-chip mon-3 p-bl" id="monC2"></div>
+<div class="cam-chip mon-4 p-br" id="monC3"></div>
+</div>
+<p class="note" id="pieNote"></p>
 </div>
 <!-- ═══ ЧТО НАКОПИТСЯ ПРИ ЭТОЙ СТАВКЕ (REPORT-B028, 07.09) — резервы и
      амортизация как накопления: отпуск, камера, вся техника, развитие. -->
-<div class="card" id="накопления" data-block-id="REPORT-B028" data-block-name="Что накопится при этой ставке"><div class="bn">04</div>
+<div class="card" id="накопления" data-block-id="REPORT-B028" data-block-name="Что накопится при этой ставке"><div class="bn">05</div>
 <h2>Что накопится при этой ставке</h2>
 <p class="hint">Резервы и амортизация — не расходы, а ваши накопления. Вот что соберётся, если держать эту ставку и загрузку</p>
 <div class="cnd nak" id="накопПлашки"></div>
 <p class="note" id="накопПрим"></p>
 </div>
-<div class="card" id="card02" data-block-id="REPORT-B008" data-block-name="Как распределяется время"><div class="bn">05</div>
+<div class="card" id="card02" data-block-id="REPORT-B008" data-block-name="Как распределяется время"><div class="bn">06</div>
 <h2 data-t="rh2_09">Как распределяется ваше время</h2>
 <p class="hint" data-t="rhi_09">Реальная структура рабочей недели на основе введённых данных</p>
 <div class="wk" id="wk"></div>
@@ -3429,7 +3542,7 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 </div>
 <div class="wkbox"><div class="wkbox-h">Часы по видам работ за неделю</div><div class="wkbars" id="wkchart"></div></div>
 </div>
-<div class="card" id="card04" data-block-id="REPORT-B012" data-block-name="Три сценария работы"><div class="bn">06</div>
+<div class="card" id="card04" data-block-id="REPORT-B012" data-block-name="Три сценария работы"><div class="bn">07</div>
 <h2 data-t="rh2_02">Три сценария вашей работы</h2>
 <p class="hint" data-t="rhi_02">Одна и та же загрузка при разной ставке часа. Разница только в цене — и в том, что остаётся вам</p>
 <div class="three" id="dns"></div>
@@ -3441,7 +3554,7 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 <div class="note warn" data-t="rlg_01"><b>Логистика в расчёт не входит.</b> Дорога, бензин, такси и парковка по закону ложатся на исполнителя — значит, при ставке в ноль вы работаете в минус на сумму логистики.</div>
 </div>
 <div class="thxbar" data-block-id="REPORT-B010" data-block-name="Поблагодарить проект — середина"><a class="savebtn" href="#thanks" data-thx="report-mid"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0l-1 1-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1 7.8 7.8 7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8Z" stroke="currentColor" stroke-width="2"/></svg><span data-t="rthx_01">Поблагодарить проект</span></a></div>
-<div class="card" id="card05" data-block-id="REPORT-B013" data-block-name="Больше заказов"><div class="bn">07</div>
+<div class="card" id="card05" data-block-id="REPORT-B013" data-block-name="Больше заказов"><div class="bn">08</div>
 <h2 data-t="rh2_11">А если просто брать больше заказов?</h2>
 <p class="hint" data-t="rhi_11">Проверим: можно ли выйти на желаемый доход, не поднимая цену для заказчика, — только за счёт объёма работ</p>
 <div class="scn" id="scn"></div>
@@ -3497,7 +3610,7 @@ border:2px solid var(--c-white);transform:translateX(-50%)}
 #phr-root .inv-plq .ip-v{font-size:clamp(22px,3vw,30px);font-weight:700;letter-spacing:-.02em;line-height:1.25;margin:0}
 #phr-root .inv-plq .ip-v b{font-weight:800;color:var(--c-g-700);white-space:nowrap}
 </style>
-<div class="bn">08</div>
+<div class="bn">09</div>
 
 <h2>Вы уже вложили в своё дело:</h2>
 <p class="hint">Даже если вы работаете сами на себя — это бизнес. Вы уже вложили в него настоящие время и деньги, и эти вложения <b>должны вернуться к вам в виде реального финансового или профессионального актива.</b></p>
@@ -3541,7 +3654,7 @@ border:2px solid var(--c-white);transform:translateX(-50%)}
 <div class="ip-v">Вложения окупятся за <b id="инвОкуп">—</b></div>
 </div>
 </div>
-<div class="card" id="card06" data-block-id="REPORT-B009" data-block-name="Скидка"><div class="bn">09</div>
+<div class="card" id="card06" data-block-id="REPORT-B009" data-block-name="Скидка"><div class="bn">10</div>
 <div class="saletag" data-t="rh2_21">Скидка</div>
 <h2 class="big-h" data-t="rh2_18">Как формировать скидку, чтобы не уйти в минус</h2>
 <div class="dst" id="dst"></div>
@@ -3612,7 +3725,7 @@ font-variant-numeric:tabular-nums}
 #phr-root .rate-plq .rp-v small{font-size:1em;font-weight:inherit;margin-left:2px;opacity:1;letter-spacing:inherit}
 #phr-root .rate-plq .rp-d{font-size:13px;line-height:1.55;opacity:.92;max-width:640px}
 </style>
-<div class="bn">10</div>
+<div class="bn">11</div>
 
 <h2>Как сформировать прайс на доп. услуги</h2>
 <p class="hint"><b>Базовая ставка — стоимость вашего времени для клиента.</b> В эту ставку уже заложены все сопутствующие расходы и ваш желаемый доход на руки, поэтому её можно смело использовать для любых задач, которые измеряются во времени.</p>
@@ -3651,7 +3764,7 @@ font-variant-numeric:tabular-nums}
 
 
 </div><!-- /card прайс допуслуг -->
-<div class="card" id="card07" data-block-id="REPORT-B011" data-block-name="Налоговый режим"><div class="bn">11</div>
+<div class="card" id="card07" data-block-id="REPORT-B011" data-block-name="Налоговый режим"><div class="bn">12</div>
 <h2 class="big-h" data-t="rh2_12">Ваш идеальный налоговый режим</h2>
 <p class="hint ctr" data-t="rhi_12">Посчитали все режимы на ваших цифрах и показали самый выгодный</p>
 <div class="bestbox" id="bestBox"></div>
@@ -3761,7 +3874,7 @@ opacity:.35;color:var(--c-ink2);pointer-events:none}
 }
 @media(max-width:720px){#phr-root .camfig .cam-chip .cc-drag,#phr-root .invfig .cam-chip .cc-drag{display:none}}
 </style>
-<div class="bn">12</div>
+<div class="bn">13</div>
 
 <h2>Потенциал вашей камеры</h2>
 <p class="hint">Итоговые финансовые возможности и окупаемость техники за весь период эксплуатации с учётом текущей интенсивности работы и выбранной ставки.</p>
@@ -3880,7 +3993,7 @@ font-size:13px;line-height:1.6;color:var(--c-white);padding:14px 22px 16px}
 #phr-root .kadr .kd a.refl{text-decoration:underline dotted rgba(255,255,255,.65);
 text-underline-offset:3px}
 </style>
-<div class="bn">13</div>
+<div class="bn">14</div>
 
 <h2>Сколько стоит ваш кадр ДЛЯ ВАС?</h2>
 <p class="hint">Каждый ваш снимок имеет вполне реальную цену в рублях. Вы платите за него из собственного кармана, как только нажали на спуск затвора.</p>
@@ -3911,12 +4024,12 @@ text-underline-offset:3px}
 
 </div><!-- /card стоимость кадра -->
 
-<div class="card" id="card09" data-thx-авто data-block-id="REPORT-B014" data-block-name="Четыре цифры"><div class="bn">14</div>
+<div class="card" id="card09" data-thx-авто data-block-id="REPORT-B014" data-block-name="Четыре цифры"><div class="bn">15</div>
 <h2 class="big-h" data-t="rh2_20">Четыре цифры,<br>которые стоит запомнить</h2>
 <p class="hint ctr" data-t="rhi_20">Пригодятся в любом разговоре о деньгах</p>
 <div class="fg" id="factGrid"></div>
 </div>
-<div class="card" id="card10" data-block-id="REPORT-B015" data-block-name="Объяснение стоимости клиенту"><div class="bn">15</div>
+<div class="card" id="card10" data-block-id="REPORT-B015" data-block-name="Объяснение стоимости клиенту"><div class="bn">16</div>
 <h2 data-t="rh2_13">Объясняйте клиенту, из чего складывается стоимость</h2>
 <p class="hint" data-t="rpm_16">Когда за ценой виден расчёт, торг сменяется пониманием. Это не мнение — это измеренный эффект</p>
 
@@ -4081,6 +4194,22 @@ var f0s=function(n){
   return (v<0?'\u2212':'')+Math.abs(v).toLocaleString('ru-RU')+' \u20BD';
 };
 var f1=function(n){return n.toLocaleString('ru-RU',{minimumFractionDigits:1,maximumFractionDigits:1})};
+/* 08.09 (слово владельца): время в графическом выводе показываем часами
+   и минутами — «за 3 часа 5 минут», а не «за 3,0 ч». Дробные расчётные
+   значения остаются только в подробной детализации.
+   Округляем до минуты; 0 часов и 0 минут не печатаем. */
+var чм=function(ч){
+  var всего=Math.round(ч*60), h=Math.floor(всего/60), m=всего%60;
+  function скл(n,f){var d=n%10,dd=n%100;
+    return n+' '+(d===1&&dd!==11?f[0]:(d>=2&&d<=4&&(dd<12||dd>14)?f[1]:f[2]));}
+  var ч_сл=['\u0447\u0430\u0441\u0430','\u0447\u0430\u0441\u0430','\u0447\u0430\u0441\u043e\u0432'];
+  ч_сл[0]='\u0447\u0430\u0441';
+  /* винительный падеж: «за 1 минуту», «за 2 минуты», «за 5 минут» */
+  var м_сл=['\u043c\u0438\u043d\u0443\u0442\u0443','\u043c\u0438\u043d\u0443\u0442\u044b','\u043c\u0438\u043d\u0443\u0442'];
+  if(h&&m)return скл(h,ч_сл)+' '+скл(m,м_сл);
+  if(h)return скл(h,ч_сл);
+  return скл(m,м_сл);
+};
 /* Округление ТОЛЬКО для крупной цифры в шапке — чтобы час воспринимался цельно.
    Точное значение показывается рядом в скобках. Больше нигде не применяется:
    отчёт считает юнит-экономику специалиста, а не формирует прайс. */
@@ -4103,7 +4232,7 @@ var hword=function(n){
 var CO=['#0B6B22','#127528','#158026','#1B9331','#21A038','#C5D0C8','#C43D51','#D6563A','#E07038','#E8832A','#F09A20','#3DAA4E','#6FD183','#A9DDB8','#CC4A45'];
 /* Термин справочника для каждой строки легенды блока 01.
    Порядок совпадает с LB. */
-var REFLB=['Съёмка','Постпродакшн','Проектная работа с клиентами','Реклама','Учёт','Неэффективное рабочее время','Съёмочное оборудование','Реклама','Содержание рабочего места','Налоги','Эквайринг','Фонд развития','Фонд программы лояльности','Резерв на отпуск','Обучение'];
+var REFLB=['Съёмка','Постпродакшн','Проектная работа с клиентами','Реклама','Учёт','Неэффективное рабочее время','Съёмочное оборудование','Реклама','Содержание рабочего места','Налоги','Эквайринг','Фонд развития','Фонд программы лояльности','Резерв на отпуск','Обучение','Резерв времени на простой и форс-мажоры'];
 /* Подписи подсказки на секторах кольца (07.09, слово владельца): коротко,
    без дублирования «часа съёмки» — он написан в центре кольца. */
 var TIPLB=[['\u0417\u0430 \u0441\u044a\u0451\u043c\u043a\u0443','\u0434\u043e\u0445\u043e\u0434'],
@@ -4135,7 +4264,8 @@ var LB=['\u0421\u044a\u0451\u043c\u043a\u0430 \u2014 \u043a\u0430\u043a \u0444\u
 '\u041e\u0442\u043b\u043e\u0436\u0438\u0442\u0435 \u0440\u0435\u0437\u0435\u0440\u0432 \u043d\u0430 \u0440\u0430\u0437\u0432\u0438\u0442\u0438\u0435',
 '\u041e\u0442\u043b\u043e\u0436\u0438\u0442\u0435 \u0440\u0435\u0437\u0435\u0440\u0432 \u043d\u0430 \u0441\u043a\u0438\u0434\u043a\u0443',
 '\u041e\u0442\u043b\u043e\u0436\u0438\u0442\u0435 \u0440\u0435\u0437\u0435\u0440\u0432 \u043d\u0430 \u043e\u0442\u043f\u0443\u0441\u043a',
-'\u0412\u0435\u0440\u043d\u0451\u0442\u0435 \u0432\u043b\u043e\u0436\u0435\u043d\u0438\u044f \u0432 \u043e\u0431\u0443\u0447\u0435\u043d\u0438\u0435'];
+'\u0412\u0435\u0440\u043d\u0451\u0442\u0435 \u0432\u043b\u043e\u0436\u0435\u043d\u0438\u044f \u0432 \u043e\u0431\u0443\u0447\u0435\u043d\u0438\u0435',
+'\u041a\u043e\u043c\u043f\u0435\u043d\u0441\u0430\u0446\u0438\u044f \u0437\u0430 \u043f\u0440\u043e\u0441\u0442\u043e\u0439 \u0438 \u0444\u043e\u0440\u0441-\u043c\u0430\u0436\u043e\u0440\u044b'];
 
 /* ДЕМО-НАБОР. Не выдумка: это расчёт по значениям анкеты по умолчанию,
    пересобирается скриптом части/демо.py. Показывается только по ?demo=1 —
@@ -4201,7 +4331,11 @@ function parts(x){
       dE=x.depEdu||0,   dW=x.depSite||0,   dR=x.depWs||0;
   var vA=x.varAds||0, vS=x.varSoft||0, vB=x.varBank||0,
       vR=x.varRent||0, vC=x.varAcc||0;
-  return [hr*x.sh,hr*x.post,hr*x.clT,hr*x.promo,hr*x.accT,hr*(x.fmT+x.idle),
+  /* 08.09 (слово владельца): резерв времени на простой и форс-мажоры
+     выделен из сектора 5 в собственный сектор 15. Раньше fmT молча
+     вливался в «Неэффективное рабочее время», и при включённой галочке
+     строка росла без объяснения. Теперь 5 — только idle, 15 — только fmT. */
+  return [hr*x.sh,hr*x.post,hr*x.clT,hr*x.promo,hr*x.accT,hr*(x.idle||0),
     dS+dO+dP+dR, /* обустройство рабочего места — здесь, с прочей амортизацией (07.09) */
     vA+dW,
     vR+vB+vC+vS,
@@ -4212,7 +4346,10 @@ function parts(x){
     vac,
     /* 14 — обучение отдельной статьёй (слово владельца 07.09): раньше
        пряталось в «текущих счетах» и составляло до половины сектора */
-    dE];
+    dE,
+    /* 15 — резерв времени на простой и форс-мажоры (calc.html, блок 18).
+       Ноль, когда галочка fm_on выключена. */
+    hr*(x.fmT||0)];
 }
 function visIdx(x){
   var P=parts(x), v=[0,1,2,3];
@@ -4222,6 +4359,9 @@ function visIdx(x){
      вызова donut, чтобы не трогать легенды под кольцом. */
   v.push(11); v.push(12); v.push(13);
   v.push(5);
+  /* 15 показываем всегда — как резервы 11–13: нулевая строка сообщает,
+     что резерв не заложен, и ведёт в анкету. */
+  v.push(15);
   [6,14,7,8,9,10].forEach(function(i){ if(P[i]>0.5) v.push(i) });
   return v;
 }
@@ -4291,6 +4431,10 @@ function donut(vals,cols,cx,big,idx,labels){
   }
   /* Ширина не жёсткая: viewBox держит пропорции, а размер задаёт CSS.
      Иначе кольцо 190px не давало трём плашкам встать в ряд ниже 820px. */
+  /* 08.09: id градиентов обязаны быть уникальны в пределах документа —
+     в отчёте теперь два кольца (блоки 01 и 04), и при совпадении id
+     второе кольцо красится градиентами первого. */
+  var ПРФ='dng'+(donut._g=(donut._g||0)+1)+'_';
   var s='<svg width="'+SZ+'" height="'+SZ+'" viewBox="0 0 '+SZ+' '+SZ+'" '+
         'preserveAspectRatio="xMidYMid meet" style="max-width:100%;height:auto">';
   if(big){
@@ -4303,7 +4447,7 @@ function donut(vals,cols,cx,big,idx,labels){
          Раньше направление зависело от положения сектора, и правые
          секторы темнели справа, левые — слева. */
       var r0=(R0/R1).toFixed(3), rm=((R0/R1+1)/2).toFixed(3);
-      s+='<radialGradient id="dng'+k+'" gradientUnits="userSpaceOnUse" cx="'+C+'" cy="'+C+'" r="'+R1+'">'+
+      s+='<radialGradient id="'+ПРФ+k+'" gradientUnits="userSpaceOnUse" cx="'+C+'" cy="'+C+'" r="'+R1+'">'+
         '<stop offset="'+r0+'" stop-color="'+tint(c,-0.16)+'"/>'+
         '<stop offset="'+rm+'" stop-color="'+c+'"/>'+
         '<stop offset="1" stop-color="'+tint(c,0.22)+'"/>'+
@@ -4357,7 +4501,7 @@ function donut(vals,cols,cx,big,idx,labels){
        '<animate class="segan" attributeName="stroke-dasharray" '+
        'from="0 '+(дл+1).toFixed(2)+'" to="'+дл.toFixed(2)+' 0" '+
        'dur="0.9s" begin="indefinite" fill="freeze"/></path></mask>';
-    var fill= (big&&cols[k]&&cols[k].charAt(0)==='#') ? 'url(#dng'+k+')' : cols[k];
+    var fill= (big&&cols[k]&&cols[k].charAt(0)==='#') ? 'url(#'+ПРФ+k+')' : cols[k];
     s+='<path class="seg'+(isFx?' fixed':'')+'" d="'+d+'" fill="'+fill+'" fill-rule="evenodd"'+
        ' mask="url(#'+мид+')"'+
        (nm?' data-nm="'+nm.replace(/"/g,'&quot;')+'" data-pc="'+pct.toFixed(pct<1?1:0)+'" data-k="'+k+'"'+
@@ -4691,7 +4835,7 @@ var REFD=[
      только видимым; нулевые резервы промежутка не занимают. Те же цвета
      получают строки легенды блоков 01 и 03 (через CO). */
   (function(){
-    var seq=VI.filter(function(i){return (i<=5||(i>=11&&i<=13))&&P[i]>0});
+    var seq=VI.filter(function(i){return (i<=5||i===15||(i>=11&&i<=13))&&P[i]>0});
     var ST=[[0,'#0B6B22'],[0.42,'#21A038'],[0.78,'#A9DDB8'],[1,'#C5D0C8']];
     function h2r(h){h=h.slice(1);var n=parseInt(h,16);return [n>>16,(n>>8)&255,n&255]}
     function mix(a,b,t){var A=h2r(a),B=h2r(b);return '#'+A.map(function(v,i){v=Math.round(v+(B[i]-v)*t);return (v<16?'0':'')+v.toString(16)}).join('')}
@@ -4702,9 +4846,22 @@ var REFD=[
     ST=[[0,'#C43D51'],[0.5,'#E07038'],[1,'#F09A20']];
     var nc=seqC.length; seqC.forEach(function(i,k){CO[i]=at(nc>1?k/(nc-1):0)});
   })();
-  donut.RUB=P.map(function(v){return f0(v/d.sh)}); donut.TIP=TIPLB;
-  $('dn1').innerHTML=donut(P,CO,f0(rate),true,VI,LB);
-  donut.RUB=null; donut.TIP=null;
+  /* 08.09 (слово владельца): НА КОЛЬЦЕ секторы 5 и 15 объединены в один —
+     «Неэффективное рабочее время и форс-мажоры». Два тонких ломтика рядом
+     читались бы как дробление одного смысла. В ЛИНЕЙНОЙ легенде ниже они
+     остаются раздельными: там нужна отдельная строка-уведомление о
+     незаложенном резерве. Объединение живёт только в этих переменных —
+     P, LB и VI ниже по коду не тронуты. */
+  (function(){
+    var Pк=P.slice(), LBк=LB.slice(), TIPк=TIPLB.slice(), VIк=VI.slice();
+    Pк[5]=(P[5]||0)+(P[15]||0);
+    LBк[5]='\u041d\u0435\u044d\u0444\u0444\u0435\u043a\u0442\u0438\u0432\u043d\u043e\u0435 \u0440\u0430\u0431\u043e\u0447\u0435\u0435 \u0432\u0440\u0435\u043c\u044f \u0438 \u0444\u043e\u0440\u0441-\u043c\u0430\u0436\u043e\u0440\u044b';
+    TIPк[5]=['\u041d\u0430 \u043d\u0435\u044d\u0444\u0444\u0435\u043a\u0442\u0438\u0432\u043d\u043e\u0435 \u0432\u0440\u0435\u043c\u044f \u0438 \u0444\u043e\u0440\u0441-\u043c\u0430\u0436\u043e\u0440\u044b','\u0440\u0435\u0437\u0435\u0440\u0432'];
+    VIк=VIк.filter(function(i){return i!==15});
+    donut.RUB=Pк.map(function(v){return f0(v/d.sh)}); donut.TIP=TIPк;
+    $('dn1').innerHTML=donut(Pк,CO,f0(rate),true,VIк,LBк);
+    donut.RUB=null; donut.TIP=null;
+  })();
     var SUB=['\u0447\u0430\u0441\u044b \u0441 \u043a\u0430\u043c\u0435\u0440\u043e\u0439 \u043d\u0430 \u043f\u043b\u043e\u0449\u0430\u0434\u043a\u0435',
    '\u043e\u0442\u0431\u043e\u0440, \u0446\u0432\u0435\u0442, \u0440\u0435\u0442\u0443\u0448\u044c, \u044d\u043a\u0441\u043f\u043e\u0440\u0442',
    '\u043f\u0435\u0440\u0435\u043f\u0438\u0441\u043a\u0430, \u0434\u043e\u0433\u043e\u0432\u043e\u0440, \u043f\u0440\u0435\u0434\u043e\u043f\u043b\u0430\u0442\u0430',
@@ -4725,7 +4882,10 @@ var REFD=[
      У расходных строк времени нет. */
   /* Часы вашей работы, приходящиеся на ОДИН оплаченный час съёмки.
      Сумма по столбцу = 7,7 ч — столько вы работаете ради часа на площадке. */
-  var HRS=[d.sh,d.post,d.clT,d.promo,d.accT,d.fmT+d.idle].map(function(h){return h/d.sh});
+  /* 08.09: сектор 5 — только неэффективное время, 15 — только резерв
+     на форс-мажоры. Часы нормируются на съёмочный час, как и прежде. */
+  var HRS=[d.sh,d.post,d.clT,d.promo,d.accT,d.idle||0].map(function(h){return h/d.sh});
+  HRS[15]=(d.fmT||0)/d.sh;
   /* если параметр не заложен — показываем, чем это обернётся */
   var ZW=[];
   /* Куда ведёт кнопка в предупреждении: якорь поля в анкете
@@ -4733,13 +4893,16 @@ var REFD=[
   var ZWA=[];
   ZWA[11]=['fund_on','\u0417\u0430\u043b\u043e\u0436\u0438\u0442\u044c \u0440\u0435\u0437\u0435\u0440\u0432 \u043d\u0430 \u0440\u0430\u0437\u0432\u0438\u0442\u0438\u0435'];
   ZWA[12]=['disc_on','\u0417\u0430\u043b\u043e\u0436\u0438\u0442\u044c \u0440\u0435\u0437\u0435\u0440\u0432 \u043d\u0430 \u0441\u043a\u0438\u0434\u043a\u0443'];
+  ZWA[15]=['fm_on','\u0417\u0430\u043b\u043e\u0436\u0438\u0442\u044c \u0440\u0435\u0437\u0435\u0440\u0432 \u043d\u0430 \u0444\u043e\u0440\u0441-\u043c\u0430\u0436\u043e\u0440\u044b'];
   ZW[11]='\u0422\u0435\u0445\u043d\u0438\u043a\u0443 \u043f\u0440\u0438\u0434\u0451\u0442\u0441\u044f \u043c\u0435\u043d\u044f\u0442\u044c \u0438\u0437 \u0441\u0432\u043e\u0435\u0433\u043e \u043a\u0430\u0440\u043c\u0430\u043d\u0430 \u0438\u043b\u0438 \u0432 \u043a\u0440\u0435\u0434\u0438\u0442. \u0410\u043c\u043e\u0440\u0442\u0438\u0437\u0430\u0446\u0438\u044f \u043f\u043e\u043a\u0440\u044b\u0432\u0430\u0435\u0442 \u0442\u043e\u043b\u044c\u043a\u043e \u0437\u0430\u043c\u0435\u043d\u0443 \u0442\u043e\u0433\u043e, \u0447\u0442\u043e \u0443\u0436\u0435 \u0435\u0441\u0442\u044c, \u2014 \u043d\u0430 \u043d\u043e\u0432\u043e\u0435 \u0441\u0442\u0435\u043a\u043b\u043e, \u0432\u0442\u043e\u0440\u043e\u0439 \u043a\u043e\u0440\u043f\u0443\u0441 \u0438 \u043e\u0431\u0443\u0447\u0435\u043d\u0438\u0435 \u0434\u0435\u043d\u0435\u0433 \u0432 \u0440\u0430\u0441\u0447\u0451\u0442\u0435 \u043d\u0435\u0442.';
   ZW[12]='\u041b\u044e\u0431\u0430\u044f \u0441\u043a\u0438\u0434\u043a\u0430 \u00ab\u043f\u0440\u043e\u0441\u0442\u043e \u0442\u0430\u043a\u00bb \u0431\u0443\u0434\u0435\u0442 \u0432\u044b\u0447\u0442\u0435\u043d\u0430 \u0438\u0437 \u0432\u0430\u0448\u0435\u0433\u043e \u0434\u043e\u0445\u043e\u0434\u0430. \u041e\u0441\u0442\u0430\u043d\u0435\u0442\u0441\u044f \u0442\u043e\u043b\u044c\u043a\u043e \u0441\u043a\u0438\u0434\u043a\u0430 \u0437\u0430 \u043e\u0431\u044a\u0451\u043c \u2014 \u043e\u043d\u0430 \u043f\u043e\u0441\u0447\u0438\u0442\u0430\u043d\u0430 \u043d\u0438\u0436\u0435 \u0438 \u0431\u0435\u0440\u0451\u0442\u0441\u044f \u0438\u0437 \u043d\u0430\u043a\u043b\u0430\u0434\u043d\u044b\u0445 \u0440\u0430\u0441\u0445\u043e\u0434\u043e\u0432.';
+  ZW[15]='\u041e\u0442\u043c\u0435\u043d\u0430 \u0438\u043b\u0438 \u043f\u0435\u0440\u0435\u043d\u043e\u0441 \u0441\u044a\u0451\u043c\u043a\u0438, \u0431\u043e\u043b\u0435\u0437\u043d\u044c, \u0442\u0435\u0445\u043d\u0438\u043a\u0430 \u0432 \u0440\u0435\u043c\u043e\u043d\u0442\u0435 \u2014 \u044d\u0442\u043e\u0442 \u043f\u0440\u043e\u0441\u0442\u043e\u0439 \u043d\u0438\u0447\u0435\u043c \u043d\u0435 \u043f\u043e\u043a\u0440\u044b\u0442. \u0412\u044b\u043f\u0430\u0432\u0448\u0438\u0435 \u0447\u0430\u0441\u044b \u0432\u044b \u043e\u043f\u043b\u0430\u0442\u0438\u0442\u0435 \u0438\u0437 \u0441\u0432\u043e\u0435\u0433\u043e \u043a\u0430\u0440\u043c\u0430\u043d\u0430: \u0440\u0430\u0441\u0445\u043e\u0434\u044b \u0437\u0430 \u043c\u0435\u0441\u044f\u0446 \u043d\u0438\u043a\u0443\u0434\u0430 \u043d\u0435 \u0434\u0435\u043d\u0443\u0442\u0441\u044f, \u0430 \u0432\u044b\u0440\u0443\u0447\u043a\u0438 \u0437\u0430 \u043d\u0438\u0445 \u043d\u0435 \u0431\u0443\u0434\u0435\u0442.';
   /* З-115 (слово владельца 27.08, ночь): заголовок строки, когда резерв
      не заложен, — «…не заложен», а не «Отложите резерв…». */
   var ZT=[];
   ZT[11]='\u0420\u0435\u0437\u0435\u0440\u0432 \u043d\u0430 \u0440\u0430\u0437\u0432\u0438\u0442\u0438\u0435 \u043d\u0435 \u0437\u0430\u043b\u043e\u0436\u0435\u043d';
   ZT[12]='\u0420\u0435\u0437\u0435\u0440\u0432 \u043d\u0430 \u0441\u043a\u0438\u0434\u043a\u0443 \u043d\u0435 \u0437\u0430\u043b\u043e\u0436\u0435\u043d';
+  ZT[15]='\u0420\u0435\u0437\u0435\u0440\u0432 \u0432\u0440\u0435\u043c\u0435\u043d\u0438 \u043d\u0430 \u0444\u043e\u0440\u0441-\u043c\u0430\u0436\u043e\u0440\u044b \u043d\u0435 \u0437\u0430\u043b\u043e\u0436\u0435\u043d';
   function lgRow(i){
     var w=mx>0?P[i]/mx*100:0, zero=P[i]<0.5;
     var col=RESC[i]||CO[i];
@@ -4756,7 +4919,8 @@ var REFD=[
       return SUB[i]?'<em>'+SUB[i]+'</em>':'';
     })()+'</div></div>'+
     '<div class="lvv"><div class="a">'+(zero?'<span class="zex">!</span>':f0(P[i]/d.sh))+'</div>'+
-    (HRS[i]!==undefined?'<div class="b2">\u0437\u0430 '+f1(HRS[i])+' \u0447</div>':'')+
+    /* у нулевой строки часы не печатаем: «за 0 минут» — шум (08.09) */
+    (HRS[i]!==undefined&&!zero?'<div class="b2">\u0437\u0430 '+чм(HRS[i])+'</div>':'')+
     '</div>'+
     (zero&&ZW[i]?'<div class="note warn lgw">'+ZW[i]+
       /* Кнопка ведёт прямо к нужному полю анкеты — человек может
@@ -4767,7 +4931,7 @@ var REFD=[
   }
   var gProf=VI.filter(function(i){return i<=1});      /* по специальности */
   var gRole=VI.filter(function(i){return i>=2&&i<=4});/* остальные роли   */
-  var gIdle=VI.filter(function(i){return i===5});     /* компенсация      */
+  var gIdle=VI.filter(function(i){return i===5||i===15});/* компенсация + резерв */
   var gCost=VI.filter(function(i){return (i>=6&&i<=10)||i===14}); /* расходы */
   /* Резервы: индексы 11 фонд развития, 12 лояльность, 13 отпуск.
      Отпуск идёт ПЕРВЫМ — он обязательный, остальные два включаются
@@ -4785,14 +4949,16 @@ var REFD=[
   var out='<div class="lggrp">\u0412\u044b \u0437\u0430\u0440\u0430\u0431\u0430\u0442\u044b\u0432\u0430\u0435\u0442\u0435 \u043a\u0430\u043a \u0444\u043e\u0442\u043e\u0433\u0440\u0430\u0444</div>'+
     gProf.map(lgRow).join('');
   if(gRole.length){
-    out+='<div class="lggrp gap">\u0412\u044b \u0437\u0430\u0440\u0430\u0431\u0430\u0442\u044b\u0432\u0430\u0435\u0442\u0435 \u043a\u0430\u043a \u0431\u0438\u0437\u043d\u0435\u0441 \u0446\u0435\u043b\u0438\u043a\u043e\u043c</div>'+
-    '<div class="note sm">\u0412 \u043a\u043e\u043c\u043f\u0430\u043d\u0438\u0438 \u044d\u0442\u0438 \u0440\u043e\u043b\u0438 \u0437\u0430\u043a\u0440\u044b\u0432\u0430\u043b\u0438 \u0431\u044b \u043e\u0442\u0434\u0435\u043b\u044c\u043d\u044b\u0435 \u043b\u044e\u0434\u0438. \u0417\u0434\u0435\u0441\u044c \u2014 \u0432\u044b</div>'+
+    out+='<div class="lggrp gap">\u0417\u0430 \u0432\u044b\u043f\u043e\u043b\u043d\u0435\u043d\u0438\u0435 \u0441\u043e\u043f\u0443\u0442\u0441\u0442\u0432\u0443\u044e\u0449\u0438\u0445 \u0431\u0438\u0437\u043d\u0435\u0441-\u043f\u0440\u043e\u0446\u0435\u0441\u0441\u043e\u0432</div>'+
+    '<div class="note sm">\u0412 \u0448\u0442\u0430\u0442\u0435 \u043a\u043e\u043c\u043f\u0430\u043d\u0438\u0438 \u044d\u0442\u0438 \u0440\u043e\u043b\u0438 \u0440\u0430\u0441\u043f\u0440\u0435\u0434\u0435\u043b\u0435\u043d\u044b \u043c\u0435\u0436\u0434\u0443 \u043f\u0440\u043e\u0444\u0438\u043b\u044c\u043d\u044b\u043c\u0438 \u0441\u043e\u0442\u0440\u0443\u0434\u043d\u0438\u043a\u0430\u043c\u0438. \u0412\u044b \u0432\u044b\u043f\u043e\u043b\u043d\u044f\u0435\u0442\u0435 \u0438\u0445 \u0441\u0430\u043c\u043e\u0441\u0442\u043e\u044f\u0442\u0435\u043b\u044c\u043d\u043e</div>'+
     gRole.map(lgRow).join('');
   }
   if(gIdle.length){
-    out+='<div class="lggrp gap">\u0412\u0430\u043c \u043e\u043f\u043b\u0430\u0447\u0435\u043d\u043e \u043d\u0435\u044d\u0444\u0444\u0435\u043a\u0442\u0438\u0432\u043d\u043e\u0435 \u0440\u0430\u0431\u043e\u0447\u0435\u0435 \u0432\u0440\u0435\u043c\u044f</div>'+
-    gIdle.map(lgRow).join('')+
-    '<div class="note">\u042d\u0442\u0438 \u0447\u0430\u0441\u044b \u043a\u043b\u0438\u0435\u043d\u0442 \u043d\u0435 \u043e\u043f\u043b\u0430\u0447\u0438\u0432\u0430\u0435\u0442 \u043e\u0442\u0434\u0435\u043b\u044c\u043d\u043e, \u043d\u043e \u043e\u043d\u0438 \u0435\u0441\u0442\u044c \u0432\u0441\u0435\u0433\u0434\u0430 \u2014 \u043f\u043e\u044d\u0442\u043e\u043c\u0443 \u0437\u0430\u043b\u043e\u0436\u0435\u043d\u044b \u0432 \u0441\u0442\u0430\u0432\u043a\u0443 \u0438 \u0432\u0445\u043e\u0434\u044f\u0442 \u0432 \u0432\u0430\u0448 \u0434\u043e\u0445\u043e\u0434.</div>';
+    /* 08.09 (слово владельца): описание — под заголовком группы,
+       единый формат со всеми остальными группами легенды. */
+    out+='<div class="lggrp gap">\u041a\u043e\u043c\u043f\u0435\u043d\u0441\u0430\u0446\u0438\u044f \u043d\u0435\u043f\u0440\u043e\u0434\u0443\u043a\u0442\u0438\u0432\u043d\u043e\u0433\u043e \u0440\u0430\u0431\u043e\u0447\u0435\u0433\u043e \u0432\u0440\u0435\u043c\u0435\u043d\u0438</div>'+
+    '<div class="note sm">\u0420\u0435\u0433\u043b\u0430\u043c\u0435\u043d\u0442\u0438\u0440\u043e\u0432\u0430\u043d\u043d\u044b\u0435 \u0442\u0435\u0445\u043d\u043e\u043b\u043e\u0433\u0438\u0447\u0435\u0441\u043a\u0438\u0435 \u043f\u0430\u0443\u0437\u044b, \u043f\u0435\u0440\u0435\u0440\u044b\u0432\u044b \u043d\u0430 \u0432\u043e\u0441\u0441\u0442\u0430\u043d\u043e\u0432\u043b\u0435\u043d\u0438\u0435 \u0438 \u043b\u0438\u0447\u043d\u044b\u0435 \u043d\u0443\u0436\u0434\u044b, \u043a\u043e\u0442\u043e\u0440\u044b\u0435 \u043e\u0431\u044a\u0435\u043a\u0442\u0438\u0432\u043d\u043e \u0432\u0445\u043e\u0434\u044f\u0442 \u0432 \u0440\u0430\u0431\u043e\u0447\u0438\u0439 \u0434\u0435\u043d\u044c, \u0430 \u0442\u0430\u043a\u0436\u0435 \u0444\u043e\u0440\u0441-\u043c\u0430\u0436\u043e\u0440\u044b \u0438 \u043d\u0435\u043f\u0440\u0435\u0434\u0432\u0438\u0434\u0435\u043d\u043d\u044b\u0435 \u043e\u0431\u0441\u0442\u043e\u044f\u0442\u0435\u043b\u044c\u0441\u0442\u0432\u0430</div>'+
+    gIdle.map(lgRow).join('');
   }
 
   $('lg1').innerHTML=out;
@@ -4808,12 +4974,12 @@ var REFD=[
     '<rect x="2.09" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 7.14 16)" fill="var(--c-r-700)"/>'+
     '</svg>'+
     '<div class="dsh">\u0412\u0430\u0448\u0438 \u0440\u0430\u0441\u0445\u043e\u0434\u044b</div>'+
-    '<div class="dsm">\u0421 \u043a\u0430\u0436\u0434\u043e\u0433\u043e \u0447\u0430\u0441\u0430 \u0441\u044a\u0451\u043c\u043a\u0438 \u0432\u044b \u043e\u0442\u0434\u0430\u0451\u0442\u0435</div>'+
     '<div class="dsb">'+f0(cstSum/d.sh)+'</div>'+
-    '<div class="dsl">\u042d\u0442\u043e <u>'+(cstSum/tot*100).toFixed(0)+'%</u> \u043e\u0442 \u0441\u0442\u043e\u0438\u043c\u043e\u0441\u0442\u0438 \u0447\u0430\u0441\u0430 \u2014 \u0434\u0435\u043d\u044c\u0433\u0438, \u043a\u043e\u0442\u043e\u0440\u044b\u0435 \u0443 \u0432\u0430\u0441 \u043d\u0435 \u043e\u0441\u0442\u0430\u044e\u0442\u0441\u044f</div>';
+    '<div class="dsl">\u0412\u044b \u043e\u0442\u0434\u0430\u0451\u0442\u0435 \u0441 \u043a\u0430\u0436\u0434\u043e\u0433\u043e \u0447\u0430\u0441\u0430 \u0441\u044a\u0451\u043c\u043a\u0438</div>';
 
   /* расходная часть легенды — отдельный контейнер */
-  var out2='<div class="lggrp">\u0418\u0437 \u0447\u0435\u0433\u043e \u0441\u043a\u043b\u0430\u0434\u044b\u0432\u0430\u044e\u0442\u0441\u044f \u0440\u0430\u0441\u0445\u043e\u0434\u044b</div>'+
+  var out2=/* 08.09 (слово владельца): нефункциональный подзаголовок убран. */
+    ''+
     gCost.map(lgRow).join('');
   if($('lg2')) $('lg2').innerHTML=out2;
 
@@ -4826,17 +4992,17 @@ var REFD=[
     '<rect x="2.09" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 7.14 16)" fill="var(--c-b-600)"/>'+
     '</svg>'+
     '<div class="dsh">\u041e\u0442\u043b\u043e\u0436\u0438\u0442\u0435 \u0432 \u0440\u0435\u0437\u0435\u0440\u0432</div>'+
-    '<div class="dsm">\u0421 \u043a\u0430\u0436\u0434\u043e\u0433\u043e \u0447\u0430\u0441\u0430 \u0441\u044a\u0451\u043c\u043a\u0438 \u0432\u044b \u043e\u0442\u043a\u043b\u0430\u0434\u044b\u0432\u0430\u0435\u0442\u0435</div>'+
     '<div class="dsb">'+f0(resSum/d.sh)+'</div>'+
-    '<div class="dsl">\u0420\u0430\u0437\u0432\u0438\u0442\u0438\u0435, \u0441\u043a\u0438\u0434\u043a\u0430 \u0438 \u043e\u0442\u043f\u0443\u0441\u043a \u2014 \u044d\u0442\u043e <u>'+(tot>0?(resSum/tot*100).toFixed(0):'0')+'%</u> \u0441\u0442\u043e\u0438\u043c\u043e\u0441\u0442\u0438 \u0447\u0430\u0441\u0430</div>';
-  if($('lg3')) $('lg3').innerHTML='<div class="lggrp">\u0418\u0437 \u0447\u0435\u0433\u043e \u0441\u043a\u043b\u0430\u0434\u044b\u0432\u0430\u0435\u0442\u0441\u044f \u0440\u0435\u0437\u0435\u0440\u0432</div>'+gRes.map(lgRow).join('');
+    '<div class="dsl">\u0412\u044b \u043e\u0442\u043a\u043b\u0430\u0434\u044b\u0432\u0430\u0435\u0442\u0435 \u0441 \u043a\u0430\u0436\u0434\u043e\u0433\u043e \u0447\u0430\u0441\u0430 \u0441\u044a\u0451\u043c\u043a\u0438</div>';
+  if($('lg3')) $('lg3').innerHTML=/* 08.09 (слово владельца): нефункциональный подзаголовок убран. */
+    ''+gRes.map(lgRow).join('');
 
   var ds=$('dnSum');
   if(ds){
     /* yours = роли + компенсация непродуктивных часов = ваш доход d.Ny.
        Проверка: yours + cstAll = ставка часа. */
     var yours=0, cstAll=0;
-    VI.forEach(function(i){ if(i<=5)yours+=P[i]; else if(i<=10||i===14)cstAll+=P[i] });
+    VI.forEach(function(i){ if(i<=5||i===15)yours+=P[i]; else if(i<=10||i===14)cstAll+=P[i] });
     var hPerShoot=(d.NT+d.idle)/d.sh;
     var hourPay=d.rateWork!=null?d.rateWork:(d.Ny*11/12)/((d.NT+d.idle)||1);
     ds.innerHTML='<svg class="dsdeco" viewBox="0 0 32 32" fill="none" aria-hidden="true">'+
@@ -4846,10 +5012,69 @@ var REFD=[
       '<rect x="2.09" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 7.14 16)" fill="var(--c-g-800)"/>'+
       '</svg>'+
       '<div class="dsh">\u0412\u0430\u0448 \u0434\u043e\u0445\u043e\u0434 \u043d\u0430 \u0440\u0443\u043a\u0438</div>'+
-      '<div class="dsm">\u0421 \u043a\u0430\u0436\u0434\u043e\u0433\u043e \u0447\u0430\u0441\u0430 \u0441\u044a\u0451\u043c\u043a\u0438 \u0432\u044b \u0437\u0430\u0440\u0430\u0431\u0430\u0442\u044b\u0432\u0430\u0435\u0442\u0435</div>'+
+      /* 08.09 (слово владельца): подзаголовок убран; под чертой — короткая
+         фраза без суммы. */
       '<div class="dsb">'+f0(yours/d.sh)+'</div>'+
-      '<div class="dsl">\u042d\u0442\u043e \u043e\u043f\u043b\u0430\u0442\u0430 \u0437\u0430 <u>'+f1(hPerShoot)+' \u0447</u> \u0432\u0430\u0448\u0435\u0439 \u0440\u0430\u0431\u043e\u0442\u044b \u2014 \u043f\u043e <u>'+f0(hourPay)+'/\u0447</u></div>';
+      '<div class="dsl">\u0412\u044b \u0437\u0430\u0440\u0430\u0431\u0430\u0442\u044b\u0432\u0430\u0435\u0442\u0435 \u0441 \u043a\u0430\u0436\u0434\u043e\u0433\u043e \u0447\u0430\u0441\u0430 \u0441\u044a\u0451\u043c\u043a\u0438</div>';
   }
+
+  /* ═══ БЛОК 04 (REPORT-B030, 08.09, слово владельца): месячный доход
+     по направлениям. Кольцо строит та же функция donut, что и блок 01,
+     объём даёт мягкая тень под кольцом (.mon-dn .dn:before).
+
+     ЦВЕТА контрастные и разные: зелёный — работа фотографа, синий —
+     маркетинг, охра — продажи, фиолетовый — бухгалтерия. Ступени одного
+     зелёного сливались, мелкая доля бухгалтерии пропадала.
+
+     Съёмка и обработка сведены в «как фотограф». Непродуктивное время и
+     резерв на форс-мажоры своих секторов не имеют — множитель k раздаёт
+     их направлениям пропорционально, сумма секторов равна Ny/12. */
+  (function(){
+    var host=$('dnMon');
+    if(!host||!d) return;
+    var МЕС=11, hr=d.rateWork!=null?d.rateWork:0;
+    var НАПР=[
+      {n:'\u041a\u0430\u043a \u0444\u043e\u0442\u043e\u0433\u0440\u0430\u0444',         o:'\u0421\u044a\u0451\u043c\u043a\u0430 \u0438 \u043e\u0431\u0440\u0430\u0431\u043e\u0442\u043a\u0430 \u043c\u0430\u0442\u0435\u0440\u0438\u0430\u043b\u0430',    ч:(d.sh||0)+(d.post||0), c:'#21A038'},
+      {n:'\u041a\u0430\u043a \u043e\u0442\u0434\u0435\u043b \u043c\u0430\u0440\u043a\u0435\u0442\u0438\u043d\u0433\u0430', o:'\u041f\u0440\u043e\u0434\u0432\u0438\u0436\u0435\u043d\u0438\u0435, \u0440\u0435\u043a\u043b\u0430\u043c\u0430, \u043f\u043e\u0438\u0441\u043a \u0437\u0430\u043a\u0430\u0437\u043e\u0432', ч:(d.promo||0),      c:'#3B82F6'},
+      {n:'\u041a\u0430\u043a \u043e\u0442\u0434\u0435\u043b \u043f\u0440\u043e\u0434\u0430\u0436',     o:'\u0420\u0430\u0431\u043e\u0442\u0430 \u0441 \u043a\u043b\u0438\u0435\u043d\u0442\u0430\u043c\u0438 \u043f\u043e \u043f\u0440\u043e\u0435\u043a\u0442\u0430\u043c',  ч:(d.clT||0),           c:'#C4551F'},
+      {n:'\u041a\u0430\u043a \u0431\u0443\u0445\u0433\u0430\u043b\u0442\u0435\u0440',        o:'\u0423\u0447\u0451\u0442, \u043e\u0442\u0447\u0451\u0442\u043d\u043e\u0441\u0442\u044c, \u0434\u043e\u043a\u0443\u043c\u0435\u043d\u0442\u044b',     ч:(d.accT||0),          c:'#7C3AED'}
+    ];
+    var эфф=0; НАПР.forEach(function(о){эфф+=о.ч});
+    if(эфф<=0) return;
+    var k=1+((d.idle||0)+(d.fmT||0))/эфф;
+    var итог=0;
+    НАПР.forEach(function(о){ о.руб=hr*о.ч*k/МЕС; итог+=о.руб; });
+
+    var знач=НАПР.map(function(о){return о.руб}),
+        цвета=НАПР.map(function(о){return о.c}),
+        метки=НАПР.map(function(о){return о.n});
+    donut.RUB=знач.map(function(v){return f0(v)});
+    donut.TIP=НАПР.map(function(о){return [о.n,'\u0432 \u043c\u0435\u0441\u044f\u0446']});
+    host.innerHTML=donut(знач,цвета,f0(итог),true,null,метки);
+    donut.RUB=null; donut.TIP=null;
+    var серед=host.querySelector('.mid .k');
+    if(серед) серед.textContent='\u0432 \u043c\u0435\u0441\u044f\u0446 \u043d\u0430 \u0440\u0443\u043a\u0438';
+
+    /* Плашки-выноски: строй блока «Потенциал вашей камеры» —
+       заголовок, крупное значение под чертой, пояснение. */
+    var РУЧКА='<svg class="cc-drag" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">'+
+      '<circle cx="9" cy="6" r="1.6"/><circle cx="15" cy="6" r="1.6"/>'+
+      '<circle cx="9" cy="12" r="1.6"/><circle cx="15" cy="12" r="1.6"/>'+
+      '<circle cx="9" cy="18" r="1.6"/><circle cx="15" cy="18" r="1.6"/></svg>';
+    НАПР.forEach(function(о,ин){
+      var эл=$('monC'+ин);
+      if(!эл) return;
+      var пц=итог>0?о.руб/итог*100:0;
+      эл.innerHTML=РУЧКА+
+        '<div class="cc-h">'+о.n+'</div>'+
+        '<div class="cc-v">'+f0(о.руб)+'</div>'+
+        '<div class="cc-d">'+о.o+' \u2014 <b>'+
+        (пц<1?пц.toFixed(1):пц.toFixed(0))+'%</b></div>';
+    });
+
+    var прим=$('pieNote');
+    if(прим) прим.textContent='\u041d\u0435\u043f\u0440\u043e\u0434\u0443\u043a\u0442\u0438\u0432\u043d\u043e\u0435 \u0432\u0440\u0435\u043c\u044f \u0438 \u0432\u0440\u0435\u043c\u044f, \u0432\u044b\u0434\u0435\u043b\u0435\u043d\u043d\u043e\u0435 \u043d\u0430 \u0444\u043e\u0440\u0441-\u043c\u0430\u0436\u043e\u0440\u044b \u0438 \u043f\u0440\u043e\u0441\u0442\u043e\u0439, \u0440\u0430\u0432\u043d\u043e\u043c\u0435\u0440\u043d\u043e \u0440\u0430\u0441\u043f\u0440\u0435\u0434\u0435\u043b\u0435\u043d\u044b \u043c\u0435\u0436\u0434\u0443 \u0432\u0441\u0435\u043c\u0438 \u043d\u0430\u043f\u0440\u0430\u0432\u043b\u0435\u043d\u0438\u044f\u043c\u0438 \u0432\u0430\u0448\u0435\u0439 \u0442\u0440\u0443\u0434\u043e\u0432\u043e\u0439 \u0434\u0435\u044f\u0442\u0435\u043b\u044c\u043d\u043e\u0441\u0442\u0438.';
+  })();
 
   /* --- три сценария --- */
   /* З-143/145 (слово владельца): серый сектор — тем же светлым серым,
@@ -6390,7 +6615,9 @@ var СПР_НОМЕР = {};
   /* Ссылки «Смотреть пункт N справочника» стоят и вне #спрдет (блок
      «Три сценария», уведомление о рабочих паузах) — слушаем весь отчёт. */
   (document.getElementById('phr-root')||корень).addEventListener('click', function(с){
-    var a = с.target.closest && с.target.closest('a.спр');
+    /* 08.09: ссылки справочника бывают двух видов — статические «a.спр»
+       и генерируемые диаграммами «a.refl». Слушаем оба класса. */
+    var a = с.target.closest && с.target.closest('a.спр, a.refl');
     if(!a) return;
     с.preventDefault();
     var цель = корень.querySelector(a.getAttribute('href'));
@@ -7050,7 +7277,11 @@ var _p=$('dlpdf'); if(_p)_p.onclick=function(){if(window.PHR_PRINT)window.PHR_PR
         2×2) перетаскивание отключено. ── */
   /* Механика общая для двух полей: .camfig (блок 08, 1400×933) и
      .invfig (блок 10 «Инвестиции», 1264×842). Решение владельца 04.09. */
-  [['.camfig','.camfig-svg',1400,933],['.invfig','.invfig-svg',1280,873]].forEach(function(НАБОР){
+  /* 08.09 (слово владельца): та же механика — блок 04 «Ваш доход за
+     месяц». Точка на кольце зафиксирована, второй конец линии
+     закреплён за плашкой и следует за ней. */
+  [['.camfig','.camfig-svg',1400,933],['.invfig','.invfig-svg',1280,873],
+   ['.monfig','.monfig-svg',1200,860]].forEach(function(НАБОР){
     var поле = КОРЕНЬ.querySelector(НАБОР[0]);
     if(!поле) return;
     var svg = поле.querySelector(НАБОР[1]);
@@ -7081,6 +7312,10 @@ var _p=$('dlpdf'); if(_p)_p.onclick=function(){if(window.PHR_PRINT)window.PHR_PR
       var bot = (пр.bottom - кф.top) / кф.height * VBH;
       var midY = (пр.top + пр.height/2 - кф.top) / кф.height * VBH;
       var cls = плашка.className;
+      /* 08.09: в блоке 04 плашки стоят по четырём углам вокруг кольца,
+         поэтому верхние отдают линию снизу, нижние — сверху. У камеры и
+         «Инвестиций» раскладка своя, их правила ниже не меняются. */
+      if(/mon-/.test(cls)) return /p-tl|p-tr/.test(cls) ? {x:cx, y:bot} : {x:cx, y:top};
       if(/p-tr|p-tc/.test(cls)) return {x:cx, y:bot};   /* плашка сверху → вход снизу */
       if(/p-rm|p-br/.test(cls)) return {x:(пр.left - кф.left)/кф.width*VBW, y:midY}; /* слева */
       return {x:cx, y:top};                              /* tl, bc, bl — вход сверху */
