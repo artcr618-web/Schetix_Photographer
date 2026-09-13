@@ -42,7 +42,9 @@ async function render(name,override){
   assert(fail,ids.length===20&&new Set(ids).size===20,'не 20 уникальных блоков');
   assert(fail,d.querySelector('.wp')?.children.length===20,'не 20 прямых блоков .wp');
   assert(fail,text(d.querySelector('#dns')).length>100,'не отрисованы три сценария');
-  assert(fail,d.querySelectorAll('table').length===12,'ожидалось 12 таблиц');
+  /* 15.09 (слово владельца): блок 06 получил таблицу времени по
+     периодам — 12 → 13. */
+  assert(fail,d.querySelectorAll('table').length===13,'ожидалось 13 таблиц');
   assert(fail,d.querySelectorAll('table tbody tr').length>=150,'меньше 150 строк таблиц');
   assert(fail,text(d.querySelector('#спрдет')).length>20000,'не собрана детализация/справочник');
   assert(fail,d.querySelector('#dn1 svg')!==null,'не построена диаграмма бюджета');
@@ -96,5 +98,5 @@ async function render(name,override){
     else console.log('✓ '+name);
   }
   if(failed.length){console.error(failed.map(x=>'✗ '+x).join('\n'));process.exit(1)}
-  console.log(`Headless report: ${scenarios.length} сценариев · 20 блоков · 12 таблиц · ошибок 0`);
+  console.log(`Headless report: ${scenarios.length} сценариев · 20 блоков · 13 таблиц · ошибок 0`);
 })().catch(e=>{console.error(e.stack||e);process.exit(2)});
