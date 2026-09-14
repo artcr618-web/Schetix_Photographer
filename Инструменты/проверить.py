@@ -46,7 +46,7 @@ d = расчёт(поля={'fund_on': True, 'disc_on': True})
 
 d = расчёт(поля={'tax_off': True})
 проверка('на руки = цель · без оформления',
-         abs(d['R'] - d['C'] - d['aq'] - d['Ny']) < 1)
+         abs(d['R'] - d['C'] - d['aq'] - d['fundY'] - d['discY'] - d['Ny']) < 1)
 
 d = базовый
 проверка('иерархия: операционное + резерв + проектное = эффективное',
@@ -246,14 +246,14 @@ d = расчёт(поля={'tax_off': True})
 d = расчёт(поля={'fm_on':False,'fund_on':False,'disc_on':False})
 имена_прямых={x['n'] for x in d['answers']}
 проверка('прямые галочки · выключенные параметры не передают ответы',
-         not ({'Резерв времени на простой и форс-мажоры','Фонд развития','Запас на скидку'} & имена_прямых)
+         not ({'Резерв времени на простой и форс-мажоры','Маржинальная прибыль','Запас на скидку'} & имена_прямых)
          and d['fmT']==0 and d['fundP']==0 and d['discP']==0)
 d = расчёт(поля={'fm_on':True,'fm_pct':'0','fund_on':True,'fund_pct':'0',
                  'disc_on':True,'disc_pct':'15'})
 ответы_прямых={x['n']:x['v'] for x in d['answers']}
 проверка('прямые галочки · включённые параметры передают выбранный процент, включая 0',
          ответы_прямых.get('Резерв времени на простой и форс-мажоры')==0
-         and ответы_прямых.get('Фонд развития')==0
+         and ответы_прямых.get('Маржинальная прибыль')==0
          and ответы_прямых.get('Запас на скидку')==15)
 d = расчёт(поля={'fund_on': False, 'disc_on': False})
 проверка('эффективный ноль · выключенные фонды',
@@ -655,14 +655,14 @@ disc_values=set(re.findall(r'name="disc_lvl" value="(\d+)"',calc))
          and not re.search(r'id="disc_on"[^>]*checked',calc)
          and bool(re.search(r'id="disc_pct" value="15"',calc)))
 fund_pct_tag=re.search(r'<input[^>]*id="fund_pct"[^>]*>',calc)
-проверка('fund_pct: ползунок 0–20%, целые проценты, шаг 1, выключен по умолчанию',
+проверка('fund_pct: ползунок 0–100%, целые проценты, шаг 1, включён по умолчанию (18% = окупаемость 3 года)',
          bool(fund_pct_tag)
          and 'type="range"' in fund_pct_tag.group(0)
          and 'min="0"' in fund_pct_tag.group(0)
-         and 'max="20"' in fund_pct_tag.group(0)
+         and 'max="100"' in fund_pct_tag.group(0)
          and 'step="1"' in fund_pct_tag.group(0)
-         and 'value="10"' in fund_pct_tag.group(0)
-         and not re.search(r'id="fund_on"[^>]*checked',calc))
+         and 'value="18"' in fund_pct_tag.group(0)
+         and bool(re.search(r'id="fund_on"[^>]*checked',calc)))
 fm_pct_tag=re.search(r'<input[^>]*id="fm_pct"[^>]*>',calc)
 проверка('fm_pct: ползунок 0–15%, целые проценты, шаг 1, выключен по умолчанию',
          bool(fm_pct_tag)

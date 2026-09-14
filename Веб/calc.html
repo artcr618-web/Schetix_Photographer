@@ -126,14 +126,14 @@ letter-spacing:.06em;line-height:1;white-space:nowrap;mix-blend-mode:multiply}
    линии до описания одинаковое. Убираем стандартные 19px сверху у .qr
    и дополнительный margin самой .qd — именно они опускали текст. */
 #phc-root .income-card>.hint{margin-bottom:4px}
-#phc-root .income-card>.qr.income-desc{padding-top:4px;border-top:0}
-#phc-root .income-card>.income-desc .qd{margin-top:0}
 /* Примечание под полем занимает всю ширину карточки, как описание.
    На широком экране сохраняем одну строку; на узких разрешениях текст
    переносится естественно, чтобы не выходить за границы карточки. */
 #phc-root .def{width:100%;max-width:none;font-size:12px;line-height:1.55;
 color:var(--c-gr2);margin-top:10px;white-space:nowrap;letter-spacing:-.01em}
-@media(max-width:1020px){#phc-root .def{white-space:normal;font-size:12.5px;letter-spacing:0}}
+@media(max-width:1020px){#phc-root .def{white-space:normal;font-size:12.5px;letter-spacing:0}
+/* 15.09, круг 14 (слово владельца): подпись default переехала над поле — ей нужна отбивка снизу (зеркально mt10). Только этот вопрос. */
+#phc-root .income-card>.def{margin-bottom:10px}}
 #phc-root .qr{display:grid;grid-template-columns:1fr 240px;gap:24px;align-items:start;
 padding:19px 0;border-top:1px solid var(--c-bg)}
 #phc-root .qr:first-of-type{border-top:none}
@@ -220,6 +220,8 @@ background:var(--c-b-50);color:var(--c-ink2);font-size:13px;font-weight:400;line
 left:15px;top:13px;width:21px;height:21px;border-radius:50%;display:flex;
 align-items:center;justify-content:center;background:var(--c-b-500);color:var(--c-white);
 font-size:12px;font-weight:700}
+/* 15.09, круг 15: два абзаца в рамке вопроса 01 — штатный зазор 8px. */
+#phc-root .info-notice>p+p{margin-top:8px}
 /* Галочка собственного жилья занимает отдельную строку и получает
    симметричные интервалы до верхнего и нижнего полей. */
 #phc-root .workspace-own-home-flag{margin:12px 0}
@@ -496,19 +498,20 @@ padding:11px 14px;border-radius:12px;background:var(--c-surf);color:var(--c-ink3
 #phc-root .zap:not(.on) .lvnote{display:none}
 #phc-root .zaprow{display:flex;align-items:center;gap:16px;margin-top:16px;
 padding-top:15px;border-top:1px solid var(--c-ln2)}
-/* Пройденная часть дорожки заливается зелёным: доля считается в JS
-   и кладётся в --zp, дальше линейный градиент с жёсткой границей.
-   Оба стопа заливки разные — как во всех наших заливках. */
-/* Пройденная часть дорожки заливается: доля считается в JS и кладётся
-   в --zp, дальше линейный градиент с жёсткой границей. Цвет заливки —
-   от состояния, через --zc1 и --zc2, оба стопа разные. */
+/* Пройденная часть дорожки заливается одним цветом состояния: доля считается
+   в JS и кладётся в --zp, дальше градиент с жёсткой границей (15.09: была
+   двухстопная растяжка — на синем и красном давала бледную размазанность;
+   стала плоская шкала). Нативные треки гасим, иначе браузер дорисовывает
+   серую обводку вокруг нашей шкалы. */
 #phc-root .zaprow input[type=range]{flex:1;-webkit-appearance:none;appearance:none;
 height:6px;border-radius:3px;outline:none;
-background:linear-gradient(90deg,var(--zc1,var(--c-g-350)),
-var(--zc2,var(--c-g-500)) var(--zp,0%),var(--c-ln) var(--zp,0%),var(--c-ln))}
-#phc-root .zap.on.st-bad .zaprow input[type=range]{--zc1:var(--c-r-300);--zc2:var(--c-r-500)}
-#phc-root .zap.on.st-warn .zaprow input[type=range]{--zc1:var(--c-a-300);--zc2:var(--c-a-500)}
-#phc-root .zap.on.st-ok .zaprow input[type=range]{--zc1:var(--c-g-350);--zc2:var(--c-g-500)}
+background:linear-gradient(90deg,var(--zc,var(--c-g-500)) var(--zp,0%),var(--c-ln) var(--zp,0%))}
+#phc-root .zaprow input[type=range]::-webkit-slider-runnable-track{height:6px;background:transparent;border:0}
+#phc-root .zaprow input[type=range]::-moz-range-track{height:6px;background:transparent;border:0}
+#phc-root .zap.on.st-bad .zaprow input[type=range]{--zc:var(--c-r-500)}
+#phc-root .zap.on.st-warn .zaprow input[type=range]{--zc:var(--c-a-500)}
+#phc-root .zap.on.st-mid .zaprow input[type=range]{--zc:var(--c-b-500)}
+#phc-root .zap.on.st-ok .zaprow input[type=range]{--zc:var(--c-g-500)}
 /* Пока резерв выключен, ползунок и цифра приглушены: значение видно
    как рекомендация, но понятно, что в расчёт оно не идёт. */
 #phc-root .zaprow input[type=range]:disabled{opacity:.4}
@@ -518,15 +521,18 @@ appearance:none;width:24px;height:24px;border-radius:50%;background:var(--c-whit
 cursor:pointer;box-shadow:0 2px 8px rgba(16,24,40,.22);border:2.5px solid var(--c-g-700)}
 #phc-root .zap.on.st-bad .zaprow input[type=range]::-webkit-slider-thumb{border-color:var(--c-r-500)}
 #phc-root .zap.on.st-warn .zaprow input[type=range]::-webkit-slider-thumb{border-color:var(--c-a-500)}
+#phc-root .zap.on.st-mid .zaprow input[type=range]::-webkit-slider-thumb{border-color:var(--c-b-500)}
 #phc-root .zaprow input[type=range]::-moz-range-thumb{width:22px;height:22px;
 border-radius:50%;background:var(--c-white);cursor:pointer;border:2.5px solid var(--c-g-700);
 box-shadow:0 2px 8px rgba(16,24,40,.22)}
 #phc-root .zap.on.st-bad .zaprow input[type=range]::-moz-range-thumb{border-color:var(--c-r-500)}
 #phc-root .zap.on.st-warn .zaprow input[type=range]::-moz-range-thumb{border-color:var(--c-a-500)}
+#phc-root .zap.on.st-mid .zaprow input[type=range]::-moz-range-thumb{border-color:var(--c-b-500)}
 #phc-root .zaprow output{font-size:26px;font-weight:800;letter-spacing:-.03em;
 min-width:64px;text-align:right;font-variant-numeric:tabular-nums;color:var(--c-g-700)}
 #phc-root .zap.on.st-bad .zaprow output{color:var(--c-r-700)}
 #phc-root .zap.on.st-warn .zaprow output{color:var(--c-a-600)}
+#phc-root .zap.on.st-mid .zaprow output{color:var(--c-b-700)}
 /* Галочка остаётся зелёной при любом значении: она про «учитывать»,
    а не про то, хватает ли резерва. */
 #phc-root .zap .zaph .flag input{accent-color:var(--g)}
@@ -704,10 +710,11 @@ linear-gradient(135deg,var(--c-g-800) 0%,var(--c-g-600) 52%,var(--c-g-500) 100%)
 box-shadow:0 8px 24px rgba(33,160,56,.18)}
 /* Время и резервы получают верхний и боковые отступы референсного баннера.
    Нижний цветной выступ унифицирован со всеми группами — 42 px. */
-#phc-root .form-section-time,#phc-root .form-section-reserves{
+#phc-root .form-section-time,#phc-root .form-section-reserves,#phc-root .form-section-profit{
 padding-top:78px;padding-bottom:42px}
 #phc-root .form-section-time>.section-banner,
-#phc-root .form-section-reserves>.section-banner{padding-left:30px;padding-right:30px}
+#phc-root .form-section-reserves>.section-banner,
+#phc-root .form-section-profit>.section-banner{padding-left:30px;padding-right:30px}
 #phc-root .form-section>.sect{margin:0 0 38px;padding:0 28px}
 #phc-root .form-section>.sect h2{color:var(--c-white)}
 #phc-root .form-section>.sect .ss{color:rgba(255,255,255,.76)}
@@ -844,6 +851,8 @@ box-shadow:112px 126px 0 -46px rgba(255,255,255,.08)}
 #phc-root .section-context-notice>p{position:relative;z-index:1;margin:0;
 font-size:14.5px;line-height:1.65;color:rgba(255,255,255,.84)}
 #phc-root .section-context-notice>p+p{margin-top:15px}
+#phc-root .section-context-notice>ul{margin:15px 0 0;padding-left:22px}
+#phc-root .section-context-notice>ul>li+li{margin-top:10px}
 #phc-root .section-context-notice>p.context-notice-title{padding-bottom:17px;
 border-bottom:1px solid rgba(255,255,255,.30);font-size:clamp(25px,3vw,32px);
 font-weight:700;line-height:1.24;letter-spacing:-.025em;color:var(--c-white)}
@@ -2027,11 +2036,12 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 <div class="card income-card" data-block-id="CALC-B007" data-block-name="Вопрос 01"><div class="bn">01</div>
 <h2 data-t="h2_01">Ваш желаемый доход</h2>
 <p data-t="sub_01" class="hint">Укажите, сколько вы хотите получать на руки каждый месяц</p>
-<div class="qr wide income-desc"><div>
-<div data-t="qd_01" class="qd">От этой суммы мы рассчитаем стоимость вашего рабочего часа — такую, чтобы покрыть все расходы и&nbsp;вложения, обеспечить желаемый доход и&nbsp;оставить время на&nbsp;отдых, семью и&nbsp;творческое развитие.</div>
-</div></div>
-<div class="qf half-single-field"><input type="text" inputmode="numeric" data-money data-integer data-limit-live id="income_month" value="110216" min="10000" max="3000000" step="100"><span data-t="un_01" class="un">₽/мес</span></div>
 <p data-t="def_01" class="def">По умолчанию выведена среднемесячная номинальная начисленная заработная плата работников организаций по&nbsp;Российской Федерации по&nbsp;состоянию на&nbsp;июль 2026&nbsp;г.</p>
+<div class="qf half-single-field"><input type="text" inputmode="numeric" data-money data-integer data-limit-live id="income_month" value="110216" min="10000" max="3000000" step="100"><span data-t="un_01" class="un">₽/мес</span></div>
+<div class="info-notice">
+<p data-t="incnote_01">Укажите чистый доход, необходимый исключительно для вашего комфортного уровня жизни и потребностей семьи (ваш аналог ежемесячной заработной платы как фотографа «на руки»).</p>
+<p data-t="incnote_02">Не включайте сюда расходы на ведение бизнеса — аренду, оборудование, софт, рекламу и прочие операционные издержки. Все затраты на деятельность будут рассчитаны отдельно в следующих разделах.</p>
+</div>
 </div>
 
 <div class="card" data-block-id="CALC-B008" data-block-name="Вопрос 02"><div class="bn">02</div>
@@ -2210,6 +2220,33 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 <p>Время, потраченное на продвижение и поиск заказов, крайне сложно замерить. Именно поэтому его почти никто не учитывает — и это серьёзная ошибка.</p>
 <p class="search-context-conclusion">Иначе вы либо остаётесь без заказов, либо начинаете работать ночами, без выходных и права поболеть.</p>
 </div>
+
+<div class="card" id="c_FormMgmt" data-block-id="CALC-B040" data-block-name="Вопрос 09"><div class="bn">09</div>
+<h2>Управление делом</h2>
+<p data-t="qd_24" class="hint">Укажите, сколько времени в неделю вы тратите на управление своим делом: решения, процессы, деньги.</p>
+<p class="search-default-note">Мы заложили в расчёт базовый минимум — 4 часа в неделю. Этого хватает на еженедельный разбор дел, решения и контроль денег.</p>
+<div class="qf focus-field time-field"><input type="number" inputmode="decimal" data-limit-live data-step-live id="mgmt_per_week" value="4" min="1" max="20" step="1"><span data-t="un_18" class="un">ч/нед</span></div>
+<details class="more2 post-details search-details"><summary><svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-t="exp_05">Что включено в эти 4 часа</span></summary><div class="in2 post-in2">
+<div class="search-tasks">
+<div class="search-task"><i>✓</i><span>еженедельный разбор дел и планирование;</span></div>
+<div class="search-task"><i>✓</i><span>решения по ценам, услугам и клиентам;</span></div>
+<div class="search-task"><i>✓</i><span>контроль денег: счета, бюджеты, платежи;</span></div>
+<div class="search-task"><i>✓</i><span>анализ: что сработало и куда двигаться.</span></div>
+</div>
+</div></details>
+<div class="post-exclude search-exclude">Если управляете в одиночку и задач больше — несколько направлений, команда, подрядчики, — четырёх часов в неделю, скорее всего, не хватит. В этом случае увеличьте значение.</div>
+<label class="flag"><input type="checkbox" id="mgmt_on" checked>Учитывать управление делом в расчёте</label>
+</div>
+<div class="equipment-market-note section-context-notice mgmt-context-notice">
+<p class="context-notice-title">Управление делом — невидимая работа управляющего, без которой бизнес разваливается.</p>
+<p>В компании за неё отвечает руководство: директор планирует, финансовый менеджер следит за деньгами, руководитель держит продажи и процессы.</p>
+<div class="search-context-highlight">
+<strong>У вас нет ни директора, ни финансиста — вы и есть руководство.</strong>
+<span>Решения, процессы, бюджеты — всё это занимает реальное рабочее время, которое нельзя потратить на съёмку.</span>
+</div>
+<p>Время на управление крайне сложно замерить. Именно поэтому его почти никто не учитывает — и это серьёзная ошибка.</p>
+<p class="search-context-conclusion">Иначе решения принимаются на бегу, деньги утекают незаметно, а развитие откладывается на «когда-нибудь».</p>
+</div>
 </div>
 
 <div class="form-section form-section-expenses" data-block-id="CALC-B031" data-block-name="Расходы">
@@ -2225,7 +2262,7 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 </div>
 </div>
 
-<div class="card" id="c_Form001" data-block-id="CALC-B015" data-block-name="Вопрос 09"><div class="bn">09</div>
+<div class="card" id="c_Form001" data-block-id="CALC-B015" data-block-name="Вопрос 10"><div class="bn">10</div>
 <h2 data-t="h2_06">Съёмочное оборудование</h2>
 <div data-t="hint_02" class="hint hint-copy">
 <p>Это набор вашего базового оборудования, без которого вы просто не сможете провести съёмку. Укажите текущую рыночную стоимость и срок, за который позицию придётся заменить.</p>
@@ -2237,7 +2274,7 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 <button data-t="add_01" class="add" data-add="Form001">+ Добавить позицию</button>
 <label class="exc"><input type="checkbox" data-exc="Form001">Не учитывать этот блок в расчёте</label></div>
 
-<div class="card" id="c_Form002" data-block-id="CALC-B016" data-block-name="Вопрос 10"><div class="bn">10</div>
+<div class="card" id="c_Form002" data-block-id="CALC-B016" data-block-name="Вопрос 11"><div class="bn">11</div>
 <h2 data-t="h2_07">Офисное оборудование</h2>
 <p data-t="hint_03" class="hint">Это оборудование, которое помогает вам выполнять заказы и решать рабочие задачи за компьютером. Укажите его текущую рыночную стоимость и срок, через который планируете заменить.</p>
 <table class="dt"><thead><tr><th data-t="th_04" style="width:52%">Позиция</th><th data-t="th_05" style="width:24%">Стоимость</th>
@@ -2251,7 +2288,7 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 <p>Чтобы к моменту замены у вас было достаточно денег на покупку такого же или сопоставимого оборудования.</p>
 </div>
 
-<div class="card" id="c_Form008b" data-block-id="CALC-B017" data-block-name="Вопрос 11"><div class="bn">11</div>
+<div class="card" id="c_Form008b" data-block-id="CALC-B017" data-block-name="Вопрос 12"><div class="bn">12</div>
 <h2 data-t="h2_08">Программное обеспечение</h2>
 <p class="hint software-hint">Укажите программы и сервисы, которые нужны вам для профессиональной деятельности и работы вокруг неё.</p>
 <div data-t="sh_01" class="sh">Подписки</div>
@@ -2267,7 +2304,7 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 </tr></thead><tbody id="t_Form004"></tbody></table>
 <button data-t="add_04" class="add" data-add="Form004">+ Добавить программу</button>
 <label class="exc"><input type="checkbox" data-exc="Form008b">Не учитывать этот блок в расчёте</label></div>
-<div class="card" id="c_Form009b" data-block-id="CALC-B018" data-block-name="Вопрос 12"><div class="bn">12</div>
+<div class="card" id="c_Form009b" data-block-id="CALC-B018" data-block-name="Вопрос 13"><div class="bn">13</div>
 <h2 data-t="h2_09">Рабочее место</h2>
 <div data-t="hint_04" class="hint hint-copy workspace-intro">
 <p>В найме рабочее место предоставляет работодатель. Когда вы работаете на себя, вы создаёте и оплачиваете его самостоятельно — поэтому эти расходы тоже должны быть учтены в стоимости вашего часа.</p>
@@ -2315,7 +2352,7 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 <div class="info-notice workspace-diy-note">Если вы делали всё самостоятельно, рекомендуем использовать в расчёте сумму, которую пришлось бы заплатить наёмным специалистам за аналогичную работу, и общую стоимость закупленных материалов.</div>
 <label class="exc"><input type="checkbox" data-exc="Form009b">Не учитывать этот блок в расчёте</label></div>
 
-<div class="card" id="c_Form006" data-block-id="CALC-B019" data-block-name="Вопрос 13"><div class="bn">13</div>
+<div class="card" id="c_Form006" data-block-id="CALC-B019" data-block-name="Вопрос 14"><div class="bn">14</div>
 <h2 data-t="h2_10">Обучение и курсы</h2>
 <p data-t="hint_05" class="hint">Опишите, сколько времени и денег вы вложили, чтобы получить профессию</p>
 <div data-t="shd_04" class="shd" style="margin-bottom:16px">Курсы, семинары, мастер-классы, наставничество. Это ваш опыт, за который вы заплатили деньгами и месяцами жизни — он тоже должен окупаться через стоимость часа.</div>
@@ -2334,7 +2371,7 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 <p>Это стоимость времени, которое вы инвестировали в получение профессии, создание сайта или другие задачи, необходимые для работы. И у этого времени есть своя цена. Мы переведём время обучения в деньги и учтём как часть вложений в профессию.</p>
 </div>
 
-<div class="card" id="c_Form014" data-block-id="CALC-B020" data-block-name="Вопрос 14"><div class="bn">14</div>
+<div class="card" id="c_Form014" data-block-id="CALC-B020" data-block-name="Вопрос 15"><div class="bn">15</div>
 <h2 data-t="h2_11">Создание сайта</h2>
 <div class="rad" id="site_mode_r">
 <label class="on"><input type="radio" name="site_mode" value="hired" checked>Нанимал (а) специалиста</label>
@@ -2349,7 +2386,7 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 </div><div class="qf"><input type="number" inputmode="numeric" data-integer data-limit-live id="site_life" value="7" min="1" max="10" step="1"><span data-t="un_15" class="un">лет</span></div></div>
 <label class="exc"><input type="checkbox" data-exc="Form014">Не учитывать этот блок в расчёте</label></div>
 
-<div class="card" id="c_Form010" data-block-id="CALC-B021" data-block-name="Вопрос 15"><div class="bn">15</div>
+<div class="card" id="c_Form010" data-block-id="CALC-B021" data-block-name="Вопрос 16"><div class="bn">16</div>
 <h2 data-t="h2_12">Реклама и продвижение</h2>
 <p data-t="hint_07" class="hint">Деньги, которые вы регулярно тратите на поиск и привлечение клиентов</p>
 <table class="dt"><thead><tr><th data-t="th_19" style="width:52%">Канал</th><th data-t="th_20" style="width:24%">Стоимость</th>
@@ -2358,7 +2395,7 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 <button data-t="add_07" class="add" data-add="Form010">+ Добавить канал</button>
 <label class="exc"><input type="checkbox" data-exc="Form010">Не учитывать этот блок в расчёте</label></div>
 
-<div class="card" id="c_Form015b" data-block-id="CALC-B022" data-block-name="Вопрос 16"><div class="bn">16</div>
+<div class="card" id="c_Form015b" data-block-id="CALC-B022" data-block-name="Вопрос 17"><div class="bn">17</div>
 <h2 data-t="h2_13">Банковское обслуживание</h2>
 <div data-t="sh_04" class="sh">Регулярные платежи</div>
 <div data-t="shd_05" class="shd">Платежи за банковское обслуживание и услуги, которые оплачиваются в фиксированной сумме.</div>
@@ -2389,7 +2426,7 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 </div>
 <label class="exc"><input type="checkbox" data-exc="Form015b">Не учитывать этот блок в расчёте</label></div>
 
-<div class="card" id="c_Form011" data-block-id="CALC-B023" data-block-name="Вопрос 17"><div class="bn">17</div>
+<div class="card" id="c_Form011" data-block-id="CALC-B023" data-block-name="Вопрос 18"><div class="bn">18</div>
 <h2 data-t="h2_14">Бухгалтерия и учёт</h2>
 <div class="rad" id="acc_mode_r">
 <label class="on"><input type="radio" name="acc_mode" value="self" checked>Веду самостоятельно</label>
@@ -2425,7 +2462,7 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 </div>
 </div>
 
-<div class="card" id="c_Form018" data-block-id="CALC-B024" data-block-name="Вопрос 18"><div class="bn">18</div>
+<div class="card" id="c_Form018" data-block-id="CALC-B024" data-block-name="Вопрос 19"><div class="bn">19</div>
 <h2 data-t="h2_14z">Резерв времени на простой и форс-мажоры</h2>
 <p data-t="hint_08z" class="hint">Заложите в расчёт часть времени на ситуации, которые возникают независимо лично от вас. Простой бывает всегда: периоды без заказов, переносы и отмены съёмок случаются у каждого специалиста. Форс-мажоры — реже: подвела погода, возникли проблемы с техникой или другие непредвиденные обстоятельства помешали работе.</p>
 
@@ -2440,24 +2477,6 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 <output id="fm_out">5%</output>
 </div>
 <div class="zapst" id="fm_st"></div>
-</div>
-</div>
-
-<div class="card" id="c_Form016" data-block-id="CALC-B025" data-block-name="Вопрос 19"><div class="bn">19</div>
-<h2 data-t="h2_15z">Фонд развития</h2>
-<p data-t="hint_09z" class="hint">Заложите в расчёт часть выручки на развитие вашего дела.</p>
-
-<div class="zap">
-<div class="zaph">
-<label class="flag"><input type="checkbox" id="fund_on">Заложить фонд развития</label>
-</div>
-<div data-t="qd_22" class="qd">Это не то же самое, что амортизация. Амортизация покрывает только замену того, что уже есть: камера вышла из строя — купили такую же. А вот на новое стекло, второй корпус или новое ПО денег в этой схеме нет.</div>
-<div class="zapn" data-t="qd_22b">Если откладывать эти деньги заранее, вам не придётся каждый раз брать их из личного бюджета или влезать в кредит, когда появится такая необходимость.</div>
-<div class="zaprow">
-<input type="range" id="fund_pct" min="0" max="20" step="1" value="10" disabled>
-<output id="fund_out">10%</output>
-</div>
-<div class="zapst" id="fund_st"></div>
 </div>
 </div>
 
@@ -2480,6 +2499,52 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 <input type="hidden" id="disc_pct" value="15">
 </div>
 </div>
+</div>
+
+<!-- 15.09, круг 17 (слово владельца): скидка поднята (19), прибыль опущена (20); тексты прибыли — новые. -->
+<!-- 15.09, круг 23: «Прибыльность» — свой раздел (цвет базы «Приступим к расчёту»); карточка — «Доля чистой прибыли». -->
+<!-- 15.09: шапка — «Добавить маржу» + 3 плашки «зачем нужна маржинальность»; карточка — «Прибыльность вашего дела»; подзаголовок сокращён. -->
+
+<div class="form-section form-section-profit" data-block-id="CALC-B041" data-block-name="Прибыльность">
+<div class="sect section-banner profit-banner">
+<div class="benefits-note banner-benefits" data-t="ss_profit" aria-label="Зачем нужна маржинальность">
+<div class="proof-item"><span class="proof-check"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="7" width="18" height="13" rx="2.5" stroke="var(--c-a-400)" stroke-width="1.8"/><path d="M8 7V5.5A1.5 1.5 0 0 1 9.5 4h5A1.5 1.5 0 0 1 16 5.5V7M3 11.5h18M10 11.5v2h4v-2" stroke="var(--c-a-400)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="proof-copy"><span>Вернуть</span><span>вложения</span></span></div>
+<div class="proof-item"><span class="proof-check"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 20h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M7.5 20v-4.5M12 20V10M16.5 20V5.5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg></span><span class="proof-copy"><span>Развиваться</span><span>и расти</span></span></div>
+<div class="proof-item"><span class="proof-check"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M19.2 8.5A7.8 7.8 0 0 0 6.7 5.8L4.5 8M4.5 8V4.5M4.5 8H8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M4.8 15.5a7.8 7.8 0 0 0 12.5 2.7l2.2-2.2m0 0v3.5m0-3.5H16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="m10.1 12.3 1.4 1.4 2.5-2.8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="proof-copy"><span>Закрывать</span><span>форс-мажоры</span></span></div>
+</div>
+<div class="section-ending">
+<h2 class="section-main-title" data-t="h2_15z">Добавить маржу</h2>
+<p class="section-subtitle" data-t="hint_09z">Без этого ваш бизнес финансово «нулевой».</p>
+</div>
+</div>
+
+<div class="card" id="c_Form016" data-block-id="CALC-B025" data-block-name="Вопрос 21"><div class="bn">21</div>
+<h2 data-t="h2_17z">Прибыльность вашего дела</h2>
+<div class="qd">Заложите в ставку долю чистой прибыли, чтобы вернуть инвестированные в бизнес средства и обеспечить финансовую свободу. За счет этих денег вы сможете:</div>
+<div class="zap">
+<div class="zaph">
+<label class="flag"><input type="checkbox" id="fund_on" checked>Заложить долю чистой прибыли</label>
+</div>
+<div class="qd">По умолчанию выведена ставка, которая позволит окупить ваши вложения за 36 месяцев. Это оптимальный и безопасный срок окупаемости для микробизнеса с быстрой оборачиваемостью.</div>
+<div class="zaprow">
+<input type="range" id="fund_pct" min="0" max="100" step="1" value="18">
+<output id="fund_out">18%</output>
+</div>
+<div class="zapst" id="fund_st"></div>
+</div>
+</div>
+</div>
+
+<div class="equipment-market-note section-context-notice client-context-notice">
+<p class="context-notice-title">Почему без этого нельзя</p>
+<p>Без доли чистой прибыли ваш бизнес финансово «нулевой». Если закладывать в стоимость услуг только базовые расходы и зарплату на текущую жизнь, происходит опасная вещь: вы как предприниматель не зарабатываете ничего сверх найма, но берете на себя все колоссальные риски.</p>
+<p>Вы бесплатно несете ответственность за поиск заказов, общение с налоговой и государством, форс-мажоры с клиентами и поломки техники. В найме за эти риски отвечает работодатель, а здесь — вы, но без какой-либо финансовой компенсации.</p>
+<p>Кроме того, без чистой прибыли само ваше дело становится абсолютно уязвимым. У бизнеса нет собственного капитала, он не зарабатывает сам себя и при любой нестабильности начинает зависеть от внешних вливаний или долгов. Доля чистой прибыли — это не «лишние деньги», а обязательный фундамент. Именно за счет неё у вас появляются:</p>
+<ul>
+<li>Возврат вложений: за счёт этих средств вы полностью компенсируете всё, что вложили в своё дело. Это особенно важно, если ради старта или развития пришлось использовать личные сбережения, что-то продать или взять кредит. Вложения вернутся к вам за тот срок, который вы выберете сами, и с этого момента бизнес станет полностью самоокупаемым.</li>
+<li><b>Развитие и рост:</b> За счет этого ресурса вы сможете развивать свое дело: покупать более совершенное оборудование, подключать профессиональный софт для автоматизации процессов, проходить обучающие курсы для повышения чека и даже нанимать первых помощников или подрядчиков.</li>
+<li><b>Безопасность и защита от форс-мажоров</b><br>Собственная прибыль создает финансовую подушку, которая защищает вас от кассовых разрывов и сезонных спадов. Если сломается техника, потребуется срочное обслуживание или возникнут непредвиденные расходы, вы закроете эти дыры за счет бизнеса, а не будете залезать в долги или тратить деньги из семейного бюджета.</li>
+</ul>
 </div>
 
 <div class="savebar" data-block-id="CALC-B033" data-block-name="Действия анкеты">
@@ -2693,6 +2758,7 @@ var ТЕКСТЫ_ПРЕДЕЛОВ={
   post_ratio:{min:'Вы ввели отрицательное значение. Установлен минимум — 0 часов постпродакшна. Проверьте значение.',max:'Вы ввели значение выше допустимого. Установлен максимум — 72 часа постпродакшна на один час съёмки. Проверьте значение.'},
   client_time:{min:'Вы ввели значение ниже допустимого. Установлен минимум — 0,5 часа работы с клиентом на проект. Чтобы не учитывать блок, используйте галочку исключения. Проверьте значение.',max:'Вы ввели значение выше допустимого. Установлен максимум — 72 часа работы с клиентом на проект. Проверьте значение.'},
   promo_per_day:{min:'Вы ввели значение ниже допустимого. Установлен минимум — 0,5 часа поиска заказов в день. Чтобы не учитывать блок, используйте галочку исключения. Проверьте значение.',max:'Вы ввели значение выше допустимого. Установлен максимум — 8 часов поиска заказов в день: это полный нормативный рабочий день. Проверьте значение.'},
+  mgmt_per_week:{min:'Вы ввели значение ниже допустимого. Установлен минимум — 1 час управления делом в неделю. Чтобы не учитывать блок, снимите галочку. Проверьте значение.',max:'Вы ввели значение выше допустимого. Установлен максимум — 20 часов управления делом в неделю: это половина нормативной рабочей недели. Проверьте значение.'},
   home_rent:{min:'Вы ввели отрицательное значение. Установлен минимум — 0 ₽ в месяц. Проверьте значение.',max:'Вы ввели значение выше допустимого. Установлен максимум — 500 000 ₽ в месяц за жильё. Проверьте значение.'},
   home_util:{min:'Вы ввели отрицательное значение. Установлен минимум — 0 ₽ в месяц. Проверьте значение.',max:'Вы ввели значение выше допустимого. Установлен максимум — 100 000 ₽ в месяц на коммунальные платежи, интернет и связь. Проверьте значение.'},
   home_area:{min:'Вы ввели значение ниже допустимого. Установлен минимум — 1 м² общей площади жилья. Чтобы не учитывать поле, удалите строку крестиком. Проверьте значение.',max:'Вы ввели значение выше допустимого. Установлен максимум — 1 000 м² общей площади жилья. Проверьте значение.'},
@@ -3042,6 +3108,15 @@ R.querySelectorAll('[data-exc]').forEach(function(cb){
   применитьИсключение(cb);
   cb.onchange=function(){применитьИсключение(cb);recalc()};
 });
+/* 15.09, круг 22: галка управления делом — обратная исключению:
+   блок включён, пока галка стоит. Запирание то же (заперетьБлок + .off). */
+function применитьУправление(){
+  var cb=$('mgmt_on'), карт=$('c_FormMgmt');
+  if(!cb||!карт)return;
+  карт.classList.toggle('off',!cb.checked);
+  заперетьБлок(карт,!cb.checked);
+}
+(function(){var cb=$('mgmt_on');if(!cb)return;применитьУправление();cb.onchange=function(){применитьУправление();recalc()}})();
 /* Единый слой участия каталогов: это условие используют и финансовая
    сумма, и пользовательская детализация report. */
 function каталогИсключён(f){
@@ -3059,6 +3134,17 @@ function sumF(f){
         x=число(tr.querySelector('.c3').value), v=0;
     if(k==='months') v=0; else if(k==='life') v=x>0?c/x:0; else v=c*x;
     s+=v;
+  });
+  return s;
+}
+/* Полная стоимость активных позиций каталога — без деления на срок.
+   Нужна рекомендации доли прибыли (вложения целиком) и в харнессе
+   перекрыта версией поверх CAT — как sumF. */
+function sumP(f){
+  if(каталогИсключён(f))return 0;
+  var tb=$('t_'+f); if(!tb)return 0; var s=0;
+  tb.querySelectorAll('tr').forEach(function(tr){
+    s+=число(tr.querySelector('.c2').value);
   });
   return s;
 }
@@ -3127,9 +3213,50 @@ function состояние(box,имя,подпись,текст){
   if(имя)box.classList.add(имя);
   if(подпись)подпись.textContent=текст||'';
 }
-function зап(вкл,пол,вых,сост,реком){
-  var cb=$(вкл), sl=$(пол), out=$(вых), st=$(сост);
+/* Срок окупаемости словами — как в отчёте B024 («3 года», «1 год», «5,9 года»). */
+function срокОкуп(n){
+  var x=Math.round(n*10)/10, i=Math.floor(x);
+  if(x!==i) return x.toLocaleString('ru-RU')+' года';
+  var d1=i%10,d2=i%100;
+  if(d2>=11&&d2<=14)return i+' лет';
+  if(d1===1)return i+' год';
+  if(d1>=2&&d1<=4)return i+' года';
+  return i+' лет';
+}
+/* Подсказка ползунку чистой прибыли (15.09, слово владельца): зоны — по сроку
+   окупаемости вложений при текущей доле. Ниже рекомендации — жёлтая,
+   1–3 года — синяя «рекомендуемая», быстрее года — зелёная «хорошая наценка».
+   Числа — из последнего расчёта calc() (ФОНД.R/ФОНД.инв). */
+function подсказкаПрибыли(зн){
+  if(зн<=0)return ['st-bad','Резерв не заложен — покрывать придётся из своего дохода'];
+  var R=ФОНД.R||0, В=ФОНД.инв||0;
+  if(!(R>0)||В<=0)return ['st-ok','Хороший запас'];
+  var P=В/(R*зн/100);
+  if(P>3)return ['st-warn','Окупаемость за '+срокОкуп(P)+', риск кассовых разрывов'];
+  if(P>=1)return ['st-mid','Рекомендуемая доля — окупаемость за '+срокОкуп(P)];
+  return ['st-ok','Хорошая наценка — окупаемость меньше года'];
+}
+/* Ручной режим доли прибыли: пока человек не трогал галку и ползунок,
+   calc() сам ставит рекомендацию под окупаемость 3 года. Первое касание —
+   дальше ползунок слушается только человека; авторежим возвращает общий
+   сброс («Вернуть значения по умолчанию»). Восстановление сохранённого
+   ответа — тоже ручной режим: сохранённый выбор старше рекомендации.
+   В харнессе (Node, без DOM) свой ФОНД с ручной=true: тесты задают
+   значения явно. */
+var ФОНД={ручной:false,R:0,инв:0,реком:0};
+/* Состояния ползунков по имени поля: повторный вызов зап() (восстановление
+   сохранённого ответа, общий сброс) перепривязывает обработчики, но не
+   должен терять порог и подсказку. Без реестра «меньше рекомендуемого»
+   умирало после первого же восстановления. */
+var ЗАПЫ={};
+function зап(вкл,пол,вых,сост,реком,подсказка){
+  var cb=$(вкл), sl=$(пол), out=$(вых);
   if(!cb||!sl)return;
+  var cfg=ЗАПЫ[пол]=ЗАПЫ[пол]||{};
+  var st=(сост!==undefined)?$(сост):(cfg.st||null);
+  var рек=(реком!==undefined)?реком:cfg.рек;
+  var пд=(подсказка!==undefined)?подсказка:cfg.подсказка;
+  cfg.st=st; cfg.рек=рек; cfg.подсказка=пд;
   var box=sl.closest('.zap');
   function обновить(){
     sl.disabled=!cb.checked;
@@ -3145,10 +3272,11 @@ function зап(вкл,пол,вых,сост,реком){
     var доля=макс>мин?(зн-мин)/(макс-мин)*100:0;
     sl.style.setProperty('--zp',доля+'%');
     if(!cb.checked){ состояние(box,null,st,''); return }
+    if(пд){ var р=пд(зн); состояние(box,р[0],st,р[1]); return; }
     if(зн<=0){
       состояние(box,'st-bad',st,
         '\u0420\u0435\u0437\u0435\u0440\u0432 \u043d\u0435 \u0437\u0430\u043b\u043e\u0436\u0435\u043d \u2014 \u043f\u043e\u043a\u0440\u044b\u0432\u0430\u0442\u044c \u043f\u0440\u0438\u0434\u0451\u0442\u0441\u044f \u0438\u0437 \u0441\u0432\u043e\u0435\u0433\u043e \u0434\u043e\u0445\u043e\u0434\u0430');
-    }else if(зн<реком){
+    }else if(зн<рек){
       состояние(box,'st-warn',st,
         '\u041c\u0435\u043d\u044c\u0448\u0435 \u0440\u0435\u043a\u043e\u043c\u0435\u043d\u0434\u0443\u0435\u043c\u043e\u0433\u043e \u2014 \u0437\u0430\u043f\u0430\u0441\u0430 \u043c\u043e\u0436\u0435\u0442 \u043d\u0435 \u0445\u0432\u0430\u0442\u0438\u0442\u044c');
     }else{
@@ -3156,13 +3284,21 @@ function зап(вкл,пол,вых,сост,реком){
         '\u0425\u043e\u0440\u043e\u0448\u0438\u0439 \u0437\u0430\u043f\u0430\u0441');
     }
   }
+  cfg.обновить=обновить;
   cb.onchange=function(){обновить();recalc()};
   sl.oninput=function(){обновить();recalc()};
   обновить();
 }
-/* Рекомендуем: резерв времени на простой и форс-мажоры 5%, фонд развития 10%. */
-зап('fund_on','fund_pct','fund_out','fund_st',10);
+/* Рекомендуем: резерв времени на простой и форс-мажоры 5%. Чистая прибыль —
+   динамическая: порог не используется, зоны считает подсказкаПрибыли
+   (ниже рекомендации — жёлтая, 1–3 года — синяя, быстрее года — зелёная). */
+зап('fund_on','fund_pct','fund_out','fund_st',null,подсказкаПрибыли);
 зап('fm_on','fm_pct','fm_out','fm_st',5);
+(function(){
+  var cb=$('fund_on'), sl=$('fund_pct');
+  if(cb)cb.addEventListener('change',function(){ФОНД.ручной=true});
+  if(sl)sl.addEventListener('input',function(){ФОНД.ручной=true});
+})();
 уровни();
 function обновитьСвоёЖильё(){
   var oh=$('own_home'), rent=$('home_rent');
@@ -3263,6 +3399,7 @@ function regimeName(rg){
 var PROF='\u0444\u043e\u0442\u043e\u0433\u0440\u0430\u0444\u0430';
 function calc(){
   var promo=EXC['FormPromoTime']?0:V('promo_per_day')*ND;
+  var mgmt=CHK('mgmt_on')?V('mgmt_per_week')*NW:0; /* 15.09, круг 22: управление делом — тоже стороннее время */
   var self=rad('acc_mode')==='self', accEx=EXC['Form011'];
   var accT=(self&&!accEx)?V('acc_per_quarter')*Q:0;
   var idle=ND*(8-EFF);
@@ -3271,10 +3408,10 @@ function calc(){
      отрицательной. Оставляем на съёмку не меньше 20 % рабочего времени
      и считаем по этому пределу — цифра будет заниженной, но осмысленной. */
   var ПРЕДЕЛ_СТОРОННЕГО=NT*0.8;
-  var side=promo+accT;
+  var side=promo+accT+mgmt;
   if(side>ПРЕДЕЛ_СТОРОННЕГО){
     var к=ПРЕДЕЛ_СТОРОННЕГО/side;
-    promo*=к; accT*=к; side=ПРЕДЕЛ_СТОРОННЕГО;
+    promo*=к; accT*=к; mgmt*=к; side=ПРЕДЕЛ_СТОРОННЕГО;
   }
   var gross=NT-side;
   var fmT=$('fm_on').checked?gross*(V('fm_pct')/100):0;
@@ -3320,10 +3457,9 @@ function calc(){
   var acqPart=BANK_ACQ_ON?(V('acq_rate')/100)*(V('acq_share')/100):0;
   var extraBankPart=суммаДопКомиссий()/100;
   var a=EXC['Form015b']?0:acqPart+extraBankPart;
-  /* Фонд развития и запас на скидку — два отдельных блока.
+  /* Чистая прибыль и запас на скидку — два отдельных блока.
      Оба считаются от выручки, поэтому входят в знаменатель, как эквайринг.
      Флажка «не учитывать» у них нет: галочка сама работает на включение. */
-  var fundP=CHK('fund_on')?V('fund_pct')/100:0;
   var discP=CHK('disc_on')?V('disc_pct')/100:0;
   var rg=$('regime').value;
   /* На НПД ставка зависит от заказчика, а не от выбора режима: 4% с частных
@@ -3338,15 +3474,39 @@ function calc(){
   var БЕЗ_НАЛОГОВ=CHK('tax_off');
   var RT={npd5:.05,npd4:.04,npd6:.06,usn6:.06,usn15:.15,ausn8:.08,ausn20:.20}[rg];
   if(БЕЗ_НАЛОГОВ)RT=0;
+  /* 15.09: рекомендуемая доля чистой прибыли — та, при которой вложения
+     окупаются за 3 года (слово владельца: дольше микробизнесу ждать
+     незачем). Состав вложений — тот же, что в блоке окупаемости отчёта
+     B024: техника, купленные программы, обучение с месяцами без дохода,
+     заказанный сайт; рабочее место не входит. Уравнение одно: ищем долю f,
+     при которой R(f)·f = ВЛОЖ/3. Подстановка f=T/R сводит его к виду
+     R·K−налог(R) = Ny+C+T — его решает готовый выручкаПод(Ny+T,K),
+     доля выходит делением. Округляем вверх: фактическая окупаемость
+     получается чуть короче 3 лет. Пока человек не трогал галку и ползунок
+     вручную, ползунок сам встаёт на рекомендацию. */
+  var ВЛОЖ=sumP('Form001')+sumP('Form002')+sumP('Form004')
+    +(eduEx?0:(eduSum+eduOpp))+((siteEx||siteSelf)?0:V('site_cost'));
+  var ЦЕЛЬ=ВЛОЖ/3, КЗ=1-a-sdiv-discP, РЕКОМ=0;
+  if(ЦЕЛЬ>0&&КЗ>0){
+    var РР=выручкаПод(Ny+ЦЕЛЬ,КЗ);
+    if(РР>0)РЕКОМ=Math.min(100,Math.max(0,Math.ceil(ЦЕЛЬ/РР*100-1e-9)));
+  }
+  if(!ФОНД.ручной){
+    var _фв=$('fund_on'), _фп=$('fund_pct');
+    if(_фв)_фв.checked=true;
+    if(_фп)_фп.value=String(РЕКОМ);
+  }
+  ФОНД.инв=ВЛОЖ; ФОНД.реком=РЕКОМ;
+  var fundP=CHK('fund_on')?V('fund_pct')/100:0;
   /* Границы для процентов: эквайринг больше 10 % не берёт ни один банк,
-     ползунки фонда и скидки ограничены 20 и 15 %. Без этих рамок при
+     ползунки чистой прибыли и скидки ограничены 100 и 15 %. Без этих рамок при
      ручной подстановке (30 % + 30 % + 15 %) знаменатель падал до 0,25
      и выручка взлетала до 9,4 млн — цифра бессмысленная. */
   a=Math.min(Math.max(a,0),0.10);
-  fundP=Math.min(Math.max(fundP,0),0.20);
+  fundP=Math.min(Math.max(fundP,0),1.00);
   discP=Math.min(Math.max(discP,0),0.15);
   var D=1-a-sdiv-fundP-discP;
-  if(D<0.40)D=0.40;          /* суммарные отчисления — не больше 60 % */
+  if(D<0.40)D=0.40;          /* суммарные отчисления — не больше 60 %; 15.09: ползунок прибыли — до 100, пол держит математику, верх шкалы номинален */
   /* --- Налог как честная функция выручки ---
      Раньше база для УСН 15 и АУСН 20 бралась от желаемого дохода
      (Ny/(1−ставка)) и почти не зависела от Rx. Из-за этого не сходилась
@@ -3375,9 +3535,9 @@ function calc(){
      формулой их не описать. Тот же приём, что в отчёте. */
   function выручкаПод(цель,доля){
     /* доля — какая часть выручки остаётся после процентных отчислений.
-       Для необходимой выручки (R_) — с фондами, если включены.
+       Для необходимой выручки (R_) — с чистой прибылью и резервом скидки, если включены.
        Для точки безубыточности (Rb) — только необходимые отчисления:
-       эквайринг, поправка сайта и налог, БЕЗ резервных фондов
+       эквайринг, поправка сайта и налог, БЕЗ чистой прибыли и резерва скидки
        (решение владельца 25.08: резервы — дополнительный, не необходимый
        расход; совпадает с формулой книги 05_Расчёт!B22). */
     var d=(доля===undefined)?D:доля;
@@ -3392,6 +3552,10 @@ function calc(){
      нулевая. Анкета в этом случае показывает подсказку и не пускает
      в отчёт — см. проверитьПоля(). */
   var R_=(sh>0)?выручкаПод(Ny):0;
+  ФОНД.R=R_;
+  /* Подсказка ползунку прибыли смотрит на свежие числа: обновляем её
+     в конце каждого расчёта (в харнессе реестра ЗАПЫ нет — пропускаем). */
+  if(typeof ЗАПЫ!=='undefined'&&ЗАПЫ['fund_pct']&&ЗАПЫ['fund_pct'].обновить)ЗАПЫ['fund_pct'].обновить();
   var taxAll=taxOf(R_), aq=R_*a;
   /* «Всего расходов» — утверждённая отдельная группа: Финансовые расходы
      плюс Налоги и Эквайринг. Резервный фонд и компенсация Инвестиционного
@@ -3534,52 +3698,53 @@ function calc(){
   отв(6,'Время на постпродакшн',K,'× ч');
   if(!EXC['FormClientTime'])отв(7,'Проектная работа с клиентами',cl,'ч');
   if(!EXC['FormPromoTime'])отв(8,'Поиск заказов',V('promo_per_day'),'ч/день');
-  позКаталога(9,'Form001'); позКаталога(10,'Form002');
-  позКаталога(11,'Form003'); позКаталога(11,'Form004');
+  if(CHK('mgmt_on'))отв(9,'Управление делом',V('mgmt_per_week'),'ч/нед');
+  позКаталога(10,'Form001'); позКаталога(11,'Form002');
+  позКаталога(12,'Form003'); позКаталога(12,'Form004');
   function полеУдалено(id){
     var e=$(id), row=e&&e.closest?e.closest('.removable-field-row'):null;
     return !!(row&&row.classList&&row.classList.contains('field-row-removed'));
   }
   var дома=rad('ws_mode')==='home';
   if(!wsEx){
-    отв(12,'Где находится рабочее место',дома?'Дома':'Отдельное помещение','');
+    отв(13,'Где находится рабочее место',дома?'Дома':'Отдельное помещение','');
     if(дома){
-      отв(12,'Сколько вы платите за жильё в месяц',homeHousing,'₽/мес');
-      if(!полеУдалено('home_util'))отв(12,'Коммунальные платежи, интернет и связь',V('home_util'),'₽/мес');
-      if(!полеУдалено('home_area'))отв(12,'Общая площадь вашего жилья',V('home_area'),'м²');
-      if(!полеУдалено('cab_area'))отв(12,'Сколько метров выделено под рабочую зону',V('cab_area'),'м²');
+      отв(13,'Сколько вы платите за жильё в месяц',homeHousing,'₽/мес');
+      if(!полеУдалено('home_util'))отв(13,'Коммунальные платежи, интернет и связь',V('home_util'),'₽/мес');
+      if(!полеУдалено('home_area'))отв(13,'Общая площадь вашего жилья',V('home_area'),'м²');
+      if(!полеУдалено('cab_area'))отв(13,'Сколько метров выделено под рабочую зону',V('cab_area'),'м²');
     }else{
-      отв(12,'Аренда помещения',V('office_rent'),'₽/мес');
-      отв(12,'Коммунальные платежи, интернет и связь',V('office_util'),'₽/мес');
+      отв(13,'Аренда помещения',V('office_rent'),'₽/мес');
+      отв(13,'Коммунальные платежи, интернет и связь',V('office_util'),'₽/мес');
     }
   }
-  позКаталога(12,'Form013'); позКаталога(13,'Form006');
-  if(!eduEx)отв(13,'За сколько лет окупить вложения в обучение',V('edu_life'),'лет');
+  позКаталога(13,'Form013'); позКаталога(14,'Form006');
+  if(!eduEx)отв(14,'За сколько лет окупить вложения в обучение',V('edu_life'),'лет');
   /* В пользовательские ответы передаём только активную эффективную ветку
      сайта. Сырые значения другой ветки сохраняются в анкете, но report их
      не получает; при исключении блока весь набор ответов сайта отсутствует. */
   if(!siteEx){
-    отв(14,'Кто делал сайт',siteSelf?'Делал сам':'Заказывал у специалистов','');
-    if(siteSelf)отв(14,'Сколько времени вы потратили на создание сайта',V('site_hours'),'ч');
-    else отв(14,'Сколько вы заплатили за создание сайта',V('site_cost'),'₽');
-    отв(14,'За сколько лет окупить вложения в сайт',V('site_life'),'лет');
+    отв(15,'Кто делал сайт',siteSelf?'Делал сам':'Заказывал у специалистов','');
+    if(siteSelf)отв(15,'Сколько времени вы потратили на создание сайта',V('site_hours'),'ч');
+    else отв(15,'Сколько вы заплатили за создание сайта',V('site_cost'),'₽');
+    отв(15,'За сколько лет окупить вложения в сайт',V('site_life'),'лет');
   }
-  позКаталога(15,'Form010'); позКаталога(16,'Form007');
+  позКаталога(16,'Form010'); позКаталога(17,'Form007');
   if(!EXC['Form015b']){
     if(BANK_ACQ_ON){
-      отв(16,($('acq_name')&&$('acq_name').value)||'Эквайринг',V('acq_rate'),'%');
-      отв(16,'Доля безналичных платежей',V('acq_share'),'%');
+      отв(17,($('acq_name')&&$('acq_name').value)||'Эквайринг',V('acq_rate'),'%');
+      отв(17,'Доля безналичных платежей',V('acq_share'),'%');
     }
-    списокДопКомиссий().forEach(function(x){if(x.name)отв(16,x.name,x.rate,'%')});
+    списокДопКомиссий().forEach(function(x){if(x.name)отв(17,x.name,x.rate,'%')});
   }
   if(!accEx){
-    отв(17,'Кто ведёт учёт',self?'Веду сам':'Нанимаю бухгалтера','');
-    if(self)отв(17,'Сколько часов в квартал уходит на отчётность',V('acc_per_quarter'),'ч');
-    else отв(17,'Сколько стоит ведение учёта',V('acc_cost_month'),'₽/мес');
+    отв(18,'Кто ведёт учёт',self?'Веду сам':'Нанимаю бухгалтера','');
+    if(self)отв(18,'Сколько часов в квартал уходит на отчётность',V('acc_per_quarter'),'ч');
+    else отв(18,'Сколько стоит ведение учёта',V('acc_cost_month'),'₽/мес');
   }
-  if(CHK('fm_on'))отв(18,'Резерв времени на простой и форс-мажоры',V('fm_pct'),'%');
-  if(CHK('fund_on'))отв(19,'Фонд развития',fundP*100,'%');
+  if(CHK('fm_on'))отв(19,'Резерв времени на простой и форс-мажоры',V('fm_pct'),'%');
   if(CHK('disc_on'))отв(20,'Запас на скидку',discP*100,'%');
+  if(CHK('fund_on'))отв(21,'Чистая прибыль',fundP*100,'%');
 
   return{answers:ответы,catalog:позиции,
     frames:framesOut,NT:NT,idle:idle,pool:pool,
@@ -3595,7 +3760,7 @@ function calc(){
     minShootsY:minShootsY,minShootsM:minShootsM,
     zeroShootsY:zeroShootsY,zeroShootsM:zeroShootsM,
     /* загрузка под желаемый доход при трёх ценах часа */
-    loadGoal:загрузкаЦель,loadCur:загрузкаТек,loadZero:загрузкаНоль,promo:promo,accT:accT,fmT:fmT,pool:pool,S:S,pt:pt,py:py,sh:sh,
+    loadGoal:загрузкаЦель,loadCur:загрузкаТек,loadZero:загрузкаНоль,promo:promo,accT:accT,fmT:fmT,mgmtT:mgmt,pool:pool,S:S,pt:pt,py:py,sh:sh,
     post:post,clT:clT,amort:amort,vari:vari,C:C,totalExpenses:totalExpenses,Ny:Ny,R:R_,taxAll:taxAll,aq:aq,
     goalFund:goalFund,goalDiscountReserve:goalDiscountReserve,
     goalSelfSiteCost:goalSelfSiteCost,goalCostsTotal:goalCostsTotal,
@@ -3914,7 +4079,7 @@ $('go').onclick=function(){
        Вместо системного окна — своя плашка и подсветка виновного блока. */
     if(window.СЧХТост)СЧХТост('Не получается посчитать: в году не осталось часов на съёмку. '+
       'Уменьшите время на продвижение или на обработку кадров','ошибка');
-    var виновник=R.querySelector('#c_FormPromoTime')||R.querySelector('#c_FormClientTime');
+    var виновник=R.querySelector('#c_FormPromoTime')||R.querySelector('#c_FormClientTime')||R.querySelector('#c_FormMgmt');
     if(виновник)подсветить(виновник.querySelector('input')||виновник);
     return;
   }
@@ -3960,7 +4125,7 @@ function reportLink(d,url){
    добавлено банковских комиссий: без этого при возврате обход встретит
    другое число полей и значения разъедутся по соседним строкам. */
 function saveState(){
-  var st={в:2,поля:[],строки:{},комиссии:0,эквайринг:BANK_ACQ_ON};
+  var st={в:3,поля:[],строки:{},комиссии:0,эквайринг:BANK_ACQ_ON}; /* в:3 — 15.09: блок управления делом сдвинул позиции полей */
   R.querySelectorAll('input,select').forEach(function(e){
     st.поля.push((e.type==='checkbox'||e.type==='radio')?(e.checked?1:0):e.value);
   });
@@ -3976,7 +4141,7 @@ function restoreState(){
   var st; try{st=JSON.parse(raw)}catch(e){return false}
   /* Снимок прежнего формата не применяем: там ключи по индексу обхода,
      и после любой правки разметки значения встали бы не в свои поля. */
-  if(!st||st.в!==2||!st.поля)return false;
+  if(!st||st.в!==3||!st.поля)return false;
   /* Сначала приводим таблицы и комиссии к сохранённому виду, потом
      раскладываем значения — обход должен встретить ровно те же поля,
      что были при записи. */
@@ -4002,6 +4167,7 @@ function restoreState(){
     if(e.type==='checkbox'||e.type==='radio'){e.checked=!!v}else{e.value=v}
   });
   форматироватьВсеДеньги();
+  ФОНД.ручной=true; /* сохранённый выбор старше рекомендации */
   return true;
 }
 /* Применяем разрядные пробелы и к статическим денежным полям до того,
@@ -4025,7 +4191,7 @@ Object.keys(CAT).forEach(function(f){
 });
 
 /* ---- Переход из отчёта по ссылке вида calc.html#disc_on ----
-   В отчёте есть кнопки «Заложить фонд развития» и «Заложить запас
+   В отчёте есть кнопки «Заложить долю маржинальной прибыли» и «Заложить запас
    на скидку»: человек уже согласился их учесть, поэтому мало
    прокрутить к блоку — сразу ставим галочку и подсвечиваем карточку,
    чтобы было видно, что изменилось. Если галочка уже стояла, ничего
@@ -4444,6 +4610,7 @@ function применитьСостояния(){
       l.classList.toggle('on',l.querySelector('input').checked)});
   });
   R.querySelectorAll('[data-exc]').forEach(function(cb){применитьИсключение(cb)});
+  if(typeof применитьУправление==='function')применитьУправление();
   ['tax_auto','tax_off'].forEach(function(id){
     var cb=$(id); if(!cb)return; cb.disabled=false;
     cb.dispatchEvent(new Event('change',{bubbles:true}));
@@ -4489,6 +4656,7 @@ function сбросить(){
   });
   /* 3. состояния, которые ведёт скрипт: подсветка выбора, скрытые
         подблоки, рамки запасов, ползунки и их заливка */
+  ФОНД.ручной=false; /* общий сброс возвращает авторежим рекомендации */
   применитьСостояния();
   /* 4. сохранённый ответ больше не наш — иначе отчёт покажет старые цифры */
   try{localStorage.removeItem('phc_state');localStorage.removeItem('phc_report')}catch(e){}
@@ -5029,7 +5197,7 @@ opacity:0;pointer-events:none;transition:opacity .16s}
 </style>
 <script>
 (function(){
-  var СПР={"Амортизация": "Постепенное включение стоимости имущества в расходы бизнеса по мере его использования и износа.", "Срок службы": "Период, в течение которого оборудование или другое имущество может использоваться по назначению при соблюдении установленных условий эксплуатации.", "Эквайринг": "Комиссия за приём безналичных платежей от клиентов с использованием банковских карт, электронных средств платежа и других платёжных инструментов.", "Постпродакшн": "Комплекс работ с отснятым материалом после завершения съёмки, направленных на его обработку, доработку и подготовку к передаче или публикации.", "Первичная обработка": "Комплекс действий с отснятым фотоматериалом, выполняемых специалистом с использованием специализированных компьютерных программ для подготовки материала к дальнейшему использованию. Включает подготовку материала: создание и организацию папок и файлов, выгрузку материала с карт памяти, резервное копирование; отбор материала: просмотр отснятого материала, удаление технического брака, отбор удачных кадров, исключение дублей, кадров с закрытыми глазами и явно неудачных кадров; базовую цветокоррекцию: коррекцию экспозиции, баланса белого, контраста, светлых и тёмных областей, резкости и насыщенности, приведение всей серии к единому цвету и свету; коррекцию кадра: кадрирование, выравнивание горизонта, коррекцию перспективы и искажений объектива, удаление крупных лишних объектов из кадра; подготовку и передачу результата: импорт и экспорт из программы обработки, подготовку файлов, изменение размера и формата при необходимости. Ретушь в первичную обработку не входит.", "Готовые кадры": "Снимки, полученные в результате проведения съёмочных работ и прошедшие первичную обработку.", "Срабатывание затвора": "Однократный цикл работы затвора камеры, происходящий при создании снимка и учитываемый при определении выработки ресурса затвора.", "Ресурс затвора": "Расчётное количество срабатываний затвора камеры, которое предусмотрено производителем до достижения установленного уровня его эксплуатационного ресурса.", "Съёмочное оборудование": "Неизменный рабочий комплект оборудования, который фотограф использует на каждой съёмке и без которого проведение съёмочного процесса невозможно или существенно затруднено. Узкоспециализированное оборудование для разовых или нестандартных проектов в основной комплект не входит и учитывается отдельно в зависимости от конкретных задач.", "Офисное оборудование": "Оборудование и технические средства, используемые для организации рабочего процесса, выполнения административных задач и обеспечения повседневной деятельности специалиста.", "Подписки": "Регулярные платежи за доступ к программам, сервисам, платформам и другим цифровым инструментам, необходимым специалисту для работы.", "Проектное время": "Общее время, необходимое специалисту для выполнения всех работ в рамках съёмочного проекта, включая подготовку, проведение съёмки, обработку материала и передачу готового результата.", "Рабочее время": "Время, в течение которого специалист выполняет профессиональные обязанности, включая непосредственную работу, подготовку, организационные задачи и другие действия, связанные с выполнением работы.", "Неэффективное рабочее время": "Часть рабочего времени, затрачиваемая на действия и перерывы, не связанные непосредственно с выполнением основной оплачиваемой работы, включая личные потребности, отдых, обслуживание рабочего места, внутренние коммуникации и другие отвлечения. Используется в Счётикс для учёта времени, которое фактически не может быть использовано для выполнения оплачиваемой работы.", "Резерв времени на простой и форс-мажоры": "Дополнительный запас рабочего времени, предусмотренный в расчёте для компенсации периодов отсутствия заказов, отмены или переноса съёмок, а также непредвиденных обстоятельств, временно влияющих на возможность специалиста работать. Дополнительный резерв, может быть отключён.", "Резерв на развитие": "Часть дохода, которую специалист или бизнес заранее откладывает для финансирования будущего развития, улучшения профессиональной деятельности и реализации новых возможностей.", "Запас на скидку": "Часть стоимости услуги, заранее заложенная в цену для возможности предоставить клиенту скидку без снижения планируемого дохода специалиста.", "Налоговый режим": "Установленный законодательством порядок исчисления и уплаты налогов и обязательных платежей, применяемый специалистом в зависимости от выбранной системы налогообложения.", "Страховые взносы": "Обязательные платежи в государственные внебюджетные фонды и государственные системы страхования, связанные с осуществлением профессиональной деятельности и обеспечением социальных гарантий.", "Точка безубыточности": "Объём работы или выручки, при котором доход специалиста полностью покрывает все расходы, но ещё не формирует прибыль.", "Доход на руки": "Сумма денежных средств, остающаяся у специалиста после вычета налогов, обязательных платежей и других предусмотренных расходов.", "Выручка": "Общая сумма денежных средств, которую специалист получил или должен получить от продажи работ или услуг за определённый период, до вычета расходов, налогов и других затрат.", "Логистика": "Организация перемещения специалиста, оборудования, материалов и готового результата между местами работы, хранения и передачи.", "Поиск заказов": "Действия специалиста по выявлению потенциальных клиентов и получению новых заказов на оказание услуг.", "Проектная работа с клиентами": "Рабочие действия специалиста, связанные с взаимодействием с клиентом в рамках конкретного проекта: обсуждение задачи, согласование условий и деталей работы, подготовка к проекту, коммуникация в процессе его выполнения, согласование результата и завершение проекта.", "Отчётность": "Систематизированная информация о доходах, расходах, результатах деятельности и обязательствах специалиста, подготовленная за определённый период для анализа, контроля или предоставления в налоговые и иные соответствующие органы в установленных случаях.", "Бухгалтерия": "Ведение и обработка финансовой информации о деятельности специалиста, включая учёт доходов и расходов, расчёт обязательных платежей и подготовку необходимой отчётности.", "Продвижение": "Комплекс действий, направленных на привлечение внимания к специалисту, его услугам или продуктам, увеличение числа потенциальных клиентов и стимулирование продаж.", "Реклама": "Распространение информации о специалисте, его услугах или продуктах с целью привлечения внимания потенциальных клиентов и стимулирования спроса.", "Обучение": "Затраты на получение и поддержание знаний, навыков и профессиональных компетенций, необходимых для выполнения работы и развития специалиста.", "Минимальный заказ": "Минимальное количество часов съёмки, которое специалист принимает в рамках одного заказа и ниже которого не выполняет заказ на установленных условиях.", "Учёт": "Систематический сбор, фиксация и анализ информации о доходах, расходах, работе и других показателях профессиональной деятельности.", "Сайт": "Интернет-ресурс, предназначенный для представления специалиста, его услуг и портфолио, информирования потенциальных клиентов, привлечения обращений и получения заказов.", "Юнит-экономика": "Расчёт доходов, расходов и финансового результата в расчёте на одну единицу деятельности специалиста, например один час работы, одну услугу, один заказ или один съёмочный проект. Позволяет определить реальную стоимость выполнения работы, понять, сколько специалист зарабатывает после покрытия всех связанных с деятельностью затрат, определить необходимую стоимость услуг и оценить экономическую эффективность своей работы."}, СЛОВА={"Амортизация": "амортизаци[а-яё]*", "Срок службы": "срок[а-яё]*[ ]+службы", "Эквайринг": "эквайринг[а-яё]*", "Постпродакшн": "постпродакшн[а-яё]*", "Первичная обработка": "первичн[а-яё]+[ ]+обработк[а-яё]+", "Готовые кадры": "готов[а-яё]+[ ]+кадр[а-яё]*", "Срабатывание затвора": "срабатыван[а-яё]+[ ]+затвора", "Ресурс затвора": "ресурс[а-яё]*[ ]+затвора", "Съёмочное оборудование": "съёмочн[а-яё]+[ ]+оборудован[а-яё]+", "Офисное оборудование": "офисн[а-яё]+[ ]+оборудован[а-яё]+", "Подписки": "подписк[а-яё]+", "Проектное время": "проектн[а-яё]+[ ]+врем[а-яё]+", "Рабочее время": "рабоч[а-яё]+[ ]+врем[а-яё]+", "Неэффективное рабочее время": "неэффективн[а-яё]+[ ]+рабоч[а-яё]+[ ]+врем[а-яё]+", "Резерв времени на простой и форс-мажоры": "форс-мажор[а-яё]*|прост(?:ой|ым|ых|ое|ые|ого|ому|ом|ая|ую|оя|ою)", "Резерв на развитие": "фонд[а-яё]*[ ]+развития", "Запас на скидку": "запас[а-яё]*[ ]+на[ ]+скидку", "Налоговый режим": "налогов[а-яё]+[ ]+режим[а-яё]*", "Страховые взносы": "страхов[а-яё]+[ ]+взнос[а-яё]+", "Точка безубыточности": "точк[а-яё]+[ ]+безубыточности", "Доход на руки": "доход[а-яё]*[ ]+на[ ]+руки", "Выручка": "выручк[а-яё]+", "Логистика": "логистик[а-яё]+", "Поиск заказов": "поиск[а-яё]*[ ]+заказов", "Проектная работа с клиентами": "работ[а-яё]+[ ]+с[ ]+клиентом", "Отчётность": "отчётност[а-яё]+", "Бухгалтерия": "бухгалтери[а-яё]+", "Продвижение": "продвижени[а-яё]+", "Реклама": "реклам[а-яё]+", "Обучение": "обучени[а-яё]+", "Минимальный заказ": "минимальн[а-яё]+[ ]+заказ[а-яё]*", "Учёт": "учёт[а-яё]*", "Сайт": "сайт[а-яё]*", "Юнит-экономика": "юнит-экономик[а-яё]*"};
+  var СПР={"Амортизация": "Постепенное включение стоимости имущества в расходы бизнеса по мере его использования и износа.", "Срок службы": "Период, в течение которого оборудование или другое имущество может использоваться по назначению при соблюдении установленных условий эксплуатации.", "Эквайринг": "Комиссия за приём безналичных платежей от клиентов с использованием банковских карт, электронных средств платежа и других платёжных инструментов.", "Постпродакшн": "Комплекс работ с отснятым материалом после завершения съёмки, направленных на его обработку, доработку и подготовку к передаче или публикации.", "Первичная обработка": "Комплекс действий с отснятым фотоматериалом, выполняемых специалистом с использованием специализированных компьютерных программ для подготовки материала к дальнейшему использованию. Включает подготовку материала: создание и организацию папок и файлов, выгрузку материала с карт памяти, резервное копирование; отбор материала: просмотр отснятого материала, удаление технического брака, отбор удачных кадров, исключение дублей, кадров с закрытыми глазами и явно неудачных кадров; базовую цветокоррекцию: коррекцию экспозиции, баланса белого, контраста, светлых и тёмных областей, резкости и насыщенности, приведение всей серии к единому цвету и свету; коррекцию кадра: кадрирование, выравнивание горизонта, коррекцию перспективы и искажений объектива, удаление крупных лишних объектов из кадра; подготовку и передачу результата: импорт и экспорт из программы обработки, подготовку файлов, изменение размера и формата при необходимости. Ретушь в первичную обработку не входит.", "Готовые кадры": "Снимки, полученные в результате проведения съёмочных работ и прошедшие первичную обработку.", "Срабатывание затвора": "Однократный цикл работы затвора камеры, происходящий при создании снимка и учитываемый при определении выработки ресурса затвора.", "Ресурс затвора": "Расчётное количество срабатываний затвора камеры, которое предусмотрено производителем до достижения установленного уровня его эксплуатационного ресурса.", "Съёмочное оборудование": "Неизменный рабочий комплект оборудования, который фотограф использует на каждой съёмке и без которого проведение съёмочного процесса невозможно или существенно затруднено. Узкоспециализированное оборудование для разовых или нестандартных проектов в основной комплект не входит и учитывается отдельно в зависимости от конкретных задач.", "Офисное оборудование": "Оборудование и технические средства, используемые для организации рабочего процесса, выполнения административных задач и обеспечения повседневной деятельности специалиста.", "Подписки": "Регулярные платежи за доступ к программам, сервисам, платформам и другим цифровым инструментам, необходимым специалисту для работы.", "Проектное время": "Общее время, необходимое специалисту для выполнения всех работ в рамках съёмочного проекта, включая подготовку, проведение съёмки, обработку материала и передачу готового результата.", "Рабочее время": "Время, в течение которого специалист выполняет профессиональные обязанности, включая непосредственную работу, подготовку, организационные задачи и другие действия, связанные с выполнением работы.", "Неэффективное рабочее время": "Часть рабочего времени, затрачиваемая на действия и перерывы, не связанные непосредственно с выполнением основной оплачиваемой работы, включая личные потребности, отдых, обслуживание рабочего места, внутренние коммуникации и другие отвлечения. Используется в Счётикс для учёта времени, которое фактически не может быть использовано для выполнения оплачиваемой работы.", "Резерв времени на простой и форс-мажоры": "Дополнительный запас рабочего времени, предусмотренный в расчёте для компенсации периодов отсутствия заказов, отмены или переноса съёмок, а также непредвиденных обстоятельств, временно влияющих на возможность специалиста работать. Дополнительный резерв, может быть отключён.", "Чистая прибыль": "Доля выручки сверх зарплаты, расходов и налогов. Направляется на развитие дела или становится вашим доходом.", "Запас на скидку": "Часть стоимости услуги, заранее заложенная в цену для возможности предоставить клиенту скидку без снижения планируемого дохода специалиста.", "Налоговый режим": "Установленный законодательством порядок исчисления и уплаты налогов и обязательных платежей, применяемый специалистом в зависимости от выбранной системы налогообложения.", "Страховые взносы": "Обязательные платежи в государственные внебюджетные фонды и государственные системы страхования, связанные с осуществлением профессиональной деятельности и обеспечением социальных гарантий.", "Точка безубыточности": "Объём работы или выручки, при котором доход специалиста полностью покрывает все расходы, но ещё не формирует прибыль.", "Доход на руки": "Сумма денежных средств, остающаяся у специалиста после вычета налогов, обязательных платежей и других предусмотренных расходов.", "Выручка": "Общая сумма денежных средств, которую специалист получил или должен получить от продажи работ или услуг за определённый период, до вычета расходов, налогов и других затрат.", "Логистика": "Организация перемещения специалиста, оборудования, материалов и готового результата между местами работы, хранения и передачи.", "Поиск заказов": "Действия специалиста по выявлению потенциальных клиентов и получению новых заказов на оказание услуг.", "Проектная работа с клиентами": "Рабочие действия специалиста, связанные с взаимодействием с клиентом в рамках конкретного проекта: обсуждение задачи, согласование условий и деталей работы, подготовка к проекту, коммуникация в процессе его выполнения, согласование результата и завершение проекта.", "Отчётность": "Систематизированная информация о доходах, расходах, результатах деятельности и обязательствах специалиста, подготовленная за определённый период для анализа, контроля или предоставления в налоговые и иные соответствующие органы в установленных случаях.", "Бухгалтерия": "Ведение и обработка финансовой информации о деятельности специалиста, включая учёт доходов и расходов, расчёт обязательных платежей и подготовку необходимой отчётности.", "Продвижение": "Комплекс действий, направленных на привлечение внимания к специалисту, его услугам или продуктам, увеличение числа потенциальных клиентов и стимулирование продаж.", "Реклама": "Распространение информации о специалисте, его услугах или продуктах с целью привлечения внимания потенциальных клиентов и стимулирования спроса.", "Обучение": "Затраты на получение и поддержание знаний, навыков и профессиональных компетенций, необходимых для выполнения работы и развития специалиста.", "Минимальный заказ": "Минимальное количество часов съёмки, которое специалист принимает в рамках одного заказа и ниже которого не выполняет заказ на установленных условиях.", "Учёт": "Систематический сбор, фиксация и анализ информации о доходах, расходах, работе и других показателях профессиональной деятельности.", "Сайт": "Интернет-ресурс, предназначенный для представления специалиста, его услуг и портфолио, информирования потенциальных клиентов, привлечения обращений и получения заказов.", "Юнит-экономика": "Расчёт доходов, расходов и финансового результата в расчёте на одну единицу деятельности специалиста, например один час работы, одну услугу, один заказ или один съёмочный проект. Позволяет определить реальную стоимость выполнения работы, понять, сколько специалист зарабатывает после покрытия всех связанных с деятельностью затрат, определить необходимую стоимость услуг и оценить экономическую эффективность своей работы."}, СЛОВА={"Амортизация": "амортизаци[а-яё]*", "Срок службы": "срок[а-яё]*[ ]+службы", "Эквайринг": "эквайринг[а-яё]*", "Постпродакшн": "постпродакшн[а-яё]*", "Первичная обработка": "первичн[а-яё]+[ ]+обработк[а-яё]+", "Готовые кадры": "готов[а-яё]+[ ]+кадр[а-яё]*", "Срабатывание затвора": "срабатыван[а-яё]+[ ]+затвора", "Ресурс затвора": "ресурс[а-яё]*[ ]+затвора", "Съёмочное оборудование": "съёмочн[а-яё]+[ ]+оборудован[а-яё]+", "Офисное оборудование": "офисн[а-яё]+[ ]+оборудован[а-яё]+", "Подписки": "подписк[а-яё]+", "Проектное время": "проектн[а-яё]+[ ]+врем[а-яё]+", "Рабочее время": "рабоч[а-яё]+[ ]+врем[а-яё]+", "Неэффективное рабочее время": "неэффективн[а-яё]+[ ]+рабоч[а-яё]+[ ]+врем[а-яё]+", "Резерв времени на простой и форс-мажоры": "форс-мажор[а-яё]*|прост(?:ой|ым|ых|ое|ые|ого|ому|ом|ая|ую|оя|ою)", "Чистая прибыль": "чист[а-яё]*[ ]+прибыл[а-яё]*", "Запас на скидку": "запас[а-яё]*[ ]+на[ ]+скидку", "Налоговый режим": "налогов[а-яё]+[ ]+режим[а-яё]*", "Страховые взносы": "страхов[а-яё]+[ ]+взнос[а-яё]+", "Точка безубыточности": "точк[а-яё]+[ ]+безубыточности", "Доход на руки": "доход[а-яё]*[ ]+на[ ]+руки", "Выручка": "выручк[а-яё]+", "Логистика": "логистик[а-яё]+", "Поиск заказов": "поиск[а-яё]*[ ]+заказов", "Проектная работа с клиентами": "работ[а-яё]+[ ]+с[ ]+клиентом", "Отчётность": "отчётност[а-яё]+", "Бухгалтерия": "бухгалтери[а-яё]+", "Продвижение": "продвижени[а-яё]+", "Реклама": "реклам[а-яё]+", "Обучение": "обучени[а-яё]+", "Минимальный заказ": "минимальн[а-яё]+[ ]+заказ[а-яё]*", "Учёт": "учёт[а-яё]*", "Сайт": "сайт[а-яё]*", "Юнит-экономика": "юнит-экономик[а-яё]*"};
   var корень=document.getElementById('phc-root'); if(!корень)return;
   /* Ждём, пока анкета достроит свои блоки и обновит склонения:
      иначе её код перезапишет разметку вместе с нашими подсказками. */

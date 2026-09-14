@@ -235,18 +235,14 @@ border-right:1px solid var(--c-ln)}
 #phr-root .fbname{display:flex;align-items:center;height:46px;
 font-size:14px;font-weight:700;letter-spacing:.11em;text-transform:lowercase;
 color:var(--c-ink)}
-#phr-root .fbclose{display:inline-flex;align-items:center;justify-content:center;
-width:34px;height:34px;border:0;border-radius:12px;background:transparent;
-color:var(--c-gr2);font-size:20px;line-height:1;cursor:pointer;
-transition:background .18s,color .18s}
-#phr-root .fbclose:hover{background:var(--c-white);color:var(--c-ink2)}
+/* 15.09, круг 12: .fbclose удалён (крестик убран). */
 /* Ниже 620px плавающее меню — только иконки: надпись «счётикс» убрана,
    остаётся один знак. Решение владельца 26.08: оба меню на мобильном
    выглядят одинаково, подписей нет нигде. */
 @media(max-width:620px){#phr-root .fbrand{gap:0;height:38px;margin-right:8px;padding-right:8px}
 #phr-root .fbmark{width:38px;height:38px}
 #phr-root .fbname{display:none}
-#phr-root .fbclose{width:30px;height:30px}}
+}
 /* кнопки те же, что в меню: подложка и радиус при наведении */
 #phr-root .fbar .fbl{font-size:14px;font-weight:600;color:var(--c-gr);
 text-decoration:none;white-space:nowrap;padding:7px 12px;border-radius:12px;
@@ -711,25 +707,20 @@ flex-wrap:wrap;gap:6px 16px}
    (радиал 88% 0% + 140deg g-700→g-500, тень плашки), заголовок
    сверху; цифры — в рамочках, как ряд .bbg блока 12: рамка
    1px rgba(255,255,255,.22), радиус 14, поля, лёгкая подложка,
-   число сверху, подпись снизу. Расстояния ×3 сохраняются. */
-#phr-root #card02 .wf{margin-top:54px;border-radius:var(--r);color:#fff;
-padding:24px 28px;box-shadow:0 12px 30px rgba(33,160,56,.20);
-background:radial-gradient(circle at 88% 0%,rgba(255,255,255,.18) 0%,rgba(255,255,255,0) 46%),linear-gradient(140deg,var(--c-g-700),var(--c-g-500))}
-#phr-root #card02 .wf-h{font-size:13px;font-weight:700;letter-spacing:.02em;opacity:.92}
-#phr-root #card02 .wf-row{display:flex;align-items:stretch;justify-content:center;
-gap:22px;margin-top:14px}
-#phr-root #card02 .wf-n{border:1px solid rgba(255,255,255,.22);border-radius:14px;
-padding:14px 18px;text-align:center;background:rgba(255,255,255,.07);min-width:132px}
-#phr-root #card02 .wf-b{font-size:34px;font-weight:700;letter-spacing:-.02em;
-line-height:1.1;font-variant-numeric:tabular-nums;white-space:nowrap}
-#phr-root #card02 .wf-s{font-size:13px;opacity:.85;margin-top:3px}
-#phr-root #card02 .wf-eq{align-self:flex-start;margin-top:13px;padding:0 2px;
-font-size:34px;font-weight:700;line-height:1.1;opacity:.92}
+   число сверху, подпись снизу. Расстояния ×3 сохраняются. 15.09 (слово владельца): плашка переведена на штатный .rate-plq, .wf-правила удалены. */
+
+
+
+
+
+
+
 /* Таблица времени: ширины классами шапки, как у детализации;
    мобильные пороги и приёмы — те же (620 / 700). */
 /* 15.09 (слово владельца): заголовок таблицы (плашка→таблица 16px→48px)
    и восстановленная разделительная полоса после таблицы. */
-#phr-root #card02 .wt-h{font-size:15px;font-weight:700;color:var(--c-ink);
+/* 15.09, круг 9 (слово владельца): заголовок таблицы — серый как текст серой плашки. */
+#phr-root #card02 .wt-h{font-size:15px;font-weight:700;color:var(--c-gr);
 margin:48px 0 14px}
 /* 15.09 (слово владельца): линия после календаря отделяет условные
    обозначения (под ней — легенда, у неё базовый отступ 18px). */
@@ -739,28 +730,29 @@ margin:48px 0 14px}
 #phr-root #card02 table.rt td:first-child{font-weight:600;color:var(--c-ink);
 white-space:normal;overflow-wrap:anywhere}
 @media(max-width:620px){
-#phr-root #card02 .wf{padding:18px}
-#phr-root #card02 .wf-row{gap:12px;margin-top:12px}
-#phr-root #card02 .wf-n{padding:10px 12px;border-radius:12px;min-width:0;flex:1 1 0}
-#phr-root #card02 .wf-b{font-size:23px}
-#phr-root #card02 .wf-s{font-size:11px}
-#phr-root #card02 .wf-eq{font-size:23px;margin-top:8px;padding:0}
-#phr-root #card02 .wt-h{margin-top:40px}
+
+
+
+
+
+
+/* 15.09, круг 6 (слово владельца): таблица ближе к баннеру на ~30% (зазор 48→34px). */
+#phr-root #card02 .wt-h{margin-top:26px}
 #phr-root #card02 .wt-div{margin-top:24px}
 #phr-root #card02 .wrap{--w-имя:142px;--w-знач:104px}
 #phr-root #card02 table.rt td:first-child{white-space:normal;overflow-wrap:break-word;line-height:1.35}}
 /* 15.09 (3-й круг): очень узкие экраны — рамочки формулы ужимаются ещё. */
 @media(max-width:380px){
-#phr-root #card02 .wf-row{gap:8px}
-#phr-root #card02 .wf-n{padding:8px 10px}
-#phr-root #card02 .wf-b{font-size:20px}
-#phr-root #card02 .wf-eq{font-size:20px;margin-top:6px}}
+
+
+
+}
 @media(max-width:700px){#phr-root #card02 table.rt{font-size:12.5px}}
 @media print{
 #phr-root #card02 .свайп{display:none}
 #phr-root #card02 .wrap{overflow:visible}
 #phr-root #card02 table.rt{min-width:0;font-size:10.5px}
-#phr-root #card02 table.rt th,#phr-root #card02 table.rt td{padding:4px 6px}}
+}
 /* 13.09 (слово владельца, повторный): блок 06 — условные обозначения
    возвращены на прежнее место: под календарём, как были размещены
    ранее (маркер цвета + название направления). */
@@ -1567,6 +1559,14 @@ margin-left:-20px;margin-right:-20px}}
 /* Карточка на сером фоне страницы: без подложки и тени, поля и номер как у
    остальных (блок «Вы уже вложили», решение владельца 07.09). */
 #phr-root .card.plain{background:none;box-shadow:none}
+/* 15.09 (слово владельца): .bn удалён — нижний отступ блока 09 подтянут до симметрии с верхом (26px). Низ блока: 26+16=42. */
+#phr-root #инвестиции{padding-bottom:26px}
+/* 15.09, круг 9: B029 под баннером — отбивка 20px (переход шапка→контент чуть шире межкарточного ритма). */
+#phr-root #mpHost{margin:20px 0 0}
+/* 15.09, круг 10 (слово владельца): уведомление маржи — на белой подложке, отдельным блоком (не на фоне). */
+#phr-root #mpHost .logi{background:var(--c-white);border:none;box-shadow:var(--sh)} /* 15.09, круг 21: тень как у блоков — уведомление читается отдельным блоком. */
+/* 15.09, круг 11 (слово владельца): голубая обводка блока убрана; текст кнопки — серый как текст уведомления (только B029). */
+#phr-root #mpHost .logi .lgwb{color:var(--c-gr)}
 
 /* ---------- декор карточки 01 ---------- */
 #phr-root #card01{position:relative;overflow:hidden}
@@ -1724,7 +1724,7 @@ font-variant-numeric:tabular-nums;white-space:nowrap;width:26%}
 #phr-root .cnd.st4{margin:24px 0 6px}
 /* Плашки накоплений (блок «Что накопится при этой ставке», 07.09):
    тот же силуэт, что плашки блока «Объясняйте клиенту»; палитра —
-   зелёная (отпуск, техника), голубая (камера), янтарная — фонд не заложен. */
+   зелёная (отпуск, техника), голубая (камера), янтарная — маржинальная прибыль не заложена. */
 /* 12.09 (слово владельца): «всё должно выглядеть как баннеры — во всю
    ширину экрана, друг под другом; мобильная версия как десктоп».
    Была сетка 2x2, теперь одна колонка на всех ширинах: каждая плашка —
@@ -1768,7 +1768,7 @@ text-transform:none;line-height:1.5;color:rgba(255,255,255,.96);opacity:1}
    подпись — одной строкой под ней, без переноса. Ритм: цифра →
    8px → линия → 8px → подпись. */
 #phr-root .cnd.nak .cn .tpw{align-items:flex-start;flex:0 1 auto}
-#phr-root .cnd.nak .cn .tpw .bg{width:auto}
+#phr-root .cnd.nak .cn .tpw .bg{width:auto;display:block;white-space:nowrap}
 #phr-root .cnd.nak .cn .tpw .bg:after{content:'';display:block;width:100%;
 height:1px;background:rgba(255,255,255,.28);margin:8px 0}
 #phr-root .cnd.nak .cn .tpw .tp{white-space:nowrap}
@@ -1776,17 +1776,19 @@ height:1px;background:rgba(255,255,255,.28);margin:8px 0}
 /* 13.09 (слово владельца): кегль цифры — фикс 27px на всех
    ширинах, ступеней по брейкпоинтам нет (как у заголовка). */
 #phr-root .cnd.nak .cn.n1{background:linear-gradient(140deg,var(--c-g-400),var(--c-g-350))}
-#phr-root .cnd.nak .cn.n2{background:linear-gradient(140deg,var(--c-b-600),var(--c-b-400))}
+
 #phr-root .cnd.nak .cn.n3{background:linear-gradient(140deg,#12703A,#3AA45C)}
 #phr-root .cnd.nak .cn.n4{background:linear-gradient(140deg,var(--c-b-300),var(--c-b-400))}
-#phr-root .cnd.nak .cn.off{background:linear-gradient(140deg,#B45309,#F59E0B)}
+
+
 /* 12.09 (слово владельца): «убрать из-под этого блока подложку,
    сделать двумя баннерами вне блока». Белой карточки, тени и номера
    больше нет — только заголовок и два баннера на общем фоне страницы.
    Поле сверху и снизу — как у карточек (26 px). По горизонтали полей
    НЕТ (06.09, слово владельца): баннер во всю ширину блока, края —
    ровно по краям блока. */
-#phr-root .накоп{margin:0 0 24px;padding:24px 0}
+/* 15.09 (слово владельца): низ плашек = низу блока 09 (26+16=42): margin 24→18. */
+#phr-root .накоп{margin:0 0 18px;padding:24px 0}
 /* 13.09 (слово владельца): место под баннером «На замену/ремонт техники»
    +50 % (16→24 px), верхний и нижний отступы — равные (24/24). */
 /* Заголовок остаётся в стилистике документа: без карточки он потерял
@@ -1836,7 +1838,7 @@ background-image:linear-gradient(160deg,rgba(0,0,0,.60) 0%,rgba(0,0,0,.38) 46%,r
 #phr-root .cnd.nak .cn.илл .tpw .bg:after{background:rgba(255,255,255,.34)}
 /* Текстовая колонка занимает левую половину: правее идёт рисунок. */
 #phr-root .cnd.nak .cn.илл .tpw,#phr-root .cnd.nak .cn.илл .tp,
-#phr-root .cnd.nak .cn.илл .bg,#phr-root .cnd.nak .cn.илл .sm{max-width:min(560px,58%)}
+#phr-root .cnd.nak .cn.илл .bg,#phr-root .cnd.nak .cn.илл .sm{max-width:min(560px,64%)}
 /* 15.09 (слово владельца): кегль цифры — основной показатель обложки,
    .hero .big из calc.html: 54px на десктопе; на мобильном цифра
    остаётся 27px. Однострочный вариант с подписью 54px отклонён
@@ -1855,11 +1857,13 @@ background-image:linear-gradient(160deg,rgba(0,0,0,.60) 0%,rgba(0,0,0,.38) 46%,r
    максимума), поэтому 26 × 1,5 = 39px; нижний марджин заголовка
    обнулён (мобильный зазор остаётся 26px), 39px — явный. */
 #phr-root .накоп .cnd.nak{margin-top:39px}
-#phr-root .cnd.nak .cn.илл{justify-content:flex-start;padding:26px 93px}
+#phr-root .cnd.nak .cn.илл{justify-content:center;padding:26px clamp(70px,8.5vw,93px)}
 #phr-root .cnd.nak .cn.илл .tpw{flex:0 0 auto;flex-direction:column;
 justify-content:flex-start;align-items:flex-start;gap:0}
-#phr-root .cnd.nak .cn.илл .bg{font-size:54px}
+#phr-root .cnd.nak .cn.илл .bg{font-size:clamp(44px,5.2vw,54px)}
 #phr-root .cnd.nak .cn.илл .tpw .tp{font-size:16px;opacity:.9}}
+/* 14.09: переходная зона 641–820 — плавное сжатие вместо обрыва: паддинги 28→70 и кегль 27→44 сходятся без скачков с соседними зонами. */
+@media(min-width:641px) and (max-width:820px){#phr-root .cnd.nak .cn.илл{padding:26px clamp(28px,23.4vw - 122px,70px)}#phr-root .cnd.nak .cn.илл .bg{font-size:clamp(27px,9.5vw - 33.9px,44px)}}
 @media(max-width:820px){
   /* На узком экране кадр 4:1 кадрируется по центру правой части —
      фотография остаётся фоном во всю плашку, как на десктопе.
@@ -1873,10 +1877,10 @@ justify-content:flex-start;align-items:flex-start;gap:0}
   #phr-root .cnd.nak .cn.илл .tpw,#phr-root .cnd.nak .cn.илл .tp,
   #phr-root .cnd.nak .cn.илл .bg,#phr-root .cnd.nak .cn.илл .sm{max-width:100%}
 }
-#phr-root .cnd.nak .cn .sm b{color:var(--c-white);font-weight:700}
-#phr-root .cnd.nak .cn .sm a{color:var(--c-white);font-weight:600;text-decoration:underline;text-underline-offset:3px;display:inline-block;margin-top:6px}
+
+
 @media(max-width:640px){#phr-root .cnd.nak{grid-template-columns:1fr}}
-@media print{#phr-root .cnd.nak .cn .sm a{text-decoration:none}}
+
 /* Голубая гамма вместо инста-градиента (решение владельца 26.08).
    Градиент сквозной: три плашки читаются как одна лента, идущая
    от тёмного к светлому. Первая — самая тёмная, третья — светлая.
@@ -1897,6 +1901,12 @@ justify-content:flex-start;align-items:flex-start;gap:0}
    а обычный порядок вещей. Знак слева, текст правее и на знак не заезжает. */
 /* Без заливки — цвет фона страницы; только светло-голубая обводка
    (оттенок — от плашки «6 съёмок», тон — по светлоте рамки кнопки). */
+/* 15.09, круг 20 (слово владельца): B029 «вкл» — баннером, как плашки B028
+   (цифра → линия → подпись); подпись — заголовок целиком, перенос разрешён.
+   Шкала цифры на десктопе — как у фото-баннеров .илл; отступы — как у карточки. */
+#phr-root #mpHost .cnd.nak{margin:0 0 16px}
+#phr-root .cnd.nak .cn.mp .tpw .tp{white-space:normal}
+@media(min-width:821px){#phr-root .cnd.nak .cn.mp .bg{font-size:clamp(44px,5.2vw,54px)}}
 #phr-root .logi{position:relative;overflow:hidden;margin-bottom:16px;
 padding:24px 28px 24px 156px;border:1.5px solid #D9EBF7;border-radius:var(--r);
 background:none}
@@ -2080,7 +2090,7 @@ padding-top:16px;border-top:1px solid var(--c-bg)}
    Диаграмма переехала в собственный контейнер #wkchart. */
 /* Порядок в блоке (решение владельца 07.09): календарь → легенда →
    линейная диаграмма; заголовок календаря и текст «Получается всего…»
-   убраны (JS wktxt остаётся неактивным — узла нет). */
+   убраны (wktxt: с 15.09 под таблицей; с круга 8 текст статичный в разметке). */
 /* З-141: подзаголовок таблицы недели — в стиле надзаголовка
    «Сервис работает в пробном режиме» (серый капителли, var(--c-gr2)),
    по центру таблицы. Верхний отступ 46 px — чёткое разделение
@@ -3965,7 +3975,7 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="18" cy="5" r="2.6" stroke="currentColor" stroke-width="1.8"/><circle cx="6" cy="12" r="2.6" stroke="currentColor" stroke-width="1.8"/><circle cx="18" cy="19" r="2.6" stroke="currentColor" stroke-width="1.8"/><path d="M8.4 10.8l7.2-4.2M8.4 13.2l7.2 4.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
 <a class="fbi fbh tip-r" href="#thanks" data-thx="report-float" data-tip="Поблагодарить проект" aria-label="Поблагодарить проект">
 <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 00-7.8 0l-1 1-1-1a5.5 5.5 0 00-7.8 7.8l1 1 7.8 7.8 7.8-7.8 1-1a5.5 5.5 0 000-7.8z" fill="none" stroke="currentColor" stroke-width="2"/></svg></a>
-<button class="fbclose" id="fbarClose" type="button" aria-label="Скрыть">×</button>
+<!-- 15.09, круг 12 (слово владельца): крестик убран — меню не скрывается. -->
 </div>
 
 </div>
@@ -4026,6 +4036,8 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 </div>
 </section>
 </div>
+<!-- ═══ МАРЖИНАЛЬНАЯ ПРИБЫЛЬ (REPORT-B029) — доход дела, сразу под баннером (круг 9; круг 20 — «вкл» баннером): баннер с суммой или уведомление + кнопка «Заложить». Контент строит скрипт #mpBody. -->
+<div id="mpHost" data-block-id="REPORT-B029" data-block-name="Маржинальная прибыль"><div id="mpBody"></div></div>
 <div class="wnote" data-block-id="REPORT-B005" data-block-name="Из чего складывается цена">
 <div class="wnh" data-t="rbd_nh">Из чего складывается ваша цена</div>
 <div class="wnkey" data-t="rbd_h2a">Клиент готов оплачивать только время, проведённое вами на съёмочной площадке, зачастую не подозревая о колоссальном объёме закулисной работы.</div>
@@ -4100,28 +4112,6 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 <div class="dnsum res" id="dnRes"></div>
 <div class="lgd" id="lg3"></div>
 </div>
-<!-- Уведомление «Прибыль предпринимателя» (REPORT-B029) — после блока 03
-     (слово владельца 08.09). Стилистика — строго по образцу B006. -->
-<div class="logi" data-block-id="REPORT-B029" data-block-name="Прибыль предпринимателя">
-<div class="logii" aria-hidden="true">
-<svg viewBox="0 0 64 64">
-  <circle cx="32" cy="32" r="29" fill="var(--c-ln2)"/>
-  <g fill="var(--c-gr3)">
-    <path d="M20 27h24a3 3 0 0 1 3 3v14a3 3 0 0 1-3 3H20a3 3 0 0 1-3-3V30a3 3 0 0 1 3-3z"/>
-  </g>
-  <g fill="var(--c-gr2)">
-    <path d="M26 27v-3.5a3.5 3.5 0 0 1 3.5-3.5h5a3.5 3.5 0 0 1 3.5 3.5V27h-4v-3h-4v3z"/>
-    <rect x="28.8" y="31.5" width="6.4" height="15" rx="3.2"/>
-  </g>
-  <path d="M13 51L51 13" stroke="var(--c-r-500)" stroke-width="5.5"
-        stroke-linecap="round"/>
-</svg>
-</div>
-<div class="logit">
-<b data-t="rpp_01">Прибыль предпринимателя в расчёт не заложена</b>
-<span data-t="rpp_02">Как предприниматель вы не зарабатываете ничего: за принятие рисков и организацию процессов вознаграждения в этой схеме нет — даже несмотря на то, что процессы эти ваши собственные. Оплата труда фотографа — это фонд оплаты труда, а не доход компании. Резервы предпринимательской прибыли не заложены, схема посчитана в ноль. <b>Совет от Счётикс:</b> решите отдельно, какую прибыль как владелец дела вы хотите получать сверх оплаты своего труда.<em class="mblink"><a class="спр" href="#спр-99">Смотреть пункт 99 справочника</a></em></span>
-</div>
-</div>
 <!-- ═══ СКОЛЬКО ВЫ ЗАРАБАТЫВАЕТЕ В МЕСЯЦ (REPORT-B030, 08.09, слово
      владельца) — тот же состав ролей, что в блоке 01, но пересчитанный
      на месяц. Доходные секторы покрывают 11 месяцев трат, поэтому
@@ -4154,19 +4144,20 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
      уведомление — канон .note.info, тот же вид, что в блоке 08. -->
 <div class="note info" id="pieNote"></div>
 </div>
-<!-- ═══ ЧТО НАКОПИТСЯ ПРИ ЭТОЙ СТАВКЕ (REPORT-B028, 07.09) — резервы и
-     амортизация как накопления: отпуск, камера, вся техника, развитие. -->
+<!-- ═══ ЧТО НАКОПИТСЯ ПРИ ЭТОЙ СТАВКЕ (REPORT-B028) — отпуск и замена техники. Маржинальная прибыль — свой блок B029. -->
 <!-- ═══ ЧТО НАКОПИТСЯ ПРИ ЭТОЙ СТАВКЕ (REPORT-B028, 07.09) — резервы и
      амортизация как накопления: отпуск и замена техники.
      12.09 (слово владельца): подложка карточки снята, номер блока и
      подпись под баннерами убраны — два баннера стоят сами по себе.
+     15.09, круг 7: маржа — карточка B029 наверху под баннером; ряд из двух. Низ ряда = низу блока 09 (42px).
      Технический ID сохранён: блок остаётся смысловой единицей
      контракта (20 блоков в .wp). -->
 <div class="накоп" id="накопления" data-block-id="REPORT-B028" data-block-name="Что накопится при этой ставке">
 <h2>За 1 год работы вы накопите</h2>
 <div class="cnd nak" id="накопПлашки"></div>
 </div>
-<div class="card" id="card02" data-block-id="REPORT-B008" data-block-name="Как распределяется время"><div class="bn">06</div>
+<!-- 15.09, круг 9 (слово владельца): B029 «Маржинальная прибыль» переехал наверх, под баннер. -->
+  <div class="card" id="card02" data-block-id="REPORT-B008" data-block-name="Как распределяется время"><div class="bn">06</div>
 <h2 data-t="rh2_09">Как распределяется ваше время</h2>
 <p class="hint" data-t="rhi_09">Структура вашей рабочей недели на основе введённых данных</p>
 <div class="wk" id="wk"></div>
@@ -4174,27 +4165,33 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
      выделяет условные обозначения. -->
 <div class="wt-div"></div>
 <div class="slg" id="wklg"></div>
-<!-- 15.09 (слово владельца, 3-й круг): формула — баннер в языке
-     баннеров документа: градиент и заголовок — по блок 11 .rate-plq,
-     цифры — в рамочках, как ряд .bbg блока 12 (число сверху,
-     подпись снизу). X считается скриптом (id=wfTot). -->
-<div class="wf" id="wfpl">
-<div class="wf-h">Главная формула</div>
-<div class="wf-row">
-<div class="wf-n"><div class="wf-b">1 час</div><div class="wf-s">съёмка</div></div>
-<div class="wf-eq" aria-hidden="true">=</div>
-<div class="wf-n"><div class="wf-b" id="wfTot">—</div><div class="wf-s">рабочее время</div></div>
+<!-- 15.09 (слово владельца): плашка — штатный .rate-plq (как «Базовая ставка»): строка, цифра X (id=wfTot), расшифровка. «Главная формула» и «=» убраны: это цена часа, а не равенство. -->
+<!-- 15.09, круг 6 (слово владельца): единая бара 30/70 (1 ч против 8,1 ч); серая — фоновая малозначимая, зелёная — со своей тенью на обёртке. -->
+<div class="wf-split">
+<div class="rate-plq gray">
+<div class="rp-h">Съёмка</div>
+<div class="rp-v">1 час =</div>
+<div class="rp-d">С камерой в руках.</div>
+</div>
+<div class="rate-plq" id="wfpl">
+<div class="rp-h">За каждым часом съёмки</div>
+<div class="rp-v"><span id="wfTot">—</span></div>
+<div class="rp-d">Работы в целом,<br>не считая временных и финансовых затрат на логистику.</div>
 </div>
 </div>
 <!-- 15.09 (слово владельца): таблица времени по периодам — разметка в
      точности как у таблиц подробной детализации: свайп-подсказка,
      .wrap + table.rt с colgroup и классами шапки. -->
-<h3 class="wt-h">На что уходит время</h3>
+<h3 class="wt-h">Полезные цифры</h3>
 <div class="свайп" id="wtSw" aria-hidden="true"><div class="свайп-полоса"><svg class="свайп-рука" viewBox="0 0 64 64" fill="none"><path d="M58.9 29.6c-2.8-2.1-6.8-1.9-9.4.3-1.1.9-2 2.1-3 3.2l-1.5 1.7c0-6.2 0-12.5 0-18.7 0-1.8.1-3.5-1.1-5.1-2.5-3.3-7.9-3.2-10.1.3-1 1.5-.8 3.2-.8 4.9v5.4c-2-.5-4.3 0-5.7 1.8-.4.5-.6.9-.8 1.5-.6-.2-1.1-.3-1.7-.3-2.4 0-4.2 1.4-4.9 3.4-2-.6-4.3-.2-5.8 1.5-1.6 1.8-1.2 4.3-1.2 6.5v3.7c0 4.1-.6 8.8 1.7 12.5 1 1.6 1.9 3.2 3.1 4.6 2.1 2.4 5.2 3.6 8.3 3.7h5.4c2 0 4 .1 5.9-.4 4-1.2 6.9-4.7 9.5-7.8 4.3-5.1 8.6-10.2 12.8-15.3 2.1-2.6 2-5.6-.5-7.5z" fill="currentColor"/></svg></div></div>
 <div class="wrap" id="wtWrap"><table class="rt" id="wtab"><colgroup><col class="cn"><col class="cv"><col class="cv"><col class="cv"><col class="cv"></colgroup>
 <thead><tr><th class="ш-имя">Наименование</th><th class="ш-знач">За 1 час съёмки</th><th class="ш-знач">За неделю</th><th class="ш-знач">За месяц</th><th class="ш-знач">За год</th></tr></thead>
 <tbody id="wtBd"></tbody></table></div>
+<!-- 15.09, круг 8 (слово владельца): текст уведомления — дословно владельца, статичный в разметке. -->
+<div class="note info" id="wktxt">Эти цифры помогут вам эффективнее распределять нагрузку на день, а также вовремя понять, когда выгоднее делегировать задачи помощнику, чем продолжать делать всё самостоятельно.</div>
 </div>
+<!-- 15.09, круг 10 (слово владельца): кнопка B010 — за блоком 06 (логический перерыв после времени), перенесена из-за блока 07. -->
+<div class="thxbar" data-block-id="REPORT-B010" data-block-name="Поблагодарить проект — середина"><a class="savebtn" href="#thanks" data-thx="report-mid"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0l-1 1-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1 7.8 7.8 7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8Z" stroke="currentColor" stroke-width="2"/></svg><span data-t="rthx_01">Поблагодарить проект</span></a></div>
 <div class="card" id="card04" data-block-id="REPORT-B012" data-block-name="Три сценария работы"><div class="bn">07</div>
 <h2 data-t="rh2_02">Три сценария вашей работы</h2>
 <p class="hint" data-t="rhi_02">Одна и та же загрузка при разной ставке часа. Разница только в цене — и в том, что остаётся вам</p>
@@ -4206,7 +4203,7 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 </div>
 <div class="note warn" data-t="rlg_01"><b>Логистика в расчёт не входит.</b> Дорога, бензин, такси и парковка по закону ложатся на исполнителя — значит, при ставке в ноль вы работаете в минус на сумму логистики.</div>
 </div>
-<div class="thxbar" data-block-id="REPORT-B010" data-block-name="Поблагодарить проект — середина"><a class="savebtn" href="#thanks" data-thx="report-mid"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0l-1 1-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1 7.8 7.8 7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8Z" stroke="currentColor" stroke-width="2"/></svg><span data-t="rthx_01">Поблагодарить проект</span></a></div>
+<!-- 15.09, круг 10: кнопка B010 переехала за блок 06; повтор — за блоком 12. -->
 <div class="card" id="card05" data-block-id="REPORT-B013" data-block-name="Больше заказов"><div class="bn">08</div>
 <h2 data-t="rh2_11">А если просто брать больше заказов?</h2>
 <p class="hint" data-t="rhi_11">Проверим: можно ли выйти на желаемый доход, не поднимая цену для заказчика, — только за счёт объёма работ</p>
@@ -4262,8 +4259,14 @@ border:2px solid var(--c-white);transform:translateX(-50%)}
 #phr-root .inv-plq{margin:26px auto 0;max-width:760px;text-align:center;color:var(--c-ink)}
 #phr-root .inv-plq .ip-v{font-size:clamp(22px,3vw,30px);font-weight:700;letter-spacing:-.02em;line-height:1.25;margin:0}
 #phr-root .inv-plq .ip-v b{font-weight:800;color:var(--c-g-700);white-space:nowrap}
+/* 15.09 (З-025, честная окупаемость): подпись под строкой срока —
+   чему равен знаменатель; состояние «никогда» — красным + кнопка
+   к галке маржи в анкете (тот же .lgwb, что в B029, по центру). */
+#phr-root .inv-plq .ip-s{margin:10px auto 0;max-width:660px;font-size:14px;line-height:1.55;color:var(--c-ink2)}
+#phr-root .inv-plq.never .ip-v b{color:var(--c-r-700)}
+#phr-root .inv-plq .lgwb{margin-left:auto;margin-right:auto}
 </style>
-<div class="bn">09</div>
+<!-- 15.09 (слово владельца): номер блока и завершающая линия убраны -->
 
 <h2>Вы уже вложили в своё дело:</h2>
 <p class="hint">Даже если вы работаете сами на себя — это бизнес. Вы уже вложили в него настоящие время и деньги, и эти вложения <b>должны вернуться к вам в виде реального финансового или профессионального актива.</b></p>
@@ -4377,6 +4380,15 @@ margin:8px 0 12px;padding-bottom:14px;border-bottom:1px solid rgba(255,255,255,.
 font-variant-numeric:tabular-nums}
 #phr-root .rate-plq .rp-v small{font-size:1em;font-weight:inherit;margin-left:2px;opacity:1;letter-spacing:inherit}
 #phr-root .rate-plq .rp-d{font-size:13px;line-height:1.55;opacity:.92;max-width:640px}
+/* 15.09, круг 6 (слово владельца): единая диаграмма-бара 30/70 без разрыва; тень на обёртке, скругления только по внешним краям; круг 7: воздух от легенды (mt 18→30). */
+/* 15.09, круг 6 (слово владельца): серая — ровная фоновая (c-bg), текст серый как в легенде «Оплачиваемое время»; малозначимая. */
+#phr-root .rate-plq.gray{background:var(--c-bg);color:var(--c-gr)}
+#phr-root .rate-plq.gray .rp-v{border-bottom-color:var(--c-gr3);white-space:nowrap}
+#phr-root .wf-split{display:grid;grid-template-columns:3fr 7fr;gap:0;margin:30px 0 8px;border-radius:var(--r);box-shadow:0 12px 30px rgba(33,160,56,.20)}
+#phr-root .wf-split .rate-plq{margin:0;box-shadow:none}
+#phr-root .wf-split .rate-plq.gray{border-radius:var(--r) 0 0 var(--r)}
+#phr-root .wf-split #wfpl{border-radius:0 var(--r) var(--r) 0}
+@media(max-width:720px){#phr-root .wf-split{grid-template-columns:1fr}#phr-root .wf-split .rate-plq.gray{border-radius:var(--r) var(--r) 0 0}#phr-root .wf-split #wfpl{border-radius:0 0 var(--r) var(--r)}}
 </style>
 <div class="bn">11</div>
 
@@ -4453,6 +4465,8 @@ font-variant-numeric:tabular-nums}
 
 <div class="pmknote txnote" id="txNote"></div>
 </div>
+<!-- 15.09, круг 10 (слово владельца): повтор кнопки — за блоком 12. Без block-id (не новый блок); аналитика — data-thx=report-b12. -->
+<div class="thxbar"><a class="savebtn" href="#thanks" data-thx="report-b12"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0l-1 1-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1 7.8 7.8 7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8Z" stroke="currentColor" stroke-width="2"/></svg><span data-t="rthx_01">Поблагодарить проект</span></a></div>
 <!-- ═══ 07 · ПОТЕНЦИАЛ ВАШЕЙ КАМЕРЫ (перенесён из Части/07_1 черновика З-027, решение владельца 03.09) ═══ -->
 <div class="card" id="амкамера" data-block-id="REPORT-B021" data-block-name="Амортизация камеры">
 <style>
@@ -4894,7 +4908,7 @@ var hword=function(n){
 var CO=['#0B6B22','#127528','#158026','#1B9331','#21A038','#C5D0C8','#C43D51','#D6563A','#E07038','#E8832A','#F09A20','#3DAA4E','#6FD183','#A9DDB8','#CC4A45'];
 /* Термин справочника для каждой строки легенды блока 01.
    Порядок совпадает с LB. */
-var REFLB=['Съёмка','Постпродакшн','Проектная работа с клиентами','Реклама','Учёт','Неэффективное рабочее время','Съёмочное оборудование','Реклама','Содержание рабочего места','Налоги','Эквайринг','Фонд развития','Фонд программы лояльности','Резерв на отпуск','Обучение','Резерв времени на простой и форс-мажоры'];
+var REFLB=['Съёмка','Постпродакшн','Проектная работа с клиентами','Реклама','Учёт','Неэффективное рабочее время','Съёмочное оборудование','Реклама','Содержание рабочего места','Налоги','Эквайринг','Маржинальная прибыль','Фонд программы лояльности','Резерв на отпуск','Обучение','Резерв времени на простой и форс-мажоры'];
 /* Подписи подсказки на секторах кольца (07.09, слово владельца): коротко,
    без дублирования «часа съёмки» — он написан в центре кольца. */
 var TIPLB=[['\u0417\u0430 \u0441\u044a\u0451\u043c\u043a\u0443','\u0434\u043e\u0445\u043e\u0434'],
@@ -4911,7 +4925,9 @@ var TIPLB=[['\u0417\u0430 \u0441\u044a\u0451\u043c\u043a\u0443','\u0434\u043e\u0
 ['\u041d\u0430 \u0440\u0430\u0437\u0432\u0438\u0442\u0438\u0435','\u0440\u0435\u0437\u0435\u0440\u0432'],
 ['\u041d\u0430 \u0441\u043a\u0438\u0434\u043a\u0443','\u0440\u0435\u0437\u0435\u0440\u0432'],
 ['\u041d\u0430 \u043e\u0442\u043f\u0443\u0441\u043a','\u0440\u0435\u0437\u0435\u0440\u0432'],
-['\u041e\u0431\u0443\u0447\u0435\u043d\u0438\u0435','\u0440\u0430\u0441\u0445\u043e\u0434\u044b']];
+['\u041e\u0431\u0443\u0447\u0435\u043d\u0438\u0435','\u0440\u0430\u0441\u0445\u043e\u0434\u044b'],
+null,
+['\u0417\u0430 \u0443\u043f\u0440\u0430\u0432\u043b\u0435\u043d\u0438\u0435 \u0434\u0435\u043b\u043e\u043c','\u0434\u043e\u0445\u043e\u0434']];
 var LB=['\u0421\u044a\u0451\u043c\u043a\u0430 \u2014 \u043a\u0430\u043a \u0444\u043e\u0442\u043e\u0433\u0440\u0430\u0444',
 '\u041e\u0431\u0440\u0430\u0431\u043e\u0442\u043a\u0430 \u2014 \u043a\u0430\u043a \u0444\u043e\u0442\u043e\u0433\u0440\u0430\u0444',
 '\u0420\u0430\u0431\u043e\u0442\u0430 \u0441 \u043a\u043b\u0438\u0435\u043d\u0442\u043e\u043c \u2014 \u043a\u0430\u043a \u043e\u0442\u0434\u0435\u043b \u043f\u0440\u043e\u0434\u0430\u0436',
@@ -4923,32 +4939,33 @@ var LB=['\u0421\u044a\u0451\u043c\u043a\u0430 \u2014 \u043a\u0430\u043a \u0444\u
 '\u0417\u0430\u043f\u043b\u0430\u0442\u0438\u0442\u0435 \u043f\u043e \u0442\u0435\u043a\u0443\u0449\u0438\u043c \u0441\u0447\u0435\u0442\u0430\u043c',
 '\u0417\u0430\u043f\u043b\u0430\u0442\u0438\u0442\u0435 \u043d\u0430\u043b\u043e\u0433\u043e\u0432 \u0438 \u0432\u0437\u043d\u043e\u0441\u043e\u0432',
 '\u041e\u0442\u0434\u0430\u0434\u0438\u0442\u0435 \u0431\u0430\u043d\u043a\u0443 \u0437\u0430 \u044d\u043a\u0432\u0430\u0439\u0440\u0438\u043d\u0433',
-'\u041e\u0442\u043b\u043e\u0436\u0438\u0442\u0435 \u0440\u0435\u0437\u0435\u0440\u0432 \u043d\u0430 \u0440\u0430\u0437\u0432\u0438\u0442\u0438\u0435',
+'\u041f\u043e\u043b\u0443\u0447\u0438\u0442\u0435 \u043c\u0430\u0440\u0436\u0438\u043d\u0430\u043b\u044c\u043d\u0443\u044e \u043f\u0440\u0438\u0431\u044b\u043b\u044c',
 '\u041e\u0442\u043b\u043e\u0436\u0438\u0442\u0435 \u0440\u0435\u0437\u0435\u0440\u0432 \u043d\u0430 \u0441\u043a\u0438\u0434\u043a\u0443',
 '\u041e\u0442\u043b\u043e\u0436\u0438\u0442\u0435 \u0440\u0435\u0437\u0435\u0440\u0432 \u043d\u0430 \u043e\u0442\u043f\u0443\u0441\u043a',
 '\u0412\u0435\u0440\u043d\u0451\u0442\u0435 \u0432\u043b\u043e\u0436\u0435\u043d\u0438\u044f \u0432 \u043e\u0431\u0443\u0447\u0435\u043d\u0438\u0435',
-'\u041a\u043e\u043c\u043f\u0435\u043d\u0441\u0430\u0446\u0438\u044f \u0437\u0430 \u043f\u0440\u043e\u0441\u0442\u043e\u0439 \u0438 \u0444\u043e\u0440\u0441-\u043c\u0430\u0436\u043e\u0440\u044b'];
+'\u041a\u043e\u043c\u043f\u0435\u043d\u0441\u0430\u0446\u0438\u044f \u0437\u0430 \u043f\u0440\u043e\u0441\u0442\u043e\u0439 \u0438 \u0444\u043e\u0440\u0441-\u043c\u0430\u0436\u043e\u0440\u044b',
+'\u0423\u043f\u0440\u0430\u0432\u043b\u0435\u043d\u0438\u0435 \u0434\u0435\u043b\u043e\u043c \u2014 \u043a\u0430\u043a \u0443\u043f\u0440\u0430\u0432\u043b\u044f\u044e\u0449\u0438\u0439'];
 
 /* ДЕМО-НАБОР. Не выдумка: это расчёт по значениям анкеты по умолчанию,
    пересобирается скриптом части/демо.py. Показывается только по ?demo=1 —
    без расчёта отчёт предлагает заполнить анкету, а не подсовывает чужие числа. */
 var DEMO={
-answers:[{"b": 1, "n": "Желаемый доход", "v": 110216, "u": "₽/мес"}, {"b": 2, "n": "Налоговый режим", "v": "Самозанятый (НПД) — 5%, смешанные заказчики", "u": ""}, {"b": 2, "n": "С кем вы чаще работаете", "v": "И с частными лицами, и с компаниями", "u": ""}, {"b": 3, "n": "Текущая ставка", "v": 6000, "u": "₽/ч"}, {"b": 4, "n": "Готовых кадров за 1 час", "v": 80, "u": "шт"}, {"b": 4, "n": "Срабатываний затвора за 1 час", "v": 350, "u": "шт"}, {"b": 4, "n": "Ресурс затвора", "v": 300000, "u": "шт"}, {"b": 5, "n": "Минимальный заказ", "v": 1, "u": "ч"}, {"b": 6, "n": "Время на постпродакшн", "v": 3, "u": "× ч"}, {"b": 7, "n": "Проектная работа с клиентами", "v": 1, "u": "ч"}, {"b": 8, "n": "Поиск заказов", "v": 2, "u": "ч/день"}, {"b": 12, "n": "Где находится рабочее место", "v": "Дома", "u": ""}, {"b": 12, "n": "Сколько вы платите за жильё в месяц", "v": 40000, "u": "₽/мес"}, {"b": 12, "n": "Коммунальные платежи, интернет и связь", "v": 7000, "u": "₽/мес"}, {"b": 12, "n": "Общая площадь вашего жилья", "v": 50, "u": "м²"}, {"b": 12, "n": "Сколько метров выделено под рабочую зону", "v": 6, "u": "м²"}, {"b": 13, "n": "За сколько лет окупить вложения в обучение", "v": 7, "u": "лет"}, {"b": 14, "n": "Кто делал сайт", "v": "Заказывал у специалистов", "u": ""}, {"b": 14, "n": "Сколько вы заплатили за создание сайта", "v": 70000, "u": "₽"}, {"b": 14, "n": "За сколько лет окупить вложения в сайт", "v": 7, "u": "лет"}, {"b": 16, "n": "Эквайринг", "v": 2.7, "u": "%"}, {"b": 16, "n": "Доля безналичных платежей", "v": 100, "u": "%"}, {"b": 17, "n": "Кто ведёт учёт", "v": "Веду сам", "u": ""}, {"b": 17, "n": "Сколько часов в квартал уходит на отчётность", "v": 3, "u": "ч"}],
-catalog:[{"b": 9, "n": "Canon EOS R6 Mark II Body", "price": 166999, "term": 3, "kind": "life"}, {"b": 9, "n": "Canon RF 24–105mm f/4.0 L IS USM", "price": 130999, "term": 5, "kind": "life"}, {"b": 9, "n": "Godox V1Pro C", "price": 36990, "term": 5, "kind": "life"}, {"b": 9, "n": "Godox XPro II C", "price": 9355, "term": 5, "kind": "life"}, {"b": 9, "n": "Аккумулятор LP-E6NH", "price": 12978, "term": 3, "kind": "life"}, {"b": 9, "n": "SanDisk Extreme PRO 256 ГБ #1", "price": 6990, "term": 2, "kind": "life"}, {"b": 9, "n": "SanDisk Extreme PRO 256 ГБ #2", "price": 6990, "term": 2, "kind": "life"}, {"b": 9, "n": "Рюкзак Lowepro ProTactic", "price": 27962, "term": 7, "kind": "life"}, {"b": 9, "n": "Godox RFT-05 отражатель", "price": 3000, "term": 5, "kind": "life"}, {"b": 9, "n": "X-Rite ColorChecker", "price": 5000, "term": 7, "kind": "life"}, {"b": 10, "n": "Системный блок", "price": 180000, "term": 5, "kind": "life"}, {"b": 10, "n": "Монитор ASUS ProArt", "price": 55000, "term": 5, "kind": "life"}, {"b": 10, "n": "Calibrite ColorChecker", "price": 30000, "term": 5, "kind": "life"}, {"b": 10, "n": "Колонки Logitech Z207", "price": 5000, "term": 5, "kind": "life"}, {"b": 10, "n": "Клавиатура Logitech K380", "price": 3500, "term": 7, "kind": "life"}, {"b": 10, "n": "Мышь Logitech M650", "price": 4000, "term": 3, "kind": "life"}, {"b": 10, "n": "Веб-камера Logitech Brio", "price": 15999, "term": 5, "kind": "life"}, {"b": 10, "n": "Микрофон FIFINE K669B", "price": 3500, "term": 5, "kind": "life"}, {"b": 10, "n": "Принтер Canon PIXMA G640", "price": 29999, "term": 5, "kind": "life"}, {"b": 11, "n": "Adobe CC Photography", "price": 2000, "term": 12, "kind": "per"}, {"b": 11, "n": "Яндекс Диск 1 ТБ", "price": 250, "term": 12, "kind": "per"}, {"b": 11, "n": "Retouch4me Heal", "price": 6900, "term": 3, "kind": "life"}, {"b": 11, "n": "Retouch4me Dodge & Burn", "price": 6900, "term": 3, "kind": "life"}, {"b": 11, "n": "Retouch4me Fabric", "price": 6900, "term": 3, "kind": "life"}, {"b": 11, "n": "Retouch4me Clean Backdrop", "price": 6900, "term": 3, "kind": "life"}, {"b": 11, "n": "Retouch4me Dust", "price": 6900, "term": 3, "kind": "life"}, {"b": 12, "n": "Мебель", "price": 35000, "term": 7, "kind": "life"}, {"b": 12, "n": "Косметический ремонт", "price": 30000, "term": 7, "kind": "life"}, {"b": 13, "n": 4, "price": 80000, "term": 4, "kind": "months"}, {"b": 15, "n": "Домен сайта", "price": 1500, "term": 1, "kind": "per"}, {"b": 15, "n": "Хостинг сайта", "price": 6000, "term": 1, "kind": "per"}, {"b": 15, "n": "Яндекс Директ", "price": 15000, "term": 12, "kind": "per"}, {"b": 15, "n": "Авито", "price": 0, "term": 12, "kind": "per"}, {"b": 15, "n": "Таргетированная реклама", "price": 0, "term": 12, "kind": "per"}, {"b": 15, "n": "Размещения у блогеров", "price": 0, "term": 12, "kind": "per"}, {"b": 15, "n": "Отклики на Profi.ru", "price": 0, "term": 12, "kind": "per"}, {"b": 16, "n": "Обслуживание счёта (РКО)", "price": 0, "term": 12, "kind": "per"}, {"b": 16, "n": "СМС-уведомления", "price": 150, "term": 12, "kind": "per"}],
-frames:80,NT:1533,idle:219,pool:1083,calDays:365,weekend:104,holidays:14,WD:247,VAC:20,SICK:8,ND:219,EFF:7,shutterPerHour:350,
-shutterLife:300000,shotsYear:75810,camName:'Canon EOS R6 Mark II Body',camPrice:166999,camLife:3,camAmort:55666.33333,camWear:0.73429,
-costHour:2814.43935,markup:2.35057,rateHour:9429.98603,rateZero:2814.43935,workHours:1752,rateWork:691.99543,rateWorkFull:1332.37767,
-vacY:110216,minShootsY:64.64565,minShootsM:5.38714,zeroShootsY:216.6,zeroShootsM:18.05,
-loadGoal:{"shoots": 216.60000000000002, "hours": 1533, "days": 219, "freeDays": 146, "dayHours": 7, "shootsPerDay": 0.9890410958904111},
-loadCur:{"shoots": 340.4224956577069, "hours": 2152.1124782885345, "days": 307.4446397555049, "freeDays": 57.55536024449509, "dayHours": 9.826997617755865, "shootsPerDay": 1.554440619441584},
-loadZero:{"shoots": 725.7342296427746, "hours": 4078.671148213873, "days": 582.6673068876961, "freeDays": -217.6673068876961, "dayHours": 18.62406916992636, "shootsPerDay": 3.313854929875683},
-promo:438,accT:12,fmT:0,S:1,pt:5,py:216.6,sh:216.6,post:649.8,clT:216.6,amort:278687.78095,vari:283980,C:562667.78095,
-totalExpenses:719942.97395,Ny:1322592,R:2042534.97395,taxAll:102126.7487,aq:55148.4443,goalFund:0,goalDiscountReserve:0,goalSelfSiteCost:0,
-goalCostsTotal:719942.97395,goalResult:1322592,cur:6000,Rc:1299600,leftC:636863.01905,taxC:64980,aqC:35089.2,currentFund:0,
-currentDiscountReserve:0,currentSelfSiteCost:0,currentCostsTotal:662736.98095,currentResult:636863.01905,currentIncome:636863.01905,
-currentLoss:0,currentIsLoss:false,Rb:609607.56333,taxB:30480.37817,aqB:16459.40421,wsY:67680,siteY:10000,eduY:74409.14286,fundY:0,discY:0,
-fundP:0,discP:0,depShoot:107759.99048,depOffice:65732.93333,depSoft:11500,depEdu:74409.14286,depSite:10000,depWs:9285.71429,varAds:187500,
-varSoft:27000,varBank:1800,varRent:67680,varAcc:0,NW:43.8,K:3,cl:1,curRate:6000,
+answers:[{"b": 1, "n": "Желаемый доход", "v": 110216, "u": "₽/мес"}, {"b": 2, "n": "Налоговый режим", "v": "Самозанятый (НПД) — 5%, смешанные заказчики", "u": ""}, {"b": 2, "n": "С кем вы чаще работаете", "v": "И с частными лицами, и с компаниями", "u": ""}, {"b": 3, "n": "Текущая ставка", "v": 6000, "u": "₽/ч"}, {"b": 4, "n": "Готовых кадров за 1 час", "v": 80, "u": "шт"}, {"b": 4, "n": "Срабатываний затвора за 1 час", "v": 350, "u": "шт"}, {"b": 4, "n": "Ресурс затвора", "v": 300000, "u": "шт"}, {"b": 5, "n": "Минимальный заказ", "v": 1, "u": "ч"}, {"b": 6, "n": "Время на постпродакшн", "v": 3, "u": "× ч"}, {"b": 7, "n": "Проектная работа с клиентами", "v": 1, "u": "ч"}, {"b": 8, "n": "Поиск заказов", "v": 2, "u": "ч/день"}, {"b": 9, "n": "Управление делом", "v": 4, "u": "ч/нед"}, {"b": 13, "n": "Где находится рабочее место", "v": "Дома", "u": ""}, {"b": 13, "n": "Сколько вы платите за жильё в месяц", "v": 40000, "u": "₽/мес"}, {"b": 13, "n": "Коммунальные платежи, интернет и связь", "v": 7000, "u": "₽/мес"}, {"b": 13, "n": "Общая площадь вашего жилья", "v": 50, "u": "м²"}, {"b": 13, "n": "Сколько метров выделено под рабочую зону", "v": 6, "u": "м²"}, {"b": 14, "n": "За сколько лет окупить вложения в обучение", "v": 7, "u": "лет"}, {"b": 15, "n": "Кто делал сайт", "v": "Заказывал у специалистов", "u": ""}, {"b": 15, "n": "Сколько вы заплатили за создание сайта", "v": 70000, "u": "₽"}, {"b": 15, "n": "За сколько лет окупить вложения в сайт", "v": 7, "u": "лет"}, {"b": 17, "n": "Эквайринг", "v": 2.7, "u": "%"}, {"b": 17, "n": "Доля безналичных платежей", "v": 100, "u": "%"}, {"b": 18, "n": "Кто ведёт учёт", "v": "Веду сам", "u": ""}, {"b": 18, "n": "Сколько часов в квартал уходит на отчётность", "v": 3, "u": "ч"}, {"b": 21, "n": "Чистая прибыль", "v": 18, "u": "%"}],
+catalog:[{"b": 10, "n": "Canon EOS R6 Mark II Body", "price": 166999, "term": 3, "kind": "life"}, {"b": 10, "n": "Canon RF 24–105mm f/4.0 L IS USM", "price": 130999, "term": 5, "kind": "life"}, {"b": 10, "n": "Godox V1Pro C", "price": 36990, "term": 5, "kind": "life"}, {"b": 10, "n": "Godox XPro II C", "price": 9355, "term": 5, "kind": "life"}, {"b": 10, "n": "Аккумулятор LP-E6NH", "price": 12978, "term": 3, "kind": "life"}, {"b": 10, "n": "SanDisk Extreme PRO 256 ГБ #1", "price": 6990, "term": 2, "kind": "life"}, {"b": 10, "n": "SanDisk Extreme PRO 256 ГБ #2", "price": 6990, "term": 2, "kind": "life"}, {"b": 10, "n": "Рюкзак Lowepro ProTactic", "price": 27962, "term": 7, "kind": "life"}, {"b": 10, "n": "Godox RFT-05 отражатель", "price": 3000, "term": 5, "kind": "life"}, {"b": 10, "n": "X-Rite ColorChecker", "price": 5000, "term": 7, "kind": "life"}, {"b": 11, "n": "Системный блок", "price": 180000, "term": 5, "kind": "life"}, {"b": 11, "n": "Монитор ASUS ProArt", "price": 55000, "term": 5, "kind": "life"}, {"b": 11, "n": "Calibrite ColorChecker", "price": 30000, "term": 5, "kind": "life"}, {"b": 11, "n": "Колонки Logitech Z207", "price": 5000, "term": 5, "kind": "life"}, {"b": 11, "n": "Клавиатура Logitech K380", "price": 3500, "term": 7, "kind": "life"}, {"b": 11, "n": "Мышь Logitech M650", "price": 4000, "term": 3, "kind": "life"}, {"b": 11, "n": "Веб-камера Logitech Brio", "price": 15999, "term": 5, "kind": "life"}, {"b": 11, "n": "Микрофон FIFINE K669B", "price": 3500, "term": 5, "kind": "life"}, {"b": 11, "n": "Принтер Canon PIXMA G640", "price": 29999, "term": 5, "kind": "life"}, {"b": 12, "n": "Adobe CC Photography", "price": 2000, "term": 12, "kind": "per"}, {"b": 12, "n": "Яндекс Диск 1 ТБ", "price": 250, "term": 12, "kind": "per"}, {"b": 12, "n": "Retouch4me Heal", "price": 6900, "term": 3, "kind": "life"}, {"b": 12, "n": "Retouch4me Dodge & Burn", "price": 6900, "term": 3, "kind": "life"}, {"b": 12, "n": "Retouch4me Fabric", "price": 6900, "term": 3, "kind": "life"}, {"b": 12, "n": "Retouch4me Clean Backdrop", "price": 6900, "term": 3, "kind": "life"}, {"b": 12, "n": "Retouch4me Dust", "price": 6900, "term": 3, "kind": "life"}, {"b": 13, "n": "Мебель", "price": 35000, "term": 7, "kind": "life"}, {"b": 13, "n": "Косметический ремонт", "price": 30000, "term": 7, "kind": "life"}, {"b": 14, "n": 4, "price": 80000, "term": 4, "kind": "months"}, {"b": 16, "n": "Домен сайта", "price": 1500, "term": 1, "kind": "per"}, {"b": 16, "n": "Хостинг сайта", "price": 6000, "term": 1, "kind": "per"}, {"b": 16, "n": "Яндекс Директ", "price": 15000, "term": 12, "kind": "per"}, {"b": 16, "n": "Авито", "price": 0, "term": 12, "kind": "per"}, {"b": 16, "n": "Таргетированная реклама", "price": 0, "term": 12, "kind": "per"}, {"b": 16, "n": "Размещения у блогеров", "price": 0, "term": 12, "kind": "per"}, {"b": 16, "n": "Отклики на Profi.ru", "price": 0, "term": 12, "kind": "per"}, {"b": 17, "n": "Обслуживание счёта (РКО)", "price": 0, "term": 12, "kind": "per"}, {"b": 17, "n": "СМС-уведомления", "price": 150, "term": 12, "kind": "per"}],
+frames:80,NT:1533,idle:219,pool:907.8,calDays:365,weekend:104,holidays:14,WD:247,VAC:20,SICK:8,ND:219,EFF:7,shutterPerHour:350,
+shutterLife:300000,shotsYear:63546,camName:'Canon EOS R6 Mark II Body',camPrice:166999,camLife:3,camAmort:55666.33333,camWear:0.876,
+costHour:3357.6094,markup:3.16229,rateHour:13975.33461,rateZero:3357.6094,workHours:1752,rateWork:691.99543,rateWorkFull:1655.16096,
+vacY:110216,minShootsY:43.62025,minShootsM:3.63502,zeroShootsY:181.56,zeroShootsM:15.13,
+loadGoal:{"shoots": 181.56, "hours": 1533, "days": 219, "freeDays": 146, "dayHours": 7, "shootsPerDay": 0.829041095890411},
+loadCur:{"shoots": 422.89362515755516, "hours": 2739.6681257877763, "days": 391.3811608268252, "freeDays": -26.38116082682518, "dayHours": 12.509900117752403, "shootsPerDay": 1.931021119440891},
+loadZero:{"shoots": 755.7048619707522, "hours": 4403.724309853761, "days": 629.1034728362516, "freeDays": -264.1034728362516, "dayHours": 20.108330181980644, "shootsPerDay": 3.4507071322865395},
+promo:438,accT:12,fmT:0,mgmtT:175.2,S:1,pt:5,py:181.56,sh:181.56,post:544.68,clT:181.56,amort:278687.78095,vari:283980,C:562667.78095,
+totalExpenses:758044.63578,Ny:1322592,R:2537361.75095,taxAll:126868.08755,aq:68508.76728,goalFund:456725.11517,goalDiscountReserve:0,
+goalSelfSiteCost:0,goalCostsTotal:1214769.75095,goalResult:1322592,cur:6000,Rc:1089360,leftC:246726.69905,taxC:54468,aqC:29412.72,
+currentFund:196084.8,currentDiscountReserve:0,currentSelfSiteCost:0,currentCostsTotal:842633.30095,currentResult:246726.69905,
+currentIncome:246726.69905,currentLoss:0,currentIsLoss:false,Rb:609607.56333,taxB:30480.37817,aqB:16459.40421,wsY:67680,siteY:10000,
+eduY:74409.14286,fundY:456725.11517,discY:0,fundP:0.18,discP:0,depShoot:107759.99048,depOffice:65732.93333,depSoft:11500,depEdu:74409.14286,
+depSite:10000,depWs:9285.71429,varAds:187500,varSoft:27000,varBank:1800,varRent:67680,varAcc:0,NW:43.8,K:3,cl:1,curRate:6000,
 regime:'\u0421\u0430\u043c\u043e\u0437\u0430\u043d\u044f\u0442\u044b\u0439 (\u041d\u041f\u0414) \u2014 5%, \u0441\u043c\u0435\u0448\u0430\u043d\u043d\u044b\u0435 \u0437\u0430\u043a\u0430\u0437\u0447\u0438\u043a\u0438',
 regimeCode:'npd5',clients:'mix',profession:'\u0444\u043e\u0442\u043e\u0433\u0440\u0430\u0444\u0430'};
 
@@ -5011,11 +5028,14 @@ function parts(x){
     dE,
     /* 15 — резерв времени на простой и форс-мажоры (calc.html, блок 18).
        Ноль, когда галочка fm_on выключена. */
-    hr*(x.fmT||0)];
+    hr*(x.fmT||0),
+    /* 16 — управление делом (calc.html, блок 09). Ноль, когда галка mgmt_on выключена. */
+    hr*(x.mgmtT||0)];
 }
 function visIdx(x){
   var P=parts(x), v=[0,1,2,3];
   if(x.accT>0)v.push(4);
+  if(x.mgmtT>0)v.push(16);
   /* На кольце резерв стоит между доходом и простоем с форс-мажорами.
      З-119: порядок сортировки секторов кольца считается в месте
      вызова donut, чтобы не трогать легенды под кольцом. */
@@ -5190,7 +5210,7 @@ var WCd_sh='#0B6B22',WCd_po='#A9DDB8',WCd_cl='#F5B301',WCd_pr='#EC4899',
     WCd_ac='#EF4444',WCd_fm='#9CA3AF',WCd_id='#B6BCC4';
 /* пастельные тона той же светлоты для сетки недели */
 var WK_sh='#6FD183',WK_po='#D8EEDF',WK_cl='#FEF3D6',WK_pr='#FCE7F3',
-    WK_ac='#FDE8E8',WK_fm='#E5E7EB',WK_id='#F5F6F8';
+    WK_ac='#FDE8E8',WK_fm='#E5E7EB',WK_id='#F5F6F8',WK_mg='#E7F0FA';
 function render(){
   var rate=d.R/d.sh;
   function установитьПечатнуюШапку(mode){
@@ -5286,12 +5306,7 @@ function render(){
   (function(){
     var порог=500, виден=false, bar=$('fbar');
 
-    /* Крестик прячет плашку до следующей загрузки страницы —
-       так же, как в анкете. */
-    (function(){
-      var кн=$('fbarClose'), пл=$('fbar');
-      if(кн&&пл)кн.onclick=function(){пл.classList.remove('on');пл.dataset.скрыта='1'};
-    })();
+    /* 15.09, круг 12: обработчик крестика удалён вместе с кнопкой. */
     ['editLink','editLink2'].forEach(function(id){
       var e=$(id); if(e)e.setAttribute('href',EDIT_URL);
     });
@@ -5344,7 +5359,7 @@ function render(){
     var съём=(d.py||0)/МЕС;                       /* съёмок в месяц      */
     var чСъём=(d.sh||0)/МЕС;                      /* часы на площадке    */
     var чЗаказ=((d.post||0)+(d.clT||0))/МЕС;      /* обработка + клиент  */
-    var чПроч=((d.promo||0)+(d.accT||0)+(d.idle||0)+(d.fmT||0))/МЕС;
+    var чПроч=((d.promo||0)+(d.accT||0)+(d.mgmtT||0)+(d.idle||0)+(d.fmT||0))/МЕС;
     var всего=чСъём+чЗаказ+чПроч;
     var нед=(d.NW||43.8)/МЕС;                     /* недель в месяце     */
     function пара(idV,idS,знач,подпись){
@@ -5391,7 +5406,7 @@ var REFD=[
    ["Время на постпродакшн", "Время, необходимое для обработки и подготовки отснятого материала к передаче заказчику."],
    ["Всего расходов", "Общая сумма денежных средств, которую специалист затрачивает на покрытие финансовых расходов, налогов и банковских комиссий, связанных с профессиональной деятельностью, за определённый период."],
    ["Выработка ресурса", "Использование установленного ресурса оборудования, выраженное в количестве предусмотренных производителем операций или циклов работы."],
-   ["Выручка", "Общая сумма денежных средств, которую специалист получает от продажи своих услуг за определённый период, включая суммы, предназначенные для покрытия всех расходов и обязательных платежей, налогов, стоимости оборудования и его амортизации, банковских расходов, резервов на отпуск, развитие, обучение и другие предусмотренные расчётом затраты, а также доход специалиста."],
+   ["Выручка", "Общая сумма денежных средств, которую специалист получает от продажи своих услуг за определённый период, включая суммы, предназначенные для покрытия всех расходов и обязательных платежей, налогов, стоимости оборудования и его амортизации, банковских расходов, резервов на отпуск, маржинальную прибыль, обучение и другие предусмотренные расчётом затраты, а также доход специалиста."],
    ["Выходной", "Дни недели, в которые работник освобождён от выполнения трудовых обязанностей в соответствии с установленным режимом рабочего времени. Предоставляются для еженедельного непрерывного отдыха. По общему правилу при пятидневной рабочей неделе предоставляются два выходных дня, при шестидневной — один."],
    ["Год", "Календарный период продолжительностью 12 последовательных месяцев, включающий четыре квартала."],
    ["Готовые кадры", "Снимки, полученные в результате проведения съёмочных работ и прошедшие первичную обработку."],
@@ -5448,7 +5463,7 @@ var REFD=[
    ["Резерв времени на простой и форс-мажоры", "Дополнительный запас рабочего времени, предусмотренный в расчёте для компенсации периодов отсутствия заказов, отмены или переноса съёмок, а также непредвиденных обстоятельств, временно влияющих на возможность специалиста работать. Дополнительный резерв, может быть отключён."],
    ["Резерв на отпуск", "Часть денежных средств, включаемая в стоимость каждого часа работы и предназначенная для сохранения дохода специалиста в период оплачиваемого отпуска. Обязательный резерв."],
    ["Резерв на программу лояльности", "Часть денежных средств, закладываемая в стоимость услуг для финансирования скидок, бонусов и других мероприятий программы лояльности. Дополнительный резерв, может быть отключён."],
-   ["Резерв на развитие", "Часть денежных средств, закладываемая в стоимость услуг для последующего финансирования развития профессиональной деятельности. Дополнительный резерв, может быть отключён."],
+   ["Маржа", "Короткое название маржинальной прибыли в таблицах и расчётах: деньги дела сверх зарплаты и расходов."],
    ["Резервный фонд", "Денежные средства, которые специалист заранее закладывает в стоимость своих услуг и накапливает для последующего использования в соответствии с предусмотренными целями."],
    ["Реклама", "Распространение информации о специалисте, его услугах или продуктах с целью привлечения внимания потенциальных клиентов и стимулирования спроса."],
    ["Ресурс затвора", "Расчётное количество срабатываний затвора камеры, которое предусмотрено производителем до достижения установленного уровня его эксплуатационного ресурса."],
@@ -5477,7 +5492,7 @@ var REFD=[
    ["Финансовые вложения (инвестиции)", "Денежные средства, которые специалист вкладывает в развитие и обеспечение своей профессиональной деятельности и рассчитывает использовать с целью получения будущей отдачи."],
    ["Финансовые расходы", "Денежные средства, которые специалист затрачивает на выполнение работы и обеспечение профессиональной деятельности."],
    ["Фонд программы лояльности", "Сформированная сумма денежных средств, предназначенная для финансирования скидок, бонусов, подарков и других поощрений клиентов в рамках программы лояльности."],
-   ["Фонд развития", "Сформированная сумма денежных средств, предназначенная для финансирования развития специалиста или бизнеса, включая приобретение оборудования, обучение, продвижение, внедрение новых инструментов и другие инвестиции в рост."],
+   ["Маржинальная прибыль", "Деньги дела сверх зарплаты, расходов и налогов — доля выручки, заранее заложенная в ставку. Направляются на развитие (оборудование, обучение, продвижение) или становятся доходом специалиста. Дополнительный элемент цены, может быть отключён."],
    ["Эквайринг", "Комиссия за приём безналичных платежей от клиентов с использованием банковских карт, электронных средств платежа и других платёжных инструментов."],
    ["Эффективное рабочее время", "Время рабочего дня, фактически доступное для выполнения профессиональных задач после учёта объективно необходимых перерывов на отдых, личные потребности, восстановление работоспособности, подготовку и обслуживание рабочего места. Такие затраты времени являются естественной частью организации труда и учитываются при нормировании рабочей нагрузки."],
    ["Юнит-экономика", "Расчёт доходов, расходов и финансового результата в расчёте на одну единицу деятельности специалиста, например один час работы, одну услугу, один заказ или один съёмочный проект. Позволяет определить реальную стоимость выполнения работы, понять, сколько специалист зарабатывает после покрытия всех связанных с деятельностью затрат, определить необходимую стоимость услуг и оценить экономическую эффективность своей работы."]
@@ -5499,7 +5514,7 @@ var REFD=[
      только видимым; нулевые резервы промежутка не занимают. Те же цвета
      получают строки легенды блоков 01 и 03 (через CO). */
   (function(){
-    var seq=VI.filter(function(i){return (i<=5||i===15||(i>=11&&i<=13))&&P[i]>0});
+    var seq=VI.filter(function(i){return (i<=5||i===15||i===16||(i>=11&&i<=13))&&P[i]>0});
     var ST=[[0,'#0B6B22'],[0.42,'#21A038'],[0.78,'#A9DDB8'],[1,'#C5D0C8']];
     function h2r(h){h=h.slice(1);var n=parseInt(h,16);return [n>>16,(n>>8)&255,n&255]}
     function mix(a,b,t){var A=h2r(a),B=h2r(b);return '#'+A.map(function(v,i){v=Math.round(v+(B[i]-v)*t);return (v<16?'0':'')+v.toString(16)}).join('')}
@@ -5540,7 +5555,9 @@ var REFD=[
    '\u043d\u0430 \u043d\u043e\u0432\u0443\u044e \u0442\u0435\u0445\u043d\u0438\u043a\u0443 \u0438 \u043e\u0431\u0443\u0447\u0435\u043d\u0438\u0435',
    '\u0447\u0442\u043e\u0431\u044b \u0438\u043c\u0435\u0442\u044c \u043f\u0440\u0430\u0432\u043e \u0443\u0441\u0442\u0443\u043f\u0438\u0442\u044c \u0432 \u0446\u0435\u043d\u0435',
    '\u043c\u0435\u0441\u044f\u0446 \u0436\u0435\u043b\u0430\u0435\u043c\u043e\u0433\u043e \u0434\u043e\u0445\u043e\u0434\u0430 \u043d\u0430 \u0440\u0443\u043a\u0438',
-   '\u043a\u0443\u0440\u0441\u044b \u0438 \u043c\u0435\u0441\u044f\u0446\u044b \u0431\u0435\u0437 \u0434\u043e\u0445\u043e\u0434\u0430'];
+   '\u043a\u0443\u0440\u0441\u044b \u0438 \u043c\u0435\u0441\u044f\u0446\u044b \u0431\u0435\u0437 \u0434\u043e\u0445\u043e\u0434\u0430',
+'',
+'\u0440\u0435\u0448\u0435\u043d\u0438\u044f, \u043f\u0440\u043e\u0446\u0435\u0441\u0441\u044b, \u0431\u044e\u0434\u0436\u0435\u0442\u044b'];
   var mx=0; VI.forEach(function(i){if(P[i]>mx)mx=P[i]});
   /* часы в год по строкам «Ваш доход». Лист 12_Диаграммы, колонка J.
      У расходных строк времени нет. */
@@ -5550,6 +5567,7 @@ var REFD=[
      на форс-мажоры. Часы нормируются на съёмочный час, как и прежде. */
   var HRS=[d.sh,d.post,d.clT,d.promo,d.accT,d.idle||0].map(function(h){return h/d.sh});
   HRS[15]=(d.fmT||0)/d.sh;
+  HRS[16]=(d.mgmtT||0)/d.sh;
   /* если параметр не заложен — показываем, чем это обернётся */
   var ZW=[];
   /* Куда ведёт кнопка в предупреждении: якорь поля в анкете
@@ -5594,21 +5612,21 @@ var REFD=[
     '</div>';
   }
   var gProf=VI.filter(function(i){return i<=1});      /* по специальности */
-  var gRole=VI.filter(function(i){return i>=2&&i<=4});/* остальные роли   */
+  var gRole=VI.filter(function(i){return (i>=2&&i<=4)||i===16});/* остальные роли   */
   var gIdle=VI.filter(function(i){return i===5||i===15});/* компенсация + резерв */
   var gCost=VI.filter(function(i){return (i>=6&&i<=10)||i===14}); /* расходы */
-  /* Резервы: индексы 11 фонд развития, 12 лояльность, 13 отпуск.
+  /* Резервы: индексы 12 лояльность, 13 отпуск. (11 маржинальная прибыль — свой блок, не резерв)
      Отпуск идёт ПЕРВЫМ — он обязательный, остальные два включаются
      галочкой и могут отсутствовать. Решение владельца 26.08.
      Порядок совпадает с таблицей детализации «Резервный фонд». */
   var gRes=VI.filter(function(i){return i===13})
-             .concat(VI.filter(function(i){return i>=11&&i<=12}));
+             .concat(VI.filter(function(i){return i===12}));
   /* З-138 (слово владельца 27.08): строки резервов — в референсной
      голубой гамме hero-плашек «18/6 съёмок» (b-600 → b-400 → b-300,
      от насыщенного к светлому — как ступени зелёной гаммы доходов
      и красной гаммы расходов). Только оттенок: разметка и правила
      диаграммы не меняются; CO и кольцо не тронуты. */
-  var RESC={13:'var(--c-b-600)',11:'var(--c-b-400)',12:'var(--c-b-300)'};
+  var RESC={13:'var(--c-b-600)',12:'var(--c-b-300)'};
 
   var out='<div class="lggrp">\u0412\u044b \u0437\u0430\u0440\u0430\u0431\u0430\u0442\u044b\u0432\u0430\u0435\u0442\u0435 \u043a\u0430\u043a \u0444\u043e\u0442\u043e\u0433\u0440\u0430\u0444</div>'+
     gProf.map(lgRow).join('');
@@ -5647,7 +5665,7 @@ var REFD=[
     gCost.map(lgRow).join('');
   if($('lg2')) $('lg2').innerHTML=out2;
 
-  var resSum=0; VI.forEach(function(i){ if(i>=11&&i<=13)resSum+=P[i] });
+  var resSum=0; VI.forEach(function(i){ if(i>=12&&i<=13)resSum+=P[i] });
   var dr=$('dnRes');
   if(dr) dr.innerHTML='<svg class="dsdeco" viewBox="0 0 32 32" fill="none" aria-hidden="true">'+
     '<rect x="10.95" y="2.09" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 7.14)" fill="var(--c-b-600)"/>'+
@@ -5710,7 +5728,7 @@ var REFD=[
     ];
     var эфф=0; НАПР.forEach(function(о){эфф+=о.ч});
     if(эфф<=0) return;
-    var k=1+((d.idle||0)+(d.fmT||0))/эфф;
+    var k=1+((d.idle||0)+(d.fmT||0)+(d.mgmtT||0))/эфф;
     var итог=0;
     НАПР.forEach(function(о){ о.руб=hr*о.ч*k/МЕС; итог+=о.руб; });
 
@@ -6652,7 +6670,7 @@ var REFD=[
   /* Неэффективное рабочее время оплачено: оно заложено в ставку часа и входит в доход
      на руки. Раньше они попадали в серый сектор как потеря, и зелёный
      занижался на 163 499 ₽ — на руки 1 307 988, а показывали 1 144 490. */
-  var incM=hr0*(d.sh+d.post+d.clT+d.promo+d.accT+d.idle);
+  var incM=hr0*(d.sh+d.post+d.clT+d.promo+d.accT+(d.mgmtT||0)+d.idle);
   var idlM=hr0*d.fmT;
   /* Полная расходная часть идеального сценария приходит из calc().
      Фонды и собственный сайт не исчезают из формулы: выключенная опция
@@ -7080,6 +7098,7 @@ var REFD=[
     rows.push(trow('\u0427\u0430\u0441\u043e\u0432 \u043d\u0430 \u043f\u0440\u043e\u0434\u0432\u0438\u0436\u0435\u043d\u0438\u0435 \u0438 \u0440\u0435\u043a\u043b\u0430\u043c\u0443',hh(d.promo),f1(d.promo/NWf)+' \u0447/\u043d\u0435\u0434'));
     rows.push(trow('\u0427\u0430\u0441\u043e\u0432 \u043d\u0430 \u0440\u0430\u0431\u043e\u0442\u0443 \u0441 \u043a\u043b\u0438\u0435\u043d\u0442\u043e\u043c',hh(d.clT),f1(d.clT/NWf)+' \u0447/\u043d\u0435\u0434'));
     rows.push(trow('\u0427\u0430\u0441\u043e\u0432 \u043d\u0430 \u0443\u0447\u0451\u0442 \u0438 \u043e\u0442\u0447\u0451\u0442\u043d\u043e\u0441\u0442\u044c',hh(d.accT),d.accT>0?'':'\u043d\u0430\u043d\u044f\u0442 \u0431\u0443\u0445\u0433\u0430\u043b\u0442\u0435\u0440'));
+    rows.push(trow('\u0427\u0430\u0441\u043e\u0432 \u043d\u0430 \u0443\u043f\u0440\u0430\u0432\u043b\u0435\u043d\u0438\u0435 \u0434\u0435\u043b\u043e\u043c',hh(d.mgmtT||0),f1((d.mgmtT||0)/NWf)+' \u0447/\u043d\u0435\u0434'));
     rows.push(trow('\u0427\u0430\u0441\u043e\u0432 \u043d\u0430 \u043d\u0435\u044d\u0444\u0444\u0435\u043a\u0442\u0438\u0432\u043d\u043e\u0435 \u0440\u0430\u0431\u043e\u0447\u0435\u0435 \u0432\u0440\u0435\u043c\u044f',hh(d.idle),'\u0447\u0430\u0441 \u0432 \u0434\u0435\u043d\u044c'));
     rows.push(trow('\u0427\u0430\u0441\u043e\u0432 \u043d\u0430 \u043f\u0440\u043e\u0441\u0442\u043e\u0439 \u0438 \u0444\u043e\u0440\u0441-\u043c\u0430\u0436\u043e\u0440\u044b',hh(d.fmT),d.fmT>0?'':'\u043d\u0435 \u0437\u0430\u043b\u043e\u0436\u0435\u043d'));
 
@@ -7118,7 +7137,7 @@ var REFD=[
     rows.push(tgrp('\u041d\u0430\u043b\u043e\u0433\u0438 \u0438 \u0432\u0437\u043d\u043e\u0441\u044b'));
     rows.push(trow('\u0420\u0435\u0436\u0438\u043c',d.regime||'—',''));
     rows.push(trow('\u041d\u0430\u043b\u043e\u0433 \u0438 \u0441\u0442\u0440\u0430\u0445\u043e\u0432\u044b\u0435 \u0432\u0437\u043d\u043e\u0441\u044b',f0(d.taxAll),(d.taxAll/d.R*100).toFixed(1)+'% \u043e\u0442 \u0432\u044b\u0440\u0443\u0447\u043a\u0438'));
-        if(d.fundY>0)rows.push(trow('\u0424\u043e\u043d\u0434 \u0440\u0430\u0437\u0432\u0438\u0442\u0438\u044f',f0(d.fundY),''));
+        if(d.fundY>0)rows.push(trow('\u041c\u0430\u0440\u0436\u0438\u043d\u0430\u043b\u044c\u043d\u0430\u044f \u043f\u0440\u0438\u0431\u044b\u043b\u044c',f0(d.fundY),''));
     if(d.discY>0)rows.push(trow('\u0417\u0430\u043f\u0430\u0441 \u043d\u0430 \u0441\u043a\u0438\u0434\u043a\u0443',f0(d.discY),''));
 
     rows.push(tgrp('\u0421\u0442\u0430\u0432\u043a\u0438'));
@@ -7538,9 +7557,9 @@ var REFD=[
 
   /* часы в неделю по видам */
   var shW=d.sh/NWv, poW=d.post/NWv, clW=d.clT/NWv,
-      prW=d.promo/NWv, acW=d.accT/NWv, fmW=d.fmT/NWv, idW=d.idle/NWv;
+      prW=d.promo/NWv, acW=d.accT/NWv, fmW=d.fmT/NWv, idW=d.idle/NWv, mgW=(d.mgmtT||0)/NWv;
 
-  var WC={sh:WK_sh,po:WK_po,cl:WK_cl,pr:WK_pr,ac:WK_ac,fm:WK_fm,id:WK_id};
+  var WC={sh:WK_sh,po:WK_po,cl:WK_cl,pr:WK_pr,ac:WK_ac,fm:WK_fm,id:WK_id,mg:WK_mg};
   /* сетка: grid[day][slot] = {c:цвет, n:название, idle:bool} */
   var grid=[];
   for(var dd=0;dd<5;dd++){grid.push([]); for(var ss=0;ss<SLOTS;ss++)grid[dd].push(null)}
@@ -7582,7 +7601,8 @@ var REFD=[
     [clW,WC.cl,'\u041a\u043b\u0438\u0435\u043d\u0442',false],
     [idW,WC.id,'\u0420\u0430\u0431\u043e\u0447\u0438\u0435 \u043f\u0430\u0443\u0437\u044b',false],
     [fmW,WC.fm,'\u0424\u043e\u0440\u0441-\u043c\u0430\u0436\u043e\u0440\u044b',true],
-    [acW,WC.ac,'\u0423\u0447\u0451\u0442',false]];
+    [acW,WC.ac,'\u0423\u0447\u0451\u0442',false],
+    [mgW,WC.mg,'\u0423\u043f\u0440\u0430\u0432\u043b\u0435\u043d\u0438\u0435',false]];
   var slotsFree=[];
   for(var ss=0;ss<SLOTS;ss++)for(var dd=0;dd<5;dd++)
     if(!grid[dd][ss])slotsFree.push([dd,ss]);
@@ -7719,9 +7739,8 @@ var REFD=[
   /* З-137 (слово владельца 27.08): уведомление «За неделю у вас …
      съёмки» удалено из блока 02 совсем. Текстовой комментарий
      «Получается всего…» после диаграммы остаётся (З-136). */
-  var wkt=$('wktxt');
-  if(wkt)wkt.innerHTML='\u041f\u043e\u043b\u0443\u0447\u0430\u0435\u0442\u0441\u044f \u0432\u0441\u0435\u0433\u043e <b>'+f1(shW)+' '+hword(shW)+'</b> \u0441 \u043a\u0430\u043c\u0435\u0440\u043e\u0439 \u0432 \u0440\u0443\u043a\u0430\u0445, '+
-   '\u0430 \u043e\u0441\u0442\u0430\u043b\u044c\u043d\u043e\u0435 \u0432\u0440\u0435\u043c\u044f \u2014 \u044d\u0442\u043e \u0442\u0430 \u0441\u0430\u043c\u0430\u044f \u043d\u0435\u0432\u0438\u0434\u0438\u043c\u0430\u044f, \u043d\u043e \u043e\u0433\u0440\u043e\u043c\u043d\u0430\u044f \u0440\u0430\u0431\u043e\u0442\u0430 \u0437\u0430 \u043a\u0430\u0434\u0440\u043e\u043c, \u0431\u0435\u0437 \u043a\u043e\u0442\u043e\u0440\u043e\u0439 \u043d\u0438 \u043e\u0434\u043d\u0430 \u0441\u044a\u0451\u043c\u043a\u0430 \u043f\u0440\u043e\u0441\u0442\u043e \u043d\u0435 \u0441\u043e\u0441\u0442\u043e\u0438\u0442\u0441\u044f.';
+  /* 15.09, круг 8 (слово владельца): текст уведомления под таблицей —
+     статичный в разметке (id=wktxt), скрипт его больше не наполняет. */
 
   /* 13.09 (слово владельца, повторный): линейная диаграмма и циферблат
      из блока 06 удалены — не информативны. */
@@ -7747,8 +7766,8 @@ wtSwip();
 /* ═══ СПРАВОЧНИК И ПОДРОБНАЯ ДЕТАЛИЗАЦИЯ ═══
    Один источник правды — calc(): вводные приходят из d.answers/d.catalog,
    результаты — из d; здесь задаётся только утверждённая раскладка. */
-var СПР = [["Амортизация", "Постепенное включение стоимости имущества в расходы бизнеса по мере его использования и износа."], ["Базовая ставка", "Стоимость одного часа работы специалиста при оказании услуг клиенту вне съёмочной площадки, рассчитанная с учётом всех затрат, необходимых для профессиональной деятельности специалиста, включая расходы на оборудование, налоги, обязательные платежи, отпуск и другие предусмотренные расчётом затраты, без повышающего коэффициента, применяемого к съёмочному часу. Используется для формирования стоимости услуг, не связанных непосредственно со съёмкой, например ретуши, индивидуальных консультаций и выполнения индивидуальных задач для клиента."], ["Банковское обслуживание", "Расходы на ведение банковских счетов, проведение платежей и использование других банковских услуг, необходимых для профессиональной деятельности."], ["Больничный", "Период временной нетрудоспособности из-за болезни, травмы или иных обстоятельств, в течение которого человек не может выполнять работу."], ["Бухгалтерия", "Ведение и обработка финансовой информации о деятельности специалиста, включая учёт доходов и расходов, расчёт обязательных платежей и подготовку необходимой отчётности."], ["Бюджет", "План распределения денежных средств за определённый период по направлениям их использования и формирования дохода."], ["Временные расходы", "Время, которое специалист затрачивает на выполнение работы, взаимодействие с клиентами, организационные задачи и другие действия, связанные с профессиональной деятельностью."], ["Время на постпродакшн", "Время, необходимое для обработки и подготовки отснятого материала к передаче заказчику."], ["Всего расходов", "Общая сумма денежных средств, которую специалист затрачивает на покрытие финансовых расходов, налогов и банковских комиссий, связанных с профессиональной деятельностью, за определённый период."], ["Выработка ресурса", "Использование установленного ресурса оборудования, выраженное в количестве предусмотренных производителем операций или циклов работы."], ["Выручка", "Общая сумма денежных средств, которую специалист получает от продажи своих услуг за определённый период, включая суммы, предназначенные для покрытия всех расходов и обязательных платежей, налогов, стоимости оборудования и его амортизации, банковских расходов, резервов на отпуск, развитие, обучение и другие предусмотренные расчётом затраты, а также доход специалиста."], ["Выходной", "Дни недели, в которые работник освобождён от выполнения трудовых обязанностей в соответствии с установленным режимом рабочего времени. Предоставляются для еженедельного непрерывного отдыха. По общему правилу при пятидневной рабочей неделе предоставляются два выходных дня, при шестидневной — один."], ["Год", "Календарный период продолжительностью 12 последовательных месяцев, включающий четыре квартала."], ["Готовые кадры", "Снимки, полученные в результате проведения съёмочных работ и прошедшие первичную обработку."], ["Доля безналичных платежей", "Процентная часть платежей, полученных специалистом за оказанные услуги в безналичной форме, от общего объёма полученных платежей за определённый период."], ["Доход", "Денежные средства, остающиеся у специалиста от профессиональной деятельности после покрытия связанных с этой деятельностью расходов, налогов и обязательных платежей."], ["Доход в час на руки", "Сумма, которую специалист получает на руки за один рабочий час при сравнении с наймом. Считается так: желаемый доход на руки за 11 месяцев делится на рабочее время — рабочие дни, умноженные на восемь часов."], ["Доход на руки", "Сумма денежных средств, остающаяся у специалиста после вычета налогов, обязательных платежей и других предусмотренных расходов."], ["Желаемая ставка", "Стоимость одного часа съёмки, которая позволяет специалисту получать желаемый доход."], ["Желаемый доход", "Сумма денежных средств, которую специалист планирует получать на руки от своей профессиональной деятельности после покрытия всех расходов, налогов и обязательных платежей ежемесячно в течение года, включая периоды оплачиваемого отпуска."], ["Загрузка специалиста", "Доля рабочего времени специалиста, фактически занятая выполнением оплачиваемой работы, от общего доступного рабочего времени за определённый период."], ["Запас на скидку", "Часть стоимости услуги, заранее заложенная в цену для возможности предоставить клиенту скидку без снижения планируемого дохода специалиста."], ["Значение по умолчанию", "Заранее установленное значение параметра, которое используется автоматически, если пользователь не указал другое значение."], ["Износ камеры", "Степень физического и эксплуатационного старения камеры в результате её использования, выраженная в снижении остаточного ресурса и необходимости последующей замены или ремонта."], ["Инвестиционное время", "Время, которое специалист дополнительно вкладывает в развитие, создание или улучшение ресурсов своего бизнеса и которое рассматривается как инвестиция, способная в дальнейшем приносить экономическую отдачу. Затраты такого времени могут учитываться в стоимости деятельности специалиста и компенсироваться за счёт будущих доходов. Примеры: обучение и повышение квалификации, освоение нового оборудования или технологий, ремонт и переоборудование студии, разработка новых услуг, создание рабочих инструментов и другие вложения времени, направленные на развитие бизнеса. В Счётикс инвестиционное время учитывается отдельно от годового рабочего времени, не имеет единой суммы в часах и компенсируется через денежный расчёт соответствующих вложений."], ["Квартал", "Календарный период продолжительностью три последовательных месяца. Календарный год состоит из четырёх кварталов."], ["Клиентское время", "Время, затрачиваемое специалистом на привлечение, коммуникацию и сопровождение клиента на всех этапах взаимодействия."], ["Логистика", "Совокупность временных и денежных затрат специалиста, связанных с перемещением к месту выполнения работы и обратно, а также с перевозкой необходимых для работы оборудования и материалов. В Счётикс логистика вынесена за пределы расчёта базовой стоимости рабочего часа. Затраты на дорогу, проезд, топливо, парковку и другое перемещение специалист учитывает самостоятельно при формировании стоимости конкретного проекта с учётом фактических условий работы."], ["Месяц", "Календарный период продолжительностью от 28 до 31 календарного дня, имеющий наименование и порядковый номер в году."], ["Минимальное количество съёмок для покрытия расходов", "Точка безубыточности в натуральном выражении. Объём реализации в натуральных единицах, при котором выручка покрывает все предусмотренные расчётом затраты, а доход специалиста равен нулю. Для фотографа показатель может выражаться в количестве съёмочных проектов, необходимых для достижения точки безубыточности за выбранный период."], ["Минимальный заказ", "Минимальное количество часов съёмки, которое специалист принимает в рамках одного заказа и ниже которого не выполняет заказ на установленных условиях."], ["Налоги", "Обязательные платежи в бюджет, начисляемые и уплачиваемые специалистом в соответствии с применяемым налоговым режимом и законодательством Российской Федерации."], ["Налоговый режим", "Установленный законодательством порядок исчисления и уплаты налогов и обязательных платежей, применяемый специалистом в зависимости от выбранной системы налогообложения."], ["Наценка к себестоимости", "Процентное или денежное увеличение себестоимости услуги, формирующее дополнительную сумму сверх затрат и обеспечивающее получение прибыли."], ["Неэффективное рабочее время", "Часть рабочего времени, затрачиваемая на действия и перерывы, не связанные непосредственно с выполнением основной оплачиваемой работы, включая личные потребности, отдых, обслуживание рабочего места, внутренние коммуникации и другие отвлечения. Используется в Счётикс для учёта времени, которое фактически не может быть использовано для выполнения оплачиваемой работы."], ["Обустройство рабочего места", "Затраты на создание и оснащение пространства, необходимого специалисту для выполнения профессиональной деятельности."], ["Обучение", "Затраты на получение и поддержание знаний, навыков и профессиональных компетенций, необходимых для выполнения работы и развития специалиста."], ["Операционное время", "Время, затрачиваемое специалистом на выполнение рабочих задач, не связанных непосредственно с оказанием услуги или созданием результата для клиента, но необходимых для организации и ведения профессиональной деятельности. Включает продвижение и рекламу, поиск заказов, работу с клиентами, бухгалтерию и учёт, планирование, организационные и административные задачи."], ["Операционное клиентское время", "Время, которое специалист затрачивает на коммуникацию с потенциальными и действующими клиентами вне рамок конкретного проекта, включая обработку обращений, ответы на вопросы, консультации, переписку, переговоры и другие действия, связанные с привлечением и обслуживанием клиентов."], ["Остаток ресурса", "Неиспользованная часть рабочего ресурса оборудования, которую специалист может использовать до достижения установленного срока службы или предельного количества операций."], ["Отпуск", "Ежегодный период освобождения от работы для отдыха и восстановления, на время которого специалист предусматривает сохранение дохода. Основная продолжительность ежегодного оплачиваемого отпуска составляет 28 календарных дней."], ["Отчётность", "Систематизированная информация о доходах, расходах, результатах деятельности и обязательствах специалиста, подготовленная за определённый период для анализа, контроля или предоставления в налоговые и иные соответствующие органы в установленных случаях."], ["Офисное оборудование", "Оборудование и технические средства, используемые для организации рабочего процесса, выполнения административных задач и обеспечения повседневной деятельности специалиста."], ["Первичная обработка", "Комплекс действий с отснятым фотоматериалом, выполняемых специалистом с использованием специализированных компьютерных программ для подготовки материала к дальнейшему использованию. Включает подготовку материала: создание и организацию папок и файлов, выгрузку материала с карт памяти, резервное копирование; отбор материала: просмотр отснятого материала, удаление технического брака, отбор удачных кадров, исключение дублей, кадров с закрытыми глазами и явно неудачных кадров; базовую цветокоррекцию: коррекцию экспозиции, баланса белого, контраста, светлых и тёмных областей, резкости и насыщенности, приведение всей серии к единому цвету и свету; коррекцию кадра: кадрирование, выравнивание горизонта, коррекцию перспективы и искажений объектива, удаление крупных лишних объектов из кадра; подготовку и передачу результата: импорт и экспорт из программы обработки, подготовку файлов, изменение размера и формата при необходимости. Ретушь в первичную обработку не входит."], ["ПО", "Программное обеспечение, используемое специалистом для выполнения профессиональных задач, обработки материалов и организации рабочего процесса."], ["Подарочный сертификат", "Документ, подтверждающий право его владельца получить определённую услугу или набор услуг на указанную в сертификате сумму или в соответствии с установленными условиями."], ["Подписки", "Регулярные платежи за доступ к программам, сервисам, платформам и другим цифровым инструментам, необходимым специалисту для работы."], ["Поиск заказов", "Действия специалиста по выявлению потенциальных клиентов и получению новых заказов на оказание услуг."], ["Постпродакшн", "Комплекс работ с отснятым материалом после завершения съёмки, направленных на его обработку, доработку и подготовку к передаче или публикации."], ["Праздник", "Дни, в которые в соответствии с Трудовым кодексом Российской Федерации работник освобождён от исполнения трудовых обязанностей; конкретные даты выходных и нерабочих праздничных дней и их переносы определяются с учётом производственного календаря."], ["Прайс", "Перечень услуг с указанием их стоимости и, при необходимости, основных условий их предоставления."], ["Программа лояльности", "Система условий и поощрений, направленная на привлечение и удержание клиентов и стимулирование их повторных покупок или заказов."], ["Продвижение", "Комплекс действий, направленных на привлечение внимания к специалисту, его услугам или продуктам, увеличение числа потенциальных клиентов и стимулирование продаж."], ["Продолжительность съёмки", "Время, затрачиваемое специалистом непосредственно на проведение съёмочных работ, от начала до завершения съёмки."], ["Проектная работа с клиентами", "Рабочие действия специалиста, связанные с взаимодействием с клиентом в рамках конкретного проекта: обсуждение задачи, согласование условий и деталей работы, подготовка к проекту, коммуникация в процессе его выполнения, согласование результата и завершение проекта."], ["Проектное время", "Общее время, которое специалист затрачивает на выполнение всех съёмочных проектов в течение определённого периода, включая съёмочное время, время на постпродакшн и проектное клиентское время."], ["Проектное клиентское время", "Время, затрачиваемое специалистом на взаимодействие с клиентом в рамках конкретного проекта."], ["Прямые расходы", "Расходы, непосредственно связанные с выполнением конкретного заказа или проекта и возникающие в процессе оказания услуги."], ["Прямые расходы на готовый кадр", "Это та часть ваших финансовых затрат, которая напрямую участвует в создании и обработке фотографий: съёмочное и офисное оборудование, рабочий софт, подписки, а также содержание студии или рабочего места. Сюда не входят расходы на маркетинг, рекламу, сайт, обучение или бухгалтерское сопровождение — только то, что работает непосредственно на создание снимка."], ["Работа с клиентами", "Совокупность рабочих действий специалиста, связанных с привлечением, коммуникацией и сопровождением клиентов на разных этапах взаимодействия."], ["Рабочее время", "Время, в течение которого специалист выполняет профессиональные обязанности, включая непосредственную работу, подготовку, организационные задачи и другие действия, связанные с выполнением работы. Нормальная продолжительность рабочего времени не может превышать 40 часов в неделю."], ["Рабочее место", "Организованное пространство специалиста, оснащённое необходимым оборудованием, инструментами и материалами для выполнения конкретных профессиональных задач."], ["Расходы", "Всё, что специалист затрачивает для выполнения работы и ведения профессиональной деятельности, включая время и денежные средства."], ["Регулярные расходы специалиста", "Расходы, возникающие регулярно и необходимые для поддержания профессиональной деятельности и выполнения работы в течение определённого периода."], ["Резерв времени на простой и форс-мажоры", "Дополнительный запас рабочего времени, предусмотренный в расчёте для компенсации периодов отсутствия заказов, отмены или переноса съёмок, а также непредвиденных обстоятельств, временно влияющих на возможность специалиста работать. Дополнительный резерв, может быть отключён."], ["Резерв на отпуск", "Часть денежных средств, включаемая в стоимость каждого часа работы и предназначенная для сохранения дохода специалиста в период оплачиваемого отпуска. Обязательный резерв."], ["Резерв на программу лояльности", "Часть денежных средств, закладываемая в стоимость услуг для финансирования скидок, бонусов и других мероприятий программы лояльности. Дополнительный резерв, может быть отключён."], ["Резерв на развитие", "Часть денежных средств, закладываемая в стоимость услуг для последующего финансирования развития профессиональной деятельности. Дополнительный резерв, может быть отключён."], ["Резервный фонд", "Денежные средства, которые специалист заранее закладывает в стоимость своих услуг и накапливает для последующего использования в соответствии с предусмотренными целями."], ["Реклама", "Распространение информации о специалисте, его услугах или продуктах с целью привлечения внимания потенциальных клиентов и стимулирования спроса."], ["Ресурс затвора", "Расчётное количество срабатываний затвора камеры, которое предусмотрено производителем до достижения установленного уровня его эксплуатационного ресурса."], ["Сайт", "Интернет-ресурс, предназначенный для представления специалиста, его услуг и портфолио, информирования потенциальных клиентов, привлечения обращений и получения заказов."], ["Себестоимость часа съёмки", "Сумма затрат, необходимых специалисту для проведения одного съёмочного часа, включая прямые и распределённые расходы, связанные с выполнением съёмочных работ."], ["Скидка за объём", "Снижение стоимости единицы услуги при увеличении объёма заказа или количества приобретаемых услуг."], ["Содержание рабочего места", "Расходы на поддержание рабочего пространства и оборудования в состоянии, необходимом для регулярного выполнения профессиональной деятельности."], ["Срабатывание затвора", "Однократный цикл работы затвора камеры, происходящий при создании снимка и учитываемый при определении выработки ресурса затвора."], ["Средний чек съёмки", "Средняя стоимость одной съёмки, рассчитанная на основе общей выручки от съёмок и их количества за определённый период."], ["Срок службы", "Период, в течение которого оборудование или другое имущество может использоваться по назначению при соблюдении установленных условий эксплуатации."], ["Ставка в ноль", "Минимальная стоимость съёмочного часа, при которой специалист достигает точки безубыточности, то есть получает выручку, достаточную для покрытия предусмотренных расчётом расходов и обязательных платежей, но не получает дохода сверх них."], ["Ставка часа съёмки (стоимость часа съёмки)", "Стоимость одного часа съёмочных работ, установленная специалистом для клиента."], ["Статья доходов", "Отдельное направление денежных поступлений, предусмотренное бюджетом специалиста."], ["Статья расходов", "Отдельное направление денежных затрат, предусмотренное бюджетом специалиста."], ["Страховые взносы", "Обязательные платежи в государственные внебюджетные фонды и государственные системы страхования, связанные с осуществлением профессиональной деятельности и обеспечением социальных гарантий."], ["Съёмка", "Процесс создания фотоматериала с использованием фотооборудования в соответствии с поставленной задачей, условиями и сценарием съёмочного проекта."], ["Съёмочное время", "Время, непосредственно затрачиваемое специалистом на проведение съёмки на съёмочной площадке."], ["Съёмочное оборудование", "Неизменный рабочий комплект оборудования, который фотограф использует на каждой съёмке и без которого проведение съёмочного процесса невозможно или существенно затруднено. Узкоспециализированное оборудование для разовых или нестандартных проектов в основной комплект не входит и учитывается отдельно в зависимости от конкретных задач."], ["Съёмочный проект", "Отдельный проект, предусматривающий выполнение съёмочных работ для клиента и включающий все связанные с ним процессы — подготовку, коммуникацию, съёмку, пост-продакшн и завершение проекта. Сокращённо может называться съёмкой."], ["Съёмочный час", "Единица измерения съёмочного времени, равная одному часу работы специалиста на съёмочной площадке."], ["Текущая ставка", "Стоимость одного часа работы фотографа на съёмочной площадке, по которой он в настоящее время оказывает услуги клиентам."], ["Текущий доход", "Сумма денежных средств, которую специалист может получать на руки при текущей ставке и условиях профессиональной деятельности, указанных в анкете, после покрытия всех расходов, налогов и обязательных платежей."], ["Точка безубыточности", "Минимальный объём выручки или продаж за определённый период, необходимый для покрытия всех предусмотренных расчётом расходов, налогов и обязательных платежей без получения дополнительного дохода. Может выражаться в денежных единицах, количестве съёмок, съёмочных часах или других единицах объёма деятельности."], ["Трудовой кодекс Российской Федерации (ТК РФ)", "Основной нормативный правовой акт, регулирующий трудовые отношения в Российской Федерации и устанавливающий государственные гарантии в сфере труда, включая нормы рабочего времени, отдыха, отпусков и других условий труда. В расчёте используется как общепринятая нормативная точка отсчёта для определения объёма рабочего времени и базовых условий труда специалиста."], ["Учёт", "Систематический сбор, фиксация и анализ информации о доходах, расходах, работе и других показателях профессиональной деятельности."], ["Финансовые вложения (инвестиции)", "Денежные средства, которые специалист вкладывает в развитие и обеспечение своей профессиональной деятельности и рассчитывает использовать с целью получения будущей отдачи."], ["Финансовые расходы", "Денежные средства, которые специалист затрачивает на выполнение работы и обеспечение профессиональной деятельности."], ["Фонд программы лояльности", "Сформированная сумма денежных средств, предназначенная для финансирования скидок, бонусов, подарков и других поощрений клиентов в рамках программы лояльности."], ["Фонд развития", "Сформированная сумма денежных средств, предназначенная для финансирования развития специалиста или бизнеса, включая приобретение оборудования, обучение, продвижение, внедрение новых инструментов и другие инвестиции в рост."], ["Эквайринг", "Комиссия за приём безналичных платежей от клиентов с использованием банковских карт, электронных средств платежа и других платёжных инструментов."], ["Эффективное рабочее время", "Время рабочего дня, фактически доступное для выполнения профессиональных задач после учёта объективно необходимых перерывов на отдых, личные потребности, восстановление работоспособности, подготовку и обслуживание рабочего места. Такие затраты времени являются естественной частью организации труда и учитываются при нормировании рабочей нагрузки."], ["Юнит-экономика", "Расчёт доходов, расходов и финансового результата в расчёте на одну единицу деятельности специалиста, например один час работы, одну услугу, один заказ или один съёмочный проект. Позволяет определить реальную стоимость выполнения работы, понять, сколько специалист зарабатывает после покрытия всех связанных с деятельностью затрат, определить необходимую стоимость услуг и оценить экономическую эффективность своей работы."]];
-var СВЯЗЬ = {"Желаемый доход": "Желаемый доход", "Налоговый режим": "Налоговый режим", "Текущая ставка": "Текущая ставка", "Готовых кадров за 1 час": "Готовые кадры", "Срабатываний затвора за 1 час": "Срабатывание затвора", "Ресурс затвора": "Ресурс затвора", "Минимальный заказ": "Минимальный заказ", "Время на постпродакшн": "Постпродакшн", "Проектная работа с клиентами": "Проектная работа с клиентами", "Поиск заказов": "Поиск заказов", "Где находится рабочее место": "Рабочее место", "Сколько вы платите за жильё в месяц": "Содержание рабочего места", "Коммунальные платежи, интернет и связь": "Содержание рабочего места", "Общая площадь вашего жилья": "Рабочее место", "Сколько метров выделено под рабочую зону": "Рабочее место", "За сколько лет окупить вложения в обучение": "Обучение", "Кто делал сайт": "Сайт", "Сколько вы заплатили за создание сайта": "Сайт", "Сколько времени вы потратили на создание сайта": "Сайт", "За сколько лет окупить вложения в сайт": "Сайт", "Эквайринг": "Эквайринг", "Доля безналичных платежей": "Доля безналичных платежей", "Кто ведёт учёт": "Бухгалтерия", "Сколько часов в квартал уходит на отчётность": "Отчётность", "Сколько стоит ведение учёта": "Бухгалтерия", "Резерв времени на простой и форс-мажоры": "Резерв времени на простой и форс-мажоры", "Фонд развития": "Резерв на развитие", "Запас на скидку": "Запас на скидку", "Выходные дни": "Выходной", "Праздничные дни": "Праздник", "Рабочих дней / год": "Рабочее время", "Отпуск": "Отпуск", "Больничные": "Больничный", "Рабочих дней без отпуска и больничных": "Рабочее время", "Рабочих часов / день": "Рабочее время", "Эффективных часов / день": "Эффективное рабочее время", "Рабочее время": "Рабочее время", "Время на поиск заказов": "Поиск заказов", "Время на бухгалтерию и учёт": "Бухгалтерия", "Проектное время": "Проектное время", "Время на съёмку": "Съёмка", "Проектов": "Съёмочный проект", "Подписки / ПО": "Подписки", "Реклама и продвижение": "Реклама", "Содержание рабочего места": "Содержание рабочего места", "Банковское обслуживание": "Банковское обслуживание", "Бухгалтерия и учёт": "Бухгалтерия", "Регулярные расходы специалиста": "Регулярные расходы специалиста", "Налоги": "Налоги", "Страховые взносы": "Страховые взносы", "Всего расходов": "Всего расходов", "Canon EOS R6 Mark II Body": "Съёмочное оборудование", "Canon RF 24–105mm f/4.0 L IS USM": "Съёмочное оборудование", "Godox V1Pro C": "Съёмочное оборудование", "Godox XPro II C": "Съёмочное оборудование", "Аккумулятор LP-E6NH": "Съёмочное оборудование", "SanDisk Extreme PRO 256 ГБ #1": "Съёмочное оборудование", "SanDisk Extreme PRO 256 ГБ #2": "Съёмочное оборудование", "Рюкзак Lowepro ProTactic": "Съёмочное оборудование", "Godox RFT-05 отражатель": "Съёмочное оборудование", "X-Rite ColorChecker": "Съёмочное оборудование", "Системный блок": "Офисное оборудование", "Монитор ASUS ProArt": "Офисное оборудование", "Calibrite ColorChecker": "Офисное оборудование", "Колонки Logitech Z207": "Офисное оборудование", "Клавиатура Logitech K380": "Офисное оборудование", "Мышь Logitech M650": "Офисное оборудование", "Веб-камера Logitech Brio": "Офисное оборудование", "Микрофон FIFINE K669B": "Офисное оборудование", "Принтер Canon PIXMA G640": "Офисное оборудование", "Adobe CC Photography": "ПО", "Яндекс Диск 1 ТБ": "ПО", "Retouch4me Heal": "ПО", "Retouch4me Dodge & Burn": "ПО", "Retouch4me Fabric": "ПО", "Retouch4me Clean Backdrop": "ПО", "Retouch4me Dust": "ПО", "Мебель": "Обустройство рабочего места", "Косметический ремонт": "Обустройство рабочего места", "Курс по фотографии": "Обучение", "Домен сайта": "Реклама", "Хостинг сайта": "Реклама", "Яндекс Директ": "Реклама", "Авито": "Реклама", "Таргетированная реклама": "Реклама", "Размещения у блогеров": "Реклама", "Отклики на Profi.ru": "Реклама", "Обслуживание счёта (РКО)": "Банковское обслуживание", "СМС-уведомления": "Банковское обслуживание"};
+var СПР = [["Амортизация", "Постепенное включение стоимости имущества в расходы бизнеса по мере его использования и износа."], ["Базовая ставка", "Стоимость одного часа работы специалиста при оказании услуг клиенту вне съёмочной площадки, рассчитанная с учётом всех затрат, необходимых для профессиональной деятельности специалиста, включая расходы на оборудование, налоги, обязательные платежи, отпуск и другие предусмотренные расчётом затраты, без повышающего коэффициента, применяемого к съёмочному часу. Используется для формирования стоимости услуг, не связанных непосредственно со съёмкой, например ретуши, индивидуальных консультаций и выполнения индивидуальных задач для клиента."], ["Банковское обслуживание", "Расходы на ведение банковских счетов, проведение платежей и использование других банковских услуг, необходимых для профессиональной деятельности."], ["Больничный", "Период временной нетрудоспособности из-за болезни, травмы или иных обстоятельств, в течение которого человек не может выполнять работу."], ["Бухгалтерия", "Ведение и обработка финансовой информации о деятельности специалиста, включая учёт доходов и расходов, расчёт обязательных платежей и подготовку необходимой отчётности."], ["Бюджет", "План распределения денежных средств за определённый период по направлениям их использования и формирования дохода."], ["Временные расходы", "Время, которое специалист затрачивает на выполнение работы, взаимодействие с клиентами, организационные задачи и другие действия, связанные с профессиональной деятельностью."], ["Время на постпродакшн", "Время, необходимое для обработки и подготовки отснятого материала к передаче заказчику."], ["Всего расходов", "Общая сумма денежных средств, которую специалист затрачивает на покрытие финансовых расходов, налогов и банковских комиссий, связанных с профессиональной деятельностью, за определённый период."], ["Выработка ресурса", "Использование установленного ресурса оборудования, выраженное в количестве предусмотренных производителем операций или циклов работы."], ["Выручка", "Общая сумма денежных средств, которую специалист получает от продажи своих услуг за определённый период, включая суммы, предназначенные для покрытия всех расходов и обязательных платежей, налогов, стоимости оборудования и его амортизации, банковских расходов, резервов на отпуск, маржинальную прибыль, обучение и другие предусмотренные расчётом затраты, а также доход специалиста."], ["Выходной", "Дни недели, в которые работник освобождён от выполнения трудовых обязанностей в соответствии с установленным режимом рабочего времени. Предоставляются для еженедельного непрерывного отдыха. По общему правилу при пятидневной рабочей неделе предоставляются два выходных дня, при шестидневной — один."], ["Год", "Календарный период продолжительностью 12 последовательных месяцев, включающий четыре квартала."], ["Готовые кадры", "Снимки, полученные в результате проведения съёмочных работ и прошедшие первичную обработку."], ["Доля безналичных платежей", "Процентная часть платежей, полученных специалистом за оказанные услуги в безналичной форме, от общего объёма полученных платежей за определённый период."], ["Доход", "Денежные средства, остающиеся у специалиста от профессиональной деятельности после покрытия связанных с этой деятельностью расходов, налогов и обязательных платежей."], ["Доход в час на руки", "Сумма, которую специалист получает на руки за один рабочий час при сравнении с наймом. Считается так: желаемый доход на руки за 11 месяцев делится на рабочее время — рабочие дни, умноженные на восемь часов."], ["Доход на руки", "Сумма денежных средств, остающаяся у специалиста после вычета налогов, обязательных платежей и других предусмотренных расходов."], ["Желаемая ставка", "Стоимость одного часа съёмки, которая позволяет специалисту получать желаемый доход."], ["Желаемый доход", "Сумма денежных средств, которую специалист планирует получать на руки от своей профессиональной деятельности после покрытия всех расходов, налогов и обязательных платежей ежемесячно в течение года, включая периоды оплачиваемого отпуска."], ["Загрузка специалиста", "Доля рабочего времени специалиста, фактически занятая выполнением оплачиваемой работы, от общего доступного рабочего времени за определённый период."], ["Запас на скидку", "Часть стоимости услуги, заранее заложенная в цену для возможности предоставить клиенту скидку без снижения планируемого дохода специалиста."], ["Значение по умолчанию", "Заранее установленное значение параметра, которое используется автоматически, если пользователь не указал другое значение."], ["Износ камеры", "Степень физического и эксплуатационного старения камеры в результате её использования, выраженная в снижении остаточного ресурса и необходимости последующей замены или ремонта."], ["Инвестиционное время", "Время, которое специалист дополнительно вкладывает в развитие, создание или улучшение ресурсов своего бизнеса и которое рассматривается как инвестиция, способная в дальнейшем приносить экономическую отдачу. Затраты такого времени могут учитываться в стоимости деятельности специалиста и компенсироваться за счёт будущих доходов. Примеры: обучение и повышение квалификации, освоение нового оборудования или технологий, ремонт и переоборудование студии, разработка новых услуг, создание рабочих инструментов и другие вложения времени, направленные на развитие бизнеса. В Счётикс инвестиционное время учитывается отдельно от годового рабочего времени, не имеет единой суммы в часах и компенсируется через денежный расчёт соответствующих вложений."], ["Квартал", "Календарный период продолжительностью три последовательных месяца. Календарный год состоит из четырёх кварталов."], ["Клиентское время", "Время, затрачиваемое специалистом на привлечение, коммуникацию и сопровождение клиента на всех этапах взаимодействия."], ["Логистика", "Совокупность временных и денежных затрат специалиста, связанных с перемещением к месту выполнения работы и обратно, а также с перевозкой необходимых для работы оборудования и материалов. В Счётикс логистика вынесена за пределы расчёта базовой стоимости рабочего часа. Затраты на дорогу, проезд, топливо, парковку и другое перемещение специалист учитывает самостоятельно при формировании стоимости конкретного проекта с учётом фактических условий работы."], ["Месяц", "Календарный период продолжительностью от 28 до 31 календарного дня, имеющий наименование и порядковый номер в году."], ["Минимальное количество съёмок для покрытия расходов", "Точка безубыточности в натуральном выражении. Объём реализации в натуральных единицах, при котором выручка покрывает все предусмотренные расчётом затраты, а доход специалиста равен нулю. Для фотографа показатель может выражаться в количестве съёмочных проектов, необходимых для достижения точки безубыточности за выбранный период."], ["Минимальный заказ", "Минимальное количество часов съёмки, которое специалист принимает в рамках одного заказа и ниже которого не выполняет заказ на установленных условиях."], ["Налоги", "Обязательные платежи в бюджет, начисляемые и уплачиваемые специалистом в соответствии с применяемым налоговым режимом и законодательством Российской Федерации."], ["Налоговый режим", "Установленный законодательством порядок исчисления и уплаты налогов и обязательных платежей, применяемый специалистом в зависимости от выбранной системы налогообложения."], ["Наценка к себестоимости", "Процентное или денежное увеличение себестоимости услуги, формирующее дополнительную сумму сверх затрат и обеспечивающее получение прибыли."], ["Неэффективное рабочее время", "Часть рабочего времени, затрачиваемая на действия и перерывы, не связанные непосредственно с выполнением основной оплачиваемой работы, включая личные потребности, отдых, обслуживание рабочего места, внутренние коммуникации и другие отвлечения. Используется в Счётикс для учёта времени, которое фактически не может быть использовано для выполнения оплачиваемой работы."], ["Обустройство рабочего места", "Затраты на создание и оснащение пространства, необходимого специалисту для выполнения профессиональной деятельности."], ["Обучение", "Затраты на получение и поддержание знаний, навыков и профессиональных компетенций, необходимых для выполнения работы и развития специалиста."], ["Операционное время", "Время, затрачиваемое специалистом на выполнение рабочих задач, не связанных непосредственно с оказанием услуги или созданием результата для клиента, но необходимых для организации и ведения профессиональной деятельности. Включает продвижение и рекламу, поиск заказов, работу с клиентами, бухгалтерию и учёт, планирование, организационные и административные задачи."], ["Операционное клиентское время", "Время, которое специалист затрачивает на коммуникацию с потенциальными и действующими клиентами вне рамок конкретного проекта, включая обработку обращений, ответы на вопросы, консультации, переписку, переговоры и другие действия, связанные с привлечением и обслуживанием клиентов."], ["Остаток ресурса", "Неиспользованная часть рабочего ресурса оборудования, которую специалист может использовать до достижения установленного срока службы или предельного количества операций."], ["Отпуск", "Ежегодный период освобождения от работы для отдыха и восстановления, на время которого специалист предусматривает сохранение дохода. Основная продолжительность ежегодного оплачиваемого отпуска составляет 28 календарных дней."], ["Отчётность", "Систематизированная информация о доходах, расходах, результатах деятельности и обязательствах специалиста, подготовленная за определённый период для анализа, контроля или предоставления в налоговые и иные соответствующие органы в установленных случаях."], ["Офисное оборудование", "Оборудование и технические средства, используемые для организации рабочего процесса, выполнения административных задач и обеспечения повседневной деятельности специалиста."], ["Первичная обработка", "Комплекс действий с отснятым фотоматериалом, выполняемых специалистом с использованием специализированных компьютерных программ для подготовки материала к дальнейшему использованию. Включает подготовку материала: создание и организацию папок и файлов, выгрузку материала с карт памяти, резервное копирование; отбор материала: просмотр отснятого материала, удаление технического брака, отбор удачных кадров, исключение дублей, кадров с закрытыми глазами и явно неудачных кадров; базовую цветокоррекцию: коррекцию экспозиции, баланса белого, контраста, светлых и тёмных областей, резкости и насыщенности, приведение всей серии к единому цвету и свету; коррекцию кадра: кадрирование, выравнивание горизонта, коррекцию перспективы и искажений объектива, удаление крупных лишних объектов из кадра; подготовку и передачу результата: импорт и экспорт из программы обработки, подготовку файлов, изменение размера и формата при необходимости. Ретушь в первичную обработку не входит."], ["ПО", "Программное обеспечение, используемое специалистом для выполнения профессиональных задач, обработки материалов и организации рабочего процесса."], ["Подарочный сертификат", "Документ, подтверждающий право его владельца получить определённую услугу или набор услуг на указанную в сертификате сумму или в соответствии с установленными условиями."], ["Подписки", "Регулярные платежи за доступ к программам, сервисам, платформам и другим цифровым инструментам, необходимым специалисту для работы."], ["Поиск заказов", "Действия специалиста по выявлению потенциальных клиентов и получению новых заказов на оказание услуг."], ["Постпродакшн", "Комплекс работ с отснятым материалом после завершения съёмки, направленных на его обработку, доработку и подготовку к передаче или публикации."], ["Праздник", "Дни, в которые в соответствии с Трудовым кодексом Российской Федерации работник освобождён от исполнения трудовых обязанностей; конкретные даты выходных и нерабочих праздничных дней и их переносы определяются с учётом производственного календаря."], ["Прайс", "Перечень услуг с указанием их стоимости и, при необходимости, основных условий их предоставления."], ["Программа лояльности", "Система условий и поощрений, направленная на привлечение и удержание клиентов и стимулирование их повторных покупок или заказов."], ["Продвижение", "Комплекс действий, направленных на привлечение внимания к специалисту, его услугам или продуктам, увеличение числа потенциальных клиентов и стимулирование продаж."], ["Продолжительность съёмки", "Время, затрачиваемое специалистом непосредственно на проведение съёмочных работ, от начала до завершения съёмки."], ["Проектная работа с клиентами", "Рабочие действия специалиста, связанные с взаимодействием с клиентом в рамках конкретного проекта: обсуждение задачи, согласование условий и деталей работы, подготовка к проекту, коммуникация в процессе его выполнения, согласование результата и завершение проекта."], ["Проектное время", "Общее время, которое специалист затрачивает на выполнение всех съёмочных проектов в течение определённого периода, включая съёмочное время, время на постпродакшн и проектное клиентское время."], ["Проектное клиентское время", "Время, затрачиваемое специалистом на взаимодействие с клиентом в рамках конкретного проекта."], ["Прямые расходы", "Расходы, непосредственно связанные с выполнением конкретного заказа или проекта и возникающие в процессе оказания услуги."], ["Прямые расходы на готовый кадр", "Это та часть ваших финансовых затрат, которая напрямую участвует в создании и обработке фотографий: съёмочное и офисное оборудование, рабочий софт, подписки, а также содержание студии или рабочего места. Сюда не входят расходы на маркетинг, рекламу, сайт, обучение или бухгалтерское сопровождение — только то, что работает непосредственно на создание снимка."], ["Работа с клиентами", "Совокупность рабочих действий специалиста, связанных с привлечением, коммуникацией и сопровождением клиентов на разных этапах взаимодействия."], ["Рабочее время", "Время, в течение которого специалист выполняет профессиональные обязанности, включая непосредственную работу, подготовку, организационные задачи и другие действия, связанные с выполнением работы. Нормальная продолжительность рабочего времени не может превышать 40 часов в неделю."], ["Рабочее место", "Организованное пространство специалиста, оснащённое необходимым оборудованием, инструментами и материалами для выполнения конкретных профессиональных задач."], ["Расходы", "Всё, что специалист затрачивает для выполнения работы и ведения профессиональной деятельности, включая время и денежные средства."], ["Регулярные расходы специалиста", "Расходы, возникающие регулярно и необходимые для поддержания профессиональной деятельности и выполнения работы в течение определённого периода."], ["Резерв времени на простой и форс-мажоры", "Дополнительный запас рабочего времени, предусмотренный в расчёте для компенсации периодов отсутствия заказов, отмены или переноса съёмок, а также непредвиденных обстоятельств, временно влияющих на возможность специалиста работать. Дополнительный резерв, может быть отключён."], ["Резерв на отпуск", "Часть денежных средств, включаемая в стоимость каждого часа работы и предназначенная для сохранения дохода специалиста в период оплачиваемого отпуска. Обязательный резерв."], ["Резерв на программу лояльности", "Часть денежных средств, закладываемая в стоимость услуг для финансирования скидок, бонусов и других мероприятий программы лояльности. Дополнительный резерв, может быть отключён."], ["Маржа", "Короткое название маржинальной прибыли в таблицах и расчётах: деньги дела сверх зарплаты и расходов."], ["Резервный фонд", "Денежные средства, которые специалист заранее закладывает в стоимость своих услуг и накапливает для последующего использования в соответствии с предусмотренными целями."], ["Реклама", "Распространение информации о специалисте, его услугах или продуктах с целью привлечения внимания потенциальных клиентов и стимулирования спроса."], ["Ресурс затвора", "Расчётное количество срабатываний затвора камеры, которое предусмотрено производителем до достижения установленного уровня его эксплуатационного ресурса."], ["Сайт", "Интернет-ресурс, предназначенный для представления специалиста, его услуг и портфолио, информирования потенциальных клиентов, привлечения обращений и получения заказов."], ["Себестоимость часа съёмки", "Сумма затрат, необходимых специалисту для проведения одного съёмочного часа, включая прямые и распределённые расходы, связанные с выполнением съёмочных работ."], ["Скидка за объём", "Снижение стоимости единицы услуги при увеличении объёма заказа или количества приобретаемых услуг."], ["Содержание рабочего места", "Расходы на поддержание рабочего пространства и оборудования в состоянии, необходимом для регулярного выполнения профессиональной деятельности."], ["Срабатывание затвора", "Однократный цикл работы затвора камеры, происходящий при создании снимка и учитываемый при определении выработки ресурса затвора."], ["Средний чек съёмки", "Средняя стоимость одной съёмки, рассчитанная на основе общей выручки от съёмок и их количества за определённый период."], ["Срок службы", "Период, в течение которого оборудование или другое имущество может использоваться по назначению при соблюдении установленных условий эксплуатации."], ["Ставка в ноль", "Минимальная стоимость съёмочного часа, при которой специалист достигает точки безубыточности, то есть получает выручку, достаточную для покрытия предусмотренных расчётом расходов и обязательных платежей, но не получает дохода сверх них."], ["Ставка часа съёмки (стоимость часа съёмки)", "Стоимость одного часа съёмочных работ, установленная специалистом для клиента."], ["Статья доходов", "Отдельное направление денежных поступлений, предусмотренное бюджетом специалиста."], ["Статья расходов", "Отдельное направление денежных затрат, предусмотренное бюджетом специалиста."], ["Страховые взносы", "Обязательные платежи в государственные внебюджетные фонды и государственные системы страхования, связанные с осуществлением профессиональной деятельности и обеспечением социальных гарантий."], ["Съёмка", "Процесс создания фотоматериала с использованием фотооборудования в соответствии с поставленной задачей, условиями и сценарием съёмочного проекта."], ["Съёмочное время", "Время, непосредственно затрачиваемое специалистом на проведение съёмки на съёмочной площадке."], ["Съёмочное оборудование", "Неизменный рабочий комплект оборудования, который фотограф использует на каждой съёмке и без которого проведение съёмочного процесса невозможно или существенно затруднено. Узкоспециализированное оборудование для разовых или нестандартных проектов в основной комплект не входит и учитывается отдельно в зависимости от конкретных задач."], ["Съёмочный проект", "Отдельный проект, предусматривающий выполнение съёмочных работ для клиента и включающий все связанные с ним процессы — подготовку, коммуникацию, съёмку, пост-продакшн и завершение проекта. Сокращённо может называться съёмкой."], ["Съёмочный час", "Единица измерения съёмочного времени, равная одному часу работы специалиста на съёмочной площадке."], ["Текущая ставка", "Стоимость одного часа работы фотографа на съёмочной площадке, по которой он в настоящее время оказывает услуги клиентам."], ["Текущий доход", "Сумма денежных средств, которую специалист может получать на руки при текущей ставке и условиях профессиональной деятельности, указанных в анкете, после покрытия всех расходов, налогов и обязательных платежей."], ["Точка безубыточности", "Минимальный объём выручки или продаж за определённый период, необходимый для покрытия всех предусмотренных расчётом расходов, налогов и обязательных платежей без получения дополнительного дохода. Может выражаться в денежных единицах, количестве съёмок, съёмочных часах или других единицах объёма деятельности."], ["Трудовой кодекс Российской Федерации (ТК РФ)", "Основной нормативный правовой акт, регулирующий трудовые отношения в Российской Федерации и устанавливающий государственные гарантии в сфере труда, включая нормы рабочего времени, отдыха, отпусков и других условий труда. В расчёте используется как общепринятая нормативная точка отсчёта для определения объёма рабочего времени и базовых условий труда специалиста."], ["Учёт", "Систематический сбор, фиксация и анализ информации о доходах, расходах, работе и других показателях профессиональной деятельности."], ["Финансовые вложения (инвестиции)", "Денежные средства, которые специалист вкладывает в развитие и обеспечение своей профессиональной деятельности и рассчитывает использовать с целью получения будущей отдачи."], ["Финансовые расходы", "Денежные средства, которые специалист затрачивает на выполнение работы и обеспечение профессиональной деятельности."], ["Фонд программы лояльности", "Сформированная сумма денежных средств, предназначенная для финансирования скидок, бонусов, подарков и других поощрений клиентов в рамках программы лояльности."], ["Маржинальная прибыль", "Деньги дела сверх зарплаты, расходов и налогов — доля выручки, заранее заложенная в ставку. Направляются на развитие (оборудование, обучение, продвижение) или становятся доходом специалиста. Дополнительный элемент цены, может быть отключён."], ["Эквайринг", "Комиссия за приём безналичных платежей от клиентов с использованием банковских карт, электронных средств платежа и других платёжных инструментов."], ["Эффективное рабочее время", "Время рабочего дня, фактически доступное для выполнения профессиональных задач после учёта объективно необходимых перерывов на отдых, личные потребности, восстановление работоспособности, подготовку и обслуживание рабочего места. Такие затраты времени являются естественной частью организации труда и учитываются при нормировании рабочей нагрузки."], ["Юнит-экономика", "Расчёт доходов, расходов и финансового результата в расчёте на одну единицу деятельности специалиста, например один час работы, одну услугу, один заказ или один съёмочный проект. Позволяет определить реальную стоимость выполнения работы, понять, сколько специалист зарабатывает после покрытия всех связанных с деятельностью затрат, определить необходимую стоимость услуг и оценить экономическую эффективность своей работы."]];
+var СВЯЗЬ = {"Желаемый доход": "Желаемый доход", "Налоговый режим": "Налоговый режим", "Текущая ставка": "Текущая ставка", "Готовых кадров за 1 час": "Готовые кадры", "Срабатываний затвора за 1 час": "Срабатывание затвора", "Ресурс затвора": "Ресурс затвора", "Минимальный заказ": "Минимальный заказ", "Время на постпродакшн": "Постпродакшн", "Проектная работа с клиентами": "Проектная работа с клиентами", "Поиск заказов": "Поиск заказов", "Где находится рабочее место": "Рабочее место", "Сколько вы платите за жильё в месяц": "Содержание рабочего места", "Коммунальные платежи, интернет и связь": "Содержание рабочего места", "Общая площадь вашего жилья": "Рабочее место", "Сколько метров выделено под рабочую зону": "Рабочее место", "За сколько лет окупить вложения в обучение": "Обучение", "Кто делал сайт": "Сайт", "Сколько вы заплатили за создание сайта": "Сайт", "Сколько времени вы потратили на создание сайта": "Сайт", "За сколько лет окупить вложения в сайт": "Сайт", "Эквайринг": "Эквайринг", "Доля безналичных платежей": "Доля безналичных платежей", "Кто ведёт учёт": "Бухгалтерия", "Сколько часов в квартал уходит на отчётность": "Отчётность", "Сколько стоит ведение учёта": "Бухгалтерия", "Резерв времени на простой и форс-мажоры": "Резерв времени на простой и форс-мажоры", "Маржинальная прибыль": "Маржинальная прибыль", "Запас на скидку": "Запас на скидку", "Выходные дни": "Выходной", "Праздничные дни": "Праздник", "Рабочих дней / год": "Рабочее время", "Отпуск": "Отпуск", "Больничные": "Больничный", "Рабочих дней без отпуска и больничных": "Рабочее время", "Рабочих часов / день": "Рабочее время", "Эффективных часов / день": "Эффективное рабочее время", "Рабочее время": "Рабочее время", "Время на поиск заказов": "Поиск заказов", "Время на бухгалтерию и учёт": "Бухгалтерия", "Проектное время": "Проектное время", "Время на съёмку": "Съёмка", "Проектов": "Съёмочный проект", "Подписки / ПО": "Подписки", "Реклама и продвижение": "Реклама", "Содержание рабочего места": "Содержание рабочего места", "Банковское обслуживание": "Банковское обслуживание", "Бухгалтерия и учёт": "Бухгалтерия", "Регулярные расходы специалиста": "Регулярные расходы специалиста", "Налоги": "Налоги", "Страховые взносы": "Страховые взносы", "Всего расходов": "Всего расходов", "Canon EOS R6 Mark II Body": "Съёмочное оборудование", "Canon RF 24–105mm f/4.0 L IS USM": "Съёмочное оборудование", "Godox V1Pro C": "Съёмочное оборудование", "Godox XPro II C": "Съёмочное оборудование", "Аккумулятор LP-E6NH": "Съёмочное оборудование", "SanDisk Extreme PRO 256 ГБ #1": "Съёмочное оборудование", "SanDisk Extreme PRO 256 ГБ #2": "Съёмочное оборудование", "Рюкзак Lowepro ProTactic": "Съёмочное оборудование", "Godox RFT-05 отражатель": "Съёмочное оборудование", "X-Rite ColorChecker": "Съёмочное оборудование", "Системный блок": "Офисное оборудование", "Монитор ASUS ProArt": "Офисное оборудование", "Calibrite ColorChecker": "Офисное оборудование", "Колонки Logitech Z207": "Офисное оборудование", "Клавиатура Logitech K380": "Офисное оборудование", "Мышь Logitech M650": "Офисное оборудование", "Веб-камера Logitech Brio": "Офисное оборудование", "Микрофон FIFINE K669B": "Офисное оборудование", "Принтер Canon PIXMA G640": "Офисное оборудование", "Adobe CC Photography": "ПО", "Яндекс Диск 1 ТБ": "ПО", "Retouch4me Heal": "ПО", "Retouch4me Dodge & Burn": "ПО", "Retouch4me Fabric": "ПО", "Retouch4me Clean Backdrop": "ПО", "Retouch4me Dust": "ПО", "Мебель": "Обустройство рабочего места", "Косметический ремонт": "Обустройство рабочего места", "Курс по фотографии": "Обучение", "Домен сайта": "Реклама", "Хостинг сайта": "Реклама", "Яндекс Директ": "Реклама", "Авито": "Реклама", "Таргетированная реклама": "Реклама", "Размещения у блогеров": "Реклама", "Отклики на Profi.ru": "Реклама", "Обслуживание счёта (РКО)": "Банковское обслуживание", "СМС-уведомления": "Банковское обслуживание"};
 var СВЯЗЬ_БЛОК = {"9": "Съёмочное оборудование", "10": "Офисное оборудование", "11": "ПО", "12": "Обустройство рабочего места", "13": "Обучение", "15": "Реклама", "16": "Банковское обслуживание"};
 var СВЯЗЬ_05 = {"Ставка / час съёмки": "Ставка часа съёмки (стоимость часа съёмки)", "Стоимость / 1 проект": "Съёмочный проект", "Стоимость / 1 готовый кадр": "Готовые кадры", "Желаемый доход / год": "Желаемый доход", "Выручка / год": "Выручка", "Выручка / мес": "Выручка", "Регулярные расходы специалиста / год": "Регулярные расходы специалиста", "Финансовые вложения (инвестиции) / год": "Финансовые вложения (инвестиции)", "Резервный фонд / год": "Резервный фонд", "Налоги и Страховые взносы / год": "Налоги", "Эквайринг и дополнительные банковские комиссии / год": "Эквайринг", "Остаётся на руки / год": "Доход на руки", "Остаётся на руки / мес": "Доход на руки", "Остаётся на руки / час съёмки": "Доход на руки", "Остаётся на руки / % выручки": "Доход на руки", "Доход в час на руки": "Доход в час на руки", "Базовая ставка": "Базовая ставка", "Эффективное рабочее время": "Эффективное рабочее время", "Себестоимость / час съёмки": "Себестоимость часа съёмки", "Наценка к себестоимости": "Наценка к себестоимости", "Разница с желаемым доходом": "Желаемый доход", "Съёмок / год": "Съёмка", "Съёмок / мес": "Съёмка", "Съёмок / нед": "Съёмка", "Съёмок / рабочий день": "Съёмка", "Рабочего времени / год": "Рабочее время", "Рабочих дней / год": "Рабочее время", "Рабочих дней / мес": "Рабочее время", "Рабочих дней / нед": "Рабочее время", "Рабочий день / часов": "Рабочее время"}, СВЯЗЬ_06 = {"Срабатываний затвора": "Срабатывание затвора", "Выработка ресурса": "Выработка ресурса", "Износ камеры": "Износ камеры", "Срабатываний / 1 готовый кадр": "Срабатывание затвора", "Стоимость / 1 срабатывание": "Износ камеры", "Срок службы при текущих условиях": "Срок службы", "Остаток ресурса": "Остаток ресурса", "Съёмок": "Съёмка"}, СВЯЗЬ_08 = {"Запас на скидку": "Запас на скидку", "Фонд программы лояльности": "Фонд программы лояльности", "Средний чек съёмки": "Средний чек съёмки", "Скидка за объём": "Скидка за объём", "Постоянным клиентам": "Программа лояльности", "Специальные предложения": "Подарочный сертификат", "Бюджет на постоянных клиентов": "Программа лояльности", "Целевой поток для постоянных": "Программа лояльности", "Бюджет на сертификаты": "Подарочный сертификат", "Сертификатами": "Подарочный сертификат", "Остаток — на скидку за объём": "Скидка за объём", "Скидка 5 % · от 2 съёмок": "Программа лояльности", "Скидка 7 % · от 4 съёмок": "Программа лояльности", "Скидка 10 % · от 12 съёмок": "Программа лояльности", "Сертификат 8 000 ₽": "Подарочный сертификат", "Сертификат 4 000 ₽": "Подарочный сертификат", "Сертификат 2 500 ₽": "Подарочный сертификат", "Доля бюджета на ступень 5 %": "Программа лояльности", "Доля бюджета на ступень 7 %": "Программа лояльности", "Доля бюджета на ступень 10 %": "Программа лояльности", "Номинал сертификата 1": "Подарочный сертификат", "Номинал сертификата 2": "Подарочный сертификат", "Номинал сертификата 3": "Подарочный сертификат"};
 var СПР_НОМЕР = {};
@@ -7948,14 +7967,13 @@ var СПР_НОМЕР = {};
       'Финансовые вложения (инвестиции)':'Финансовые вложения (инвестиции)'}});
 
   /* ── 05. резервный фонд */
-  var РЕЗЕРВНЫЙ_ФОНД=(d.vacY||0)+(d.fundY||0)+(d.discY||0);
+  var РЕЗЕРВНЫЙ_ФОНД=(d.vacY||0)+(d.discY||0);
   function рр(им, v){
     return ['Р', им, р(v), р(v/MO), р(v/py), р(v/sh),
       РЕЗЕРВНЫЙ_ФОНД ? пр(v/РЕЗЕРВНЫЙ_ФОНД) : ТИРЕ];
   }
   var t04r = T(['\u20bd/год','\u20bd/мес','\u20bd/проект','\u20bd/час съёмки','% фонда'], [
     рр('Резерв на отпуск', d.vacY||0),
-    рр('Резерв на развитие', d.fundY||0),
     рр('Резерв на программу лояльности', d.discY||0),
     рр('Резервный фонд', РЕЗЕРВНЫЙ_ФОНД)
   ], {спр:1});
@@ -7995,7 +8013,7 @@ var СПР_НОМЕР = {};
     р3('Выручка / мес', function(x){ return x.V/MO }),
     р3('Регулярные расходы специалиста / год', function(){ return d.vari }),
     р3('Финансовые вложения (инвестиции) / год', function(){ return d.amort }),
-    р3('Резервный фонд / год', function(){ return (d.vacY||0)+(d.fundY||0)+(d.discY||0) }),
+    р3('Резервный фонд / год', function(){ return (d.vacY||0)+(d.discY||0) }),
     р3('Налоги и Страховые взносы / год', function(x){ return x.нал }),
     р3('Эквайринг и дополнительные банковские комиссии / год', function(x){ return x.ком }),
     р3('Остаётся на руки / год', function(x){ return x.ост }),
@@ -9339,13 +9357,13 @@ var _p=$('dlpdf'); if(_p)_p.onclick=function(){if(window.PHR_PRINT)window.PHR_PR
   var съём=0, пост=0, время=0;
   Д.catalog.forEach(function(p){
     var цена = +p.price || 0;
-    if(p.b===9) съём += цена;
-    else if(p.b===10) пост += цена;
-    else if(p.b===11 && p.kind==='life') пост += цена;      /* купленные программы */
-    else if(p.b===13) время += цена + (+p.term||0)*(Д.Ny||0)/12;
+    if(p.b===10) съём += цена;
+    else if(p.b===11) пост += цена;
+    else if(p.b===12 && p.kind==='life') пост += цена;      /* купленные программы */
+    else if(p.b===14) время += цена + (+p.term||0)*(Д.Ny||0)/12;
   });
   (Д.answers||[]).forEach(function(a){                       /* стоимость сайта */
-    if(a.b===14 && /заплатили/.test(a.n)) время += +a.v || 0;
+    if(a.b===15 && /заплатили/.test(a.n)) время += +a.v || 0;
   });
   var итог = съём + пост + время;
   if(итог<=0) return;
@@ -9358,16 +9376,25 @@ var _p=$('dlpdf'); if(_p)_p.onclick=function(){if(window.PHR_PRINT)window.PHR_PR
   }
   сумма('инвСъём',съём); сумма('инвПост',пост); сумма('инвВремя',время);
   зн('инвИтого', руб(итог) + ' \u20BD');
-  /* Окупаемость: те же вложения делятся на годовую амортизацию того же
-     состава (съёмочная + офисная техника, купленные программы, обучение
-     с месяцами без дохода, сайт) — готовые поля d.dep*. Рабочее место
-     в сумму блока не входит, поэтому depWs не берём. */
-  var годовая=(+Д.depShoot||0)+(+Д.depOffice||0)+(+Д.depSoft||0)+(+Д.depEdu||0)+(+Д.depSite||0);
-  var часов=+Д.sh||0;
-  if(годовая>0){
-    var лет=итог/годовая, вЧас=часов>0?годовая/часов:0;
-    function летСлово(n){ var x=Math.round(n*10)/10, i=Math.floor(x); if(x!==i) return x.toLocaleString('ru-RU')+' года'; var d1=i%10,d2=i%100; if(d2>=11&&d2<=14)return i+' лет'; if(d1===1)return i+' год'; if(d1>=2&&d1<=4)return i+' года'; return i+' лет'; }
-    зн('инвОкуп', летСлово(лет));
+  /* Окупаемость (15.09: закрыт открытый вопрос З-025 «источник возврата»):
+     те же вложения делятся на годовую маржинальную прибыль (d.fundY) —
+     единственные деньги сверх зарплаты, расходов и налогов. Амортизация
+     возвратом не является: собранное уйдёт на замену (камера 166 999 ₽
+     через 3 года снова станет новой камерой), прошлое вложение при этом
+     не возвращается, а переносится дальше. Без маржи (fundY=0) дело
+     работает в ноль — вложения не окупятся никогда. */
+  var маржа=+Д.fundY||0;
+  function летСлово(n){ var x=Math.round(n*10)/10, i=Math.floor(x); if(x!==i) return x.toLocaleString('ru-RU')+' года'; var d1=i%10,d2=i%100; if(d2>=11&&d2<=14)return i+' лет'; if(d1===1)return i+' год'; if(d1>=2&&d1<=4)return i+' года'; return i+' лет'; }
+  if(маржа>0){
+    зн('инвОкуп', летСлово(итог/маржа));
+    var пл=document.getElementById('инвПлашка');
+    if(пл) пл.insertAdjacentHTML('beforeend','<div class="ip-s">Считаем по маржинальной прибыли: '+руб(маржа)+' \u20BD/год</div>');
+  }else{
+    var пл0=document.getElementById('инвПлашка');
+    if(пл0){ пл0.classList.add('never');
+      пл0.innerHTML='<div class="ip-v">Вложения не окупятся <b>никогда</b></div>'
+      +'<div class="ip-s">Ставка покрывает зарплату, расходы и налоги — и ничего сверх. Ваше дело работает в ноль: на развитие и себе не остаётся ничего.</div>'
+      +'<a class="lgwb" href="calc.html#fund_on">Заложить долю маржинальной прибыли</a>'; }
   }
   [['инвВремя',время],['инвСъём',съём],['инвПост',пост]].forEach(function(x){
     if(x[1]<=0){ var э=document.getElementById(x[0]); var пл=э&&э.closest('.cam-chip'); if(пл) пл.style.display='none'; }
@@ -9376,14 +9403,15 @@ var _p=$('dlpdf'); if(_p)_p.onclick=function(){if(window.PHR_PRINT)window.PHR_PR
 </script>
 
 <script>
-/* Блок «Что накопится при этой ставке» (REPORT-B028): суммы из готовых
-   полей d — резерв на отпуск vacY, амортизация камеры camAmort и срок
-   camLife, все вложения amort, фонд развития fundY. Формула накоплений
-   не вводится: это те же слагаемые ставки, показанные как копилка. */
+/* Блок «Что накопится при этой ставке» (REPORT-B028): две плашки — отпуск (vacY)
+   и техника (amort) — показываются всегда (нулей не бывает). Третья плашка —
+   маржинальная прибыль (fundY) — свой блок B029 (галка fund_on
+   в анкете). В накоплениях только отпуск и техника.
+   Формула накоплений не вводится: это те же слагаемые ставки, как копилка. */
 (function(){
   var Д=window.PHR_D, host=document.getElementById('накопПлашки');
   if(!Д||!host) return;
-  function руб(n){ return Math.round(n).toLocaleString('ru-RU').replace(/\u00A0/g,' ')+' \u20BD'; }
+  function руб(n){ return Math.round(n).toLocaleString('ru-RU')+'\u00A0\u20BD'; }
   /* 06.09 (слово владельца): подписи плашек — продолжение фразы «За год
      работы вы накопите…»; цифры — как есть, со знаком валюты; «/ год»,
      текст под разделительной линией и сама линия убраны — в плашке
@@ -9396,16 +9424,45 @@ var _p=$('dlpdf'); if(_p)_p.onclick=function(){if(window.PHR_PRINT)window.PHR_PR
   var vac=+Д.vacY||0,
       inv=+Д.amort||0;
   var h='';
-  if(vac>0) h+=плашка('n1 илл илл-отпуск','На отпуск',руб(vac));
+  h+=плашка('n1 илл илл-отпуск','На отпуск',руб(vac));
   /* 12.09 (слово владельца): плашку «Новая камера» убираем. Сумма не
      теряется: камера — первая позиция Form001, и её амортизация уже
      входит в «Резерв на оборудование» (amort = Form001 + Form002 +
-     Form004 + Form013 + обучение + сайт).
-     Плашка «Развитие» удалена целиком — слово владельца. */
-  if(inv>0) h+=плашка('n3 илл илл-техника','На замену техники',руб(inv));
+     Form004 + Form013 + обучение + сайт). */
+  h+=плашка('n3 илл илл-техника','На замену техники',руб(inv));
+  /* 15.09: маржинальная прибыль — свой блок B029 (карточка ниже). Здесь только отпуск и техника. */
   host.innerHTML=h;
   /* 12.09 (слово владельца): подпись под баннерами убрана вместе с
      подложкой блока. Узел #накопПрим удалён из разметки. */
+})();
+</script>
+
+<script>
+/* 15.09: блок «Маржинальная прибыль» (REPORT-B029) — доход дела, не резерв.
+   fundY>0: баннер (цифра → линия → подпись, без кнопки и расшифровок);
+   fundY=0: уведомление + кнопка «Заложить» (якорь fund_on).
+   Круг 7: из ряда плашек убрана (там тесно). Круг 20: «вкл» — баннером. */
+(function(){
+  var Д=window.PHR_D, host=document.getElementById('mpBody');
+  if(!Д||!host) return;
+  function fmt(n){ return Math.round(n).toLocaleString('ru-RU')+'\u00A0\u20BD'; }
+  var m=+Д.fundY||0, h='';
+  if(m>0){
+    /* 15.09, круг 20 (слово владельца): «вкл» — баннером, как плашки B028
+       (цифра → линия → подпись); кнопки и расшифровок нет. */
+    h+='<div class="cnd nak"><div class="cn a mp"><div class="tpw"><div class="bg">'+fmt(m)+' <span style="font-size:.5em">/ год</span></div><div class="tp">Ваше дело принесёт маржинальную прибыль</div></div></div></div>';
+  }else{
+    /* 15.09, круг 7 (слово владельца): возврат к карточке-уведомлению —
+       в ряду плашек вид приводится к общему, уведомлению там тесно. */
+    /* 15.09, круг 11 (слово владельца): знак «доля» (%) — диск и язык как у B027/B006. */
+    h+='<div class="logi"><div class="logii" aria-hidden="true"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="29" fill="var(--c-ln2)"/><g fill="var(--c-gr2)"><circle cx="24" cy="23" r="4.5"/><circle cx="40" cy="41" r="4.5"/><rect x="29.75" y="17" width="4.5" height="30" rx="2.25" transform="rotate(24 32 32)"/></g></svg></div><div class="logit" style="flex:1">'
+      +'<b data-t="rpp_01">Маржинальная прибыль не заложена</b> '
+      +'<span data-t="rpp_02">Ставка покрывает зарплату, расходы и налоги — и ничего сверх. Ваше дело работает в ноль: на развитие и себе не остаётся ничего. '
+      +'<a class="lgwb" href="calc.html#fund_on">Заложить долю маржинальной прибыли</a> '
+      +'<em class="mblink"><a class="спр" href="#спр-97">Что это такое</a></em></span>'
+      +'</div></div>';
+  }
+  host.innerHTML=h;
 })();
 </script>
 

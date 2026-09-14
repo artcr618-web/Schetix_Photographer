@@ -110,11 +110,21 @@ function sumF(f){
     s += (c.k==='life') ? (x>0?цена/x:0) : цена*x; });
   return s;
 }
+/* sumP поверх CAT — та же полная стоимость позиций, что в браузере читается
+   из строк таблицы. ФОНД ручной: тесты задают долю явно, авторежим не нужен. */
+function sumP(f){
+  if(каталогИсключён(f)) return 0;
+  var c=CAT[f]; if(!c) return 0; var s=0;
+  c.rows.forEach(function(r){ s+=число(r[1]); });
+  return s;
+}
+var ФОНД={ручной:true,R:0,инв:0,реком:0};
 function regimeName(rg){ return String(rg) }
 var PROF='\u0444\u043e\u0442\u043e\u0433\u0440\u0430\u0444\u0430';
 ${ФКАЛК}
 ${ФПАРТС}
 var d = calc();
+if(process.env.HARNESS_FOND) d.__фонд={ручной:ФОНД.ручной,R:ФОНД.R,инв:ФОНД.инв,реком:ФОНД.реком};
 d.__parts = parts({NT:d.NT, idle:d.idle, Ny:d.Ny, sh:d.sh, post:d.post, clT:d.clT, promo:d.promo,
   accT:d.accT, fmT:d.fmT, equip:d.equip, promoM:d.promoM, depShoot:d.depShoot, depOffice:d.depOffice,
   depSoft:d.depSoft, depEdu:d.depEdu, depSite:d.depSite, depWs:d.depWs, varAds:d.varAds,

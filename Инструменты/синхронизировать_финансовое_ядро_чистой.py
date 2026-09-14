@@ -111,13 +111,13 @@ def bisection_formula(goal, denominator, zero_if_no_shooting=False):
 
 rows = [
     ('tax_off', 'Налоги и Страховые взносы / не учитывать', 0, '0/1', 'Флажок tax_off', 'default', '', 'Веб/calc.html'),
-    ('fund_on', 'Резерв на развитие / включение', 0, '0/1', 'Флажок fund_on', 'default', '', 'Веб/calc.html'),
-    ('fund_pct_model', 'Резерв на развитие / доля', .10, '%', 'fund_pct / 100', 'default', 'fund_on', 'Веб/calc.html'),
+    ('fund_on', 'Маржа / включение', 0, '0/1', 'Флажок fund_on', 'default', '', 'Веб/calc.html'),
+    ('fund_pct_model', 'Маржа / доля', .10, '%', 'fund_pct / 100', 'default', 'fund_on', 'Веб/calc.html'),
     ('disc_on', 'Резерв на программу лояльности / включение', 0, '0/1', 'Флажок disc_on', 'default', '', 'Веб/calc.html'),
     ('disc_pct_model', 'Резерв на программу лояльности / доля', .15, '%', 'disc_pct / 100', 'default', 'disc_on', 'Веб/calc.html'),
     ('extra_bank_rate', 'Эквайринг и дополнительные банковские комиссии / дополнительная доля', 0, '%', 'суммаДопКомиссий() / 100', 'default', '', 'Веб/calc.html'),
     ('effective_acquiring', 'Эквайринг и дополнительные банковские комиссии / эффективная доля', '=MIN(MAX(acquiring+extra_bank_rate,0),0.1)', '%', 'ограничение 0–10%', 'calc', 'acquiring, extra_bank_rate', 'Веб/calc.html'),
-    ('effective_fund', 'Резерв на развитие / эффективная доля', '=IF(fund_on=1,MIN(MAX(fund_pct_model,0),0.2),0)', '%', 'выключено → 0; предел 20%', 'calc', 'fund_on, fund_pct_model', 'Веб/calc.html'),
+    ('effective_fund', 'Маржа / эффективная доля', '=IF(fund_on=1,MIN(MAX(fund_pct_model,0),0.2),0)', '%', 'выключено → 0; предел 20%', 'calc', 'fund_on, fund_pct_model', 'Веб/calc.html'),
     ('effective_discount', 'Резерв на программу лояльности / эффективная доля', '=IF(disc_on=1,MIN(MAX(disc_pct_model,0),0.15),0)', '%', 'выключено → 0; предел 15%', 'calc', 'disc_on, disc_pct_model', 'Веб/calc.html'),
     ('revenue_denominator', 'Доля выручки после процентных отчислений', '=MAX(0.4,1-effective_acquiring-site_divisor-effective_fund-effective_discount)', '%', 'не меньше 40%', 'calc', 'эффективные доли', 'Веб/calc.html'),
     ('revenue_target', 'Выручка', bisection_formula('target_income', 'revenue_denominator', True), '₽/год', '90 шагов деления пополам', 'calc', 'target_income, total_costs, налог, доли', 'Веб/calc.html'),
