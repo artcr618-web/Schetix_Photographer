@@ -98,9 +98,18 @@ volume_rates = [rr100((S*(1+d['K'])+d['cl'])*hp/S) for S in volume_durations]
 
 # ══════════════════════════════ 2. КРАЕВЫЕ СЛУЧАИ
 print('▶ краевые случаи')
-d = расчёт(поля={'promo_per_day': '7.5'})
+d = расчёт(поля={'promo_amt': '7.5'})
 проверка('продвижение 7,5 ч/день не даёт отрицательных часов', d['pool'] > 0,
          f"pool {d['pool']:.0f} ч, ставка {d['R']/d['sh'] if d['sh'] else 0:,.0f} ₽/ч")
+# 15.09 (слово владельца): период поиска заказов участвует в пересчёте —
+# день/неделя/месяц масштабируют часы, как в блоке 09 «Управление делом».
+дни = расчёт(поля={'promo_amt': '2', 'promo_per': 'day'})
+нед = расчёт(поля={'promo_amt': '2', 'promo_per': 'week'})
+мес = расчёт(поля={'promo_amt': '2', 'promo_per': 'month'})
+проверка('поиск заказов: период день/неделя/месяц масштабирует часы',
+         abs(дни['promo'] - нед['promo']*5) < 1
+         and мес['promo'] < нед['promo'] < дни['promo'],
+         f"день {дни['promo']:.1f}, неделя {нед['promo']:.1f}, месяц {мес['promo']:.1f}")
 d = расчёт(поля={'acq_rate': '30', 'fund_on': True, 'fund_pct': '30',
                  'disc_on': True, 'disc_pct': '15'})
 проверка('экстремальные проценты не взрывают выручку', d['R'] < 5_000_000,
@@ -807,16 +816,23 @@ home_rent_tag=re.search(r'<input[^>]*id="home_rent"[^>]*>',calc)
          and 'step="100"' in home_rent_tag.group(0)
          and 'Установлен максимум — 500 000 ₽ в месяц за жильё' in calc
          and "homeHousing=CHK('own_home')?0:V('home_rent')" in calc)
-promo_per_day_tag=re.search(r'<input[^>]*id="promo_per_day"[^>]*>',calc)
-проверка('promo_per_day: включённый блок 0,5–8 часов/день с шагом 0,5',
-         bool(promo_per_day_tag)
-         and 'data-limit-live' in promo_per_day_tag.group(0)
-         and 'data-step-live' in promo_per_day_tag.group(0)
-         and 'min="0.5"' in promo_per_day_tag.group(0)
-         and 'max="8"' in promo_per_day_tag.group(0)
-         and 'step="0.5"' in promo_per_day_tag.group(0)
+promo_amt_tag=re.search(r'<input[^>]*id="promo_amt"[^>]*>',calc)
+проверка('promo_amt: включённый блок 0,5–8 ч (день)/40 (неделя)/160 (месяц), шаг 0,5',
+         bool(promo_amt_tag)
+         and 'data-limit-live' in promo_amt_tag.group(0)
+         and 'data-step-live' in promo_amt_tag.group(0)
+         and 'min="0.5"' in promo_amt_tag.group(0)
+         and 'max="8"' in promo_amt_tag.group(0)
+         and 'step="0.5"' in promo_amt_tag.group(0)
          and 'Чтобы не учитывать блок, используйте галочку исключения' in calc
-         and 'это полный нормативный рабочий день' in calc)
+         and '160 часов в месяц' in calc)
+promo_per_tag=re.search(r'<select[^>]*id="promo_per"[^>]*>[\s\S]*?</select>',calc)
+проверка('promo_per: период поиска заказов день/неделя/месяц участвует в расчёте',
+         bool(promo_per_tag)
+         and 'value="day"' in promo_per_tag.group(0)
+         and 'value="week"' in promo_per_tag.group(0)
+         and 'value="month"' in promo_per_tag.group(0)
+         and "var promoPer=$('promo_per')" in calc)
 client_time_tag=re.search(r'<input[^>]*id="client_time"[^>]*>',calc)
 проверка('client_time: включённый блок 0,5–72 часа на проект с шагом 0,5',
          bool(client_time_tag)
@@ -1093,7 +1109,7 @@ try:
              ', '.join(k for k,v in glossary_expected.items() if glossary_actual.get(k)!=v))
     СВЯЗЬ = {'income_month': 'income_month', 'current_rate': 'current_rate', 'frames_out': 'frames_out',
              'shoot_duration': 'shoot_manual', 'post_ratio': 'post_ratio', 'client_time': 'client_time',
-             'promo_per_day': 'promo_per_day', 'acc_per_quarter': 'acc_per_quarter',
+             'promo_amt': 'promo_amt', 'acc_per_quarter': 'acc_per_quarter',
              'acc_cost_month': 'acc_cost_month', 'home_rent': 'home_rent', 'home_util': 'home_util',
              'home_area': 'home_area', 'cab_area': 'cab_area', 'office_rent': 'office_rent',
              'office_util': 'office_util', 'edu_life': 'edu_life', 'site_cost': 'site_cost',

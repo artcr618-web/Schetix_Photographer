@@ -131,9 +131,11 @@ letter-spacing:.06em;line-height:1;white-space:nowrap;mix-blend-mode:multiply}
    переносится естественно, чтобы не выходить за границы карточки. */
 #phc-root .def{width:100%;max-width:none;font-size:12px;line-height:1.55;
 color:var(--c-gr2);margin-top:10px;white-space:nowrap;letter-spacing:-.01em}
-@media(max-width:1020px){#phc-root .def{white-space:normal;font-size:12.5px;letter-spacing:0}
-/* 15.09, круг 14 (слово владельца): подпись default переехала над поле — ей нужна отбивка снизу (зеркально mt10). Только этот вопрос. */
-#phc-root .income-card>.def{margin-bottom:10px}}
+/* 15.09 (слово владельца): подпись «по умолчанию» теперь стоит над полем —
+   ей нужна отбивка снизу (зеркально mt10). Прежнее правило жило только
+   ≤1020px, и на десктопе подпись прилипала к полю. */
+#phc-root .income-card>.def{margin-bottom:10px}
+@media(max-width:1020px){#phc-root .def{white-space:normal;font-size:12.5px;letter-spacing:0}}
 #phc-root .qr{display:grid;grid-template-columns:1fr 240px;gap:24px;align-items:start;
 padding:19px 0;border-top:1px solid var(--c-bg)}
 #phc-root .qr:first-of-type{border-top:none}
@@ -170,12 +172,11 @@ padding:0;background:transparent;border-radius:0}
 #phc-root .more2 .in2 li{padding:3px 0 3px 15px;position:relative}
 #phc-root .more2 .in2 li:before{content:'';position:absolute;left:2px;top:11px;width:4px;height:4px;
 border-radius:50%;background:var(--c-ln)}
-/* Блок 06 · рекомендация по замеру снова стоит после поля и оформлена
-   нейтрально: тёмная рамка, базовый шрифт, без цветной заливки. */
-#phc-root .post-measure-note{width:100%;margin:16px 0 0;padding:15px 17px;
-border:1px solid var(--c-ink3);border-radius:12px;background:transparent;
+/* Блок 06 · рекомендация по замеру стоит после поля и оформлена
+   нейтрально: серая рамка, базовый шрифт, без цветной заливки. */
+#phc-root .post-measure-note{width:100%;margin:16px 0 0;padding:13px 16px;
+border:1.5px solid var(--c-gr3);border-radius:12px;background:transparent;
 box-shadow:none;font-size:13.5px;line-height:1.6;color:var(--c-ink3)}
-#phc-root .post-measure-note p+p{margin-top:7px}
 #phc-root .post-measure-note b{font-weight:700;color:var(--c-ink)}
 #phc-root .post-subtitle{max-width:900px}
 #phc-root .client-default-note,#phc-root .search-default-note{max-width:920px;
@@ -186,33 +187,41 @@ line-height:1.55;color:var(--c-ink2)}
 #phc-root .post-details summary:hover{color:var(--c-ink2)}
 #phc-root .more2 .post-in2{margin-top:14px}
 #phc-root .post-stages{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-#phc-root .post-stage{padding:16px;border:1.5px solid rgba(169,221,184,.62);border-radius:12px;
-background:linear-gradient(135deg,rgba(234,246,238,.78) 0%,rgba(245,251,247,.62) 58%,rgba(255,255,255,.76) 100%);
-color:var(--c-ink3);font-size:14px;line-height:1.55}
+/* 14.09 (слово владельца): эти списки нередактируемые, поэтому зелёную
+   подсветку сняли — нейтральная рамка и плоский (без цвета) кружок. */
+#phc-root .post-stage{padding:16px;border:1.5px solid var(--c-ln);border-radius:12px;
+background:transparent;color:var(--c-ink3);font-size:14px;line-height:1.55}
 #phc-root .post-stage-title{display:flex;align-items:center;gap:9px;margin-bottom:10px;color:var(--c-ink2)}
 #phc-root .post-stage-title i{display:inline-flex;align-items:center;justify-content:center;
 width:26px;height:26px;border-radius:50%;flex:none;
-background:linear-gradient(140deg,var(--c-g-600),var(--c-g-350));
-border:0;color:var(--c-white);box-shadow:0 2px 7px rgba(33,160,56,.20);
+background:var(--c-ln2);border:1px solid var(--c-ln);color:var(--c-ink2);
 font-style:normal;font-size:13px;font-weight:700}
 #phc-root .post-stage-title b{font-size:14px;font-weight:700}
-#phc-root .post-stage ul{padding-left:34px!important}
-#phc-root .more2 .post-stage li{padding:3px 0!important;font-size:14px;line-height:1.55}
-#phc-root .more2 .post-stage li:before{left:-13px;top:12px;background:var(--c-g-400)}
-#phc-root .post-stage>p{padding-left:34px;font-size:14px;line-height:1.55;color:var(--c-ink3)}
+#phc-root .post-stage ul{padding-left:35px!important}
+#phc-root .more2 .post-stage li{padding:3px 0 3px 15px!important;font-size:14px;line-height:1.55}
+#phc-root .more2 .post-stage li:before{left:0;top:11px;background:var(--c-gr3)}
+#phc-root .post-stage>p{padding-left:50px;font-size:14px;line-height:1.55;color:var(--c-ink3)}
 #phc-root .client-stages{grid-template-columns:repeat(3,minmax(0,1fr))}
 @media(max-width:900px){#phc-root .client-stages{grid-template-columns:1fr}}
-#phc-root .search-tasks{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-#phc-root .search-task{display:flex;align-items:center;gap:10px;padding:12px 14px;
-border:1.5px solid rgba(169,221,184,.62);border-radius:12px;
-background:linear-gradient(135deg,rgba(234,246,238,.78) 0%,rgba(245,251,247,.62) 58%,rgba(255,255,255,.76) 100%);
-font-size:14px;line-height:1.5;color:var(--c-ink3)}
-#phc-root .search-task i{display:inline-flex;align-items:center;justify-content:center;
-width:23px;height:23px;border-radius:50%;flex:none;font-style:normal;font-size:11px;font-weight:700;
-background:linear-gradient(140deg,var(--c-g-600),var(--c-g-350));color:var(--c-white)}
-#phc-root .search-task:last-child{grid-column:1/-1}
-@media(max-width:700px){#phc-root .search-tasks{grid-template-columns:1fr}
-#phc-root .search-task:last-child{grid-column:auto}}
+/* 15.09 (слово владельца): в блоках 08 и 09 — простой нумерованный список
+   без плашек, кружков и жирного; номер стоит в верхней строке пункта. */
+#phc-root .more2 .num-list{list-style:decimal;margin:2px 0 0 16px;padding:0 0 0 24px}
+#phc-root .more2 .num-list li{position:static;padding:4px 0;font-size:15px;
+line-height:1.6;color:var(--c-ink3)}
+#phc-root .more2 .num-list li:before{content:none}
+#phc-root .more2 .num-list li::marker{color:var(--c-ink2)}
+/* 15.09 (слово владельца): блок 06 — двухуровневый список в один столбец:
+   заголовки нумеруются (1, 2, …), их пункты — точечками. */
+#phc-root .more2 .stage-list{list-style:decimal;margin:2px 0 0 16px;padding:0 0 0 24px}
+#phc-root .more2 .stage-list>li{position:static;padding:7px 0 5px;font-size:15px;
+line-height:1.6;color:var(--c-ink3)}
+#phc-root .more2 .stage-list>li:before{content:none}
+#phc-root .more2 .stage-list>li::marker{color:var(--c-ink2);font-weight:600}
+#phc-root .more2 .stage-list>li>b{color:var(--c-ink2);font-weight:700}
+#phc-root .more2 .stage-list>li>ul{list-style:none;margin:6px 0 0 0;padding:0}
+#phc-root .more2 .stage-list>li>ul li{position:relative;padding:3px 0 3px 16px;font-size:14.5px;line-height:1.6;color:var(--c-ink3)}
+#phc-root .more2 .stage-list>li>ul li:before{content:'';position:absolute;left:3px;top:11px;width:4px;height:4px;border-radius:50%;background:var(--c-gr3)}
+#phc-root .more2 .stage-list>li>p{margin:6px 0 0 0;padding:0;font-size:14.5px;line-height:1.6;color:var(--c-ink3)}
 #phc-root .post-exclude,#phc-root .info-notice{position:relative;margin-top:12px;
 padding:13px 16px 13px 48px;border:1.5px solid var(--c-b-400);border-radius:12px;
 background:var(--c-b-50);color:var(--c-ink2);font-size:13px;font-weight:400;line-height:1.6}
@@ -299,9 +308,9 @@ box-shadow:0 6px 20px rgba(33,160,56,.28)}
 #phc-root .autobtn:has(input:checked):hover{
 background:linear-gradient(135deg,var(--c-g-800),var(--c-g-600))}
 #phc-root .abi{width:22px;height:22px;flex:none;display:block}
-#phc-root .auto-toggle-hint{margin:8px 0 0;text-align:center;font-size:12.5px;
+#phc-root .auto-toggle-hint{display:none;margin:8px 0 0;text-align:center;font-size:12.5px;
 line-height:1.45;color:var(--c-gr)}
-#phc-root .tax-auto-lock>.auto-toggle-hint{color:var(--c-g-700)}
+#phc-root .tax-auto-lock>.auto-toggle-hint{display:block;color:var(--c-g-700)}
 /* Пояснение видно всегда: и когда подбор включён, и когда выключен —
    человек должен понимать, что даст кнопка, до того как нажмёт.
    Снизу воздух, иначе текст липнет к черте следующей строки. */
@@ -321,25 +330,23 @@ border-radius:12px;background:transparent}
 /* Блочная, не inline: иначе встаёт сбоку от «+ Добавить позицию».
    Ширина по содержимому, чтобы подчёркивание не тянулось во всю строку. */
 /* ---------- иконка «вернуть блок к значениям по умолчанию» ----------
-   Круглая кнопка со стрелкой против часовой. Контур вернули: так
-   действие заметно, но в неактивном состоянии остаётся приглушённым. */
+   Только символ: без круглой кнопки и белой подложки (единообразно
+   для всех блоков). В покое приглушена, в активном состоянии — зелёная. */
 #phc-root .rst-ic{display:inline-flex;align-items:center;justify-content:center;
-flex:none;width:40px;height:40px;border:1.5px solid var(--c-ln);border-radius:50%;
-background:var(--c-white);color:var(--c-gr2);cursor:pointer;padding:0;
+flex:none;width:auto;height:auto;padding:0;border:0;border-radius:0;
+background:transparent;color:var(--c-gr2);cursor:pointer;
 opacity:.46;pointer-events:none;
-transition:background .15s,color .15s,border-color .15s,opacity .15s,transform .12s;
+transition:color .15s,opacity .15s,transform .12s;
 vertical-align:middle}
 #phc-root .rst-ic svg{width:20px;height:20px;display:block}
 /* Активное состояние — фирменный зелёный из утверждённой палитры. */
-#phc-root .rst-ic.on{opacity:1;pointer-events:auto;color:var(--c-g-500);
-border-color:var(--c-g-300)}
+#phc-root .rst-ic.on{opacity:1;pointer-events:auto;color:var(--c-g-500)}
 /* В выключенном блоке кнопка серая и неактивная, даже если значения
    в нём изменены: класс .on с неё снимает состояниеКнопки() в скрипте,
    а это правило страхует вид на случай, если .on остался. */
 #phc-root .card.off .rst-ic,#phc-root .card.taxdim .rst-ic{opacity:.46;
-pointer-events:none;color:var(--c-gr2);border-color:var(--c-ln);background:var(--c-white)}
-#phc-root .rst-ic.on:hover{color:var(--c-g-700);background:var(--c-g-50);
-border-color:var(--c-g-500)}
+pointer-events:none;color:var(--c-gr2)}
+#phc-root .rst-ic.on:hover{color:var(--c-g-700)}
 #phc-root .rst-ic.on:active{transform:scale(.94)}
 /* Одно-полевые блоки: настоящее поле и единица измерения собраны
    в отдельную обёртку. Поэтому ₽/мес, ₽/ч и другие подписи всегда
@@ -348,8 +355,45 @@ border-color:var(--c-g-500)}
 #phc-root .qf.has-rst .qf-input{position:relative;min-width:0;flex:1}
 #phc-root .qf.has-rst .qf-input>input{min-width:0}
 #phc-root .qf.has-rst .qf-input>.un{right:14px}
-/* Все локальные кнопки сброса одного размера — 40×40 px,
-   ориентиром служит иконка в блоке 02. */
+/* 14.09 (слово владельца): поле с выпадающим периодом (управление делом) —
+   число с единицей «часов» и селект «в день / в неделю / в месяц» в ряд. */
+#phc-root .qf.period-field{display:flex;align-items:center;gap:8px}
+#phc-root .qf.period-field .qf-input{position:relative;min-width:0;flex:1}
+#phc-root .qf.period-field .qf-input>input{min-width:0}
+#phc-root .qf.period-field .qf-input>.un{right:14px}
+#phc-root .qf.period-field select{width:auto;min-width:118px;flex:none}
+/* 15.09 (слово владельца): выпадающий список периода в стиле Canva.
+   Закрытое поле — такое же, как поле ввода (рамка, скругление, высота);
+   меню — скруглённое, со светло-зелёной заливкой, строки во всю ширину.
+   Нативный select скрыт и остаётся источником значения. */
+#phc-root .dd{position:relative;flex:none;min-width:150px}
+#phc-root .dd select{display:none}
+#phc-root .dd-btn{display:flex;align-items:center;justify-content:space-between;
+gap:10px;width:100%;padding:13px 12px 13px 14px;border:1.5px solid var(--ln);
+border-radius:12px;background:var(--c-white);color:var(--ink);font-size:16px;
+font-family:inherit;font-weight:400;line-height:1.4;cursor:pointer;text-align:left;
+transition:border-color .15s,box-shadow .15s}
+#phc-root .dd-btn:hover:not(:disabled){border-color:var(--c-gr2)}
+#phc-root .dd-btn:focus{outline:none}
+#phc-root .dd-btn:disabled{background:var(--c-bg);color:var(--c-gr2);
+cursor:not-allowed;border-color:var(--c-ln)}
+#phc-root .dd-caret{width:16px;height:16px;flex:none;color:var(--ink);
+transition:transform .18s}
+#phc-root .dd-btn.open .dd-caret{transform:rotate(180deg)}
+#phc-root .dd-btn:disabled .dd-caret{color:var(--c-gr2)}
+#phc-root .dd-menu{position:absolute;top:calc(100% + 6px);left:0;right:0;
+margin:0;padding:6px;list-style:none;background:var(--c-white);
+border:1px solid var(--ln);border-radius:12px;
+box-shadow:0 12px 32px rgba(16,24,40,.16);z-index:6;animation:ddpop .12s ease}
+@keyframes ddpop{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+#phc-root .dd-menu li{display:flex;align-items:center;justify-content:space-between;
+gap:10px;padding:9px 12px;border-radius:8px;color:var(--c-ink2);
+font-size:15px;line-height:1.4;cursor:pointer;white-space:nowrap}
+/* Наведение и выбранный пункт — только светло-зелёная заливка,
+   текст остаётся базового цвета, без галочки. */
+#phc-root .dd-menu li:hover{background:var(--c-g-100)}
+#phc-root .dd-menu li.sel{background:var(--c-g-100)}
+/* Все локальные кнопки сброса — только символ 20×20 px (см. .rst-ic выше). */
 /* Кнопка справа от «+ Добавить позицию»: вместе в одном ряду. */
 #phc-root .add-rst-row{display:flex;align-items:center;gap:8px;margin-top:14px}
 #phc-root .add-rst-row .add{margin-top:0}
@@ -411,7 +455,7 @@ border-radius:12px;padding:12px 16px;margin-top:12px}
 /* При автоподборе откатывать нечего: настройки задаёт калькулятор,
    а не человек. Кнопка гаснет полностью — ни клика, ни подсказки. */
 #phc-root .card.tax-auto-lock .rst-ic{opacity:.46;pointer-events:none;
-color:var(--c-gr2);border-color:var(--c-ln);background:var(--c-white)}
+color:var(--c-gr2)}
 
 /* Одно состояние: модель не помещается в выбранный режим. Это не ошибка,
    поэтому мягкий жёлтый, а не красный. Красного тут больше нет. */
@@ -518,6 +562,10 @@ background:linear-gradient(90deg,var(--zc,var(--c-g-500)) var(--zp,0%),var(--c-l
 #phc-root .zap:not(.on) .zaprow output{color:var(--c-gr2);opacity:.75}
 #phc-root .zaprow input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;
 appearance:none;width:24px;height:24px;border-radius:50%;background:var(--c-white);
+/* бегунок по центру дорожки 6px: (6 − 24)/2 = −9px. Без этого в WebKit
+   бегунок верхом прижат к дорожке и висит под ней (проявилось после
+   явного ::-webkit-slider-runnable-track, 15.09). */
+margin-top:-9px;
 cursor:pointer;box-shadow:0 2px 8px rgba(16,24,40,.22);border:2.5px solid var(--c-g-700)}
 #phc-root .zap.on.st-bad .zaprow input[type=range]::-webkit-slider-thumb{border-color:var(--c-r-500)}
 #phc-root .zap.on.st-warn .zaprow input[type=range]::-webkit-slider-thumb{border-color:var(--c-a-500)}
@@ -532,7 +580,7 @@ box-shadow:0 2px 8px rgba(16,24,40,.22)}
 min-width:64px;text-align:right;font-variant-numeric:tabular-nums;color:var(--c-g-700)}
 #phc-root .zap.on.st-bad .zaprow output{color:var(--c-r-700)}
 #phc-root .zap.on.st-warn .zaprow output{color:var(--c-a-600)}
-#phc-root .zap.on.st-mid .zaprow output{color:var(--c-b-700)}
+#phc-root .zap.on.st-mid .zaprow output{color:var(--c-b-500)}
 /* Галочка остаётся зелёной при любом значении: она про «учитывать»,
    а не про то, хватает ли резерва. */
 #phc-root .zap .zaph .flag input{accent-color:var(--g)}
@@ -767,8 +815,10 @@ font-size:16px;font-weight:500;line-height:1.45;color:rgba(255,255,255,.90)}
 border:0;background:transparent}
 #phc-root .form-section-reserves .section-point-icon svg,
 #phc-root .form-section-reserves .section-point-sber .section-point-icon svg{width:68px;height:68px}
-#phc-root .form-section-reserves .section-ending{margin-top:34px}
-#phc-root .form-section-reserves .section-subtitle{font-size:13.5px;font-weight:400;line-height:1.5}
+#phc-root .form-section-reserves .section-ending,
+#phc-root .form-section-profit .section-ending{margin-top:34px}
+#phc-root .form-section-reserves .section-subtitle,
+#phc-root .form-section-profit .section-subtitle{font-size:13.5px;font-weight:400;line-height:1.5}
 @media(max-width:700px){
 #phc-root .form-section{margin:32px 0;padding:27px 0 34px;border-radius:var(--r)}
 #phc-root .form-section>.sect{padding:0 20px;margin-bottom:30px}
@@ -803,10 +853,12 @@ padding-top:64px;padding-bottom:34px}
 #phc-root .form-section-reserves .section-point-sber .section-point-icon svg{width:46px;height:46px}
 #phc-root .form-section-time .section-subtitle,
 #phc-root .form-section-expenses .section-subtitle,
-#phc-root .form-section-reserves .section-subtitle{font-size:12.5px}
+#phc-root .form-section-reserves .section-subtitle,
+#phc-root .form-section-profit .section-subtitle{font-size:12.5px}
 #phc-root .form-section-time .section-ending,
 #phc-root .form-section-expenses .section-ending,
-#phc-root .form-section-reserves .section-ending{margin-top:28px}
+#phc-root .form-section-reserves .section-ending,
+#phc-root .form-section-profit .section-ending{margin-top:28px}
 }
 #phc-root .cnd{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:16px}
 #phc-root .cn{border-radius:var(--r);padding:28px 26px;color:var(--c-white);position:relative;
@@ -833,7 +885,7 @@ border:1.5px solid rgba(255,255,255,.48);border-radius:var(--r);color:var(--c-wh
 background:rgba(255,255,255,.035);box-shadow:none}
 #phc-root .equipment-market-note:before{content:'!';position:absolute;z-index:2;left:30px;top:29px;
 width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;
-background:var(--c-white);color:var(--c-ig-3);font-size:13px;font-weight:700}
+background:var(--c-r-500);color:var(--c-white);font-size:13px;font-weight:700}
 #phc-root .equipment-market-note:after{content:'';position:absolute;z-index:0;border-radius:50%;
 background:rgba(255,255,255,.10);pointer-events:none}
 /* Фоновые круги у вынесенных на цветной фон уведомлений не повторяются:
@@ -853,14 +905,46 @@ font-size:14.5px;line-height:1.65;color:rgba(255,255,255,.84)}
 #phc-root .section-context-notice>p+p{margin-top:15px}
 #phc-root .section-context-notice>ul{margin:15px 0 0;padding-left:22px}
 #phc-root .section-context-notice>ul>li+li{margin-top:10px}
+/* 14.09 (слово владельца): читабельность списка в уведомлениях на цветном
+   фоне — заголовок пункта белым и крупнее, пояснение мягче и тише, как
+   основной текст уведомления. */
+#phc-root .section-context-notice>ul>li{font-size:14.5px;line-height:1.65;color:rgba(255,255,255,.84)}
+#phc-root .section-context-notice>ul>li>b{display:block;margin-bottom:5px;
+font-size:16px;font-weight:700;line-height:1.4;letter-spacing:-.01em;color:var(--c-white)}
+/* 14.09 (слово владельца): список — в рамку без подложки:
+   только обводка, маркеры-галочки. */
+#phc-root .section-context-notice>ul.context-list-frame{margin:18px 0 0;
+padding:18px 20px;border:1px solid rgba(255,255,255,.26);border-radius:14px;list-style:none}
+#phc-root .section-context-notice>ul.context-list-frame>li{position:relative;padding-left:26px}
+/* 14.09 (слово владельца): пункты — как отдельные абзацы: большой отступ
+   между ними, чтобы список читался заголовками, а не единым текстом. */
+#phc-root .section-context-notice>ul.context-list-frame>li+li{margin-top:24px}
+#phc-root .section-context-notice>ul.context-list-frame>li::before{content:'✓';position:absolute;left:0;top:2px;font-size:14px;font-weight:700;color:var(--c-white)}
+/* 15.09 (слово владельца): второй абзац внутри пункта списка — отступ как
+   продолжение мысли, в тон основному тексту уведомления. */
+#phc-root .section-context-notice>ul.context-list-frame>li p{margin:9px 0 0}
+@media(max-width:700px){#phc-root .section-context-notice>ul.context-list-frame{padding:14px 15px}}
 #phc-root .section-context-notice>p.context-notice-title{padding-bottom:17px;
 border-bottom:1px solid rgba(255,255,255,.30);font-size:clamp(25px,3vw,32px);
 font-weight:700;line-height:1.24;letter-spacing:-.025em;color:var(--c-white)}
 #phc-root .context-notice-title b{color:inherit;font-weight:inherit}
+/* 14.09 (слово владельца): лид и внутренний подзаголовок уведомления —
+   по правилам типографики документа. Лид — крупнее и белый (выделяет
+   главный тезис), внутренний подзаголовок — как заголовок пункта списка. */
+#phc-root .section-context-notice>p.context-notice-lead{font-size:17px;font-weight:700;
+line-height:1.5;letter-spacing:-.01em;color:var(--c-white)}
+#phc-root .section-context-notice>p.context-notice-sub{margin-top:18px;font-size:17px;
+font-weight:700;line-height:1.45;letter-spacing:-.01em;color:var(--c-white)}
 #phc-root .search-context-highlight{position:relative;z-index:1;display:grid;gap:7px;
 margin:18px 0;padding:16px 18px;border:1px solid rgba(255,255,255,.26);
 border-radius:14px;background:rgba(255,255,255,.10);color:var(--c-white)}
 #phc-root .search-context-highlight strong{font-size:15.5px;line-height:1.5;font-weight:700}
+/* 14.09 (слово владельца): заголовок рамки — в цвет иконки уведомления. */
+#phc-root .search-context-highlight strong.hl-r{color:var(--c-r-500)}
+/* 14.09 (слово владельца): рамка в красной гамме иконки уведомления —
+   красная обводка со светлой подложкой; текст остаётся белым. */
+#phc-root .search-context-highlight.hl-box-r{border:1px solid rgba(239,68,68,.55);
+background:rgba(255,255,255,.10)}
 #phc-root .search-context-highlight span{font-size:14.5px;line-height:1.6;
 color:rgba(255,255,255,.90)}
 #phc-root .search-context-notice>p.search-context-conclusion{font-weight:700;
@@ -1959,7 +2043,7 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
      В анкете действовать нечем, поэтому в строке только знак. -->
 <div class="tbar" data-block-id="CALC-B001" data-block-name="Верхняя панель">
 <nav class="tbn">
-<button class="fbi" id="topResetBtn" type="button" data-tip="Вернуть значения по умолчанию" aria-label="Вернуть значения по умолчанию"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20.5 3.6v4.4h-4.4" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/><path d="M20.1 8A8.5 8.5 0 1 0 20.5 12" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg></button>
+<button class="fbi" id="topResetBtn" type="button" data-tip="Вернуть значения по умолчанию" aria-label="Вернуть значения по умолчанию"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3.5 12a8.5 8.5 0 018.5-8.5c3.1 0 5.8 1.7 7.2 4.2" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/><path d="M20.5 3.6v4.4h-4.4" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/><path d="M20.5 12a8.5 8.5 0 01-8.5 8.5c-3.1 0-5.8-1.7-7.2-4.2" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" opacity=".55"/><path d="M3.5 20.4V16h4.4" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" opacity=".55"/></svg></button>
 <button class="fbi" id="shareBtn" type="button" data-tip="Поделиться" aria-label="Поделиться">
 <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="18" cy="5" r="2.6" stroke="currentColor" stroke-width="1.8"/><circle cx="6" cy="12" r="2.6" stroke="currentColor" stroke-width="1.8"/><circle cx="18" cy="19" r="2.6" stroke="currentColor" stroke-width="1.8"/><path d="M8.4 10.8l7.2-4.2M8.4 13.2l7.2 4.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
 <a class="fbi fbh" href="#thanks" data-thx="calc-menu" data-tip="Поблагодарить проект" aria-label="Поблагодарить проект">
@@ -1970,7 +2054,7 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 
 <div class="trustbar" id="trustBar" role="navigation" aria-label="Быстрые действия" data-block-id="CALC-B002" data-block-name="Плавающая панель">
 <div class="trustbar-brand"><svg class="trustbar-mark" viewBox="0 0 32 32" fill="none" aria-hidden="true"><rect x="10.95" y="2.09" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 7.14)" fill="var(--c-gr3)"/><rect x="19.81" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 24.86 16)" fill="var(--c-g-500)"/><rect x="10.95" y="19.81" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 24.86)" fill="var(--c-gr3)"/><rect x="2.09" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 7.14 16)" fill="var(--c-gr3)"/></svg><span class="trustbar-name">счётикс</span></div>
-<button class="trustbar-action trustbar-reset" id="trustResetBtn" type="button" data-tip="Вернуть значения по умолчанию" aria-label="Вернуть значения по умолчанию"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20.5 3.6v4.4h-4.4" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/><path d="M20.1 8A8.5 8.5 0 1 0 20.5 12" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg></button>
+<button class="trustbar-action trustbar-reset" id="trustResetBtn" type="button" data-tip="Вернуть значения по умолчанию" aria-label="Вернуть значения по умолчанию"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3.5 12a8.5 8.5 0 018.5-8.5c3.1 0 5.8 1.7 7.2 4.2" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/><path d="M20.5 3.6v4.4h-4.4" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/><path d="M20.5 12a8.5 8.5 0 01-8.5 8.5c-3.1 0-5.8-1.7-7.2-4.2" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" opacity=".55"/><path d="M3.5 20.4V16h4.4" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" opacity=".55"/></svg></button>
 <button class="trustbar-action" id="trustShareBtn" type="button" data-tip="Поделиться" aria-label="Поделиться"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="18" cy="5" r="2.6" stroke="currentColor" stroke-width="1.8"/><circle cx="6" cy="12" r="2.6" stroke="currentColor" stroke-width="1.8"/><circle cx="18" cy="19" r="2.6" stroke="currentColor" stroke-width="1.8"/><path d="M8.4 10.8l7.2-4.2M8.4 13.2l7.2 4.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
 <a class="trustbar-action trustbar-thanks" href="#thanks" data-thx="calc-float" data-tip="Поблагодарить проект" aria-label="Поблагодарить проект"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0l-1 1-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1 7.8 7.8 7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8Z" stroke="currentColor" stroke-width="2"/></svg></a>
 </div>
@@ -2095,7 +2179,7 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 </div><div class="qf"><input type="number" inputmode="numeric" data-integer data-limit-live id="shutter_per_hour" value="350" min="1" max="1000" step="10"><span class="un">кадров/час</span></div></div>
 <div class="qr two-col-row"><div>
 <div class="q">Ресурс затвора вашей камеры</div>
-<div class="qd">Заявленное производителем количество срабатываний.</div>
+<div class="qd">Заявленное производителем количество срабатываний затвора до вероятного износа или поломки.</div>
 </div><div class="qf"><input type="number" inputmode="numeric" data-integer data-limit-live id="shutter_life" value="300000" min="10000" max="1000000" step="10000"><span class="un">срабатываний</span></div></div>
 </div>
 
@@ -2154,20 +2238,19 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 <p data-t="qd_06" class="hint post-subtitle">Укажите, сколько времени в среднем вы тратите на подготовку материала за 1 час съёмки. Учитывайте всё время — от начала выгрузки материала на компьютер до передачи готового результата клиенту.</p>
 <div class="qf focus-field time-field"><input type="number" inputmode="decimal" data-limit-live data-step-live id="post_ratio" value="3" min="0" max="72" step="0.5"><span data-t="un_04" class="un">часа</span></div>
 <details class="more2 post-details"><summary><svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-t="exp_01">Вот что мы заложили как основные этапы постпродакшна</span></summary><div class="in2 post-in2">
-<div class="post-stages">
-<div class="post-stage"><div class="post-stage-title"><i>1</i><b>Подготовка материала</b></div><ul><li>создание и организация папок и файлов;</li><li>выгрузка материала с карт памяти;</li><li>резервное копирование.</li></ul></div>
-<div class="post-stage"><div class="post-stage-title"><i>2</i><b>Отбор материала</b></div><ul><li>просмотр отснятого материала;</li><li>удаление технического брака;</li><li>отбор удачных кадров;</li><li>исключение дублей, кадров с закрытыми глазами и явно неудачных кадров.</li></ul></div>
-<div class="post-stage"><div class="post-stage-title"><i>3</i><b>Базовая цветокоррекция</b></div><ul><li>экспозиция;</li><li>баланс белого;</li><li>контраст;</li><li>светлые и тёмные области;</li><li>резкость;</li><li>насыщенность;</li><li>приведение всей серии к единому цвету и свету.</li></ul></div>
-<div class="post-stage"><div class="post-stage-title"><i>4</i><b>Коррекция кадра</b></div><ul><li>кадрирование;</li><li>выравнивание горизонта;</li><li>коррекция перспективы и искажений объектива;</li><li>удаление крупных лишних объектов из кадра.</li></ul></div>
-<div class="post-stage"><div class="post-stage-title"><i>5</i><b>Подготовка и передача результата</b></div><ul><li>импорт и экспорт из программы обработки;</li><li>подготовка файлов;</li><li>изменение размера и формата при необходимости;</li><li>загрузка в облако;</li><li>передача готового материала клиенту.</li></ul></div>
-<div class="post-stage"><div class="post-stage-title"><i>6</i><b>Правки</b></div><p>Один круг правок, если потребуется.</p></div>
-</div>
+<ol class="stage-list">
+<li><b>Подготовка материала</b><ul><li>создание и организация папок и файлов;</li><li>выгрузка материала с карт памяти;</li><li>резервное копирование.</li></ul></li>
+<li><b>Отбор материала</b><ul><li>просмотр отснятого материала;</li><li>удаление технического брака;</li><li>отбор удачных кадров;</li><li>исключение дублей, кадров с закрытыми глазами и явно неудачных кадров.</li></ul></li>
+<li><b>Базовая цветокоррекция</b><ul><li>экспозиция;</li><li>баланс белого;</li><li>контраст;</li><li>светлые и тёмные области;</li><li>резкость;</li><li>насыщенность;</li><li>приведение всей серии к единому цвету и свету.</li></ul></li>
+<li><b>Коррекция кадра</b><ul><li>кадрирование;</li><li>выравнивание горизонта;</li><li>коррекция перспективы и искажений объектива;</li><li>удаление крупных лишних объектов из кадра.</li></ul></li>
+<li><b>Подготовка и передача результата</b><ul><li>импорт и экспорт из программы обработки;</li><li>подготовка файлов;</li><li>изменение размера и формата при необходимости;</li><li>загрузка в облако;</li><li>передача готового материала клиенту.</li></ul></li>
+<li><b>Правки</b><p>Один круг правок, если потребуется.</p></li>
+</ol>
 </div></details>
-<div class="post-exclude">Ретушь не включена!</div>
 <div class="post-measure-note">
-<p><b>Самый неоднозначный показатель.</b> Его сложно измерить, поэтому его часто существенно недооценивают.</p>
-<p>Рекомендуем замерить время хотя бы на 3–5 съёмках и взять среднее значение.</p>
+<p><b>Самый неоднозначный показатель.</b> Его сложно измерить, поэтому его часто существенно недооценивают. Рекомендуем замерить время хотя бы на 3–5 съёмках и взять среднее значение.</p>
 </div>
+<div class="post-exclude">Дополнительная ретушь в расчёт не заложена. Это отдельная услуга с собственной схемой формирования тарифов.</div>
 </div>
 
 <div class="card" id="c_FormClientTime" data-block-id="CALC-B013" data-block-name="Вопрос 07"><div class="bn">07</div>
@@ -2195,17 +2278,17 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 <h2>Поиск заказов</h2>
 <p data-t="qd_08" class="hint">Укажите, сколько времени в среднем вы тратите на поиск новых клиентов и продвижение своих услуг.</p>
 <p class="search-default-note">Мы заложили в расчёт базовый минимум — 2 часа в день, 5 дней в неделю. Этого времени должно хватать на регулярное продвижение и поддержание потока заказов.</p>
-<div class="qf focus-field time-field"><input type="number" inputmode="decimal" data-limit-live data-step-live id="promo_per_day" value="2" min="0.5" max="8" step="0.5"><span data-t="un_06" class="un">ч/день</span></div>
+<div class="qf focus-field time-field period-field"><div class="qf-input"><input type="number" inputmode="decimal" data-limit-live data-step-live id="promo_amt" value="2" min="0.5" max="8" step="0.5"><span class="un">часов</span></div><select id="promo_per"><option value="day" selected>В день</option><option value="week">В неделю</option><option value="month">В месяц</option></select></div>
 <details class="more2 post-details search-details"><summary><svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-t="exp_03">Что включено в эти 2 часа</span></summary><div class="in2 post-in2">
-<div class="search-tasks">
-<div class="search-task"><i>✓</i><span>ведение основных социальных сетей;</span></div>
-<div class="search-task"><i>✓</i><span>создание и оформление контента;</span></div>
-<div class="search-task"><i>✓</i><span>написание текстов и постов;</span></div>
-<div class="search-task"><i>✓</i><span>съёмка и монтаж коротких видео — Reels и аналогов;</span></div>
-<div class="search-task"><i>✓</i><span>ответы на сообщения и комментарии;</span></div>
-<div class="search-task"><i>✓</i><span>общение с холодными клиентами;</span></div>
-<div class="search-task"><i>✓</i><span>размещение на дополнительных площадках — Авито, Яндекс Картах и т. п.</span></div>
-</div>
+<ol class="num-list">
+<li>Ведение основных социальных сетей</li>
+<li>Создание и оформление контента</li>
+<li>Написание текстов и постов</li>
+<li>Съёмка и монтаж коротких видео — Reels и аналогов</li>
+<li>Ответы на сообщения и комментарии</li>
+<li>Общение с холодными клиентами</li>
+<li>Размещение на дополнительных площадках — Авито, Яндекс Картах и т. п.</li>
+</ol>
 </div></details>
 <div class="post-exclude search-exclude">Если задач больше — активный таргет, регулярный контент для нескольких площадок, собственный сайт, рассылки и т. д. — двух часов в день, скорее всего, не хватит. В этом случае увеличьте значение в калькуляторе или привлеките помощников и передайте часть задач на аутсорс.</div>
 <label class="exc"><input type="checkbox" data-exc="FormPromoTime">Не учитывать этот блок в расчёте</label>
@@ -2223,19 +2306,18 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 
 <div class="card" id="c_FormMgmt" data-block-id="CALC-B040" data-block-name="Вопрос 09"><div class="bn">09</div>
 <h2>Управление делом</h2>
-<p data-t="qd_24" class="hint">Укажите, сколько времени в неделю вы тратите на управление своим делом: решения, процессы, деньги.</p>
+<p data-t="qd_24" class="hint">Укажите, сколько времени вы тратите на управление своим делом: решения, процессы, деньги.</p>
 <p class="search-default-note">Мы заложили в расчёт базовый минимум — 4 часа в неделю. Этого хватает на еженедельный разбор дел, решения и контроль денег.</p>
-<div class="qf focus-field time-field"><input type="number" inputmode="decimal" data-limit-live data-step-live id="mgmt_per_week" value="4" min="1" max="20" step="1"><span data-t="un_18" class="un">ч/нед</span></div>
+<div class="qf focus-field time-field period-field"><div class="qf-input"><input type="number" inputmode="decimal" data-limit-live data-step-live id="mgmt_amt" value="4" min="1" max="20" step="1"><span class="un">часов</span></div><select id="mgmt_per"><option value="day">В день</option><option value="week" selected>В неделю</option><option value="month">В месяц</option></select></div>
 <details class="more2 post-details search-details"><summary><svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-t="exp_05">Что включено в эти 4 часа</span></summary><div class="in2 post-in2">
-<div class="search-tasks">
-<div class="search-task"><i>✓</i><span>еженедельный разбор дел и планирование;</span></div>
-<div class="search-task"><i>✓</i><span>решения по ценам, услугам и клиентам;</span></div>
-<div class="search-task"><i>✓</i><span>контроль денег: счета, бюджеты, платежи;</span></div>
-<div class="search-task"><i>✓</i><span>анализ: что сработало и куда двигаться.</span></div>
-</div>
+<ol class="num-list">
+<li>Еженедельный разбор дел и планирование</li>
+<li>Решения по ценам, услугам и клиентам</li>
+<li>Контроль денег: счета, бюджеты, платежи</li>
+<li>Анализ: что сработало и куда двигаться</li>
+</ol>
 </div></details>
-<div class="post-exclude search-exclude">Если управляете в одиночку и задач больше — несколько направлений, команда, подрядчики, — четырёх часов в неделю, скорее всего, не хватит. В этом случае увеличьте значение.</div>
-<label class="flag"><input type="checkbox" id="mgmt_on" checked>Учитывать управление делом в расчёте</label>
+<label class="exc"><input type="checkbox" data-exc="FormMgmt" checked>Не учитывать этот блок в расчёте</label>
 </div>
 <div class="equipment-market-note section-context-notice mgmt-context-notice">
 <p class="context-notice-title">Управление делом — невидимая работа управляющего, без которой бизнес разваливается.</p>
@@ -2481,15 +2563,15 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 </div>
 
 <div class="card" id="c_Form017" data-block-id="CALC-B026" data-block-name="Вопрос 20"><div class="bn">20</div>
-<h2 data-t="h2_16z">Запас на скидку</h2>
+<h2 data-t="h2_16z">Резерв программы лояльности</h2>
 <p data-t="hint_10z" class="hint">Позволит вам уступать в цене, когда клиент требует скидку, и при этом не терять в доходе. Сможете гибко настроить собственную программу лояльности и привлекать дополнительный трафик в несезон.</p>
 
 <div class="zap">
 <div class="zaph">
-<label class="flag"><input type="checkbox" id="disc_on">Заложить запас на скидку</label>
+<label class="flag"><input type="checkbox" id="disc_on">Заложить резерв программы лояльности</label>
 </div>
 <div data-t="qd_23" class="qd">Без этого запаса ваши возможности будут сильно ограничены: вы сможете давать только небольшие скидки за объём или фактически доплачивать клиенту из своего кармана.</div>
-<div class="zapn" data-t="qd_23b">При включённом запасе на скидку вы получите сформированную программу лояльности на целый год, включая скидку за объём, специальные условия постоянным клиентам и комплект подарочных сертификатов под горячие направления.</div>
+<div class="zapn" data-t="qd_23b">При включённом резерве программы лояльности вы получите сформированную программу лояльности на целый год, включая скидку за объём, специальные условия постоянным клиентам и комплект подарочных сертификатов под горячие направления.</div>
 <div class="lvls" id="disc_lvls" data-branch-id="CALC-B026-S01" data-branch-name="Уровни программы лояльности">
 <label class="lvl a1"><input type="radio" name="disc_lvl" value="5"><div class="lv">5%</div><div class="ll">скромно</div></label>
 <label class="lvl a2"><input type="radio" name="disc_lvl" value="10"><div class="lv">10%</div><div class="ll">умеренно</div></label>
@@ -2520,31 +2602,50 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 
 <div class="card" id="c_Form016" data-block-id="CALC-B025" data-block-name="Вопрос 21"><div class="bn">21</div>
 <h2 data-t="h2_17z">Прибыльность вашего дела</h2>
-<div class="qd">Заложите в ставку долю чистой прибыли, чтобы вернуть инвестированные в бизнес средства и обеспечить финансовую свободу. За счет этих денег вы сможете:</div>
+<div class="qd">Заложите в ставку долю чистой прибыли, чтобы вернуть инвестированные в бизнес средства и обеспечить финансовую устойчивость.</div>
 <div class="zap">
 <div class="zaph">
-<label class="flag"><input type="checkbox" id="fund_on" checked>Заложить долю чистой прибыли</label>
+<label class="flag"><input type="checkbox" id="fund_on">Возврат инвестиций / доля чистой прибыли</label>
 </div>
 <div class="qd">По умолчанию выведена ставка, которая позволит окупить ваши вложения за 36 месяцев. Это оптимальный и безопасный срок окупаемости для микробизнеса с быстрой оборачиваемостью.</div>
+<div class="zapn">Рассчитано на основе введённых параметров.</div>
 <div class="zaprow">
 <input type="range" id="fund_pct" min="0" max="100" step="1" value="18">
 <output id="fund_out">18%</output>
 </div>
 <div class="zapst" id="fund_st"></div>
 </div>
+
+<div class="zap">
+<div class="zaph">
+<label class="flag"><input type="checkbox" id="cushion_on">Финансовая подушка</label>
+</div>
+<div class="qd">Это ваша страховка на случай непредвиденных точечных трат. По умолчанию выведено значение по классической схеме распределения прибыли — 30% от вашей чистой маржи.</div>
+<div class="zapn">Рассчитано на основе выбранного значения возврата инвестиций.</div>
+<div class="zaprow">
+<input type="range" id="cushion_pct" min="0" max="100" step="1" value="30">
+<output id="cushion_out">5,4%</output>
+</div>
+<div class="zapst" id="cushion_st"></div>
 </div>
 </div>
 
 <div class="equipment-market-note section-context-notice client-context-notice">
-<p class="context-notice-title">Почему без этого нельзя</p>
-<p>Без доли чистой прибыли ваш бизнес финансово «нулевой». Если закладывать в стоимость услуг только базовые расходы и зарплату на текущую жизнь, происходит опасная вещь: вы как предприниматель не зарабатываете ничего сверх найма, но берете на себя все колоссальные риски.</p>
-<p>Вы бесплатно несете ответственность за поиск заказов, общение с налоговой и государством, форс-мажоры с клиентами и поломки техники. В найме за эти риски отвечает работодатель, а здесь — вы, но без какой-либо финансовой компенсации.</p>
-<p>Кроме того, без чистой прибыли само ваше дело становится абсолютно уязвимым. У бизнеса нет собственного капитала, он не зарабатывает сам себя и при любой нестабильности начинает зависеть от внешних вливаний или долгов. Доля чистой прибыли — это не «лишние деньги», а обязательный фундамент. Именно за счет неё у вас появляются:</p>
-<ul>
-<li>Возврат вложений: за счёт этих средств вы полностью компенсируете всё, что вложили в своё дело. Это особенно важно, если ради старта или развития пришлось использовать личные сбережения, что-то продать или взять кредит. Вложения вернутся к вам за тот срок, который вы выберете сами, и с этого момента бизнес станет полностью самоокупаемым.</li>
-<li><b>Развитие и рост:</b> За счет этого ресурса вы сможете развивать свое дело: покупать более совершенное оборудование, подключать профессиональный софт для автоматизации процессов, проходить обучающие курсы для повышения чека и даже нанимать первых помощников или подрядчиков.</li>
-<li><b>Безопасность и защита от форс-мажоров</b><br>Собственная прибыль создает финансовую подушку, которая защищает вас от кассовых разрывов и сезонных спадов. Если сломается техника, потребуется срочное обслуживание или возникнут непредвиденные расходы, вы закроете эти дыры за счет бизнеса, а не будете залезать в долги или тратить деньги из семейного бюджета.</li>
+<p class="context-notice-title">Почему без этого нельзя — Без доли чистой прибыли ваш бизнес финансово «нулевой»</p>
+<p class="context-notice-lead">Если закладывать в стоимость услуг только базовые расходы и зарплату на текущую жизнь, происходит опасная вещь: вы как предприниматель не зарабатываете ничего сверх найма, но берете на себя все колоссальные риски.</p>
+<div class="search-context-highlight hl-box-r">
+<strong class="hl-r">Вы бесплатно несёте ответственность</strong>
+<span>за поиск заказов, общение с налоговой и государством, форс-мажоры с клиентами и поломки техники. В найме за эти риски отвечает работодатель, а здесь — вы, но без какой-либо финансовой компенсации.</span>
+</div>
+<p>Кроме того, без чистой прибыли само ваше дело становится абсолютно уязвимым. У бизнеса нет собственного капитала, он не зарабатывает сам себя и при любой нестабильности начинает зависеть от внешних вливаний или долгов. Доля чистой прибыли — это не «лишние деньги», а обязательный фундамент.</p>
+<p class="context-notice-sub">Именно за счёт неё у вас появляются:</p>
+<ul class="context-list-frame">
+<li><b>Безопасность и защита от форс-мажоров</b> Собственная прибыль создает финансовую подушку, которая защищает вас от кассовых разрывов и сезонных спадов. Если сломается техника, потребуется срочное обслуживание или возникнут непредвиденные расходы, вы закроете эти дыры за счет бизнеса, а не будете залезать в долги или тратить деньги из семейного бюджета.</li>
+<li><b>Возврат вложений</b> За счёт этих средств вы полностью компенсируете всё, что вложили в своё дело. Это особенно важно, если ради старта или развития пришлось использовать личные сбережения, что-то продать или взять кредит.<p>Как только стартовые обязательства будут полностью закрыты, эта сумма станет вашей чистой прибылью. С этого момента вы сможете вынимать эти деньги себе как дополнительные дивиденды или направлять на развитие бизнеса.</p></li>
+<li><b>Развитие и рост</b> За счет этого ресурса вы сможете развивать свое дело: покупать более совершенное оборудование, подключать профессиональный софт для автоматизации процессов, проходить обучающие курсы для повышения чека и даже нанимать первых помощников или подрядчиков.</li>
+<li><b>Дополнительный личный доход</b> Как только инвестиции окупятся, вы можете забирать высвободившиеся деньги себе — полностью или частично — в качестве дополнительных чистых дивидендов на личные нужды.</li>
 </ul>
+</div>
 </div>
 
 <div class="savebar" data-block-id="CALC-B033" data-block-name="Действия анкеты">
@@ -2757,8 +2858,8 @@ var ТЕКСТЫ_ПРЕДЕЛОВ={
   shoot_manual:{min:'Вы ввели значение ниже допустимого. Установлен минимум — 0,5 часа. Проверьте значение.',max:'Вы ввели значение выше допустимого. Установлен максимум — 72 часа. Проверьте значение.'},
   post_ratio:{min:'Вы ввели отрицательное значение. Установлен минимум — 0 часов постпродакшна. Проверьте значение.',max:'Вы ввели значение выше допустимого. Установлен максимум — 72 часа постпродакшна на один час съёмки. Проверьте значение.'},
   client_time:{min:'Вы ввели значение ниже допустимого. Установлен минимум — 0,5 часа работы с клиентом на проект. Чтобы не учитывать блок, используйте галочку исключения. Проверьте значение.',max:'Вы ввели значение выше допустимого. Установлен максимум — 72 часа работы с клиентом на проект. Проверьте значение.'},
-  promo_per_day:{min:'Вы ввели значение ниже допустимого. Установлен минимум — 0,5 часа поиска заказов в день. Чтобы не учитывать блок, используйте галочку исключения. Проверьте значение.',max:'Вы ввели значение выше допустимого. Установлен максимум — 8 часов поиска заказов в день: это полный нормативный рабочий день. Проверьте значение.'},
-  mgmt_per_week:{min:'Вы ввели значение ниже допустимого. Установлен минимум — 1 час управления делом в неделю. Чтобы не учитывать блок, снимите галочку. Проверьте значение.',max:'Вы ввели значение выше допустимого. Установлен максимум — 20 часов управления делом в неделю: это половина нормативной рабочей недели. Проверьте значение.'},
+  promo_amt:{min:'Вы ввели значение ниже допустимого. Установлен минимум — 0,5 часа поиска заказов за выбранный период. Чтобы не учитывать блок, используйте галочку исключения. Проверьте значение.',max:'Вы ввели значение выше допустимого. Установлен максимум — 8 часов в день, 40 часов в неделю или 160 часов в месяц. Проверьте значение.'},
+  mgmt_amt:{min:'Вы ввели значение ниже допустимого. Установлен минимум — 1 час управления делом за выбранный период. Проверьте значение.',max:'Вы ввели значение выше допустимого. Установлен максимум — 8 часов в день, 20 часов в неделю или 80 часов в месяц. Проверьте значение.'},
   home_rent:{min:'Вы ввели отрицательное значение. Установлен минимум — 0 ₽ в месяц. Проверьте значение.',max:'Вы ввели значение выше допустимого. Установлен максимум — 500 000 ₽ в месяц за жильё. Проверьте значение.'},
   home_util:{min:'Вы ввели отрицательное значение. Установлен минимум — 0 ₽ в месяц. Проверьте значение.',max:'Вы ввели значение выше допустимого. Установлен максимум — 100 000 ₽ в месяц на коммунальные платежи, интернет и связь. Проверьте значение.'},
   home_area:{min:'Вы ввели значение ниже допустимого. Установлен минимум — 1 м² общей площади жилья. Чтобы не учитывать поле, удалите строку крестиком. Проверьте значение.',max:'Вы ввели значение выше допустимого. Установлен максимум — 1 000 м² общей площади жилья. Проверьте значение.'},
@@ -2825,7 +2926,7 @@ function привестиКШагу(el){
   приведённое=Math.round(приведённое*1000000)/1000000;
   if(Math.abs(n-приведённое)<1e-9)return false;
   el.value=String(приведённое);
-  var шагТекст=(el.id==='home_area'||el.id==='cab_area')?'0,1 м²':((el.id==='acq_rate'||el.classList.contains('bank-extra-rate'))?'0,1 процентного пункта':'0,5 часа');
+  var шагТекст=(el.id==='home_area'||el.id==='cab_area')?'0,1 м²':(el.id==='mgmt_amt')?'1 час':((el.id==='acq_rate'||el.classList.contains('bank-extra-rate'))?'0,1 процентного пункта':'0,5 часа');
   плашкаПредела(el,'Значение приведено к ближайшему шагу — '+шагТекст+'. Проверьте значение.');
   return true;
 }
@@ -3108,15 +3209,98 @@ R.querySelectorAll('[data-exc]').forEach(function(cb){
   применитьИсключение(cb);
   cb.onchange=function(){применитьИсключение(cb);recalc()};
 });
-/* 15.09, круг 22: галка управления делом — обратная исключению:
-   блок включён, пока галка стоит. Запирание то же (заперетьБлок + .off). */
-function применитьУправление(){
-  var cb=$('mgmt_on'), карт=$('c_FormMgmt');
-  if(!cb||!карт)return;
-  карт.classList.toggle('off',!cb.checked);
-  заперетьБлок(карт,!cb.checked);
+/* 14.09 (слово владельца): период управления делом — день/неделя/месяц.
+   Предел поля зависит от выбранного периода. 15.09: нативный select заменён
+   на выпадающий список в стиле Canva — теперь и в блоке 08 «Поиск заказов»
+   (число + интервал), и в блоке 09 «Управление делом». Сам select скрыт,
+   но остаётся источником значения, поэтому сохранение, сброс и расчёт
+   работают как раньше. Вид и меню построены заново. */
+function построитьПериод(perId,inpId,максы){
+  var per=$(perId), inp=$(inpId);
+  if(!per||!inp)return;
+  function применить(){
+    var макс=максы[per.value]||максы.week;
+    inp.setAttribute('max',String(макс));
+  }
+
+  /* Обёртка: прячем нативный select внутрь .dd. */
+  var об=document.createElement('div'); об.className='dd';
+  per.parentNode.insertBefore(об,per);
+  об.appendChild(per);
+
+  /* Кнопка-поле: значение + шеврон. */
+  var кн=document.createElement('button'); кн.type='button';
+  кн.className='dd-btn'; кн.setAttribute('aria-haspopup','listbox');
+  кн.setAttribute('aria-expanded','false');
+  var подп=document.createElement('span'); подп.className='dd-val';
+  /* Шеврон создаём в SVG-пространстве имён: createElement('svg') даёт
+     HTML-элемент, внутри которого path не отрисовывается — стрелка была
+     бы невидимой. */
+  var SVGNS='http://www.w3.org/2000/svg';
+  var шев=document.createElementNS(SVGNS,'svg'); шев.setAttribute('class','dd-caret');
+  шев.setAttribute('viewBox','0 0 24 24'); шев.setAttribute('aria-hidden','true');
+  var п=document.createElementNS(SVGNS,'path');
+  п.setAttribute('d','M6 9l6 6 6-6');
+  п.setAttribute('fill','none'); п.setAttribute('stroke','currentColor');
+  п.setAttribute('stroke-width','2.2');
+  п.setAttribute('stroke-linecap','round'); п.setAttribute('stroke-linejoin','round');
+  шев.appendChild(п);
+  кн.appendChild(подп); кн.appendChild(шев);
+  об.appendChild(кн);
+
+  /* Меню строится из опций select, чтобы не расходиться с разметкой. */
+  var меню=document.createElement('ul'); меню.className='dd-menu';
+  меню.setAttribute('role','listbox'); меню.hidden=true;
+  об.appendChild(меню);
+  Array.prototype.forEach.call(per.options,function(o){
+    var li=document.createElement('li');
+    li.setAttribute('role','option'); li.textContent=o.text;
+    li.setAttribute('data-val',o.value);
+    li.addEventListener('click',function(){
+      if(per.disabled)return;
+      per.value=o.value;
+      обновить();
+      per.dispatchEvent(new Event('input',{bubbles:true}));
+      per.dispatchEvent(new Event('change',{bubbles:true}));
+      закрыть();
+    });
+    меню.appendChild(li);
+  });
+
+  function обновить(){
+    var выбр=per.selectedIndex>=0?per.selectedIndex:0;
+    подп.textContent=per.options[выбр].text;
+    Array.prototype.forEach.call(меню.children,function(li){
+      li.classList.toggle('sel',li.getAttribute('data-val')===per.value);
+    });
+    применить();
+  }
+  function открыть(){
+    if(per.disabled||кн.disabled)return;
+    меню.hidden=false; кн.classList.add('open');
+    кн.setAttribute('aria-expanded','true');
+  }
+  function закрыть(){
+    меню.hidden=true; кн.classList.remove('open');
+    кн.setAttribute('aria-expanded','false');
+  }
+  кн.addEventListener('click',function(){
+    if(меню.hidden)открыть(); else закрыть();
+  });
+  document.addEventListener('click',function(ev){
+    if(!об.contains(ev.target))закрыть();
+  });
+  document.addEventListener('keydown',function(ev){
+    if(ev.key==='Escape')закрыть();
+  });
+  /* Сброс и возврат из отчёта меняют value без событий input/change —
+     подпись и предел синхронизируем по defaultsreset. */
+  R.addEventListener('defaultsreset',обновить);
+
+  обновить();
 }
-(function(){var cb=$('mgmt_on');if(!cb)return;применитьУправление();cb.onchange=function(){применитьУправление();recalc()}})();
+построитьПериод('mgmt_per','mgmt_amt',{day:8,week:20,month:80});
+построитьПериод('promo_per','promo_amt',{day:8,week:40,month:160});
 /* Единый слой участия каталогов: это условие используют и финансовая
    сумма, и пользовательская детализация report. */
 function каталогИсключён(f){
@@ -3232,7 +3416,7 @@ function подсказкаПрибыли(зн){
   var R=ФОНД.R||0, В=ФОНД.инв||0;
   if(!(R>0)||В<=0)return ['st-ok','Хороший запас'];
   var P=В/(R*зн/100);
-  if(P>3)return ['st-warn','Окупаемость за '+срокОкуп(P)+', риск кассовых разрывов'];
+  if(P>3)return ['st-warn','Риск кассовых разрывов — окупаемость за '+срокОкуп(P)];
   if(P>=1)return ['st-mid','Рекомендуемая доля — окупаемость за '+срокОкуп(P)];
   return ['st-ok','Хорошая наценка — окупаемость меньше года'];
 }
@@ -3295,9 +3479,60 @@ function зап(вкл,пол,вых,сост,реком,подсказка){
 зап('fund_on','fund_pct','fund_out','fund_st',null,подсказкаПрибыли);
 зап('fm_on','fm_pct','fm_out','fm_st',5);
 (function(){
-  var cb=$('fund_on'), sl=$('fund_pct');
-  if(cb)cb.addEventListener('change',function(){ФОНД.ручной=true});
-  if(sl)sl.addEventListener('input',function(){ФОНД.ручной=true});
+  var cb=$('fund_on'), fs=$('fund_pct'), cs=$('cushion_pct');
+  if(cb)cb.addEventListener('change',function(){
+    ФОНД.ручной=true;
+    /* 15.09 (слово владельца): включение доли переключает подушку с
+       «% от выручки» на «% от маржи» — показатель сбрасывается на
+       рекомендуемое по умолчанию. */
+    if(cb.checked&&cs){
+      cs.value=cs.defaultValue;
+      if(typeof ЗАПЫ!=='undefined'&&ЗАПЫ['cushion_pct']&&ЗАПЫ['cushion_pct'].обновить)ЗАПЫ['cushion_pct'].обновить();
+      recalc();
+    }
+  });
+  if(fs)fs.addEventListener('input',function(){ФОНД.ручной=true});
+})();
+/* 15.09: подушка безопасности — второй ползунок доли чистой прибыли.
+   Значение ползунка — проценты ОТ МАРЖИ (возврата инвестиций), плашка
+   показывает эффективную долю от выручки. Независимая добавка: в расчёт
+   идёт сумма возврата и подушки (см. profitP в calc()).
+   15.09 (слово владельца): оформление как у резерва времени на форс-мажоры
+   (блок 19, зап()): не заложен — красный, меньше рекомендуемого (30) —
+   жёлтый, хороший запас — зелёный; нижняя подпись та же, через состояние(). */
+(function(){
+  var cb=$('cushion_on'), sl=$('cushion_pct'), out=$('cushion_out'),
+      st=$('cushion_st'), РЕК=30;
+  if(!cb||!sl)return;
+  var box=sl.closest('.zap');
+  function проц(n){return String(Math.round(n*10)/10).replace('.',',')}
+  function обновить(){
+    sl.disabled=!cb.checked;
+    if(box)box.classList.toggle('on',cb.checked);
+    var зн=parseFloat(sl.value)||0;
+    var фВкл=($('fund_on')||{}).checked===true;
+    var баз=parseFloat(($('fund_pct')||{}).value)||0;
+    /* 15.09 (слово владельца): доля отключена — подушка в % от выручки
+       (максимум 100); включена — % от маржи. */
+    var эф=фВкл?зн/100*баз:зн;               /* % от выручки */
+    if(out)out.textContent=проц(эф)+'%';
+    var мин=parseFloat(sl.min)||0, макс=parseFloat(sl.max)||100;
+    var доля=макс>мин?(зн-мин)/(макс-мин)*100:0;
+    sl.style.setProperty('--zp',доля+'%');
+    if(!cb.checked){ состояние(box,null,st,''); return; }
+    if(зн<=0){
+      состояние(box,'st-bad',st,'Резерв не заложен — покрывать придётся из своего дохода');
+    }else if(зн<РЕК){
+      состояние(box,'st-warn',st,'Меньше рекомендуемого — запаса может не хватить');
+    }else{
+      состояние(box,'st-ok',st,'Хороший запас');
+    }
+  }
+  ЗАПЫ['cushion_pct']=ЗАПЫ['cushion_pct']||{};
+  ЗАПЫ['cushion_pct'].обновить=обновить;
+  cb.onchange=function(){обновить();recalc()};
+  sl.oninput=function(){обновить();recalc()};
+  обновить();
 })();
 уровни();
 function обновитьСвоёЖильё(){
@@ -3398,8 +3633,12 @@ function regimeName(rg){
 /* Профессия: пока фотограф. Позже — из анкеты, для других ниш. */
 var PROF='\u0444\u043e\u0442\u043e\u0433\u0440\u0430\u0444\u0430';
 function calc(){
-  var promo=EXC['FormPromoTime']?0:V('promo_per_day')*ND;
-  var mgmt=CHK('mgmt_on')?V('mgmt_per_week')*NW:0; /* 15.09, круг 22: управление делом — тоже стороннее время */
+  var promoPer=$('promo_per')?$('promo_per').value:'day';
+  var МНОЖ_ПРОМО={day:ND,week:NW,month:MO}[promoPer]||ND;
+  var promo=EXC['FormPromoTime']?0:V('promo_amt')*МНОЖ_ПРОМО;
+  var mgmtPer=$('mgmt_per')?$('mgmt_per').value:'week';
+  var МНОЖ_ПЕРИОД={day:ND,week:NW,month:MO}[mgmtPer]||NW;
+  var mgmt=EXC['FormMgmt']?0:V('mgmt_amt')*МНОЖ_ПЕРИОД; /* 15.09, круг 22: управление делом — тоже стороннее время; ноль, когда блок исключён. 14.09: выбранный период (день/неделя/месяц) участвует в пересчёте */
   var self=rad('acc_mode')==='self', accEx=EXC['Form011'];
   var accT=(self&&!accEx)?V('acc_per_quarter')*Q:0;
   var idle=ND*(8-EFF);
@@ -3457,7 +3696,7 @@ function calc(){
   var acqPart=BANK_ACQ_ON?(V('acq_rate')/100)*(V('acq_share')/100):0;
   var extraBankPart=суммаДопКомиссий()/100;
   var a=EXC['Form015b']?0:acqPart+extraBankPart;
-  /* Чистая прибыль и запас на скидку — два отдельных блока.
+  /* Чистая прибыль и резерв программы лояльности — два отдельных блока.
      Оба считаются от выручки, поэтому входят в знаменатель, как эквайринг.
      Флажка «не учитывать» у них нет: галочка сама работает на включение. */
   var discP=CHK('disc_on')?V('disc_pct')/100:0;
@@ -3492,20 +3731,29 @@ function calc(){
     if(РР>0)РЕКОМ=Math.min(100,Math.max(0,Math.ceil(ЦЕЛЬ/РР*100-1e-9)));
   }
   if(!ФОНД.ручной){
-    var _фв=$('fund_on'), _фп=$('fund_pct');
-    if(_фв)_фв.checked=true;
+    var _фп=$('fund_pct');
     if(_фп)_фп.value=String(РЕКОМ);
   }
   ФОНД.инв=ВЛОЖ; ФОНД.реком=РЕКОМ;
   var fundP=CHK('fund_on')?V('fund_pct')/100:0;
+  /* 15.09: подушка безопасности — независимая добавка к доле чистой прибыли.
+     При включённой доле ползунок задаёт проценты ОТ МАРЖИ (возврата
+     инвестиций), в расчёт идёт эффективная доля от выручки: подушка% × маржа%
+     (по умолчанию 30% от 18% = 5,4%; вместе с возвратом — 23,4%).
+     15.09 (слово владельца): при отключённой доле чистая прибыль — только
+     подушка, поэтому она берётся сразу в процентах ОТ ВЫРУЧКИ (максимум 100). */
+  var cushionBase=CHK('fund_on')?V('fund_pct')/100:1;
+  var cushionShare=CHK('cushion_on')?(V('cushion_pct')/100)*cushionBase:0;
   /* Границы для процентов: эквайринг больше 10 % не берёт ни один банк,
      ползунки чистой прибыли и скидки ограничены 100 и 15 %. Без этих рамок при
      ручной подстановке (30 % + 30 % + 15 %) знаменатель падал до 0,25
      и выручка взлетала до 9,4 млн — цифра бессмысленная. */
   a=Math.min(Math.max(a,0),0.10);
   fundP=Math.min(Math.max(fundP,0),1.00);
+  cushionShare=Math.min(Math.max(cushionShare,0),1.00-fundP);
+  var profitP=fundP+cushionShare;
   discP=Math.min(Math.max(discP,0),0.15);
-  var D=1-a-sdiv-fundP-discP;
+  var D=1-a-sdiv-profitP-discP;
   if(D<0.40)D=0.40;          /* суммарные отчисления — не больше 60 %; 15.09: ползунок прибыли — до 100, пол держит математику, верх шкалы номинален */
   /* --- Налог как честная функция выручки ---
      Раньше база для УСН 15 и АУСН 20 бралась от желаемого дохода
@@ -3556,6 +3804,7 @@ function calc(){
   /* Подсказка ползунку прибыли смотрит на свежие числа: обновляем её
      в конце каждого расчёта (в харнессе реестра ЗАПЫ нет — пропускаем). */
   if(typeof ЗАПЫ!=='undefined'&&ЗАПЫ['fund_pct']&&ЗАПЫ['fund_pct'].обновить)ЗАПЫ['fund_pct'].обновить();
+  if(typeof ЗАПЫ!=='undefined'&&ЗАПЫ['cushion_pct']&&ЗАПЫ['cushion_pct'].обновить)ЗАПЫ['cushion_pct'].обновить();
   var taxAll=taxOf(R_), aq=R_*a;
   /* «Всего расходов» — утверждённая отдельная группа: Финансовые расходы
      плюс Налоги и Эквайринг. Резервный фонд и компенсация Инвестиционного
@@ -3564,7 +3813,7 @@ function calc(){
   /* Идеальный сценарий отдаёт готовый состав затрат. Каждый необязательный
      параметр остаётся в единой формуле, но при отключении его эффективное
      значение равно нулю. Так отчёт не собирает кольцо своей математикой. */
-  var goalFund=R_*fundP;
+  var goalFund=R_*profitP;
   var goalDiscountReserve=R_*discP;
   var goalSelfSiteCost=R_*sdiv;
   var goalCostsTotal=C+aq+taxAll+goalFund+goalDiscountReserve+goalSelfSiteCost;
@@ -3573,7 +3822,7 @@ function calc(){
   /* Текущий сценарий использует те же эффективные параметры, что целевой:
      выключенный параметр даёт ноль, включённый участвует. Отрицательный
      результат не обрезаем — это настоящий убыток, а не ошибка расчёта. */
-  var currentFund=Rc*fundP;
+  var currentFund=Rc*profitP;
   var currentDiscountReserve=Rc*discP;
   var currentSelfSiteCost=Rc*sdiv;
   var currentCostsTotal=C+aqC+taxC+currentFund+currentDiscountReserve+currentSelfSiteCost;
@@ -3697,8 +3946,14 @@ function calc(){
   отв(5,'Минимальный заказ',S,'ч');
   отв(6,'Время на постпродакшн',K,'× ч');
   if(!EXC['FormClientTime'])отв(7,'Проектная работа с клиентами',cl,'ч');
-  if(!EXC['FormPromoTime'])отв(8,'Поиск заказов',V('promo_per_day'),'ч/день');
-  if(CHK('mgmt_on'))отв(9,'Управление делом',V('mgmt_per_week'),'ч/нед');
+  if(!EXC['FormPromoTime']){
+    var промоЕд='ч/'+({day:'день',week:'нед',month:'мес'}[promoPer]||'день');
+    отв(8,'Поиск заказов',V('promo_amt'),промоЕд);
+  }
+  if(!EXC['FormMgmt']){
+    var мгЕд='ч/'+({day:'день',week:'нед',month:'мес'}[mgmtPer]||'нед');
+    отв(9,'Управление делом',V('mgmt_amt'),мгЕд);
+  }
   позКаталога(10,'Form001'); позКаталога(11,'Form002');
   позКаталога(12,'Form003'); позКаталога(12,'Form004');
   function полеУдалено(id){
@@ -3744,7 +3999,7 @@ function calc(){
   }
   if(CHK('fm_on'))отв(19,'Резерв времени на простой и форс-мажоры',V('fm_pct'),'%');
   if(CHK('disc_on'))отв(20,'Запас на скидку',discP*100,'%');
-  if(CHK('fund_on'))отв(21,'Чистая прибыль',fundP*100,'%');
+  if(CHK('fund_on')||CHK('cushion_on'))отв(21,'Чистая прибыль',Math.round(profitP*10000)/100,'%');
 
   return{answers:ответы,catalog:позиции,
     frames:framesOut,NT:NT,idle:idle,pool:pool,
@@ -4093,9 +4348,11 @@ $('go').onclick=function(){
       $('stgs').textContent=ST[i][2];break}
     if(p>=100){clearInterval(iv);setTimeout(function(){
       var res=calc();
-      saveReport(res);            /* передаём результат в отчёт */
-      saveState();                /* чтобы «изменить данные» вернуло анкету как есть */
-      location.href=REPORT_URL;   /* отчёт открывается отдельной страницей */
+      /* Передаём результат в отчёт. Если localStorage недоступен
+         (инкогнито, приватный режим) — уводим через адресную строку:
+         report.html умеет читать ?data=. */
+      if(!saveReport(res))location.href=reportLink(res,REPORT_URL);
+      else{saveState();location.href=REPORT_URL;}
     },350)}
   },50);
 };
@@ -4109,7 +4366,8 @@ function saveReport(d){
     for(var k in d) if(d.hasOwnProperty(k)&&typeof d[k]!=='function') out[k]=d[k];
     out._ts=Date.now();
     localStorage.setItem('phc_report',JSON.stringify(out));
-  }catch(e){}
+    return true;
+  }catch(e){ return false; }
 }
 /* Ссылка на отчёт с данными в адресе — запасной путь,
    если localStorage недоступен (инкогнито, другой домен). */
@@ -4125,7 +4383,7 @@ function reportLink(d,url){
    добавлено банковских комиссий: без этого при возврате обход встретит
    другое число полей и значения разъедутся по соседним строкам. */
 function saveState(){
-  var st={в:3,поля:[],строки:{},комиссии:0,эквайринг:BANK_ACQ_ON}; /* в:3 — 15.09: блок управления делом сдвинул позиции полей */
+  var st={в:5,поля:[],строки:{},комиссии:0,эквайринг:BANK_ACQ_ON}; /* в:5 — 15.09: поиск заказов переведён на число + период, добавился селект promo_per */
   R.querySelectorAll('input,select').forEach(function(e){
     st.поля.push((e.type==='checkbox'||e.type==='radio')?(e.checked?1:0):e.value);
   });
@@ -4141,7 +4399,7 @@ function restoreState(){
   var st; try{st=JSON.parse(raw)}catch(e){return false}
   /* Снимок прежнего формата не применяем: там ключи по индексу обхода,
      и после любой правки разметки значения встали бы не в свои поля. */
-  if(!st||st.в!==3||!st.поля)return false;
+  if(!st||st.в!==5||!st.поля)return false;
   /* Сначала приводим таблицы и комиссии к сохранённому виду, потом
      раскладываем значения — обход должен встретить ровно те же поля,
      что были при записи. */
@@ -4369,11 +4627,20 @@ function СЧХЖестПлашки(bar){
     var карт=б.closest('.card');
     /* Блок резерва выключен, пока не стоит галочка: ползунок и уровни
        в нём уже недоступны, значит и откатывать нечего. Иначе кнопка
-       оставалась бы единственным живым элементом выключенного блока. */
-    var зап=карт&&карт.querySelector('.zap');
-    var заперт=карт&&(карт.classList.contains('off')||карт.classList.contains('taxdim')
-                      ||карт.classList.contains('tax-auto-lock')
-                      ||(зап&&!зап.classList.contains('on')));
+       оставалась бы единственным живым элементом выключенного блока.
+       15.09: в карточке бывает несколько независимых запов (блок 21 —
+       возврат инвестиций + подушка безопасности): блокируем кнопку,
+       только если выключены ВСЕ. */
+    var заперт=!!карт&&(карт.classList.contains('off')||карт.classList.contains('taxdim')
+                        ||карт.classList.contains('tax-auto-lock'));
+    if(карт&&!заперт){
+      var запы=карт.querySelectorAll('.zap');
+      if(запы.length){
+        var активен=false;
+        for(var zi=0;zi<запы.length;zi++)if(запы[zi].classList.contains('on')){активен=true;break}
+        if(!активен)заперт=true;
+      }
+    }
     б.disabled=!!заперт||!изм;
     б.classList.toggle('on',!!изм&&!заперт);
   }
@@ -4610,7 +4877,6 @@ function применитьСостояния(){
       l.classList.toggle('on',l.querySelector('input').checked)});
   });
   R.querySelectorAll('[data-exc]').forEach(function(cb){применитьИсключение(cb)});
-  if(typeof применитьУправление==='function')применитьУправление();
   ['tax_auto','tax_off'].forEach(function(id){
     var cb=$(id); if(!cb)return; cb.disabled=false;
     cb.dispatchEvent(new Event('change',{bubbles:true}));
@@ -4627,6 +4893,7 @@ function применитьСостояния(){
          $('acc_c_w').style.display=am==='hired'?'grid':'none'}
   обновитьСвоёЖильё();
   зап('fund_on','fund_pct','fund_out');
+  if(typeof ЗАПЫ!=='undefined'&&ЗАПЫ['cushion_pct']&&ЗАПЫ['cushion_pct'].обновить)ЗАПЫ['cushion_pct'].обновить();
   зап('fm_on','fm_pct','fm_out');
   уровни();
 }
