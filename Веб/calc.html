@@ -183,10 +183,17 @@ border-radius:50%;background:var(--c-ln)}
    нейтрально: серая рамка, базовый шрифт, без цветной заливки. */
 /* 16.09: рамка удалена вместе с текстом (см. выше). */
 #phc-root .post-measure-note b{font-weight:700;color:var(--c-ink)}
-#phc-root .post-subtitle{max-width:900px}
+#phc-root .post-subtitle,#phc-root .client-subtitle{max-width:900px}
 #phc-root .client-default-note,#phc-root .search-default-note{max-width:920px;
 margin-top:10px;padding:2px 0;font-size:13px;font-weight:600;
 line-height:1.55;color:var(--c-ink2)}
+/* В блоке 07 комментарий под полем — это тот же нейтральный
+   методический комментарий, что и в эталонном блоке 06. */
+#phc-root [data-block-id="CALC-B013"] .client-default-note{
+margin-top:9px;padding:0;font-size:12.5px;font-weight:400;
+line-height:1.55;color:var(--c-gr2)}
+#phc-root [data-block-id="CALC-B013"] .client-time-notice{margin-top:28px}
+#phc-root [data-block-id="CALC-B013"] .client-exclude{margin-top:12px}
 /* 16.09 (слово владельца): строка списка — текст по началу текста комментария, иконка у правого края; после комментария 9 — как от комментария до поля. */
 #phc-root .more2.post-details summary{display:flex;padding-left:14px}
 /* 16.09 (слово владельца): в открытом списке — линия под заголовком (12/10, как разделитель в плашках). */
@@ -535,8 +542,13 @@ color:var(--c-gr2)}
 #phc-root #npdWho{align-items:center}
 #phc-root #npdWho .q{font-size:13px;font-weight:600;color:var(--c-gr)}
 /* 16.09 (слово владельца): вопрос блока 06 — шрифт вопроса блока 02; над полем: 19 от подзаголовка, 24 до поля (как в мобайле блока 02). */
-#phc-root [data-block-id="CALC-B012"] .q{font-size:13px;font-weight:600;color:var(--c-gr);margin-top:19px;margin-bottom:24px}
-#phc-root [data-block-id="CALC-B012"] .q+.qf{margin-top:0}/* 16.09: поле за вопросом — верх снимаем, 24 даёт вопрос (мобайл блока 02). */
+#phc-root [data-block-id="CALC-B012"] .q,
+#phc-root [data-block-id="CALC-B013"] .q,
+#phc-root [data-block-id="CALC-B040"] .q{font-size:13px;font-weight:600;color:var(--c-gr);margin-top:19px;margin-bottom:24px}
+#phc-root [data-block-id="CALC-B012"] .q+.qf,
+#phc-root [data-block-id="CALC-B013"] .q+.qf,
+#phc-root [data-block-id="CALC-B040"] .q+.qf{margin-top:0}
+#phc-root [data-block-id="CALC-B040"] .post-exclude{margin-top:28px}/* Уведомление — после комментария, как в эталоне блока 06. */
 /* 16.09 (слово владельца): поле->комментарий 9px (5 строки + 4 комментария), комментарий->кнопка 28px, как комментарий->уведомление. */
 #phc-root #npdRateNote{margin-top:4px;margin-bottom:28px}
 @media(max-width:760px){#phc-root .card[data-block-id="CALC-B008"] .two-col-row{grid-template-columns:repeat(2,minmax(0,1fr))}}
@@ -948,24 +960,60 @@ line-height:1.45;color:rgba(255,255,255,.72)}
    «Приступим к расчёту»: крупная иконка и короткая мысль. */
 #phc-root .form-section-time .section-ending,
 #phc-root .form-section-expenses .section-ending{margin-top:34px}
-#phc-root .form-section-time .section-subtitle,
-#phc-root .form-section-expenses .section-subtitle{font-size:13.5px;font-weight:400;line-height:1.5}
+/* Эталон «Приступим к расчёту»: у «Времени» сохраняем естественный
+   перенос заголовка, но типографика и расстояние до подзаголовка те же. */
+#phc-root .form-section-time .section-ending .section-main-title{
+font-family:'PHC Prata','Times New Roman',serif;font-size:clamp(42px,5.2vw,62px)!important;
+font-weight:400!important;line-height:1.18!important;letter-spacing:-.035em!important;
+color:var(--c-white);margin:0!important}
+#phc-root .form-section-time .section-ending .section-subtitle{
+margin-top:12px;font-family:inherit;font-size:clamp(15px,1.55vw,19px);
+font-weight:400;line-height:1.55;letter-spacing:-.015em;color:rgba(255,255,255,.96)}
+/* Эталон «Приступим к расчёту»: «Расходы» сохраняет естественный
+   перенос заголовка и ту же типографическую шкалу. */
+#phc-root .form-section-expenses .section-ending .section-main-title{
+font-family:'PHC Prata','Times New Roman',serif;font-size:clamp(42px,5.2vw,62px)!important;
+font-weight:400!important;line-height:1.18!important;letter-spacing:-.035em!important;
+color:var(--c-white);margin:0!important}
+#phc-root .form-section-expenses .section-ending .section-subtitle{
+margin-top:12px;font-family:inherit;font-size:clamp(15px,1.55vw,19px);
+font-weight:400;line-height:1.55;letter-spacing:-.015em;color:rgba(255,255,255,.96)}
 #phc-root .form-section-expenses>.expenses-banner{padding:0 30px}
-/* Резервы остаются референсом: крупная иконка, основная мысль,
-   затем заголовок и более тихий девиз. */
-#phc-root .form-section-reserves .section-points{grid-template-columns:minmax(0,440px);
-justify-content:center;max-width:440px;margin:0 auto}
+/* Эталонный видимый низ баннера: .benefits-tail имеет 96px,
+   но следующий экран перекрывает его на 72px — фактически от текста
+   до видимой нижней границы остаётся 24px. */
+#phc-root .form-section-time,#phc-root .form-section-expenses{
+padding-bottom:24px;margin-bottom:0}
+/* Резервы также собираются по геометрии эталонной плашки.
+   Здесь одна смысловая плашка, поэтому сохраняем одну колонку,
+   но не делаем для неё отдельную стилистическую систему. */
+#phc-root .form-section-reserves .section-points{grid-template-columns:minmax(0,900px);
+justify-content:center;max-width:900px;margin:0 auto;gap:14px}
 #phc-root .form-section-reserves .section-point{flex-direction:row;align-items:center;
-height:auto;min-height:0;padding:0;gap:16px;border:0;background:transparent;
-font-size:16px;font-weight:500;line-height:1.45;color:rgba(255,255,255,.90)}
+justify-content:center;gap:12px;width:100%;min-height:106px;padding:12px 14px;
+text-align:center;
+border:1px solid rgba(255,255,255,.20);border-radius:14px;
+background:rgba(255,255,255,.055);font-size:14.5px;font-weight:600;
+line-height:1.35;color:rgba(255,255,255,.84)}
 #phc-root .form-section-reserves .section-point-icon{width:82px;height:82px;margin:0;flex:none;
 border:0;background:transparent}
 #phc-root .form-section-reserves .section-point-icon svg,
 #phc-root .form-section-reserves .section-point-sber .section-point-icon svg{width:68px;height:68px}
 #phc-root .form-section-reserves .section-ending,
 #phc-root .form-section-profit .section-ending{margin-top:34px}
-#phc-root .form-section-reserves .section-subtitle,
-#phc-root .form-section-profit .section-subtitle{font-size:13.5px;font-weight:400;line-height:1.5}
+#phc-root .form-section-reserves .section-ending .section-main-title{
+font-family:'PHC Prata','Times New Roman',serif;font-size:clamp(42px,5.2vw,62px)!important;
+font-weight:400!important;line-height:1.18!important;letter-spacing:-.035em!important;
+color:var(--c-white);margin:0!important}
+#phc-root .form-section-reserves .section-ending .section-subtitle,
+#phc-root .form-section-profit .section-ending .section-subtitle{
+margin-top:12px;font-family:inherit;font-size:clamp(15px,1.55vw,19px);
+font-weight:400;line-height:1.55;letter-spacing:-.015em;color:rgba(255,255,255,.96)}
+#phc-root .form-section-reserves,#phc-root .form-section-profit{padding-bottom:24px;margin-bottom:0}
+#phc-root .form-section-profit .section-ending .section-main-title{
+font-family:'PHC Prata','Times New Roman',serif;font-size:clamp(42px,5.2vw,62px)!important;
+font-weight:400!important;line-height:1.18!important;letter-spacing:-.035em!important;
+color:var(--c-white);margin:0!important}
 @media(max-width:700px){
 #phc-root .form-section{margin:32px 0;padding:27px 0 34px;border-radius:var(--r)}
 #phc-root .form-section>.sect{padding:0 20px;margin-bottom:30px}
@@ -999,14 +1047,34 @@ padding-top:64px;padding-bottom:34px}
 #phc-root .form-section-reserves .section-point-icon svg,
 #phc-root .form-section-reserves .section-point-sber .section-point-icon svg{width:46px;height:46px}
 #phc-root .form-section-time .section-subtitle,
-#phc-root .form-section-expenses .section-subtitle,
 #phc-root .form-section-reserves .section-subtitle,
 #phc-root .form-section-profit .section-subtitle{font-size:12.5px}
 #phc-root .form-section-time .section-ending,
 #phc-root .form-section-expenses .section-ending,
 #phc-root .form-section-reserves .section-ending,
 #phc-root .form-section-profit .section-ending{margin-top:28px}
+/* На мобильном эталон также оставляет около 24px видимого воздуха
+   от подзаголовка до нижней границы после перекрытия следующей карточкой. */
+#phc-root .form-section-time,#phc-root .form-section-expenses,#phc-root .form-section-reserves,#phc-root .form-section-profit{padding-bottom:24px;margin-bottom:0}
+#phc-root .form-section-expenses .section-ending .section-main-title,
+#phc-root .form-section-reserves .section-ending .section-main-title,
+#phc-root .form-section-profit .section-ending .section-main-title{font-size:clamp(34px,5.7vw,43px)!important;line-height:1.2!important}
+#phc-root .form-section-expenses .section-ending .section-subtitle,
+#phc-root .form-section-reserves .section-ending .section-subtitle,
+#phc-root .form-section-profit .section-ending .section-subtitle{margin-top:10px;font-size:13.5px;line-height:1.5}
+#phc-root .form-section-reserves .section-point{min-height:82px;gap:10px;padding:10px 14px;font-size:11.5px;line-height:1.25}
+#phc-root .form-section-reserves .section-point-icon{width:56px;height:56px}
+#phc-root .form-section-reserves .section-point-icon svg{width:46px;height:46px}
 }
+/* Эталон баннеров: плашки «Времени» повторяют геометрию
+   .proof-item из «Приступим к расчёту». */
+#phc-root .form-section-time .section-point{
+flex-direction:row;align-items:center;justify-content:flex-start;gap:12px;
+min-height:106px;padding:12px 14px;border-radius:14px;font-size:14.5px;
+line-height:1.35}
+#phc-root .form-section-time .section-point-icon{
+width:82px;height:82px;margin:0;flex:none;border-radius:0;background:transparent;border:0}
+#phc-root .form-section-time .section-point-icon svg{width:68px;height:68px}
 /* 16.09 (слово владельца): между плашками и от плашек до следующего блока — 22, как от баннера до плашек. */
 /* 16.09 (слово владельца): три общих ряда — подпись/заголовок/текст на одном уровне во всех плашках; боковой зазор 16 — эталон плашек главного блока. */
 #phc-root .cnd{display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,auto);gap:0 16px;margin-bottom:22px}
@@ -1078,6 +1146,35 @@ padding:18px 20px;border:1px solid rgba(255,255,255,.26);border-radius:14px;list
 border-bottom:1px solid rgba(255,255,255,.30);font-size:clamp(25px,3vw,32px);
 font-weight:700;line-height:1.24;letter-spacing:-.025em;color:var(--c-white)}
 #phc-root .context-notice-title b{color:inherit;font-weight:inherit}
+#phc-root #c_FormClientTime + .client-context-notice > p.context-notice-title{
+font-size:20px;font-weight:600;line-height:1.35;letter-spacing:0;
+border-bottom:0;padding-bottom:0}
+#phc-root #c_FormClientTime + .client-context-notice > p.client-admin-title-cont{
+margin-top:10px}
+#phc-root #c_FormClientTime + .client-context-notice .client-context-details summary{
+font-size:13px;font-weight:400;color:rgba(255,255,255,.85);padding-left:0}
+#phc-root #c_FormClientTime + .client-context-notice .client-context-details summary svg{order:2;margin-left:auto}
+#phc-root #c_FormClientTime + .client-context-notice .client-context-details[open] summary{border-bottom:1px solid rgba(255,255,255,.30);padding-bottom:12px}
+#phc-root #c_FormClientTime + .client-context-notice .client-context-details .in2{margin-top:10px;font-size:14.5px;line-height:1.6;color:rgba(255,255,255,.84)}
+#phc-root #c_FormClientTime + .client-context-notice .client-admin-note{margin-top:16px;padding:13px 16px;border:1px solid rgba(255,255,255,.38);border-radius:12px;background:rgba(255,255,255,.08);font-size:14.5px;font-weight:600;color:rgba(255,255,255,.92);line-height:1.6}
+#phc-root #c_FormClientTime + .client-context-notice .client-admin-note b{font-weight:600}
+#phc-root #c_FormClientTime + .client-context-notice .client-context-lead{margin:0;font-size:14.5px;line-height:1.6;color:rgba(255,255,255,.84)}
+#phc-root #c_FormClientTime + .client-context-notice .client-context-details .in2 p+p{margin-top:15px}
+#phc-root #c_FormPromoTime + .search-context-notice > p.context-notice-title{font-size:20px;font-weight:600;line-height:1.35;letter-spacing:0}
+#phc-root #c_FormPromoTime + .search-context-notice .search-context-details summary{font-size:13px;font-weight:400;color:rgba(255,255,255,.85);padding-left:0}
+#phc-root #c_FormPromoTime + .search-context-notice .search-context-details summary svg{order:2;margin-left:auto}
+#phc-root #c_FormPromoTime + .search-context-notice .search-context-details[open] summary{border-bottom:1px solid rgba(255,255,255,.30);padding-bottom:12px}
+#phc-root #c_FormPromoTime + .search-context-notice .search-context-details .in2{margin-top:10px;font-size:14.5px;line-height:1.6;color:rgba(255,255,255,.84)}
+#phc-root #c_FormPromoTime + .search-context-notice .search-context-details .in2>p+p{margin-top:15px}
+#phc-root .equipment-cost-notice > p.context-notice-title{font-size:20px;font-weight:600;line-height:1.35;letter-spacing:0}
+#phc-root .equipment-cost-notice > p:not(.context-notice-title),
+#phc-root .education-opportunity-note > p:not(.context-notice-title){font-size:14.5px;line-height:1.6;color:rgba(255,255,255,.84)}
+#phc-root .education-opportunity-note > p.context-notice-title{font-size:20px;font-weight:600;line-height:1.35;letter-spacing:0}
+#phc-root .form-section-profit .equipment-market-note > p.context-notice-title{font-size:20px;font-weight:600;line-height:1.35;letter-spacing:0;border-bottom:0;padding-bottom:0}
+#phc-root .form-section-profit .equipment-market-note > ul.context-list-frame + p{margin-top:28px}
+#phc-root .form-section-profit .equipment-market-note > p:not(.context-notice-title){font-size:14.5px;line-height:1.6;color:rgba(255,255,255,.84)}
+#phc-root .form-section-profit .equipment-market-note > p.context-notice-sub{font-size:14.5px;line-height:1.6}
+
 /* 14.09 (слово владельца): лид и внутренний подзаголовок уведомления —
    по правилам типографики документа. Лид — крупнее и белый (выделяет
    главный тезис), внутренний подзаголовок — как заголовок пункта списка. */
@@ -1541,6 +1638,32 @@ color:var(--c-gr);cursor:pointer;padding:0;position:relative;
 transition:background .18s,color .18s,transform .12s}
 #phc-root .tbar .fbi svg{width:20px;height:20px}
 #phc-root .tbar .fbi:hover{background:var(--c-white);color:var(--c-ink2)}
+/* Кнопка расчёта выделена фирменным зелёным цветом лепестка логотипа. */
+#phc-root .tbar .fbi.calc-action,
+#phc-root .trustbar-action.calc-action{color:var(--c-g-500)}
+#phc-root .tbar .fbi.calc-action:hover,
+#phc-root .trustbar-action.calc-action:hover{color:var(--c-g-500)}
+/* Компактная версия основной зелёной кнопки расчёта: сохраняет
+   фирменный градиент, белую иконку и поведение hover/active. */
+#phc-root .tbar .fbi.calc-action,
+#phc-root .trustbar-action.calc-action{
+  background:linear-gradient(135deg,var(--c-g-800),var(--c-g-500));
+  color:var(--c-white);
+  box-shadow:0 4px 12px rgba(33,160,56,.25)
+}
+#phc-root .tbar .fbi.calc-action:hover,
+#phc-root .trustbar-action.calc-action:hover{
+  background:linear-gradient(135deg,var(--c-g-900),var(--c-g-600));
+  color:var(--c-white);
+  box-shadow:0 6px 16px rgba(33,160,56,.32)
+}
+#phc-root .tbar .fbi.calc-action:active,
+#phc-root .trustbar-action.calc-action:active{
+  background:linear-gradient(135deg,var(--c-g-900),var(--c-g-700));
+  color:var(--c-white);
+  transform:translateY(1px);
+  box-shadow:0 3px 9px rgba(33,160,56,.28)
+}
 #phc-root .tbar .fbi:active{transform:translateY(1px)}
 /* Сердечко в меню — такое же серое, как соседние иконки. Розовый цвет
    остаётся только для нажатого состояния (.thx-горит) — решение 27.08.
@@ -1655,10 +1778,27 @@ transition:background .18s,color .18s,transform .12s}
 #phc-root .trustbar-reset.ask,
 #phc-root .tbar .fbi.ask{color:var(--c-r-700);background:var(--c-r-50)}
 /* 16.09 (слово владельца): подсказки кнопок сброса прижаты к левому краю кнопки — обе кнопки крайние слева в своих меню, центрированная подсказка вылезала за край страницы. */
-#phc-root .tbar #topResetBtn:after{left:0;transform:translateY(-4px)}
-#phc-root .tbar #topResetBtn:hover:after{transform:none}
-#phc-root #trustResetBtn:after{left:0;transform:translateY(-4px)}
-#phc-root #trustResetBtn:hover:after{transform:none}
+/* Подсказки меню центрируются относительно своих кнопок, как у
+   «Поделиться» и «Поблагодарить проект». Ограничение ширины не даёт
+   длинной подсказке выйти за экран. */
+#phc-root .tbar .fbi,#phc-root .trustbar-action{font-family:inherit;letter-spacing:normal}
+#phc-root .tbar .fbi:after,#phc-root .trustbar-action:after{
+font-family:inherit;font-size:12.5px;font-weight:600;line-height:1.5;
+letter-spacing:normal;padding:10px 14px;border-radius:12px;white-space:nowrap}
+#phc-root .tbar .fbi.smart-tip:after,#phc-root .trustbar-action.smart-tip:after{left:var(--tip-left,50%);transform:var(--tip-transform,translateX(-50%) translateY(-4px))}
+#phc-root .tbar .fbi.smart-tip:hover:after,#phc-root .trustbar-action.smart-tip:hover:after{transform:var(--tip-hover-transform,translateX(-50%) translateY(0))}
+#phc-root .tbar .fbi.tip-l:after,#phc-root .trustbar-action.tip-l:after{left:0;transform:translateY(-4px)}
+#phc-root .tbar .fbi.tip-l:hover:after,#phc-root .trustbar-action.tip-l:hover:after{
+transform:translateY(0)}
+#phc-root .trustbar-action:after{width:max-content}
+#phc-root #trustResetBtn:after{left:50%;right:auto;transform:translateX(-50%) translateY(-4px)}
+#phc-root #trustResetBtn:hover:after{transform:translateX(-50%)}
+/* Верхний логотип стоит у правого края: выравниваем подсказку по его
+   правому краю, чтобы она не уходила за границу страницы. */
+#phc-root .brand-link:after{right:0;left:auto;transform:translateY(-4px)}
+#phc-root .brand-link:hover:after{transform:translateY(0)}
+#phc-root .lgs-link:after{left:50%;transform:translateX(-50%) translateY(-4px)}
+#phc-root .lgs-link:hover:after{transform:translateX(-50%) translateY(0)}
 /* 16.09 (слово владельца): кнопки общего сброса зеленеют, когда в анкете есть изменения (как иконки отката блоков); красное подтверждение важнее зелени. */
 #phc-root .tbar .fbi.on{color:var(--c-g-500)}
 #phc-root .trustbar-reset.on{color:var(--c-g-500)}
@@ -1683,6 +1823,14 @@ transition:opacity .16s,transform .16s;box-shadow:0 8px 28px rgba(16,24,40,.16)}
 #phc-root .brand .bd{font-size:9px;color:var(--c-gr2);white-space:nowrap;display:flex;justify-content:space-between;text-transform:lowercase}
 #phc-root .brand .bd i{font-style:normal}
 #phc-root .brand .bx{display:block;flex:none;width:62px;height:62px}
+#phc-root .brand-link,#phc-root .lgs-link{position:relative;color:inherit;text-decoration:none;cursor:pointer}
+#phc-root .brand-link:after,#phc-root .lgs-link:after{content:attr(data-tip);position:absolute;
+top:calc(100% + 9px);padding:10px 14px;border-radius:12px;
+background:var(--c-white);color:var(--c-ink);border:1px solid var(--c-ln);
+font-size:12.5px;font-weight:400;line-height:1.4;white-space:normal;text-align:center;
+max-width:calc(100vw - 24px);width:max-content;opacity:0;pointer-events:none;
+box-shadow:0 8px 28px rgba(16,24,40,.16);z-index:70;transition:opacity .16s,transform .16s}
+#phc-root .brand-link:hover:after,#phc-root .lgs-link:hover:after{opacity:1}
 
 /* ---------- шапка ----------
    Один в один с отчётом. Отличие анкеты: в строке со знаком нет кнопок
@@ -1750,7 +1898,7 @@ font-weight:400;line-height:1.55;letter-spacing:-.015em;color:rgba(255,255,255,.
 #phc-root .hero-title{font-size:clamp(34px,5.7vw,43px);line-height:1.2}
 #phc-root .form-section-time .section-ending .section-main-title{font-size:clamp(34px,5.7vw,43px)!important;line-height:1.2!important}
 #phc-root .hero-deck{margin-top:22px;font-size:clamp(13px,2.15vw,16px)}
-#phc-root .form-section-time .section-ending .section-subtitle{margin-top:22px;font-size:clamp(13px,2.15vw,16px)}
+#phc-root .form-section-time .section-ending .section-subtitle{margin-top:10px;font-size:13.5px;line-height:1.5}
 }
 @media(max-width:620px){
 #phc-root .hero-cover{aspect-ratio:4/3;margin-bottom:18px}
@@ -1760,14 +1908,14 @@ font-weight:400;line-height:1.55;letter-spacing:-.015em;color:rgba(255,255,255,.
 #phc-root .hero-title{font-size:clamp(28px,7.6vw,36px);line-height:1.22;letter-spacing:-.04em}
 #phc-root .form-section-time .section-ending .section-main-title{font-size:clamp(28px,7.6vw,36px)!important;line-height:1.22!important;letter-spacing:-.04em!important}
 #phc-root .hero-deck{margin-top:20px;font-size:clamp(12.5px,3vw,14px);line-height:1.5}
-#phc-root .form-section-time .section-ending .section-subtitle{margin-top:20px;font-size:clamp(12.5px,3vw,14px);line-height:1.5}
+#phc-root .form-section-time .section-ending .section-subtitle{margin-top:10px;font-size:13.5px;line-height:1.5}
 }
 @media(max-width:420px){
 #phc-root .hero-copy{top:8.5%;left:5.5%;width:84%}
 #phc-root .hero-title{font-size:clamp(25px,7.5vw,31px)}
-#phc-root .form-section-time .section-ending .section-main-title{font-size:clamp(25px,7.5vw,31px)!important}
+#phc-root .form-section-time .section-ending .section-main-title{font-size:clamp(23px,7vw,29px)!important;line-height:1.22!important}
 #phc-root .hero-deck{margin-top:17px;font-size:12.5px}
-#phc-root .form-section-time .section-ending .section-subtitle{margin-top:17px;font-size:12.5px}
+#phc-root .form-section-time .section-ending .section-subtitle{margin-top:10px;font-size:13.5px;line-height:1.5}
 }
 @media print{#phc-root .hero-cover{display:none}}
 /* ---------- три результата калькулятора под hero ----------
@@ -1814,9 +1962,13 @@ radial-gradient(circle at 88% 12%,rgba(255,255,255,.07) 0%,rgba(255,255,255,0) 3
 linear-gradient(145deg,#111 0%,#353331 58%,#181716 100%);
 box-shadow:var(--sh)}
 #phc-root .start-note{margin:34px 0 0;padding:0;border:0;background:transparent;text-align:center}
+/* Баннер «Приступим к расчёту» повторяет типографический эталон
+   главной обложки: .hero-title / .hero-deck. Не задаём отдельную
+   типографику для этого баннера — совпадают семейство, размер,
+   насыщенность, межстрочный интервал, трекинг и адаптивные ступени. */
 #phc-root .start-note-title{font-family:'PHC Prata','Times New Roman',serif;
 font-size:clamp(42px,5.2vw,62px);font-weight:400;letter-spacing:-.035em;
-line-height:1.18;color:var(--c-white);margin:0;white-space:nowrap}
+line-height:1.18;color:var(--c-white);margin:0;white-space:normal}
 /* Четыре главных элемента модели — не плашки, а крупные тематические
    иконки с короткими подписями. Они задают структуру всей анкеты. */
 #phc-root .benefits-note{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
@@ -1835,8 +1987,9 @@ width:82px;height:82px;flex:none;color:rgba(255,255,255,.88)}
 line-height:1.35;color:inherit}
 #phc-root .proof-copy>span{display:block}
 #phc-root .proof-item.proof-income{color:var(--c-g-350)}
-#phc-root .start-note-subtitle{max-width:760px;margin:12px auto 0;font-size:15px;
-font-weight:400;line-height:1.5;color:rgba(255,255,255,.72)}
+#phc-root .start-note-subtitle{max-width:760px;margin:12px auto 0;
+font-family:inherit;font-size:clamp(15px,1.55vw,19px);font-weight:400;
+line-height:1.55;letter-spacing:-.015em;color:rgba(255,255,255,.96)}
 /* Первая карточка анкеты глубже заходит на нижнюю кромку баннера:
    между градиентом и «Вашим желаемым доходом» не остаётся пустой полосы. */
 #phc-root #frm{position:relative;z-index:2;margin-top:-72px}
@@ -1856,15 +2009,21 @@ linear-gradient(180deg,#111 0%,#222120 36%,#45423f 68%,#6b6763 100%)}
 }
 
 @media(max-width:760px){
-#phc-root .start-note-title{font-size:clamp(34px,5.7vw,43px)}
+#phc-root .start-note-title{font-size:clamp(34px,5.7vw,43px);line-height:1.2}
 }
 @media(max-width:620px){
+#phc-root .form-section-expenses .section-ending .section-main-title{font-size:clamp(28px,7.6vw,36px)!important;line-height:1.22!important;letter-spacing:-.04em!important}
+#phc-root .form-section-expenses .section-ending .section-subtitle{margin-top:10px;font-size:13.5px;line-height:1.5}
+#phc-root .form-section-time .section-point{min-height:82px;gap:10px;padding:10px 14px;font-size:11.5px;line-height:1.25}
+#phc-root .form-section-time .section-point-icon{width:56px;height:56px}
+#phc-root .form-section-time .section-point-icon svg{width:46px;height:46px}
 #phc-root .benefits-grid{grid-template-columns:1fr;gap:12px}
 #phc-root .benefit{height:auto;min-height:0;padding:20px}
 #phc-root .benefit-title{height:auto;align-items:flex-start;margin-top:18px}
 #phc-root .benefits-tail{margin-top:18px;padding:64px 18px 84px;border-radius:var(--r)}
 #phc-root .start-note{margin:28px 0 0;padding:0}
-#phc-root .start-note-title{font-size:clamp(28px,7.6vw,36px)}
+#phc-root .start-note-title{font-size:clamp(28px,7.6vw,36px);line-height:1.22;letter-spacing:-.04em}
+#phc-root .start-note-subtitle{margin-top:10px;font-size:13.5px;line-height:1.5}
 #phc-root .benefits-note{grid-template-columns:1fr;gap:10px;
 margin:0 auto;padding:0;width:100%;max-width:520px;overflow:visible}
 #phc-root .proof-item{min-height:82px;gap:10px;padding:10px 14px}
@@ -1881,6 +2040,12 @@ margin:0 auto;padding:0;width:100%;max-width:520px;overflow:visible}
 #phc-root .core-inputs{padding-bottom:34px;margin-bottom:28px;border-radius:0 0 20px 20px}
 }
 @media(max-width:420px){
+#phc-root .form-section-expenses .section-ending .section-main-title,
+#phc-root .form-section-reserves .section-ending .section-main-title,
+#phc-root .form-section-profit .section-ending .section-main-title{font-size:clamp(23px,7vw,29px)!important;line-height:1.22!important}
+#phc-root .form-section-expenses .section-ending .section-subtitle,
+#phc-root .form-section-reserves .section-ending .section-subtitle,
+#phc-root .form-section-profit .section-ending .section-subtitle{margin-top:10px;font-size:13.5px;line-height:1.5}
 #phc-root .start-note-title{font-size:clamp(23px,7vw,29px)}
 }
 @media print{#phc-root .benefits{display:none}}
@@ -2220,6 +2385,20 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 100%{transform:translate(var(--dx),var(--dy)) scale(var(--s,1)) rotate(var(--rot,0deg));opacity:0}}
 @media(prefers-reduced-motion:reduce){.thx-искра{display:none}}
 
+
+/* Финальное правило подсказок верхнего и плавающего меню.
+   Положение задаётся скриптом относительно viewport, а не относительно
+   левого края кнопки. */
+#phc-root .tbar .fbi.smart-tip:after,
+#phc-root .trustbar-action.smart-tip:after{
+  left:var(--tip-left,50%);
+  right:auto;
+  transform:var(--tip-transform,translateX(-50%) translateY(-4px));
+}
+#phc-root .tbar .fbi.smart-tip:hover:after,
+#phc-root .trustbar-action.smart-tip:hover:after{
+  transform:var(--tip-hover-transform,translateX(-50%) translateY(0));
+}
 </style>
 <div class="wp">
 
@@ -2228,18 +2407,20 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
      В анкете действовать нечем, поэтому в строке только знак. -->
 <div class="tbar" data-block-id="CALC-B001" data-block-name="Верхняя панель">
 <nav class="tbn">
-<button class="fbi" id="topResetBtn" type="button" data-tip="Вернуть значения по умолчанию" aria-label="Вернуть значения по умолчанию"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3.5 12a8.5 8.5 0 018.5-8.5c3.1 0 5.8 1.7 7.2 4.2" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/><path d="M20.5 3.6v4.4h-4.4" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/><path d="M20.5 12a8.5 8.5 0 01-8.5 8.5c-3.1 0-5.8-1.7-7.2-4.2" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" opacity=".55"/><path d="M3.5 20.4V16h4.4" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" opacity=".55"/></svg></button>
+<button class="fbi calc-action tip-l" id="topCalcBtn" type="button" data-tip="Рассчитать стоимость часа" aria-label="Рассчитать стоимость часа"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M8 7h8M8 11h2M14 11h2M8 15h2M14 15h2M8 18h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+<button class="fbi tip-l" id="topResetBtn" type="button" data-tip="Вернуть значения по умолчанию" aria-label="Вернуть значения по умолчанию"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3.5 12a8.5 8.5 0 018.5-8.5c3.1 0 5.8 1.7 7.2 4.2" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/><path d="M20.5 3.6v4.4h-4.4" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/><path d="M20.5 12a8.5 8.5 0 01-8.5 8.5c-3.1 0-5.8-1.7-7.2-4.2" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" opacity=".55"/><path d="M3.5 20.4V16h4.4" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" opacity=".55"/></svg></button>
 <button class="fbi" id="shareBtn" type="button" data-tip="Поделиться" aria-label="Поделиться">
 <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="18" cy="5" r="2.6" stroke="currentColor" stroke-width="1.8"/><circle cx="6" cy="12" r="2.6" stroke="currentColor" stroke-width="1.8"/><circle cx="18" cy="19" r="2.6" stroke="currentColor" stroke-width="1.8"/><path d="M8.4 10.8l7.2-4.2M8.4 13.2l7.2 4.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
 <a class="fbi fbh" href="#thanks" data-thx="calc-menu" data-tip="Поблагодарить проект" aria-label="Поблагодарить проект">
 <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 00-7.8 0l-1 1-1-1a5.5 5.5 0 00-7.8 7.8l1 1 7.8 7.8 7.8-7.8 1-1a5.5 5.5 0 000-7.8z" fill="none" stroke="currentColor" stroke-width="2"/></svg></a>
 </nav>
-<div class="brand" title="Счётикс — твоя юнит-экономика"><span class="btx"><span class="bt">счётикс</span><span class="bd" data-t="bt_02"><i>т</i><i>в</i><i>о</i><i>я</i><i>&nbsp;</i><i>ю</i><i>н</i><i>и</i><i>т</i><i>-</i><i>э</i><i>к</i><i>о</i><i>н</i><i>о</i><i>м</i><i>и</i><i>к</i><i>а</i></span></span><svg class="bx" viewBox="0 0 32 32" fill="none" aria-hidden="true"><rect x="10.95" y="2.09" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 7.14)" fill="var(--c-gr3)"/><rect x="19.81" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 24.86 16)" fill="var(--c-g-500)"/><rect x="10.95" y="19.81" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 24.86)" fill="var(--c-gr3)"/><rect x="2.09" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 7.14 16)" fill="var(--c-gr3)"/></svg></div>
+<a class="brand brand-link" href="https://schetiks.ru" data-tip="На главную" aria-label="Открыть schetiks.ru"><span class="btx"><span class="bt">счётикс</span><span class="bd" data-t="bt_02"><i>т</i><i>в</i><i>о</i><i>я</i><i>&nbsp;</i><i>ю</i><i>н</i><i>и</i><i>т</i><i>-</i><i>э</i><i>к</i><i>о</i><i>н</i><i>о</i><i>м</i><i>и</i><i>к</i><i>а</i></span></span><svg class="bx" viewBox="0 0 32 32" fill="none" aria-hidden="true"><rect x="10.95" y="2.09" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 7.14)" fill="var(--c-gr3)"/><rect x="19.81" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 24.86 16)" fill="var(--c-g-500)"/><rect x="10.95" y="19.81" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 24.86)" fill="var(--c-gr3)"/><rect x="2.09" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 7.14 16)" fill="var(--c-gr3)"/></svg></a>
 </div>
 
 <div class="trustbar" id="trustBar" role="navigation" aria-label="Быстрые действия" data-block-id="CALC-B002" data-block-name="Плавающая панель">
-<div class="trustbar-brand"><svg class="trustbar-mark" viewBox="0 0 32 32" fill="none" aria-hidden="true"><rect x="10.95" y="2.09" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 7.14)" fill="var(--c-gr3)"/><rect x="19.81" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 24.86 16)" fill="var(--c-g-500)"/><rect x="10.95" y="19.81" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 24.86)" fill="var(--c-gr3)"/><rect x="2.09" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 7.14 16)" fill="var(--c-gr3)"/></svg><span class="trustbar-name">счётикс</span></div>
-<button class="trustbar-action trustbar-reset" id="trustResetBtn" type="button" data-tip="Вернуть значения по умолчанию" aria-label="Вернуть значения по умолчанию"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3.5 12a8.5 8.5 0 018.5-8.5c3.1 0 5.8 1.7 7.2 4.2" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/><path d="M20.5 3.6v4.4h-4.4" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/><path d="M20.5 12a8.5 8.5 0 01-8.5 8.5c-3.1 0-5.8-1.7-7.2-4.2" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" opacity=".55"/><path d="M3.5 20.4V16h4.4" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" opacity=".55"/></svg></button>
+<a class="trustbar-brand lgs-link" href="https://schetiks.ru" data-tip="На главную" aria-label="Открыть schetiks.ru"><svg class="trustbar-mark" viewBox="0 0 32 32" fill="none" aria-hidden="true"><rect x="10.95" y="2.09" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 7.14)" fill="var(--c-gr3)"/><rect x="19.81" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 24.86 16)" fill="var(--c-g-500)"/><rect x="10.95" y="19.81" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 24.86)" fill="var(--c-gr3)"/><rect x="2.09" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 7.14 16)" fill="var(--c-gr3)"/></svg><span class="trustbar-name">счётикс</span></a>
+<button class="trustbar-action calc-action" id="trustCalcBtn" type="button" data-tip="Рассчитать стоимость часа" aria-label="Рассчитать стоимость часа"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M8 7h8M8 11h2M14 11h2M8 15h2M14 15h2M8 18h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+<button class="trustbar-action trustbar-reset tip-l" id="trustResetBtn" type="button" data-tip="Вернуть значения по умолчанию" aria-label="Вернуть значения по умолчанию"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3.5 12a8.5 8.5 0 018.5-8.5c3.1 0 5.8 1.7 7.2 4.2" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/><path d="M20.5 3.6v4.4h-4.4" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/><path d="M20.5 12a8.5 8.5 0 01-8.5 8.5c-3.1 0-5.8-1.7-7.2-4.2" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" opacity=".55"/><path d="M3.5 20.4V16h4.4" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" opacity=".55"/></svg></button>
 <button class="trustbar-action" id="trustShareBtn" type="button" data-tip="Поделиться" aria-label="Поделиться"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="18" cy="5" r="2.6" stroke="currentColor" stroke-width="1.8"/><circle cx="6" cy="12" r="2.6" stroke="currentColor" stroke-width="1.8"/><circle cx="18" cy="19" r="2.6" stroke="currentColor" stroke-width="1.8"/><path d="M8.4 10.8l7.2-4.2M8.4 13.2l7.2 4.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
 <a class="trustbar-action trustbar-thanks" href="#thanks" data-thx="calc-float" data-tip="Поблагодарить проект" aria-label="Поблагодарить проект"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0l-1 1-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1 7.8 7.8 7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8Z" stroke="currentColor" stroke-width="2"/></svg></a>
 </div>
@@ -2442,26 +2623,27 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 </div>
 </div>
 
-<div class="card" id="c_FormClientTime" data-block-id="CALC-B013" data-block-name="Вопрос 07"><div class="bn">07</div>
-<h2>Проектная работа с клиентами <span class="h-unit">(на один проект)</span></h2>
-<p data-t="qd_07" class="hint purpose">Укажите, сколько времени в среднем вы тратите на общение с клиентом и организацию одного уже подтверждённого проекта.</p>
-<p class="client-default-note">Мы замерили время на нескольких реальных проектах, взяли среднее значение и уже внесли его в калькулятор в качестве значения по умолчанию.</p>
+<div class="card" id="c_FormClientTime" data-block-id="CALC-B013" data-block-name="Вопрос 07">
+<h2>Проектная работа с клиентами</h2>
+<p class="hint client-subtitle purpose">Важный параметр, который напрямую участвует в формировании стоимости часа работы фотографа, распределении рабочего времени и построении всей системы ценообразования.</p>
+<div class="q">Сколько времени в среднем вы тратите на общение с клиентом и организацию одного уже подтверждённого проекта?</div>
 <div class="qf focus-field time-field"><input type="number" inputmode="decimal" data-limit-live data-step-live id="client_time" value="1" min="0.5" max="72" step="0.5"><span data-t="un_05" class="un">часа</span></div>
+<div data-t="def_07" class="zapn">Мы уже измерили это время на нескольких реальных проектах, взяли среднее значение и внесли его в калькулятор как значение по умолчанию. Вы можете использовать его или указать собственное.</div>
 <details class="more2 post-details client-details"><summary><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-t="exp_02">Вот что мы заложили как основные этапы работы с клиентом</span></summary><div class="in2 post-in2">
-<div class="post-stages client-stages">
-<div class="post-stage"><div class="post-stage-title"><i>1</i><b>Обсуждение проекта</b></div><ul><li>обсуждение задачи и формирование технического задания;</li><li>подбор и показ референсов;</li><li>обсуждение вариантов реализации съёмки;</li><li>согласование деталей и сроков.</li></ul></div>
-<div class="post-stage"><div class="post-stage-title"><i>2</i><b>Оформление и оплата</b></div><ul><li>подготовка и отправка договора;</li><li>выставление счёта и формирование закрывающих актов;</li><li>контроль поступления оплаты;</li><li>подтверждение оплаты и договорённостей.</li></ul></div>
-<div class="post-stage"><div class="post-stage-title"><i>3</i><b>Сопровождение до и после съёмки</b></div><ul><li>решение возникающих вопросов и изменений;</li><li>согласование правок;</li><li>ответы на дополнительные вопросы.</li></ul></div>
-</div>
+<ol class="stage-list client-stage-list">
+<li><b>Обсуждение проекта</b><ul><li>Обсуждение задачи и формирование технического задания</li><li>Подбор и показ референсов</li><li>Обсуждение вариантов реализации съёмки</li><li>Согласование стоимости и сроков</li></ul></li>
+<li><b>Оформление и оплата</b><ul><li>Подготовка и отправка договора</li><li>Выставление счёта и формирование закрывающих актов</li><li>Контроль поступления оплаты</li><li>Подтверждение оплаты и договорённостей</li></ul></li>
+<li><b>Сопровождение до и после съёмки</b><ul><li>Решение возникающих вопросов и изменений</li><li>Согласование правок</li><li>Ответы на дополнительные вопросы</li></ul></li>
+</ol>
 </div></details>
-<div class="post-exclude client-exclude">Подбор студии, моделей, команды, реквизита и пр. — это уже другая продюсерская работа, которая не была включена нами в базовые задачи фотографа. Если вы выполняете эти задачи самостоятельно, рекомендуем вдвое увеличить время на работу с клиентом или замерить потраченное время хотя бы на 3–5 съёмках и взять среднее значение.</div>
-<label class="exc"><input type="checkbox" data-exc="FormClientTime">Не учитывать в расчёте</label>
+<div class="post-exclude client-time-notice"><p>Учитывайте всё время — от первого сообщения до передачи готового заказа. <b>Рекомендуем замерить время хотя бы на 3–5 съёмках и взять среднее значение.</b></p><p>Подбор студии, моделей, команды, реквизита и пр. — это отдельная продюсерская работа, которая не включена в базовые задачи фотографа. Если вы выполняете эти роли самостоятельно, рекомендуем вдвое увеличить время на работу с клиентом либо замерить реальные затраты хотя бы на 3–5 съёмках и вывести среднее значение.</p></div>
+<div class="card-foot has-exc early-foot"><label class="exc"><input type="checkbox" data-exc="FormClientTime">Не учитывать в расчёте</label><span class="bn">07</span></div>
 </div>
 <div class="equipment-market-note section-context-notice client-context-notice">
-<p class="context-notice-title">Время на работу с клиентом — значительный пласт работы, который заказчик не видит, но который занимает существенную часть вашего рабочего времени. Поэтому его крайне важно учитывать в расчёте.</p>
-<details class="more2"><summary><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Подробнее</span></summary><div class="in2">
-<p>В компании эти задачи закрывают разные специалисты: менеджер по продажам, продюсер и юрист при составлении договоров и даже бухгалтер, когда выставляет счета и закрывающие акты клиентам.</p>
-<p>Но вам, как специалисту, который работает на себя, приходится делать всё это самостоятельно.</p>
+<p class="context-notice-title">Обратите внимание, что чем короче съёмка, тем выше доля административных затрат. Так как подготовка, согласование и оформление документов для трёхчасовой съёмки занимают примерно столько же времени, как и для более короткой.</p>
+<details class="more2 post-details client-context-details"><summary><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Подробнее</span></summary><div class="in2">
+<p class="client-context-lead">Время на работу с клиентом редко учитывается и занимает существенную часть вашего рабочего времени.</p>
+<p>В компании эту работу выполняют разные специалисты: менеджер по продажам, продюсер, юрист при составлении договоров и даже бухгалтер, когда выставляет счета и закрывающие акты клиентам. Поэтому крайне важно учитывать время на работу с клиентом при расчёте стоимости своих услуг.</p>
 </div></details>
 </div>
 
@@ -2487,7 +2669,7 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 </div>
 <div class="equipment-market-note section-context-notice search-context-notice">
 <p class="context-notice-title">Поиск заказов — одна из самых важных и при этом самых недооценённых частей работы специалиста, который работает на себя.</p>
-<details class="more2"><summary><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Подробнее</span></summary><div class="in2">
+<details class="more2 post-details search-context-details"><summary><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Подробнее</span></summary><div class="in2">
 <p>В компании за неё отвечают целые отделы — отдел продаж и отдел маркетинга: SMM-специалисты, контент-менеджеры, копирайтеры, маркетологи, таргетологи, дизайнеры, специалисты по сайтам и руководитель, который определяет стратегию.</p>
 <div class="search-context-highlight">
 <strong>Для вас вся эта нагрузка ложится исключительно на ваши плечи.</strong>
@@ -2500,10 +2682,11 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 
 <div class="card" id="c_FormMgmt" data-block-id="CALC-B040" data-block-name="Вопрос 09"><div class="bn">09</div>
 <h2>Управление делом</h2>
-<p class="search-default-note hint purpose">Время, когда вы работаете как предприниматель: просчитываете риски, выстраиваете стратегию и принимаете решения для развития бизнеса.</p>
-<p class="search-default-note">Даже при работе в одиночку это главная задача — без неё не будет и всего остального.</p>
-<div class="qf focus-field time-field period-field"><div class="qf-input"><input type="number" inputmode="decimal" data-limit-live data-step-live id="mgmt_amt" value="4" min="1" max="20" step="1"><span class="un">часов</span></div><select id="mgmt_per"><option value="day">В день</option><option value="week" selected>В неделю</option><option value="month">В месяц</option></select></div>
-<p data-t="qd_24" class="hint">Укажите, сколько времени вы тратите на управление своим делом: решения, процессы, деньги.</p>
+<p class="hint purpose">Время, когда вы работаете как предприниматель: просчитываете риски, выстраиваете стратегию и принимаете решения для развития бизнеса.</p>
+<div class="q">Сколько времени вы тратите на управление своим делом: решения, процессы, деньги?</div>
+<div class="qf focus-field time-field period-field"><div class="qf-input"><input type="number" inputmode="decimal" data-limit-live data-step-live id="mgmt_amt" value="2" min="1" max="20" step="1"><span class="un">часов</span></div><select id="mgmt_per"><option value="day">В день</option><option value="week" selected>В неделю</option><option value="month">В месяц</option></select></div>
+<div class="zapn">По умолчанию выведено минимальное количество времени, которое необходимо фотографу для управления своим делом.</div>
+<div class="post-exclude"><p>Даже при работе в одиночку это главная задача — без неё не будет и всего остального.</p></div>
 <label class="exc"><input type="checkbox" data-exc="FormMgmt" checked>Не учитывать в расчёте</label>
 
 </div>
@@ -2833,20 +3016,15 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 </div>
 
 <div class="equipment-market-note section-context-notice client-context-notice">
-<p class="context-notice-title">Почему без этого нельзя — Без доли чистой прибыли ваш бизнес финансово «нулевой»</p>
-<p class="context-notice-lead">Если закладывать в стоимость услуг только базовые расходы и зарплату на текущую жизнь, происходит опасная вещь: вы как предприниматель не зарабатываете ничего сверх найма, но берете на себя все колоссальные риски.</p>
-<div class="search-context-highlight hl-box-r">
-<strong class="hl-r">Вы бесплатно несёте ответственность</strong>
-<span>за поиск заказов, общение с налоговой и государством, форс-мажоры с клиентами и поломки техники. В найме за эти риски отвечает работодатель, а здесь — вы, но без какой-либо финансовой компенсации.</span>
-</div>
-<p>Кроме того, без чистой прибыли само ваше дело становится абсолютно уязвимым. У бизнеса нет собственного капитала, он не зарабатывает сам себя и при любой нестабильности начинает зависеть от внешних вливаний или долгов. Доля чистой прибыли — это не «лишние деньги», а обязательный фундамент.</p>
-<p class="context-notice-sub">Именно за счёт неё у вас появляются:</p>
+<p class="context-notice-title">Без доли чистой прибыли ваш бизнес финансово «нулевой»</p>
+<p class="context-notice-lead">Именно за счёт неё у вас появляются возможности:</p>
 <ul class="context-list-frame">
-<li><b>Возврат вложений</b> За счёт этих средств вы полностью компенсируете всё, что вложили в своё дело. Это особенно важно, если ради старта или развития пришлось использовать личные сбережения, что-то продать или взять кредит. Вложения вернутся к вам за тот срок, который вы выберете сами, и с этого момента бизнес станет полностью самоокупаемым.<p>Как только стартовые обязательства будут полностью закрыты, эта сумма станет вашей чистой прибылью. С этого момента вы сможете вынимать эти деньги себе как дополнительные дивиденды или направлять на развитие бизнеса.</p></li>
-<li><b>Развитие и рост</b> За счет этого ресурса вы сможете развивать свое дело: покупать более совершенное оборудование, подключать профессиональный софт для автоматизации процессов, проходить обучающие курсы для повышения чека и даже нанимать первых помощников или подрядчиков.</li>
-<li><b>Дополнительный личный доход</b> Как только инвестиции окупятся, вы можете забирать высвободившиеся деньги себе — полностью или частично — в качестве дополнительных чистых дивидендов на личные нужды.</li>
-
+<li><b>Вернуть всё, что вложили в своё дело.</b><p>Как только стартовые обязательства будут полностью закрыты, вы сможете вынимать эти деньги себе как дополнительные дивиденды или направлять на развитие бизнеса.</p></li>
+<li><b>Развиваться и расти:</b><p>Покупать более совершенное оборудование, подключать профессиональный софт для автоматизации процессов, проходить обучающие курсы для повышения чека и даже нанимать первых помощников или подрядчиков.</p></li>
+<li><b>Увеличить личный доход</b><p>Как только инвестиции окупятся, вы можете забирать высвободившиеся деньги себе — полностью или частично — в качестве дополнительных чистых дивидендов на личные нужды.</p></li>
 </ul>
+<p>Если закладывать в стоимость услуг только базовые расходы и зарплату на текущую жизнь, происходит опасная вещь: вы как предприниматель не зарабатываете ничего сверх найма, но берёте на себя все риски и ответственность за поиск заказов, общение с налоговой и государством, форс-мажоры с клиентами и поломки техники.</p>
+<p>Кроме того, без чистой прибыли само ваше дело становится абсолютно уязвимым. У бизнеса нет собственного капитала, он не зарабатывает сам на себя и при любой нестабильности начинает зависеть от внешних вливаний или долгов.</p>
 </div>
 </div>
 
@@ -2874,10 +3052,10 @@ stroke="#fff" stroke-width="2.4" stroke-linecap="round"/></svg>
 <div class="trh"><svg class="tri" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3.5 2.4 20.5h19.2L12 3.5Z" fill="var(--c-a-400)"/><path d="M12 9.5v5" stroke="var(--c-white)" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="17.5" r="1.15" fill="var(--c-white)"/></svg><span data-t="ct_02">СЧЁТИКС работает в пробном режиме</span></div>
 <p data-t="ct_03">Сейчас СЧЁТИКС доступен бесплатно: мы тестируем сам сервис, его работу и возможности в реальных условиях.</p>
 <p data-t="ct_04"><b>Все расчёты уже работают в полном объёме и построены на реалистичной экономической модели.</b></p>
-<p data-t="ct_05">Если вы заметили неточность или у вас есть идея, как сделать СЧЁТИКС полезнее — напишите нам: <a href="mailto:schetix@ya.ru">schetix@ya.ru</a></p>
+<p data-t="ct_05">Если вы заметили неточность или у вас есть идея, как сделать СЧЁТИКС полезнее — напишите нам: <a href="mailto:my@schetiks.ru">my@schetiks.ru</a></p>
 </div>
 
-<div class="foot" data-block-id="CALC-B035" data-block-name="Подвал"><span class="lgs" title="Счётикс — твоя юнит-экономика"><span class="btx"><span class="bt">счётикс</span><span class="bd" data-t="bt_02"><i>т</i><i>в</i><i>о</i><i>я</i><i>&nbsp;</i><i>ю</i><i>н</i><i>и</i><i>т</i><i>-</i><i>э</i><i>к</i><i>о</i><i>н</i><i>о</i><i>м</i><i>и</i><i>к</i><i>а</i></span></span><svg class="lx" viewBox="0 0 32 32" fill="none" aria-hidden="true"><rect x="10.95" y="2.09" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 7.14)" fill="var(--c-gr3)"/><rect x="19.81" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 24.86 16)" fill="var(--c-g-500)"/><rect x="10.95" y="19.81" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 24.86)" fill="var(--c-gr3)"/><rect x="2.09" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 7.14 16)" fill="var(--c-gr3)"/></svg></span>
+<div class="foot" data-block-id="CALC-B035" data-block-name="Подвал"><a class="lgs lgs-link" href="https://schetiks.ru" data-tip="На главную" aria-label="Открыть schetiks.ru" title="Счётикс — твоя юнит-экономика"><span class="btx"><span class="bt">счётикс</span><span class="bd" data-t="bt_02"><i>т</i><i>в</i><i>о</i><i>я</i><i>&nbsp;</i><i>ю</i><i>н</i><i>и</i><i>т</i><i>-</i><i>э</i><i>к</i><i>о</i><i>н</i><i>о</i><i>м</i><i>и</i><i>к</i><i>а</i></span></span><svg class="lx" viewBox="0 0 32 32" fill="none" aria-hidden="true"><rect x="10.95" y="2.09" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 7.14)" fill="var(--c-gr3)"/><rect x="19.81" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 24.86 16)" fill="var(--c-g-500)"/><rect x="10.95" y="19.81" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 24.86)" fill="var(--c-gr3)"/><rect x="2.09" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 7.14 16)" fill="var(--c-gr3)"/></svg></a>
 <div class="fcop" data-t="rfc_01">ООО «Центр маркетинговых услуг Гет Маркетинг» © 2026</div>
 </div>
 </div>
@@ -4685,6 +4863,30 @@ $('go').onclick=function(){
     },350)}
   },50);
 };
+
+/* Быстрые кнопки расчёта запускают тот же обработчик, что и основная кнопка. */
+['topCalcBtn','trustCalcBtn'].forEach(function(id){
+  var быстрый=$(id);
+  if(быстрый)быстрый.addEventListener('click',function(){ $('go').click(); });
+});
+
+/* Подсказка меню центрируется под кнопкой, но при нехватке места
+   прижимается не к кнопке, а к безопасной границе viewport — 20px. */
+R.querySelectorAll('.tbar [data-tip],.trustbar [data-tip]').forEach(function(к){
+  к.classList.add('smart-tip');
+  к.addEventListener('mouseenter',function(){
+    var r=к.getBoundingClientRect(), text=к.getAttribute('data-tip')||'';
+    var w=Math.max(80,Math.min(320,text.length*7.1+28));
+    var safeEdge=window.innerWidth;
+    var first=document.getElementById('topCalcBtn');
+    if(first)safeEdge=first.getBoundingClientRect().left;
+    var ideal=r.left+r.width/2-w/2, x=Math.max(safeEdge,Math.min(ideal,window.innerWidth-safeEdge-w));
+    var centered=Math.abs(x-ideal)<.5;
+    к.style.setProperty('--tip-left',(x-r.left+(centered?w/2:0))+'px');
+    к.style.setProperty('--tip-transform',centered?'translateX(-50%) translateY(-4px)':'translateY(-4px)');
+    к.style.setProperty('--tip-hover-transform',centered?'translateX(-50%) translateY(0)':'translateY(0)');
+  });
+});
 /* --- Передача результата в отчёт ---
    Отчёт (report.html) читает localStorage['phc_report'].
    Если ключа нет — показывает демо-набор. Сохраняем полный расчёт
@@ -5883,4 +6085,4 @@ opacity:0;pointer-events:none;transition:opacity .16s}
 })();
 </script>
 <!--СПРАВОЧНИК-КОНЕЦ-->
-ЕЦ-->
+
