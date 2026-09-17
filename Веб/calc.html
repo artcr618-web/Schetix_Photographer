@@ -87,6 +87,8 @@ color:var(--ink);line-height:1.5;-webkit-font-smoothing:antialiased;
 background:linear-gradient(180deg,var(--c-surf) 0%,var(--c-bg) 42%,var(--c-bg) 100%);
 padding:32px 16px 80px;display:block}
 #phc-root *{box-sizing:border-box;margin:0;padding:0}
+/* 16.09 (слово владельца + паспорт Адаптивность §2): ниже 320 нет реальных устройств — страница не ужимается, появляется горизонтальная прокрутка. Эталон — report.html #phr-root. */
+#phc-root{min-width:320px}
 #phc-root .wp{max-width:1080px;margin:0 auto}
 #phc-root h1{font-size:34px;font-weight:700;letter-spacing:-.02em;margin-bottom:8px}
 /* Ширина не ограничена — как в отчёте. Раньше max-width:660px рвал строку посередине. */
@@ -114,7 +116,9 @@ transition:opacity .18s}
 #phc-root .card.off>.card-foot,#phc-root .card.taxdim>.card-foot{opacity:1}
 /* Номер блока больше не позиционируется поверх содержимого. До сборки
    нижней строки он скрыт, затем появляется справа в .card-foot. */
-#phc-root .bn{display:none;font-size:13px;font-weight:800;color:rgba(31,41,55,.48);
+/* 16.09 (слово владельца): номер блока — сплошной серый,
+   как заголовок футера, без прозрачности. */
+#phc-root .bn{display:none;font-size:13px;font-weight:800;color:var(--c-gr);
 letter-spacing:.06em;line-height:1;white-space:nowrap;mix-blend-mode:multiply}
 #phc-root .card h2{font-size:20px;font-weight:600;margin-bottom:5px;padding-right:0}
 #phc-root .card h2 .h-unit{font-size:.78em;font-weight:400;color:var(--c-gr);letter-spacing:0}
@@ -136,6 +140,7 @@ color:var(--c-gr2);margin-top:10px;white-space:nowrap;letter-spacing:-.01em}
    ≤1020px, и на десктопе подпись прилипала к полю. */
 #phc-root .income-card>.def{margin-bottom:10px}
 @media(max-width:1020px){#phc-root .def{white-space:normal;font-size:12.5px;letter-spacing:0}}
+
 #phc-root .qr{display:grid;grid-template-columns:1fr 240px;gap:24px;align-items:start;
 padding:19px 0;border-top:1px solid var(--c-bg)}
 #phc-root .qr:first-of-type{border-top:none}
@@ -159,12 +164,14 @@ width:calc(52% + 48px);max-width:none!important}
 }
 #phc-root .more2{margin-top:7px}
 #phc-root .more2.after-field{margin-top:8px}
-#phc-root .more2 summary{display:inline-flex;align-items:center;gap:5px;font-size:12.5px;
+/* 16.09 (слово владельца): эталон заголовков раскрывающихся списков под полем ввода — размер/цвет подзаголовка (13/#6B7280), жирность базовая. */
+#phc-root .more2 summary{display:inline-flex;align-items:center;gap:5px;font-size:13px;font-weight:400;
 color:var(--gr);cursor:pointer;list-style:none;user-select:none;transition:none}
 #phc-root .more2 summary::-webkit-details-marker{display:none}
 #phc-root .more2 summary:hover{color:var(--gr)}
 #phc-root .more2 summary svg{flex:none;transition:transform .18s}
-#phc-root .more2[open] summary svg{transform:rotate(90deg)}
+/* 16.09: закрытая — вниз, открытая — вверх (как в отчёте). */
+#phc-root .more2[open] summary svg{transform:rotate(180deg)}
 /* Содержимое раскрытия — обычный текст без серой карточки. */
 #phc-root .more2 .in2{font-size:12.5px;line-height:1.65;color:var(--c-gr);margin-top:11px;
 padding:0;background:transparent;border-radius:0}
@@ -174,16 +181,22 @@ padding:0;background:transparent;border-radius:0}
 border-radius:50%;background:var(--c-ln)}
 /* Блок 06 · рекомендация по замеру стоит после поля и оформлена
    нейтрально: серая рамка, базовый шрифт, без цветной заливки. */
-#phc-root .post-measure-note{width:100%;margin:16px 0 0;padding:13px 16px;
-border:1.5px solid var(--c-gr3);border-radius:12px;background:transparent;
-box-shadow:none;font-size:13.5px;line-height:1.6;color:var(--c-ink3)}
+/* 16.09: рамка удалена вместе с текстом (см. выше). */
 #phc-root .post-measure-note b{font-weight:700;color:var(--c-ink)}
 #phc-root .post-subtitle{max-width:900px}
 #phc-root .client-default-note,#phc-root .search-default-note{max-width:920px;
 margin-top:10px;padding:2px 0;font-size:13px;font-weight:600;
 line-height:1.55;color:var(--c-ink2)}
+/* 16.09 (слово владельца): строка списка — текст по началу текста комментария, иконка у правого края; после комментария 9 — как от комментария до поля. */
+#phc-root .more2.post-details summary{display:flex;padding-left:14px}
+/* 16.09 (слово владельца): в открытом списке — линия под заголовком (12/10, как разделитель в плашках). */
+#phc-root .more2.post-details[open] summary{border-bottom:1px solid var(--c-ln);padding-bottom:12px}
+#phc-root .more2.post-details[open] .post-in2{margin-top:10px}
+#phc-root .more2.post-details summary svg{order:2;margin-left:auto}
+#phc-root .zapn+.more2.post-details{margin-top:9px}
 #phc-root .more2.post-details{margin-top:14px}
-#phc-root .post-details summary{font-size:14px;font-weight:600;color:var(--c-ink2)}
+/* 16.09: тот же эталон заголовков списков (13/#6B7280/400); вес выше базового. */
+#phc-root .post-details summary{font-size:13px;font-weight:400;color:var(--gr)}
 #phc-root .post-details summary:hover{color:var(--c-ink2)}
 #phc-root .more2 .post-in2{margin-top:14px}
 #phc-root .post-stages{display:grid;grid-template-columns:1fr 1fr;gap:12px}
@@ -213,24 +226,31 @@ line-height:1.6;color:var(--c-ink3)}
 /* 15.09 (слово владельца): блок 06 — двухуровневый список в один столбец:
    заголовки нумеруются (1, 2, …), их пункты — точечками. */
 #phc-root .more2 .stage-list{list-style:decimal;margin:2px 0 0 16px;padding:0 0 0 24px}
-#phc-root .more2 .stage-list>li{position:static;padding:7px 0 5px;font-size:15px;
-line-height:1.6;color:var(--c-ink3)}
+#phc-root .more2 .stage-list>li{position:static;padding:7px 0 5px;font-size:13px;
+line-height:1.6;color:var(--gr)}
 #phc-root .more2 .stage-list>li:before{content:none}
-#phc-root .more2 .stage-list>li::marker{color:var(--c-ink2);font-weight:600}
+#phc-root .more2 .stage-list>li::marker{color:var(--gr);font-weight:700}
 #phc-root .more2 .stage-list>li>b{color:var(--c-ink2);font-weight:700}
 #phc-root .more2 .stage-list>li>ul{list-style:none;margin:6px 0 0 0;padding:0}
-#phc-root .more2 .stage-list>li>ul li{position:relative;padding:3px 0 3px 16px;font-size:14.5px;line-height:1.6;color:var(--c-ink3)}
-#phc-root .more2 .stage-list>li>ul li:before{content:'';position:absolute;left:3px;top:11px;width:4px;height:4px;border-radius:50%;background:var(--c-gr3)}
-#phc-root .more2 .stage-list>li>p{margin:6px 0 0 0;padding:0;font-size:14.5px;line-height:1.6;color:var(--c-ink3)}
-#phc-root .post-exclude,#phc-root .info-notice{position:relative;margin-top:12px;
-padding:13px 16px 13px 48px;border:1.5px solid var(--c-b-400);border-radius:12px;
-background:var(--c-b-50);color:var(--c-ink2);font-size:13px;font-weight:400;line-height:1.6}
+#phc-root .more2 .stage-list>li>ul li{position:relative;padding:0 0 0 16px;font-size:13px;line-height:1.6;color:var(--gr)}
+#phc-root .more2 .stage-list>li>ul li:before{content:'';position:absolute;left:3px;top:8px;width:4px;height:4px;border-radius:50%;background:var(--c-gr3)}
+#phc-root .more2 .stage-list>li>p{margin:6px 0 0 0;padding:0;font-size:13px;line-height:1.6;color:var(--gr)}
+/* 16.09 (слово владельца): заливка уведомлений — градиент 140deg (слева сверху вправо вниз),
+   цвета из блока 04 отчёта (b-50), переход в прозрачность (фон карточки). */
+#phc-root .post-exclude{position:relative;margin-top:12px;
+padding:13px 16px 13px 48px;border:1px solid var(--c-b-400);border-radius:12px;
+background:linear-gradient(140deg,var(--c-b-50),rgba(246,250,254,0));color:var(--c-ink2);font-size:13px;font-weight:400;line-height:1.6}
+/* 16.09 (слово владельца): уведомления — 28 над и 28 под во всех блоках (эталон — блок 01); последнее в блоке — без нижнего (низ держит карточка). */
+#phc-root .info-notice{position:relative;margin:28px 0;
+padding:13px 16px 13px 48px;border:1px solid var(--c-b-400);border-radius:12px;
+background:linear-gradient(140deg,var(--c-b-50),rgba(246,250,254,0));color:var(--c-ink2);font-size:13px;font-weight:400;line-height:1.6}
+#phc-root .info-notice:last-child{margin-bottom:0}
 #phc-root .post-exclude:before,#phc-root .info-notice:before{content:'!';position:absolute;
 left:15px;top:13px;width:21px;height:21px;border-radius:50%;display:flex;
-align-items:center;justify-content:center;background:var(--c-b-500);color:var(--c-white);
+align-items:center;justify-content:center;background:var(--c-b-400);color:var(--c-white);
 font-size:12px;font-weight:700}
 /* 15.09, круг 15: два абзаца в рамке вопроса 01 — штатный зазор 8px. */
-#phc-root .info-notice>p+p{margin-top:8px}
+#phc-root .info-notice>p+p,#phc-root .post-exclude>p+p{margin-top:8px}
 /* Галочка собственного жилья занимает отдельную строку и получает
    симметричные интервалы до верхнего и нижнего полей. */
 #phc-root .workspace-own-home-flag{margin:12px 0}
@@ -251,28 +271,34 @@ transition:border-color .15s,box-shadow .15s}
    между разрядами. В карточках сохраняем место под ₽/мес, ₽/ч и ₽. */
 #phc-root .qf input[data-money]{padding-right:72px;font-variant-numeric:tabular-nums}
 #phc-root table.dt input[data-money]{font-variant-numeric:tabular-nums}
-#phc-root .field-limit-note{display:none;margin:10px 0 0;padding:10px 12px;border-radius:10px;background:var(--c-a-50,#fff2ee);color:var(--c-a-700,#9f2f1b);font-size:13px;line-height:1.45;font-weight:600}
+/* 16.09 (слово владельца): единый стиль предупреждений — как .fnote из 02:
+   жёлтая рамка, жёлтая заливка, жёлтый треугольник (как «Пробный режим»), шрифт как в уведомлении 01. */
+#phc-root .field-limit-note{display:none;position:relative;margin:10px 0 0;padding:13px 16px 13px 48px;border-radius:12px;background:var(--c-a-50);border:1px dashed var(--c-a-300);color:var(--c-ink2);font-size:13px;line-height:1.6;font-weight:400}
+#phc-root .field-limit-note:before{content:'';position:absolute;left:15px;top:13px;width:21px;height:21px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 3.5 2.4 20.5h19.2L12 3.5Z' fill='%23F5B301'/%3E%3Cpath d='M12 9.5v5' stroke='white' stroke-width='2' stroke-linecap='round'/%3E%3Ccircle cx='12' cy='17.5' r='1.15' fill='white'/%3E%3C/svg%3E") center/contain no-repeat}
 #phc-root .field-limit-note.on{display:block}
 #phc-root .qf .un{position:absolute;right:14px;bottom:14px;font-size:14px;color:var(--gr);
 pointer-events:none;font-weight:500}
 #phc-root .qf.hasl .un{bottom:14px}
-#phc-root input:focus,#phc-root select:focus{border-color:var(--g);box-shadow:0 0 0 3px var(--gl)}
+/* 16.09 (слово владельца): подсветка — только поля ввода, списки не подсвечиваем. */
+#phc-root input:focus{border-color:var(--g);box-shadow:0 0 0 3px var(--gl)}
+/* 15.09: у ползунков убираем зелёную обводку с дорожки (мешала при перетаскивании);
+   для клавиатуры оставляем кольцо прямо на кнопке — оно видно только по Tab. */
+#phc-root input[type=range]:focus{border-color:transparent;box-shadow:none;outline:none}
+#phc-root input[type=range]:focus-visible::-webkit-slider-thumb{box-shadow:0 0 0 3px var(--gl)}
+#phc-root input[type=range]:focus-visible::-moz-range-thumb{box-shadow:0 0 0 3px var(--gl)}
 #phc-root input:disabled,#phc-root select:disabled{background:var(--c-bg);color:var(--c-gr2);cursor:not-allowed}
 /* Ноль или пустое значение переводит всю строку в спокойное светло-серое
    состояние. Фон полей остаётся прозрачным и не создаёт отдельной заливки;
    заполненные строки получают мягкую зелёную подсветку. */
-#phc-root input.field-zero:not(:focus):not(:disabled),
-#phc-root select.field-zero:not(:focus):not(:disabled){border-color:var(--c-ln);
+#phc-root input.field-zero:not(:focus):not(:disabled){border-color:var(--c-ln);
 background-color:transparent;color:var(--c-gr2);box-shadow:none}
-#phc-root input.field-filled:not(:focus):not(:disabled),
-#phc-root select.field-filled:not(:focus):not(:disabled){border-color:rgba(169,221,184,.52);
+#phc-root input.field-filled:not(:focus):not(:disabled){border-color:rgba(169,221,184,.52);
 background:rgba(245,251,247,.42);box-shadow:0 0 0 1px rgba(169,221,184,.08)}
 #phc-root .row-zero .q,#phc-root .row-zero .qd,#phc-root .row-zero label,
 #phc-root table.dt tr.row-zero td{color:var(--c-gr2)}
 #phc-root .row-zero .bank-share-label-field{color:var(--c-gr2);border-color:var(--c-ln);
 background:transparent;box-shadow:none}
-#phc-root .row-zero input:not(:focus):not(:disabled),
-#phc-root .row-zero select:not(:focus):not(:disabled){border-color:var(--c-ln)!important;
+#phc-root .row-zero input:not(:focus):not(:disabled){border-color:var(--c-ln)!important;
 background-color:transparent!important;color:var(--c-gr2)!important;box-shadow:none!important}
 #phc-root .row-zero .un{color:var(--c-gr2)!important}
 #phc-root input:disabled+.un{color:var(--c-ln)}
@@ -308,12 +334,6 @@ box-shadow:0 6px 20px rgba(33,160,56,.28)}
 #phc-root .autobtn:has(input:checked):hover{
 background:linear-gradient(135deg,var(--c-g-800),var(--c-g-600))}
 #phc-root .abi{width:22px;height:22px;flex:none;display:block}
-#phc-root .auto-toggle-hint{display:none;margin:8px 0 0;text-align:center;font-size:12.5px;
-line-height:1.45;color:var(--c-gr)}
-#phc-root .tax-auto-lock>.auto-toggle-hint{display:block;color:var(--c-g-700)}
-/* Пояснение видно всегда: и когда подбор включён, и когда выключен —
-   человек должен понимать, что даст кнопка, до того как нажмёт.
-   Снизу воздух, иначе текст липнет к черте следующей строки. */
 #phc-root .autonote{font-size:12.5px;line-height:1.55;color:var(--c-gr);
 margin:12px 0 8px;padding:13px 16px;border:1px solid var(--c-ln);
 border-radius:12px;background:transparent}
@@ -393,6 +413,26 @@ font-size:15px;line-height:1.4;cursor:pointer;white-space:nowrap}
    текст остаётся базового цвета, без галочки. */
 #phc-root .dd-menu li:hover{background:var(--c-g-100)}
 #phc-root .dd-menu li.sel{background:var(--c-g-100)}
+/* 16.09 (слово владельца): подсвечена одна строка — при наведении выделение перескакивает. */
+#phc-root .dd-menu:hover li.sel:not(:hover){background:transparent}
+/* 16.09 (слово владельца): счётчики −/+ — как «Длительность, часов» в прайсе (price.html). */
+#phc-root .stepper{display:flex;align-items:stretch;gap:0;border:1.5px solid var(--c-ln);border-radius:12px;overflow:hidden;background:var(--c-white)}
+#phc-root table.dt .stepper{max-width:150px}
+#phc-root .stepper input{border:none;border-radius:0;text-align:center;padding:10px 4px;width:100%;min-width:0;font:inherit;background:transparent;-moz-appearance:textfield}
+#phc-root .stepper input::-webkit-outer-spin-button,#phc-root .stepper input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+#phc-root .stepper button{flex:none;width:40px;border:none;background:var(--c-bg);color:var(--c-ink2);font-size:20px;font-weight:600;line-height:1;cursor:pointer;font-family:inherit;transition:.15s;user-select:none}
+#phc-root .stepper button:hover{background:var(--c-ln)}
+#phc-root .stepper button:active{background:var(--c-ln2)}
+/* 16.09: счётчики не подсвечиваем — ни фокус, ни состояния. */
+#phc-root .stepper input:focus{border-color:transparent;box-shadow:none;outline:none}
+#phc-root .stepper input.field-filled:not(:focus):not(:disabled),#phc-root .stepper input.field-zero:not(:focus):not(:disabled){border-color:transparent;background:transparent;color:inherit;box-shadow:none}
+/* 16.09: единица счётчика — рядом справа, а не поверх кнопки. */
+#phc-root .qf:has(.stepper){display:flex;align-items:center;gap:8px}
+#phc-root .qf:has(.stepper)>.stepper{flex:1;min-width:0}
+#phc-root .qf:has(.stepper)>.un{position:static;flex:none}
+#phc-root .qf-input:has(.stepper){display:flex;align-items:center;gap:8px}
+#phc-root .qf-input:has(.stepper)>.stepper{flex:1;min-width:0}
+#phc-root .qf-input:has(.stepper)>.un{position:static;flex:none}
 /* Все локальные кнопки сброса — только символ 20×20 px (см. .rst-ic выше). */
 /* Кнопка справа от «+ Добавить позицию»: вместе в одном ряду. */
 #phc-root .add-rst-row{display:flex;align-items:center;gap:8px;margin-top:14px}
@@ -409,13 +449,19 @@ margin-bottom:5px;padding-right:0}
 #phc-root .subhead-rst-row>.rst-ic{flex:none;margin-left:auto}
 /* подсказка при наведении — как у кнопок меню .tbar .fbi:after */
 #phc-root .rst-ic{position:relative}
+/* 16.09 (слово владельца): подсказка у сброса — один в один как «Поблагодарить
+   проект» в меню (.tbar .fbi:after): поля 10/14, шрифт 12.5/600, отступ 9px.
+   Сдвинута вправо к краю: аккуратный отступ 8px от края карточки (мобильный: тоже 8px).
+   z-index 3 — поверх полей ввода. */
 #phc-root .rst-ic:after{content:attr(data-tip);position:absolute;
-top:calc(100% + 8px);left:50%;padding:8px 12px;border-radius:12px;
+top:calc(100% + 9px);right:-20px;padding:10px 14px;border-radius:12px;
 background:var(--c-white);color:var(--c-ink);border:1px solid var(--c-ln);
-font-size:12px;font-weight:600;white-space:nowrap;opacity:0;pointer-events:none;
-transform:translateX(-50%) translateY(-4px);z-index:3;
-transition:opacity .14s,transform .14s;box-shadow:0 8px 28px rgba(16,24,40,.16)}
-#phc-root .rst-ic.on:hover:after{opacity:1;transform:translateX(-50%)}
+font-size:12.5px;font-weight:400;white-space:nowrap;opacity:0;pointer-events:none;
+transform:translateY(-4px);z-index:3;
+transition:opacity .16s,transform .16s;box-shadow:0 8px 28px rgba(16,24,40,.16)}
+/* 16.09: подсказка — только у включенной кнопки (страховка от залипания). */
+@media(max-width:760px){#phc-root .rst-ic:after{right:-12px}}
+#phc-root .rst-ic.on:hover:not(:disabled):after{opacity:1;transform:none}
 
 /* старая текстовая кнопка «Вернуть значения по умолчанию» внизу карточки
    больше не используется в разметке — класс оставлен на случай, если
@@ -434,11 +480,14 @@ transition:opacity .14s,transform .14s;box-shadow:0 8px 28px rgba(16,24,40,.16)}
    Появляется, когда человек что-то выключил или выбрал вариант,
    у которого есть последствия. Раньше таких плашек было три вида —
    .taxoff в рамке, .ownnote простым текстом, .lim со значком. */
-#phc-root .fnote{display:none;font-size:12.5px;line-height:1.55;
-color:var(--c-a-800);background:var(--c-a-50);border:1px solid var(--c-a-200);
-border-radius:12px;padding:12px 16px;margin-top:12px}
+/* 16.09 (слово владельца): .fnote — в единый стиль предупреждений:
+   шрифт как в уведомлении 01, значок — жёлтый треугольник (как «Пробный режим»). */
+#phc-root .fnote{display:none;position:relative;font-size:13px;line-height:1.6;font-weight:400;
+color:var(--c-ink2);background:var(--c-a-50);border:1px dashed var(--c-a-300);
+border-radius:12px;padding:12px 16px 12px 48px;margin-top:12px}
+#phc-root .fnote:before{content:'';position:absolute;left:15px;top:12px;width:21px;height:21px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 3.5 2.4 20.5h19.2L12 3.5Z' fill='%23F5B301'/%3E%3Cpath d='M12 9.5v5' stroke='white' stroke-width='2' stroke-linecap='round'/%3E%3Ccircle cx='12' cy='17.5' r='1.15' fill='white'/%3E%3C/svg%3E") center/contain no-repeat}
 #phc-root .fnote.on{display:block}
-#phc-root .fnote b{font-weight:700}
+#phc-root .fnote b{font-weight:600}
 /* Уведомление «Живу в своём» вынесено из левой колонки вопроса и
    занимает всю доступную ширину верхней части блока 12. */
 #phc-root .ownnote{width:100%}
@@ -459,8 +508,49 @@ color:var(--c-gr2)}
 
 /* Одно состояние: модель не помещается в выбранный режим. Это не ошибка,
    поэтому мягкий жёлтый, а не красный. Красного тут больше нет. */
-#phc-root .lim.warn{background:var(--c-a-50);border:1px solid var(--c-a-200);color:var(--c-a-800)}
-#phc-root .lim b{font-weight:700}
+/* 16.09 (слово владельца): .lim.warn — в единый стиль предупреждений. */
+#phc-root .lim.warn{background:var(--c-a-50);border:1px dashed var(--c-a-300);color:var(--c-ink2);font-size:13px;line-height:1.6;font-weight:400;position:relative;padding:12px 16px 12px 48px}
+#phc-root .lim.warn:before{content:'';position:absolute;left:15px;top:12px;width:21px;height:21px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 3.5 2.4 20.5h19.2L12 3.5Z' fill='%23F5B301'/%3E%3Cpath d='M12 9.5v5' stroke='white' stroke-width='2' stroke-linecap='round'/%3E%3Ccircle cx='12' cy='17.5' r='1.15' fill='white'/%3E%3C/svg%3E") center/contain no-repeat}
+/* 16.09 (слово владельца): важные слова в уведомлениях, предупреждениях
+   и вспомогательных полях — полужирным (600), остальной стиль не меняется. */
+#phc-root .info-notice b,#phc-root .post-exclude b,#phc-root .field-limit-note b,#phc-root .zapn b,#phc-root .qd b,#phc-root .hint b{font-weight:600}
+/* 16.09 (слово владельца): ширина полей блока 02 — как эталон (поле блока 01):
+   правая колонка строк 52%+48 от ширины карточки. На мобильном — как было. */
+#phc-root .card[data-block-id="CALC-B008"] .two-col-row{grid-template-columns:minmax(0,1fr) calc(52% + 48px)}
+/* 16.09 (слово владельца): блок 05 — строки как в блоке 02, поле эталонной ширины. */
+#phc-root .card[data-block-id="CALC-B010"] .two-col-row{grid-template-columns:minmax(0,1fr) calc(52% + 48px)}
+/* 16.09 (слово владельца): отступы между полями — как в блоке 10 (таблица: 5px/линия/5px). */
+#phc-root .card[data-block-id="CALC-B008"] .qr{padding:5px 0} /* 16.09 (слово владельца): блок 05 — отступы как в блоке 02 (эталон блока 10: 5px/линия/5px). */ #phc-root .card[data-block-id="CALC-B010"] .qr{padding:5px 0} #phc-root .card[data-block-id="CALC-B010"] .qr.no-top-line{padding-top:19px} #phc-root .card[data-block-id="CALC-B010"] .zapn{margin-top:4px;margin-bottom:28px} /* 16.09 (слово владельца): блок 05 — каждый пункт (вопрос+поле+комментарий) в рамке. */ #phc-root .card[data-block-id="CALC-B010"] .frame{border:1px solid var(--c-ln);border-radius:12px;background:var(--c-white);padding:12px 16px;margin:0 0 12px}
+ #phc-root .card[data-block-id="CALC-B010"] .frame.first{margin-top:19px} #phc-root .card[data-block-id="CALC-B010"] .frame .qr{padding:5px 0;border-top:0} #phc-root .card[data-block-id="CALC-B010"] .frame .zapn{margin-bottom:0} /* 16.09 (слово владельца): блок 05 — вопрос в одну строку с полем, шрифт вопроса как в блоке 02. */ #phc-root .card[data-block-id="CALC-B010"] .qr{align-items:center} #phc-root .card[data-block-id="CALC-B010"] .q{font-size:13px;font-weight:600;color:var(--c-gr)} /* 16.09 (слово владельца): блок 05 — подзаголовок под заголовком. */ #phc-root .card[data-block-id="CALC-B010"] .subtitle{font-size:13px;font-weight:700;color:var(--c-gr);margin:5px 0 0;line-height:1.5}
+/* 16.09 (слово владельца): расстояние от уведомления до конца блока — 28, как в блоке 01 (там early-foot 28, здесь был общий 22). */
+#phc-root .card[data-block-id="CALC-B018"] .card-foot{margin-top:28px}
+#phc-root .card[data-block-id="CALC-B019"] .card-foot{margin-top:28px}
+/* 16.09: ФОНОВЫЕ БЛОКИ (встроены в тело страницы, без подложки — в отличие от блоков-карточек с подложкой). Эталон — report.html «Вы уже вложили в своё дело»: сверху до заголовка 48, снизу до следующего раздела 48. */
+#phc-root .sect[data-block-id="CALC-B027"]{margin-top:48px}
+/* 16.09 (слово владельца): верх первой строки — общий 19px от подзаголовка, как везде. */
+#phc-root .card[data-block-id="CALC-B008"] .qr.no-top-line{padding-top:19px;grid-template-columns:minmax(0,1fr)}
+/* 16.09 (слово владельца): вопрос — в одну строку со списком; список занимает всё место
+   от вопроса, но не уже эталонного поля блока 01. */
+@media(min-width:761px){#phc-root #npdWho{grid-template-columns:auto minmax(calc(52% + 48px),1fr);gap:24px}}
+#phc-root #npdWho{align-items:center}
+#phc-root #npdWho .q{font-size:13px;font-weight:600;color:var(--c-gr)}
+/* 16.09 (слово владельца): вопрос блока 06 — шрифт вопроса блока 02; над полем: 19 от подзаголовка, 24 до поля (как в мобайле блока 02). */
+#phc-root [data-block-id="CALC-B012"] .q{font-size:13px;font-weight:600;color:var(--c-gr);margin-top:19px;margin-bottom:24px}
+#phc-root [data-block-id="CALC-B012"] .q+.qf{margin-top:0}/* 16.09: поле за вопросом — верх снимаем, 24 даёт вопрос (мобайл блока 02). */
+/* 16.09 (слово владельца): поле->комментарий 9px (5 строки + 4 комментария), комментарий->кнопка 28px, как комментарий->уведомление. */
+#phc-root #npdRateNote{margin-top:4px;margin-bottom:28px}
+@media(max-width:760px){#phc-root .card[data-block-id="CALC-B008"] .two-col-row{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:760px){#phc-root .card[data-block-id="CALC-B010"] .two-col-row{grid-template-columns:minmax(0,1fr)}}
+/* 16.09: на телефоне вопрос о заказчиках — над списком, список во всю ширину. */
+@media(max-width:760px){#phc-root #npdWho{grid-template-columns:minmax(0,1fr)}}
+/* 16.09 (слово владельца): предупреждение галочки — внутри футера первым рядом:
+   под разделительной линией, над строкой с номером. */
+#phc-root .card-foot.has-fnote{flex-wrap:wrap}
+#phc-root .card-foot.has-fnote>.fnote{flex:0 0 100%;margin:0 0 12px}
+/* 16.09: галочка переносится своей шириной (basis auto): иначе flex-basis 0
+   умещает её в первую строку за предупреждением и сжимает в ноль. */
+#phc-root .card-foot.has-fnote>.exc{flex:1 1 auto}
+#phc-root .lim b{font-weight:600}
 /* Полоса внизу экрана: тот же расчёт, что в блоке 2, но человек к моменту
    ввода расходов уже далеко внизу и предупреждение под выбором режима
    не видит. Показывается с 80% лимита и прячется, когда блок 2 на экране. */
@@ -537,7 +627,7 @@ color:var(--c-gr2)}
 #phc-root .zap.on.st-mid .zapst{color:var(--c-b-700)}
 #phc-root .zap.on.st-ok .zapst{color:var(--c-g-700)}
 #phc-root .lvnote{font-size:13px;line-height:1.55;margin-top:13px;
-padding:11px 14px;border-radius:12px;background:var(--c-surf);color:var(--c-ink3)}
+padding:11px 14px;border-radius:12px;color:var(--c-ink3)}
 #phc-root .lvnote b{font-weight:700}
 #phc-root .zap:not(.on) .lvnote{display:none}
 #phc-root .zaprow{display:flex;align-items:center;gap:16px;margin-top:16px;
@@ -581,6 +671,7 @@ min-width:64px;text-align:right;font-variant-numeric:tabular-nums;color:var(--c-
 #phc-root .zap.on.st-bad .zaprow output{color:var(--c-r-700)}
 #phc-root .zap.on.st-warn .zaprow output{color:var(--c-a-600)}
 #phc-root .zap.on.st-mid .zaprow output{color:var(--c-b-500)}
+
 /* Галочка остаётся зелёной при любом значении: она про «учитывать»,
    а не про то, хватает ли резерва. */
 #phc-root .zap .zaph .flag input{accent-color:var(--g)}
@@ -632,7 +723,11 @@ margin-top:22px;padding-top:18px;border-top:1px solid var(--ln)}
 /* В коротких верхних блоках визуальная масса последнего элемента меньше,
    поэтому линию опускаем ещё на 6px — так расстояние выглядит как в 09–10. */
 #phc-root .card-foot.early-foot{margin-top:28px}
-#phc-root .card-foot .exc{flex:1;min-width:0;margin:0;padding:0;border:0}
+/* 16.09 (слово владельца): шрифты футера едины — подпись галочки полужирная,
+   как заголовок футера. */
+#phc-root .card-foot .exc{flex:1;min-width:0;margin:0;padding:0;border:0;font-weight:600}
+/* 16.09 (слово владельца): текст футера — цвет как подпись галочки
+   «Не учитывать блок» в 02, полужирный. */
 #phc-root .card-status{font-size:13px;font-weight:600;line-height:1.4;color:var(--c-gr)}
 #phc-root .card-foot.has-exc .card-status{margin-left:14px}
 #phc-root .card-foot .bn{display:block;flex:none;margin-left:auto;padding-left:18px}
@@ -707,6 +802,56 @@ text-transform:uppercase;color:var(--c-gr)}
 #phc-root .bank-extra-row .qf input{padding-right:52px}
 #phc-root .bank-add-row{margin-top:14px}
 #phc-root .bank-share-question{margin-top:16px;padding:5px 0}
+/* 15.09: вопрос про долю — не поле ввода: рамку долой, текст как вопрос. */
+#phc-root .bank-share-label-field{background:transparent;border-color:transparent;box-shadow:none;padding-left:0}
+/* 15.09: кредиты — помесячно всегда: колонка периода скрыта. */
+#phc-root .loan-table th:nth-child(3){display:none}
+#phc-root #t_Form012 .c3{display:none}
+/* 15.09: подразделы банка разделены линиями. */
+#phc-root .bank-div{border-top:1px solid var(--c-ln);margin:20px 0 4px}
+/* 15.09: плашки-обещания — синие уведомления: фон и рамка как .note.info
+   из отчёта (b-50, b-200), текст как .info-notice из блока 07 кальки
+   (ink2, 13px, обычное начертание); иконки синие (b-500, как значок). */
+#phc-root .proof-item.reserve-proof{position:relative;overflow:hidden;
+min-height:72px;margin:24px 0 12px;padding:0 16px 0 0;
+flex-direction:row;justify-content:flex-start;align-items:center;text-align:left;gap:0;
+border:1px solid var(--c-b-200);border-radius:14px;
+color:var(--c-ink2);box-shadow:none;background:var(--c-b-50)}
+/* ЭКСПЕРИМЕНТ 15.09: левая часть плашки залита серым до краёв (зона 76px,
+   иконка белая 40px). Откат: padding 14px 16px, min-height 0, зона 44px
+   без фона, иконка b-500, svg 32px, у текста без паддингов. */
+#phc-root .proof-item.reserve-proof .proof-check{width:76px;align-self:stretch;flex:none;
+display:flex;align-items:center;justify-content:center;color:#fff;
+background:var(--c-gr);border-radius:13px 0 0 13px;
+border-right:1px solid var(--c-b-200);padding:0;margin:0 14px 0 0}
+#phc-root .proof-item.reserve-proof .proof-check svg{width:40px;height:40px}
+#phc-root .proof-item.reserve-proof .proof-copy{font-size:13px;font-weight:400;
+line-height:1.6;min-height:0;padding:14px 0}
+#phc-root .reserve-proof-row{display:flex;gap:16px;margin:24px 0 12px}
+#phc-root .reserve-proof-row .proof-item.reserve-proof{flex:1;margin:0}
+@media(max-width:700px){#phc-root .reserve-proof-row{flex-direction:column}}
+/* 15.09: спойлер внутри тёмного уведомления — белые цвета вместо светлых родных. */
+#phc-root .section-context-notice .more2 summary{color:rgba(255,255,255,.85)}
+#phc-root .section-context-notice .more2 .in2{color:inherit;font-size:inherit}
+/* 15.09: подзаголовок-назначение — тот же hint, но ярче (чернила,
+   как строки «по умолчанию» в карточках времени). */
+/* 16.09 (слово владельца): подзаголовок-назначение — цвет как .qd
+   («Выберите свой режим…» в 02), размер как уведомление (13), жирный.
+   Зазор до поля — как в 03: родные 4 под hint + 28 у поля (.focus-field). */
+#phc-root .hint.purpose{color:var(--gr);font-size:13px;font-weight:700}
+/* 16.09 (слово владельца): ссылка на пункт справочника — как .refl в отчёте:
+   не выделяется цветом, наследует текст подзаголовка. */
+#phc-root .hint.purpose a{color:inherit;font:inherit;text-decoration:none;opacity:.9}
+#phc-root .hint.purpose a:hover{opacity:1}
+/* 16.09 (слово владельца): комментарий отделён от уведомления крупным
+   родным зазором 28 — как воздух над полем в верхних блоках. */
+#phc-root .income-card>.info-notice{margin-top:28px}
+/* 16.09: уведомление блока 06 — 28 над (эталон уведомлений); последнее в блоке. */
+#phc-root [data-block-id="CALC-B012"] .post-exclude{margin-top:28px}
+/* 16.09 (слово владельца): комментарий — по левому краю, в одну колонку
+   с полем. Зазор до уведомления — как подзаголовок→поле в 03:
+   под комментарием 4 (как под hint), над уведомлением 28. */
+#phc-root .income-card>.zapn{margin-bottom:4px}
 #phc-root .bank-share-label-field{margin:0 6px;padding:10px 11px;border:1.5px solid rgba(169,221,184,.52);
 border-radius:12px;background:rgba(245,251,247,.42);box-shadow:0 0 0 1px rgba(169,221,184,.08);
 font-size:14px;font-weight:500;line-height:1.45;color:var(--c-ink)}
@@ -726,7 +871,9 @@ font-size:14px;font-weight:500;line-height:1.45;color:var(--c-ink)}
 #phc-root .sect .ss{color:var(--gr);font-size:16px;max-width:660px}
 #phc-root .sect .method-copy,#phc-root .sect .section-copy{max-width:900px;line-height:1.65}
 #phc-root .method-copy p+p,#phc-root .section-copy p+p{margin-top:10px}
-#phc-root .method-copy b,#phc-root .section-copy b{font-weight:700;color:var(--c-ink2)}
+/* 16.09: строка текста — 24, как подпись под заголовком страницы. */
+#phc-root [data-block-id="CALC-B027"] .method-copy p+p{line-height:1.5;font-size:13.5px}/* 16.09: размер — как текст в плашках ТК (13.5). */
+#phc-root .method-copy b,#phc-root .section-copy b{font-weight:600;color:var(--c-gr)}
 /* Крупные смысловые группы анкеты оформлены как продолжение экрана
    «Приступим к расчёту»: заголовок на градиенте, белые карточки поверх,
    тёмная подложка видна между ними и выступает после последней. */
@@ -860,12 +1007,14 @@ padding-top:64px;padding-bottom:34px}
 #phc-root .form-section-reserves .section-ending,
 #phc-root .form-section-profit .section-ending{margin-top:28px}
 }
-#phc-root .cnd{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:16px}
+/* 16.09 (слово владельца): между плашками и от плашек до следующего блока — 22, как от баннера до плашек. */
+/* 16.09 (слово владельца): три общих ряда — подпись/заголовок/текст на одном уровне во всех плашках; боковой зазор 16 — эталон плашек главного блока. */
+#phc-root .cnd{display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,auto);gap:0 16px;margin-bottom:22px}
+/* 16.09 (слово владельца): высоты плашек — минимальные, а не фиксированные: при переносе строк плашка растёт, минимальный порог до краёв сохраняется; ряд равняется по максимальной (стретч сетки). */
 #phc-root .cn{border-radius:var(--r);padding:28px 26px;color:var(--c-white);position:relative;
-height:264px;min-height:264px;display:flex;flex-direction:column;justify-content:space-between;
+min-height:264px;display:grid;grid-template-rows:subgrid;grid-row:span 3;
 box-shadow:var(--sh);overflow:hidden}
-#phc-root .cn>div:last-child{display:flex;flex:1;flex-direction:column;justify-content:flex-end;
-width:100%;position:relative;z-index:1}
+/* 16.09: правило flex-обёртки удалено — дети .cn идут тремя общими рядами (см. выше). */
 #phc-root .cn:before,#phc-root .cn:after{content:'';position:absolute;border-radius:50%;
 background:rgba(255,255,255,.10);pointer-events:none}
 #phc-root .cn.a:before{right:-36px;top:-42px;width:142px;height:142px}
@@ -885,7 +1034,9 @@ border:1.5px solid rgba(255,255,255,.48);border-radius:var(--r);color:var(--c-wh
 background:rgba(255,255,255,.035);box-shadow:none}
 #phc-root .equipment-market-note:before{content:'!';position:absolute;z-index:2;left:30px;top:29px;
 width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;
-background:var(--c-r-500);color:var(--c-white);font-size:13px;font-weight:700}
+background:var(--c-white);color:var(--c-ig-3);font-size:13px;font-weight:700}
+/* 15.09 (слово владельца): красный значок — только у «Почему без этого нельзя» (маржа). */
+#phc-root .form-section-profit .equipment-market-note:before{background:var(--c-r-500);color:var(--c-white)}
 #phc-root .equipment-market-note:after{content:'';position:absolute;z-index:0;border-radius:50%;
 background:rgba(255,255,255,.10);pointer-events:none}
 /* Фоновые круги у вынесенных на цветной фон уведомлений не повторяются:
@@ -903,8 +1054,6 @@ box-shadow:112px 126px 0 -46px rgba(255,255,255,.08)}
 #phc-root .section-context-notice>p{position:relative;z-index:1;margin:0;
 font-size:14.5px;line-height:1.65;color:rgba(255,255,255,.84)}
 #phc-root .section-context-notice>p+p{margin-top:15px}
-#phc-root .section-context-notice>ul{margin:15px 0 0;padding-left:22px}
-#phc-root .section-context-notice>ul>li+li{margin-top:10px}
 /* 14.09 (слово владельца): читабельность списка в уведомлениях на цветном
    фоне — заголовок пункта белым и крупнее, пояснение мягче и тише, как
    основной текст уведомления. */
@@ -924,6 +1073,7 @@ padding:18px 20px;border:1px solid rgba(255,255,255,.26);border-radius:14px;list
    продолжение мысли, в тон основному тексту уведомления. */
 #phc-root .section-context-notice>ul.context-list-frame>li p{margin:9px 0 0}
 @media(max-width:700px){#phc-root .section-context-notice>ul.context-list-frame{padding:14px 15px}}
+
 #phc-root .section-context-notice>p.context-notice-title{padding-bottom:17px;
 border-bottom:1px solid rgba(255,255,255,.30);font-size:clamp(25px,3vw,32px);
 font-weight:700;line-height:1.24;letter-spacing:-.025em;color:var(--c-white)}
@@ -940,7 +1090,7 @@ margin:18px 0;padding:16px 18px;border:1px solid rgba(255,255,255,.26);
 border-radius:14px;background:rgba(255,255,255,.10);color:var(--c-white)}
 #phc-root .search-context-highlight strong{font-size:15.5px;line-height:1.5;font-weight:700}
 /* 14.09 (слово владельца): заголовок рамки — в цвет иконки уведомления. */
-#phc-root .search-context-highlight strong.hl-r{color:var(--c-r-500)}
+#phc-root .search-context-highlight strong.hl-r{color:rgba(255,255,255,.90)}
 /* 14.09 (слово владельца): рамка в красной гамме иконки уведомления —
    красная обводка со светлой подложкой; текст остаётся белым. */
 #phc-root .search-context-highlight.hl-box-r{border:1px solid rgba(239,68,68,.55);
@@ -953,39 +1103,56 @@ color:var(--c-white)}
 #phc-root .equipment-market-note:before{left:20px;top:23px;width:22px;height:22px}
 #phc-root .section-context-notice>p.context-notice-title{font-size:24px}
 #phc-root .search-context-highlight{padding:14px 15px}}
-#phc-root .cn .tp{height:34px;flex:none;font-size:12px;font-weight:600;
+#phc-root .cn .tp{min-height:34px;flex:none;font-size:12px;font-weight:600;
 letter-spacing:.07em;text-transform:uppercase;line-height:1.4;
 opacity:.85;position:relative;z-index:1}
-#phc-root .cn .bg{display:flex;align-items:flex-end;flex:none;width:100%;height:96px;
+#phc-root .cn .bg{display:flex;align-items:flex-end;flex:none;width:100%;min-height:96px;
 font-size:32px;font-weight:700;letter-spacing:-.02em;line-height:1.15;
 margin:10px 0 0;padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,.28);
 position:relative;z-index:1;box-sizing:border-box}
-#phc-root .cn .sm{display:flex;align-items:flex-start;height:68px;min-height:68px;
+#phc-root .cn .sm{display:flex;align-items:flex-start;min-height:68px;
 padding-top:10px;box-sizing:border-box;font-size:13.5px;opacity:.92;
 line-height:1.45;position:relative;z-index:1}
 /* Белая карточка с риторическим вопросом. Цветом выделена только
    юридическая справка внутри — это информация, а не предупреждение. */
-#phc-root .workmore-note{margin:0 0 30px;padding:24px 28px;
+#phc-root .workmore-note{margin:0 0 48px;/* 16.09: 48 до следующего раздела (низ фонового блока); комментарий внутри. */padding:26px 28px;/* 16.09: как карточка блока 01 (26/28); низ 26 + 4 комментария = 30 ≈ верху 31. */
 border:0;border-radius:var(--r);background:var(--c-white);box-shadow:var(--sh);
 color:var(--c-ink2);font-family:inherit;font-size:14px;line-height:1.6;text-align:left}
 #phc-root .workmore-note p{margin:0;font-size:inherit;line-height:inherit}
-#phc-root .workmore-note p+p{margin-top:7px}
-#phc-root .workmore-note b{font-weight:700;color:var(--c-ink)}
+/* 16.09: зазор заголовок→подзаголовок живёт на заголовке (вниз 5), как в блоке 01. */
+#phc-root .workmore-note b{font-weight:600;color:var(--c-gr)}
 #phc-root .workmore-q{font-size:20px!important;font-weight:600;color:var(--c-ink)}
-#phc-root .workmore-law{position:relative;margin-top:16px;padding:13px 16px 13px 48px;
-border:1.5px solid var(--c-b-400);border-radius:12px;background:var(--c-b-50);
-color:var(--c-ink2)}
+/* 16.09: заголовок — как h2 блока 01 (строка 30, вниз 5); вес выше сброса p. */
+#phc-root .workmore-note .workmore-q{line-height:30px;margin-bottom:5px}
+/* 16.09 (слово владельца): подзаголовок на фоне страницы (блок «Как мы считаем») —
+   отдельный класс: шрифт как «Можно ли работать больше», цвет подзаголовка. */
+#phc-root .page-subtitle{font-size:16px;font-weight:700;color:var(--gr)}/* 16.09: размер 16 — как текст под ним; цвет и жирность — как подзаголовок (700/#6B7280). */
+/* 16.09: lead-абзац «Конечно…» — размером с текст «Поэтому…». */
+#phc-root .workmore-note .workmore-lead{font-size:13.5px;font-weight:700;color:var(--gr);line-height:1.5;margin-bottom:4px}/* 16.09: подзаголовок — как подпись блока 01 (700, строка 1.5, вниз 4); размер 13.5 — как текст Философии. */
+/* 16.09 (слово владельца): уведомление в карточке «Можно ли работать больше» — по эталону уведомления. */
+#phc-root .workmore-law{position:relative;margin-top:28px;padding:13px 16px 13px 48px;
+border:1px solid var(--c-b-400);border-radius:12px;background:linear-gradient(140deg,var(--c-b-50),rgba(246,250,254,0));
+color:var(--c-ink2);font-size:13px;line-height:1.6}
 #phc-root .workmore-law:before{content:'!';position:absolute;left:15px;top:13px;
 width:21px;height:21px;border-radius:50%;display:flex;align-items:center;justify-content:center;
-background:var(--c-b-500);color:var(--c-white);font-size:12px;font-weight:700}
-#phc-root .workmore-law b{color:var(--c-ink);font-weight:700}
+background:var(--c-b-400);color:var(--c-white);font-size:12px;font-weight:700}
+#phc-root .workmore-law b{color:var(--c-ink2);font-weight:600}
+/* 16.09 (слово владельца): важный комментарий — текст как обычный комментарий, вместо черты — флажок-стрелка на всю высоту комментария с красным градиентом; пенёк 70%, стрелка 30%; выделения красным r-550. */
+#phc-root .zapn.important{position:relative;font-size:12.5px;color:var(--c-gr2);border-left:0;padding-left:21px}
+#phc-root .zapn.important:before{content:'';position:absolute;left:0;top:0;bottom:0;width:13px;background:linear-gradient(140deg,var(--c-r-400),var(--c-r-550));clip-path:polygon(0 0,70% 0,100% 50%,70% 100%,0 100%)}
+#phc-root .zapn.important b{font-weight:600;color:var(--c-r-550)}
+/* 16.09: рамка комментария под белым блоком: 48 до следующего раздела (низ фонового блока); у комментария внутри свои отступы сняты. */
+/* 16.09: комментарий вернулся в белый блок без рамки (правила рамки удалены); под уведомлением 28 — эталон блока 01. */
+/* 16.09 (слово владельца): комментарий под уведомлением — 9 (как комментарий под объектом в блоке 01). */
+#phc-root .workmore-note .zapn{margin-top:9px;margin-bottom:4px;font-size:12.5px;color:var(--c-gr2)}
+
 #phc-root .info{background:var(--c-white);border-radius:var(--r);padding:24px 28px;margin-bottom:16px;
 box-shadow:var(--sh);position:relative}
 #phc-root .info p{font-size:14.5px;color:var(--c-ink2);margin-bottom:9px}
 #phc-root .info p:last-child{margin-bottom:0}
 #phc-root .info b{color:var(--ink)}
-@media(max-width:760px){#phc-root .cnd{grid-template-columns:1fr}
-#phc-root .cn{height:auto;min-height:244px;padding:22px}#phc-root .cn .bg{font-size:32px}
+@media(max-width:760px){#phc-root .cnd{grid-template-columns:1fr;grid-template-rows:none;row-gap:12px}
+#phc-root .cn{height:auto;min-height:244px;padding:22px;display:flex;flex-direction:column}#phc-root .cn .sm{margin-top:auto}#phc-root .cn .bg{font-size:32px}
 #phc-root .sect h2{font-size:26px}}
 @media(max-width:760px){#phc-root .qr{grid-template-columns:1fr;gap:12px;padding:16px 0}
 #phc-root h1{font-size:26px}#phc-root .card{padding:20px}}
@@ -1042,7 +1209,7 @@ box-shadow:var(--sh);transition:background .18s,color .18s,border-color .18s,tra
 #phc-root .save-action:active{transform:translateY(1px)}
 #phc-root .save-action:after{content:attr(data-tip);position:absolute;top:calc(100% + 9px);
 left:50%;padding:8px 11px;border-radius:12px;background:var(--c-white);color:var(--c-ink);
-border:1px solid var(--c-ln);font-size:12px;font-weight:600;white-space:nowrap;opacity:0;
+border:1px solid var(--c-ln);font-size:12px;font-weight:400;white-space:nowrap;opacity:0;
 pointer-events:none;transform:translateX(-50%) translateY(-4px);box-shadow:0 8px 28px rgba(16,24,40,.16)}
 #phc-root .save-action:hover:after{opacity:1;transform:translateX(-50%)}
 /* Анимация расчёта. Слой во весь экран, карточка ровно по центру:
@@ -1385,7 +1552,7 @@ transition:background .18s,color .18s,transform .12s}
 #phc-root .tbar .fbi:after{content:attr(data-tip);position:absolute;
 top:calc(100% + 9px);left:50%;padding:10px 14px;border-radius:12px;
 background:var(--c-white);color:var(--c-ink);border:1px solid var(--c-ln);
-font-size:12.5px;font-weight:600;white-space:nowrap;opacity:0;pointer-events:none;
+font-size:12.5px;font-weight:400;white-space:nowrap;opacity:0;pointer-events:none;
 transform:translateX(-50%) translateY(-4px);
 transition:opacity .16s,transform .16s;box-shadow:0 8px 28px rgba(16,24,40,.16)}
 #phc-root .tbar .fbi:hover:after{opacity:1;transform:translateX(-50%)}
@@ -1487,11 +1654,21 @@ transition:background .18s,color .18s,transform .12s}
    только анкеты: в отчёте и прайсе кнопки сброса нет. */
 #phc-root .trustbar-reset.ask,
 #phc-root .tbar .fbi.ask{color:var(--c-r-700);background:var(--c-r-50)}
+/* 16.09 (слово владельца): подсказки кнопок сброса прижаты к левому краю кнопки — обе кнопки крайние слева в своих меню, центрированная подсказка вылезала за край страницы. */
+#phc-root .tbar #topResetBtn:after{left:0;transform:translateY(-4px)}
+#phc-root .tbar #topResetBtn:hover:after{transform:none}
+#phc-root #trustResetBtn:after{left:0;transform:translateY(-4px)}
+#phc-root #trustResetBtn:hover:after{transform:none}
+/* 16.09 (слово владельца): кнопки общего сброса зеленеют, когда в анкете есть изменения (как иконки отката блоков); красное подтверждение важнее зелени. */
+#phc-root .tbar .fbi.on{color:var(--c-g-500)}
+#phc-root .trustbar-reset.on{color:var(--c-g-500)}
+#phc-root .tbar .fbi.on.ask{color:var(--c-r-700);background:var(--c-r-50)}
+#phc-root .trustbar-reset.on.ask{color:var(--c-r-700);background:var(--c-r-50)}
 /* подсказка — как у кнопок верхнего меню */
 #phc-root .trustbar-action:after{content:attr(data-tip);position:absolute;
 top:calc(100% + 9px);left:50%;padding:10px 14px;border-radius:12px;
 background:var(--c-white);color:var(--c-ink);border:1px solid var(--c-ln);
-font-size:12.5px;font-weight:600;white-space:nowrap;opacity:0;pointer-events:none;
+font-size:12.5px;font-weight:400;white-space:nowrap;opacity:0;pointer-events:none;
 transform:translateX(-50%) translateY(-4px);
 transition:opacity .16s,transform .16s;box-shadow:0 8px 28px rgba(16,24,40,.16)}
 #phc-root .trustbar-action:hover:after{opacity:1;transform:translateX(-50%)}
@@ -1564,12 +1741,16 @@ letter-spacing:-.035em;text-transform:uppercase}
 #phc-root .hero-deck{margin-top:clamp(25px,2.55vw,34px);
 font-family:inherit;font-size:clamp(15px,1.55vw,19px);
 font-weight:400;line-height:1.55;letter-spacing:-.015em;color:rgba(255,255,255,.96)}
+/* 16.09 (слово владельца): подзаголовок обложки Времени — как подзаголовок главного баннера (выравнивание и регистр — свои). */
+#phc-root .form-section-time .section-ending .section-subtitle{margin-top:clamp(25px,2.55vw,34px);font-family:inherit;font-size:clamp(15px,1.55vw,19px);font-weight:400;line-height:1.55;letter-spacing:-.015em;color:rgba(255,255,255,.96)}
 @media(max-width:760px){
 #phc-root .hero-cover{aspect-ratio:16/9;margin-bottom:20px}
 #phc-root .hero-cover img{object-position:70% 25%}
 #phc-root .hero-copy{top:10.5%;left:5%;width:62%}
 #phc-root .hero-title{font-size:clamp(34px,5.7vw,43px);line-height:1.2}
+#phc-root .form-section-time .section-ending .section-main-title{font-size:clamp(34px,5.7vw,43px)!important;line-height:1.2!important}
 #phc-root .hero-deck{margin-top:22px;font-size:clamp(13px,2.15vw,16px)}
+#phc-root .form-section-time .section-ending .section-subtitle{margin-top:22px;font-size:clamp(13px,2.15vw,16px)}
 }
 @media(max-width:620px){
 #phc-root .hero-cover{aspect-ratio:4/3;margin-bottom:18px}
@@ -1577,12 +1758,16 @@ font-weight:400;line-height:1.55;letter-spacing:-.015em;color:rgba(255,255,255,.
 #phc-root .hero-cover:after{background:linear-gradient(90deg,rgba(0,0,0,.28) 0%,rgba(0,0,0,.12) 58%,rgba(0,0,0,0) 88%)}
 #phc-root .hero-copy{top:9.5%;left:5%;width:76%}
 #phc-root .hero-title{font-size:clamp(28px,7.6vw,36px);line-height:1.22;letter-spacing:-.04em}
+#phc-root .form-section-time .section-ending .section-main-title{font-size:clamp(28px,7.6vw,36px)!important;line-height:1.22!important;letter-spacing:-.04em!important}
 #phc-root .hero-deck{margin-top:20px;font-size:clamp(12.5px,3vw,14px);line-height:1.5}
+#phc-root .form-section-time .section-ending .section-subtitle{margin-top:20px;font-size:clamp(12.5px,3vw,14px);line-height:1.5}
 }
 @media(max-width:420px){
 #phc-root .hero-copy{top:8.5%;left:5.5%;width:84%}
 #phc-root .hero-title{font-size:clamp(25px,7.5vw,31px)}
+#phc-root .form-section-time .section-ending .section-main-title{font-size:clamp(25px,7.5vw,31px)!important}
 #phc-root .hero-deck{margin-top:17px;font-size:12.5px}
+#phc-root .form-section-time .section-ending .section-subtitle{margin-top:17px;font-size:12.5px}
 }
 @media print{#phc-root .hero-cover{display:none}}
 /* ---------- три результата калькулятора под hero ----------
@@ -2118,22 +2303,20 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 
 <div class="core-inputs" aria-label="Основные данные для расчёта" data-block-id="CALC-B006" data-block-name="Основные данные">
 <div class="card income-card" data-block-id="CALC-B007" data-block-name="Вопрос 01"><div class="bn">01</div>
-<h2 data-t="h2_01">Ваш желаемый доход</h2>
-<p data-t="sub_01" class="hint">Укажите, сколько вы хотите получать на руки каждый месяц</p>
-<p data-t="def_01" class="def">По умолчанию выведена среднемесячная номинальная начисленная заработная плата работников организаций по&nbsp;Российской Федерации по&nbsp;состоянию на&nbsp;июль 2026&nbsp;г.</p>
-<div class="qf half-single-field"><input type="text" inputmode="numeric" data-money data-integer data-limit-live id="income_month" value="110216" min="10000" max="3000000" step="100"><span data-t="un_01" class="un">₽/мес</span></div>
+<h2 data-t="h2_01">Ваш желаемый доход в месяц</h2>
+<p class="hint purpose">Основной параметр, на основании которого рассчитывается стоимость съёмочного часа и стоимость ваших услуг в целом. Аналог ежемесячной заработной платы «на руки». Формирует <a href="report.html#спрдет">ФОТ</a>.</p>
+<div class="qf focus-field half-single-field"><input type="text" inputmode="numeric" data-money data-integer data-limit-live id="income_month" value="110216" min="10000" max="3000000" step="100"><span data-t="un_01" class="un">₽/мес</span></div>
+<div data-t="def_01" class="zapn">По умолчанию выведена среднемесячная номинальная начисленная заработная плата работников организаций по&nbsp;Российской Федерации по&nbsp;состоянию на&nbsp;июль 2026&nbsp;г.</div>
 <div class="info-notice">
-<p data-t="incnote_01">Укажите чистый доход, необходимый исключительно для вашего комфортного уровня жизни и потребностей семьи (ваш аналог ежемесячной заработной платы как фотографа «на руки»).</p>
-<p data-t="incnote_02">Не включайте сюда расходы на ведение бизнеса — аренду, оборудование, софт, рекламу и прочие операционные издержки. Все затраты на деятельность будут рассчитаны отдельно в следующих разделах.</p>
+<p data-t="incnote_01">Укажите доход, необходимый для вашего комфортного уровня жизни и потребностей семьи.</p>
+<p data-t="incnote_02"><b>Не включайте сюда</b> расходы на ведение бизнеса — аренду, оборудование, софт, рекламу и прочие операционные издержки. Все затраты на деятельность будут рассчитаны отдельно в следующих разделах.</p>
 </div>
 </div>
 
 <div class="card" data-block-id="CALC-B008" data-block-name="Вопрос 02"><div class="bn">02</div>
-<h2 data-t="h2_02">Ваш налоговый режим</h2>
-<div class="qr no-top-line two-col-row"><div>
-<div data-t="q_02" class="q">На каком режиме налогообложения вы работаете?</div>
-<div data-t="qd_02" class="qd">Выберите свой режим налогообложения или воспользуйтесь автоматическим подбором.</div>
-</div><div class="qf"><select id="regime">
+<h2 data-t="h2_02">Ваш режим налогообложения</h2>
+<p data-t="qd_02" class="hint purpose">Выберите свой режим налогообложения или воспользуйтесь автоматическим подбором.</p>
+<div class="qr no-top-line two-col-row"><div class="qf"><select id="regime">
 <option value="npd" selected>Самозанятый (НПД)</option>
 <option value="usn6">ИП, УСН «Доходы» — 6%</option>
 <option value="usn15">ИП, УСН «Доходы минус расходы» — 15%</option>
@@ -2141,11 +2324,12 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 <option value="ausn20">ИП, АУСН «Доходы минус расходы» — 20%</option></select></div></div>
 <div class="qr two-col-row" id="npdWho" data-branch-id="CALC-B008-S01" data-branch-name="Заказчики НПД"><div>
 <div data-t="q_02b" class="q">С кем вы чаще работаете?</div>
-<div data-t="qd_02b" class="qd">Если работаете и с частными лицами, и с компаниями — НПД посчитаем по усреднённой ставке 5%.</div>
 </div><div class="qf"><select id="npd_who">
-<option value="mix" selected>И с частными лицами, и с компаниями</option>
+<option value="mix" selected>С компаниями и частными лицами</option>
 <option value="phys">Только с частными лицами</option>
 <option value="jur">Только с компаниями и ИП</option></select></div></div>
+<!-- 16.09 (слово владельца): здесь не уведомление, а комментарий. -->
+<div class="zapn" id="npdRateNote" data-t="qd_02b">Если Вы работаете как с частными лицами так и с компаниями НПД будет расчитываться по усреднённой ставке 5%.</div>
 <label class="autobtn" id="autoBox">
 <input type="checkbox" id="tax_auto">
 <svg class="abi" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -2153,65 +2337,74 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 <circle cx="18.6" cy="17.4" r="1.9" fill="currentColor" opacity=".55"/>
 <circle cx="5.6" cy="4.6" r="1.3" fill="currentColor" opacity=".4"/></svg>
 <span>Подбирать режим автоматически</span></label>
-<p class="auto-toggle-hint">Нажмите повторно, чтобы отключить автоматический подбор.</p>
-<div class="autonote" id="taxAutoNote">
-<p>Подберём оптимальный режим налогообложения с&nbsp;учётом ставки, страховых взносов и&nbsp;лимитов по&nbsp;выручке.</p>
-<p>Сравним все доступные режимы в&nbsp;итоговом отчёте, чтобы вы&nbsp;смогли убедиться, что выбрали подходящий.</p>
-</div>
+
 <div class="lim" id="regLim"></div>
-<label class="exc"><input type="checkbox" id="tax_off">Не учитывать этот блок в расчёте</label>
+<label class="exc"><input type="checkbox" id="tax_off">Не учитывать в расчёте</label>
 <div class="fnote" id="taxOffNote">Работая без оформления, вы рискуете получить доначисления и штрафы при проверке и фактически снижаете стоимость работы для заказчика за свой счёт.</div>
 </div>
 
-<div class="card" data-block-id="CALC-B009" data-block-name="Вопрос 03"><div class="bn">03</div>
-<h2 data-t="h2_03t">Ваша текущая ставка</h2>
-<p data-t="hint_00t" class="hint">Увидите, сколько вы зарабатываете сейчас, и сравните с желаемым доходом.</p>
-<div class="qf focus-field half-single-field"><input type="text" inputmode="numeric" data-money data-integer data-limit-live id="current_rate" value="6000" min="0" max="1000000" step="100"><span data-t="un_02" class="un">₽/ч</span></div>
+<div class="card" data-block-id="CALC-B011" data-block-name="Вопрос 03"><div class="bn">03</div>
+<h2>Минимальный заказ</h2>
+<p data-t="qd_04" class="hint purpose">Укажите минимальное количество съёмочных часов, ради которых вы готовы выезжать на заказ.</p>
+<div class="qf focus-field time-field"><input type="number" inputmode="decimal" data-limit-live data-step-live id="shoot_manual" value="1" min="0.5" max="72" step="0.5"><span data-t="un_03" class="un">часов</span></div>
+<div class="zapn">Важный показатель, который определяет вашу базовую стоимость часа и участвует в формировании скидок за объём.</div>
 </div>
 
-<div class="card" data-block-id="CALC-B010" data-block-name="Вопрос 04"><div class="bn">04</div>
-<h2>Готовых кадров за 1 час</h2>
-<p data-t="qd_04b" class="hint">Укажите, сколько готовых кадров в среднем вы отдаёте за один час съёмки, после отбора и цветокоррекции.</p>
-<div class="qf focus-field half-single-field"><input type="number" inputmode="numeric" data-integer data-limit-live id="frames_out" value="80" min="1" max="1000" step="10"><span data-t="un_03b" class="un">кадров/час</span></div>
-<div class="разделитель"></div>
-<div class="qr two-col-row"><div>
-<div class="q">Сколько срабатываний затвора приходится обычно на один ваш час съёмки?</div>
+<div class="card" data-block-id="CALC-B009" data-block-name="Вопрос 04"><div class="bn">04</div>
+<h2 data-t="h2_03t">Ваша текущая ставка</h2>
+<p data-t="hint_00t" class="hint purpose">Чтобы объективно сравнить текущий заработок с желаемым при одинаковой загрузке.</p>
+<div class="qf focus-field half-single-field"><input type="text" inputmode="numeric" data-money data-integer data-limit-live id="current_rate" value="6000" min="0" max="1000000" step="100"><span data-t="un_02" class="un">₽/час</span></div>
+<div class="zapn">Указывайте  базовую стоимость часа без учёта скидок за объём с учетом минимального порога выезда</div>
+</div>
+
+<div class="card" data-block-id="CALC-B010" data-block-name="Вопрос 05"><div class="bn">05</div>
+<h2>Ресурс съёмки</h2>
+<div class="subtitle">Эти параметры используются для финансового расчёта услуг и прогнозирования износа оборудования.</div>
+<div class="frame first"><div class="qr no-top-line two-col-row"><div>
+<div class="q">Готовых кадров за один час</div>
+</div><div class="qf"><input type="number" inputmode="numeric" data-integer data-limit-live id="frames_out" value="80" min="1" max="1000" step="10"><span data-t="un_03b" class="un">кадров/час</span></div></div>
+<div class="zapn" data-t="qd_04b">Укажите, сколько готовых кадров в среднем вы отдаёте за один час съёмки, после отбора и цветокоррекции.</div>
+</div>
+<div class="frame"><div class="qr two-col-row"><div>
+<div class="q">Срабатываний затвора/час</div>
 </div><div class="qf"><input type="number" inputmode="numeric" data-integer data-limit-live id="shutter_per_hour" value="350" min="1" max="1000" step="10"><span class="un">кадров/час</span></div></div>
-<div class="qr two-col-row"><div>
+<div class="zapn">Укажите, сколько срабатываний затвора приходится обычно на один час вашей съёмки?</div>
+</div>
+<div class="frame"><div class="qr two-col-row"><div>
 <div class="q">Ресурс затвора вашей камеры</div>
-<div class="qd">Заявленное производителем количество срабатываний затвора до вероятного износа или поломки.</div>
 </div><div class="qf"><input type="number" inputmode="numeric" data-integer data-limit-live id="shutter_life" value="300000" min="10000" max="1000000" step="10000"><span class="un">срабатываний</span></div></div>
+<div class="zapn">Заявленное производителем количество срабатываний затвора до вероятного износа или поломки.</div>
+</div>
 </div>
 
 </div>
 
 <div class="sect" data-block-id="CALC-B027" data-block-name="Как мы считаем">
-<h2 data-t="h2_03">Как мы считаем:</h2>
+<h2 data-t="h2_03">Философия расчёта:</h2>
 <div class="ss method-copy">
-<p><b>Работа на себя должна делать вашу жизнь лучше, а не превращать её в бесконечную работу.</b></p>
-<p>Поэтому в расчётах Счётикс мы ориентируемся на нормы трудового законодательства РФ и производственный календарь — <b>чтобы у вас оставались силы на творчество, развитие и жизнь вне работы.</b></p>
+<p class="page-subtitle">Работа на себя должна делать вашу жизнь лучше, а не превращать её в бесконечную работу.</p>
+<p>Расчет выстраивается на принципах трудового законодательства РФ, чтобы вы могли обеспечить себе условия труда не хуже чем в найме и у вас оставались силы на творчество, развитие и жизнь вне работы.</p>
 </div></div>
 
 <div class="cnd" data-block-id="CALC-B028" data-block-name="Условия труда по ТК РФ">
 <div class="cn a"><div data-t="tp_01" class="tp">Человеческие условия</div>
-<div><div class="bg"><span>Условия труда<br>по ТК РФ</span></div>
-<div data-t="sm_01" class="sm">Официальные нормы труда и отдыха, установленные государством.</div></div></div>
+<div class="bg"><span>Условия труда<br>по ТК РФ</span></div>
+<div data-t="sm_01" class="sm">Официальные нормы труда и отдыха, установленные государством.</div></div>
 <div class="cn b"><div data-t="tp_02" class="tp">Право на отдых</div>
-<div><div class="bg"><span>Отпуск<br>28 дней</span></div>
-<div data-t="sm_02" class="sm">И один больничный — чтобы спокойно восстановиться без страха потерять доход.</div></div></div>
+<div class="bg"><span>Отпуск<br>28 дней</span></div>
+<div data-t="sm_02" class="sm">И один больничный — чтобы спокойно восстановиться без страха потерять доход.</div></div>
 <div class="cn c"><div data-t="tp_03" class="tp">Комфортный распорядок</div>
-<div><div class="bg"><span>График<br>5 / 2</span></div>
-<div data-t="sm_03" class="sm">И 8-часовой рабочий день — норма труда, установленная законом.</div></div></div>
+<div class="bg"><span>График<br>5 / 2</span></div>
+<div data-t="sm_03" class="sm">И 8-часовой рабочий день — норма труда, установленная законом.</div></div>
 </div>
 
 <div class="workmore-note" data-block-id="CALC-B029" data-block-name="Можно ли работать больше">
 <p class="workmore-q">Можно ли работать больше?</p>
-<p><b>Конечно, если вы сами этого хотите.</b> Дополнительные часы могут помогать быстрее расти или достигать своих целей.</p>
-<p>Но если без переработок ваша экономика не сходится, стоит пересмотреть стоимость часа: иначе вы просто создаёте себе рабочее место хуже, чем в найме.</p>
+<p class="workmore-lead">Конечно, если вы сами этого хотите. Дополнительные часы могут помогать быстрее расти или достигать своих целей.</p>
 <div class="workmore-law">
-<p>По ТК РФ сверхурочная работа оплачивается <b>не менее чем в 1,5 раза за первые два часа и не менее чем в 2 раза за последующие</b>.</p>
-<p>Работа в выходные и нерабочие праздничные дни — <b>не менее чем в двойном размере</b>.</p>
+<p>Если без переработок ваша экономика не сходится, стоит пересмотреть стоимость часа: иначе вы просто <b>создаёте себе рабочее место хуже, чем в найме.</b></p>
 </div>
+<p class="zapn">По ТК РФ сверхурочная работа оплачивается <b>не менее чем в 1,5 раза за первые два часа и не менее чем в 2 раза за последующие</b>. Работа в выходные и нерабочие праздничные дни — <b>не менее чем в двойном размере</b>.</p>
 </div>
 
 <div class="form-section form-section-time" data-block-id="CALC-B030" data-block-name="Съёмка и обработка">
@@ -2227,38 +2420,34 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 </div>
 </div>
 
-<div class="card" data-block-id="CALC-B011" data-block-name="Вопрос 05"><div class="bn">05</div>
-<h2>Минимальный заказ (часов)</h2>
-<p data-t="qd_04" class="hint">Укажите минимальное количество съёмочных часов, ради которых вы готовы выезжать на заказ.</p>
-<div class="qf focus-field time-field"><input type="number" inputmode="decimal" data-limit-live data-step-live id="shoot_manual" value="1" min="0.5" max="72" step="0.5"><span data-t="un_03" class="un">часов</span></div>
-</div>
-
 <div class="card" data-block-id="CALC-B012" data-block-name="Вопрос 06"><div class="bn">06</div>
 <h2>Время на постпродакшн</h2>
-<p data-t="qd_06" class="hint post-subtitle">Укажите, сколько времени в среднем вы тратите на подготовку материала за 1 час съёмки. Учитывайте всё время — от начала выгрузки материала на компьютер до передачи готового результата клиенту.</p>
+<p data-t="qd_06" class="hint post-subtitle purpose">Важный параметр, который напрямую участвует в формировании стоимости часа работы фотографа, распределении рабочего времени и построении всей системы ценообразования.</p>
+<div data-t="q_06" class="q">Укажите, сколько времени в среднем вы тратите на подготовку материала за 1 час съёмки.</div>
 <div class="qf focus-field time-field"><input type="number" inputmode="decimal" data-limit-live data-step-live id="post_ratio" value="3" min="0" max="72" step="0.5"><span data-t="un_04" class="un">часа</span></div>
-<details class="more2 post-details"><summary><svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-t="exp_01">Вот что мы заложили как основные этапы постпродакшна</span></summary><div class="in2 post-in2">
+<div data-t="def_06" class="zapn">Мы уже измерили время, затрачиваемое на работу с отснятым материалом, на основе практики профессиональных фотографов и установили результат как значение по умолчанию.</div>
+<details class="more2 post-details"><summary><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-t="exp_01">Вот что мы заложили как основные этапы постпродакшна</span></summary><div class="in2 post-in2">
 <ol class="stage-list">
-<li><b>Подготовка материала</b><ul><li>создание и организация папок и файлов;</li><li>выгрузка материала с карт памяти;</li><li>резервное копирование.</li></ul></li>
-<li><b>Отбор материала</b><ul><li>просмотр отснятого материала;</li><li>удаление технического брака;</li><li>отбор удачных кадров;</li><li>исключение дублей, кадров с закрытыми глазами и явно неудачных кадров.</li></ul></li>
-<li><b>Базовая цветокоррекция</b><ul><li>экспозиция;</li><li>баланс белого;</li><li>контраст;</li><li>светлые и тёмные области;</li><li>резкость;</li><li>насыщенность;</li><li>приведение всей серии к единому цвету и свету.</li></ul></li>
-<li><b>Коррекция кадра</b><ul><li>кадрирование;</li><li>выравнивание горизонта;</li><li>коррекция перспективы и искажений объектива;</li><li>удаление крупных лишних объектов из кадра.</li></ul></li>
-<li><b>Подготовка и передача результата</b><ul><li>импорт и экспорт из программы обработки;</li><li>подготовка файлов;</li><li>изменение размера и формата при необходимости;</li><li>загрузка в облако;</li><li>передача готового материала клиенту.</li></ul></li>
+<li><b>Подготовка материала</b><ul><li>Выгрузка материала с карт памяти</li><li>Создание и организация структуры папок</li><li>Резервное копирование</li></ul></li>
+<li><b>Отбор материала</b><ul><li>Просмотр отснятого материала</li><li>Удаление технического брака и дублей</li><li>Отбор удачных кадров</li></ul></li>
+<li><b>Базовая цветокоррекция</b><ul><li>Коррекция экспозиция</li><li>Баланс белого</li><li>Яркость/ контраст</li><li>Коррекция светлых и тёмные областей</li><li>Резкость</li><li>Насыщенность</li><li>Синхронизация серии</li></ul></li>
+<li><b>Коррекция кадра</b><ul><li>Кадрирование</li><li>Выравнивание горизонта</li><li>Коррекция перспективы и искажений объектива</li><li>Удаление лишних объектов из кадра</li></ul></li>
+<li><b>Подготовка и передача результата</b><ul><li>Настройка параметров экспорта</li><li>Импорт и экспорт из ПО</li><li>Загрузка в облако</li></ul></li>
 <li><b>Правки</b><p>Один круг правок, если потребуется.</p></li>
 </ol>
 </div></details>
-<div class="post-measure-note">
-<p><b>Самый неоднозначный показатель.</b> Его сложно измерить, поэтому его часто существенно недооценивают. Рекомендуем замерить время хотя бы на 3–5 съёмках и взять среднее значение.</p>
+<div class="post-exclude">
+<p>Учитывайте всё время — от начала выгрузки материала на компьютер до передачи готового результата клиенту. <b>Рекомендуем замерить время хотя бы на 3–5 съёмках и взять среднее значение.</b></p>
+<p><b>Не закладывайте в расчет дополнительная ретушь кадров.</b> Это отдельная услуга с собственной схемой формирования тарифов.</p>
 </div>
-<div class="post-exclude">Дополнительная ретушь в расчёт не заложена. Это отдельная услуга с собственной схемой формирования тарифов.</div>
 </div>
 
 <div class="card" id="c_FormClientTime" data-block-id="CALC-B013" data-block-name="Вопрос 07"><div class="bn">07</div>
 <h2>Проектная работа с клиентами <span class="h-unit">(на один проект)</span></h2>
-<p data-t="qd_07" class="hint">Укажите, сколько времени в среднем вы тратите на общение с клиентом и организацию одного уже подтверждённого проекта.</p>
+<p data-t="qd_07" class="hint purpose">Укажите, сколько времени в среднем вы тратите на общение с клиентом и организацию одного уже подтверждённого проекта.</p>
 <p class="client-default-note">Мы замерили время на нескольких реальных проектах, взяли среднее значение и уже внесли его в калькулятор в качестве значения по умолчанию.</p>
 <div class="qf focus-field time-field"><input type="number" inputmode="decimal" data-limit-live data-step-live id="client_time" value="1" min="0.5" max="72" step="0.5"><span data-t="un_05" class="un">часа</span></div>
-<details class="more2 post-details client-details"><summary><svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-t="exp_02">Вот что мы заложили как основные этапы работы с клиентом</span></summary><div class="in2 post-in2">
+<details class="more2 post-details client-details"><summary><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-t="exp_02">Вот что мы заложили как основные этапы работы с клиентом</span></summary><div class="in2 post-in2">
 <div class="post-stages client-stages">
 <div class="post-stage"><div class="post-stage-title"><i>1</i><b>Обсуждение проекта</b></div><ul><li>обсуждение задачи и формирование технического задания;</li><li>подбор и показ референсов;</li><li>обсуждение вариантов реализации съёмки;</li><li>согласование деталей и сроков.</li></ul></div>
 <div class="post-stage"><div class="post-stage-title"><i>2</i><b>Оформление и оплата</b></div><ul><li>подготовка и отправка договора;</li><li>выставление счёта и формирование закрывающих актов;</li><li>контроль поступления оплаты;</li><li>подтверждение оплаты и договорённостей.</li></ul></div>
@@ -2266,20 +2455,22 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 </div>
 </div></details>
 <div class="post-exclude client-exclude">Подбор студии, моделей, команды, реквизита и пр. — это уже другая продюсерская работа, которая не была включена нами в базовые задачи фотографа. Если вы выполняете эти задачи самостоятельно, рекомендуем вдвое увеличить время на работу с клиентом или замерить потраченное время хотя бы на 3–5 съёмках и взять среднее значение.</div>
-<label class="exc"><input type="checkbox" data-exc="FormClientTime">Не учитывать этот блок в расчёте</label>
+<label class="exc"><input type="checkbox" data-exc="FormClientTime">Не учитывать в расчёте</label>
 </div>
 <div class="equipment-market-note section-context-notice client-context-notice">
 <p class="context-notice-title">Время на работу с клиентом — значительный пласт работы, который заказчик не видит, но который занимает существенную часть вашего рабочего времени. Поэтому его крайне важно учитывать в расчёте.</p>
+<details class="more2"><summary><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Подробнее</span></summary><div class="in2">
 <p>В компании эти задачи закрывают разные специалисты: менеджер по продажам, продюсер и юрист при составлении договоров и даже бухгалтер, когда выставляет счета и закрывающие акты клиентам.</p>
 <p>Но вам, как специалисту, который работает на себя, приходится делать всё это самостоятельно.</p>
+</div></details>
 </div>
 
 <div class="card" id="c_FormPromoTime" data-block-id="CALC-B014" data-block-name="Вопрос 08"><div class="bn">08</div>
 <h2>Поиск заказов</h2>
-<p data-t="qd_08" class="hint">Укажите, сколько времени в среднем вы тратите на поиск новых клиентов и продвижение своих услуг.</p>
+<p data-t="qd_08" class="hint purpose">Укажите, сколько времени в среднем вы тратите на поиск новых клиентов и продвижение своих услуг.</p>
 <p class="search-default-note">Мы заложили в расчёт базовый минимум — 2 часа в день, 5 дней в неделю. Этого времени должно хватать на регулярное продвижение и поддержание потока заказов.</p>
 <div class="qf focus-field time-field period-field"><div class="qf-input"><input type="number" inputmode="decimal" data-limit-live data-step-live id="promo_amt" value="2" min="0.5" max="8" step="0.5"><span class="un">часов</span></div><select id="promo_per"><option value="day" selected>В день</option><option value="week">В неделю</option><option value="month">В месяц</option></select></div>
-<details class="more2 post-details search-details"><summary><svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-t="exp_03">Что включено в эти 2 часа</span></summary><div class="in2 post-in2">
+<details class="more2 post-details search-details"><summary><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-t="exp_03">Что включено в эти 2 часа</span></summary><div class="in2 post-in2">
 <ol class="num-list">
 <li>Ведение основных социальных сетей</li>
 <li>Создание и оформление контента</li>
@@ -2291,10 +2482,12 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 </ol>
 </div></details>
 <div class="post-exclude search-exclude">Если задач больше — активный таргет, регулярный контент для нескольких площадок, собственный сайт, рассылки и т. д. — двух часов в день, скорее всего, не хватит. В этом случае увеличьте значение в калькуляторе или привлеките помощников и передайте часть задач на аутсорс.</div>
-<label class="exc"><input type="checkbox" data-exc="FormPromoTime">Не учитывать этот блок в расчёте</label>
+<p class="hint">Если задач больше, увеличьте количество часов или делегируйте их на аутсорс, вынеся оплату сотрудника в регулярные расходы.</p>
+<label class="exc"><input type="checkbox" data-exc="FormPromoTime">Не учитывать в расчёте</label>
 </div>
 <div class="equipment-market-note section-context-notice search-context-notice">
 <p class="context-notice-title">Поиск заказов — одна из самых важных и при этом самых недооценённых частей работы специалиста, который работает на себя.</p>
+<details class="more2"><summary><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Подробнее</span></summary><div class="in2">
 <p>В компании за неё отвечают целые отделы — отдел продаж и отдел маркетинга: SMM-специалисты, контент-менеджеры, копирайтеры, маркетологи, таргетологи, дизайнеры, специалисты по сайтам и руководитель, который определяет стратегию.</p>
 <div class="search-context-highlight">
 <strong>Для вас вся эта нагрузка ложится исключительно на ваши плечи.</strong>
@@ -2302,33 +2495,19 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 </div>
 <p>Время, потраченное на продвижение и поиск заказов, крайне сложно замерить. Именно поэтому его почти никто не учитывает — и это серьёзная ошибка.</p>
 <p class="search-context-conclusion">Иначе вы либо остаётесь без заказов, либо начинаете работать ночами, без выходных и права поболеть.</p>
+</div></details>
 </div>
 
 <div class="card" id="c_FormMgmt" data-block-id="CALC-B040" data-block-name="Вопрос 09"><div class="bn">09</div>
 <h2>Управление делом</h2>
-<p data-t="qd_24" class="hint">Укажите, сколько времени вы тратите на управление своим делом: решения, процессы, деньги.</p>
-<p class="search-default-note">Мы заложили в расчёт базовый минимум — 4 часа в неделю. Этого хватает на еженедельный разбор дел, решения и контроль денег.</p>
+<p class="search-default-note hint purpose">Время, когда вы работаете как предприниматель: просчитываете риски, выстраиваете стратегию и принимаете решения для развития бизнеса.</p>
+<p class="search-default-note">Даже при работе в одиночку это главная задача — без неё не будет и всего остального.</p>
 <div class="qf focus-field time-field period-field"><div class="qf-input"><input type="number" inputmode="decimal" data-limit-live data-step-live id="mgmt_amt" value="4" min="1" max="20" step="1"><span class="un">часов</span></div><select id="mgmt_per"><option value="day">В день</option><option value="week" selected>В неделю</option><option value="month">В месяц</option></select></div>
-<details class="more2 post-details search-details"><summary><svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-t="exp_05">Что включено в эти 4 часа</span></summary><div class="in2 post-in2">
-<ol class="num-list">
-<li>Еженедельный разбор дел и планирование</li>
-<li>Решения по ценам, услугам и клиентам</li>
-<li>Контроль денег: счета, бюджеты, платежи</li>
-<li>Анализ: что сработало и куда двигаться</li>
-</ol>
-</div></details>
-<label class="exc"><input type="checkbox" data-exc="FormMgmt" checked>Не учитывать этот блок в расчёте</label>
+<p data-t="qd_24" class="hint">Укажите, сколько времени вы тратите на управление своим делом: решения, процессы, деньги.</p>
+<label class="exc"><input type="checkbox" data-exc="FormMgmt" checked>Не учитывать в расчёте</label>
+
 </div>
-<div class="equipment-market-note section-context-notice mgmt-context-notice">
-<p class="context-notice-title">Управление делом — невидимая работа управляющего, без которой бизнес разваливается.</p>
-<p>В компании за неё отвечает руководство: директор планирует, финансовый менеджер следит за деньгами, руководитель держит продажи и процессы.</p>
-<div class="search-context-highlight">
-<strong>У вас нет ни директора, ни финансиста — вы и есть руководство.</strong>
-<span>Решения, процессы, бюджеты — всё это занимает реальное рабочее время, которое нельзя потратить на съёмку.</span>
-</div>
-<p>Время на управление крайне сложно замерить. Именно поэтому его почти никто не учитывает — и это серьёзная ошибка.</p>
-<p class="search-context-conclusion">Иначе решения принимаются на бегу, деньги утекают незаметно, а развитие откладывается на «когда-нибудь».</p>
-</div>
+
 </div>
 
 <div class="form-section form-section-expenses" data-block-id="CALC-B031" data-block-name="Расходы">
@@ -2346,7 +2525,7 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 
 <div class="card" id="c_Form001" data-block-id="CALC-B015" data-block-name="Вопрос 10"><div class="bn">10</div>
 <h2 data-t="h2_06">Съёмочное оборудование</h2>
-<div data-t="hint_02" class="hint hint-copy">
+<div data-t="hint_02" class="hint hint-copy purpose">
 <p>Это набор вашего базового оборудования, без которого вы просто не сможете провести съёмку. Укажите текущую рыночную стоимость и срок, за который позицию придётся заменить.</p>
 </div>
 <div class="info-notice equipment-notice">Не включайте сюда специфическое оборудование, которое требуется под задачи конкретного заказчика. Его стоимость лучше сразу закладывать в смету как дополнительную аренду.</div>
@@ -2354,16 +2533,16 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 <th data-t="th_03" style="width:20%">Срок службы</th><th style="width:40px"></th>
 </tr></thead><tbody id="t_Form001"></tbody></table>
 <button data-t="add_01" class="add" data-add="Form001">+ Добавить позицию</button>
-<label class="exc"><input type="checkbox" data-exc="Form001">Не учитывать этот блок в расчёте</label></div>
+<label class="exc"><input type="checkbox" data-exc="Form001">Не учитывать в расчёте</label></div>
 
 <div class="card" id="c_Form002" data-block-id="CALC-B016" data-block-name="Вопрос 11"><div class="bn">11</div>
 <h2 data-t="h2_07">Офисное оборудование</h2>
-<p data-t="hint_03" class="hint">Это оборудование, которое помогает вам выполнять заказы и решать рабочие задачи за компьютером. Укажите его текущую рыночную стоимость и срок, через который планируете заменить.</p>
+<p data-t="hint_03" class="hint purpose">Это оборудование, которое помогает вам выполнять заказы и решать рабочие задачи за компьютером. Укажите его текущую рыночную стоимость и срок, через который планируете заменить.</p>
 <table class="dt"><thead><tr><th data-t="th_04" style="width:52%">Позиция</th><th data-t="th_05" style="width:24%">Стоимость</th>
 <th data-t="th_06" style="width:20%">Срок службы</th><th style="width:40px"></th>
 </tr></thead><tbody id="t_Form002"></tbody></table>
 <button data-t="add_02" class="add" data-add="Form002">+ Добавить позицию</button>
-<label class="exc"><input type="checkbox" data-exc="Form002">Не учитывать этот блок в расчёте</label></div>
+<label class="exc"><input type="checkbox" data-exc="Form002">Не учитывать в расчёте</label></div>
 
 <div class="equipment-market-note section-context-notice equipment-cost-notice">
 <p class="context-notice-title">Используйте в расчёте текущую рыночную стоимость оборудования или его актуального аналога, а не стоимость закупки</p>
@@ -2372,7 +2551,7 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 
 <div class="card" id="c_Form008b" data-block-id="CALC-B017" data-block-name="Вопрос 12"><div class="bn">12</div>
 <h2 data-t="h2_08">Программное обеспечение</h2>
-<p class="hint software-hint">Укажите программы и сервисы, которые нужны вам для профессиональной деятельности и работы вокруг неё.</p>
+<p class="hint software-hint purpose">Укажите программы и сервисы, которые нужны вам для профессиональной деятельности и работы вокруг неё.</p>
 <div data-t="sh_01" class="sh">Подписки</div>
 <div data-t="shd_01" class="shd">Лицензии и сервисы, за которые вы регулярно платите.</div>
 <table class="dt"><thead><tr><th data-t="th_07" style="width:52%">Позиция</th><th data-t="th_08" style="width:24%">Стоимость</th>
@@ -2385,10 +2564,10 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 <th data-t="th_12" style="width:20%">Срок службы</th><th style="width:40px"></th>
 </tr></thead><tbody id="t_Form004"></tbody></table>
 <button data-t="add_04" class="add" data-add="Form004">+ Добавить программу</button>
-<label class="exc"><input type="checkbox" data-exc="Form008b">Не учитывать этот блок в расчёте</label></div>
+<label class="exc"><input type="checkbox" data-exc="Form008b">Не учитывать в расчёте</label></div>
 <div class="card" id="c_Form009b" data-block-id="CALC-B018" data-block-name="Вопрос 13"><div class="bn">13</div>
 <h2 data-t="h2_09">Рабочее место</h2>
-<div data-t="hint_04" class="hint hint-copy workspace-intro">
+<div data-t="hint_04" class="hint hint-copy workspace-intro purpose">
 <p>В найме рабочее место предоставляет работодатель. Когда вы работаете на себя, вы создаёте и оплачиваете его самостоятельно — поэтому эти расходы тоже должны быть учтены в стоимости вашего часа.</p>
 </div>
 <div class="rad" id="ws_mode_r">
@@ -2432,11 +2611,11 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 </tr></thead><tbody id="t_Form013"></tbody></table>
 <button data-t="add_05" class="add" data-add="Form013">+ Добавить позицию</button>
 <div class="info-notice workspace-diy-note">Если вы делали всё самостоятельно, рекомендуем использовать в расчёте сумму, которую пришлось бы заплатить наёмным специалистам за аналогичную работу, и общую стоимость закупленных материалов.</div>
-<label class="exc"><input type="checkbox" data-exc="Form009b">Не учитывать этот блок в расчёте</label></div>
+<label class="exc"><input type="checkbox" data-exc="Form009b">Не учитывать в расчёте</label></div>
 
 <div class="card" id="c_Form006" data-block-id="CALC-B019" data-block-name="Вопрос 14"><div class="bn">14</div>
 <h2 data-t="h2_10">Обучение и курсы</h2>
-<p data-t="hint_05" class="hint">Опишите, сколько времени и денег вы вложили, чтобы получить профессию</p>
+<p data-t="hint_05" class="hint purpose">Опишите, сколько времени и денег вы вложили, чтобы получить профессию</p>
 <div data-t="shd_04" class="shd" style="margin-bottom:16px">Курсы, семинары, мастер-классы, наставничество. Это ваш опыт, за который вы заплатили деньгами и месяцами жизни — он тоже должен окупаться через стоимость часа.</div>
 <table class="dt"><thead><tr><th data-t="th_16" style="width:44%">Обучение</th><th data-t="th_17" style="width:24%">Стоимость</th>
 <th data-t="th_18" style="width:28%">Месяцев учились</th><th style="width:40px"></th>
@@ -2446,7 +2625,7 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 <div data-t="q_14" class="q">За сколько лет вы хотите окупить вложения в обучение?</div>
 </div><div class="qf"><input type="number" inputmode="numeric" data-integer data-limit-live id="edu_life" value="7" min="1" max="30" step="1"><span data-t="un_13" class="un">лет</span></div></div>
 <div data-t="qd_13" class="info-notice education-life-note">Стоимость обучения будет равномерно распределена на выбранный срок. Обычно для расчёта берут период от 5 до 10 лет.</div>
-<label class="exc"><input type="checkbox" data-exc="Form006">Не учитывать этот блок в расчёте</label></div>
+<label class="exc"><input type="checkbox" data-exc="Form006">Не учитывать в расчёте</label></div>
 
 <div class="equipment-market-note section-context-notice education-opportunity-note">
 <p class="context-notice-title">Упущенная выгода — рекомендуем учитывать в расчёте.</p>
@@ -2466,16 +2645,16 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 <div class="qr two-col-row"><div><div data-t="q_17" class="q">За сколько лет окупить вложения в сайт?</div>
 <div data-t="qd_16" class="qd">Через этот срок сайт устареет и потребует переделки.</div>
 </div><div class="qf"><input type="number" inputmode="numeric" data-integer data-limit-live id="site_life" value="7" min="1" max="10" step="1"><span data-t="un_15" class="un">лет</span></div></div>
-<label class="exc"><input type="checkbox" data-exc="Form014">Не учитывать этот блок в расчёте</label></div>
+<label class="exc"><input type="checkbox" data-exc="Form014">Не учитывать в расчёте</label></div>
 
 <div class="card" id="c_Form010" data-block-id="CALC-B021" data-block-name="Вопрос 16"><div class="bn">16</div>
 <h2 data-t="h2_12">Реклама и продвижение</h2>
-<p data-t="hint_07" class="hint">Деньги, которые вы регулярно тратите на поиск и привлечение клиентов</p>
+<p data-t="hint_07" class="hint purpose">Деньги, которые вы регулярно тратите на поиск и привлечение клиентов</p>
 <table class="dt"><thead><tr><th data-t="th_19" style="width:52%">Канал</th><th data-t="th_20" style="width:24%">Стоимость</th>
 <th data-t="th_21" style="width:20%">Период</th><th style="width:40px"></th>
 </tr></thead><tbody id="t_Form010"></tbody></table>
 <button data-t="add_07" class="add" data-add="Form010">+ Добавить канал</button>
-<label class="exc"><input type="checkbox" data-exc="Form010">Не учитывать этот блок в расчёте</label></div>
+<label class="exc"><input type="checkbox" data-exc="Form010">Не учитывать в расчёте</label></div>
 
 <div class="card" id="c_Form015b" data-block-id="CALC-B022" data-block-name="Вопрос 17"><div class="bn">17</div>
 <h2 data-t="h2_13">Банковское обслуживание</h2>
@@ -2485,6 +2664,7 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 <th data-t="th_24" style="width:20%">Период</th><th style="width:40px"></th>
 </tr></thead><tbody id="t_Form007"></tbody></table>
 <button data-t="add_08" class="add" data-add="Form007">+ Добавить платёж</button>
+<div class="bank-div" aria-hidden="true"></div>
 <div class="bank-commission-scope" id="bank_commission_scope">
 <div data-t="sh_05" class="sh">Комиссии банка</div>
 <div data-t="shd_06" class="shd">Плата, которую взимает банк в виде процента от суммы произведённой операции.</div>
@@ -2506,7 +2686,14 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 <div class="bank-cell-placeholder" aria-hidden="true"></div>
 </div>
 </div>
-<label class="exc"><input type="checkbox" data-exc="Form015b">Не учитывать этот блок в расчёте</label></div>
+<div class="bank-div" aria-hidden="true"></div>
+<div class="sh">Платежи по кредиту</div>
+<div class="shd">Вся сумма, которую вы регулярно платите банку, за минусом суммы погашения основного долга: проценты, комиссии, штрафы и другие платежи банка. Сумму погашения основного долга сюда не вносите — она возвращается через возврат инвестиций.</div>
+<table class="dt loan-table"><thead><tr><th style="width:62%">Позиция</th><th>Сумма платежа, ₽/мес</th>
+<th>Период</th><th style="width:40px"></th>
+</tr></thead><tbody id="t_Form012"></tbody></table>
+<button class="add" data-add="Form012">+ Добавить платёж</button>
+<label class="exc"><input type="checkbox" data-exc="Form015b">Не учитывать в расчёте</label></div>
 
 <div class="card" id="c_Form011" data-block-id="CALC-B023" data-block-name="Вопрос 18"><div class="bn">18</div>
 <h2 data-t="h2_14">Бухгалтерия и учёт</h2>
@@ -2522,7 +2709,7 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 <div class="qr accounting-row" id="acc_c_w" style="display:none" data-branch-id="CALC-B023-S02" data-branch-name="Учёт ведёт специалист"><div>
 <div data-t="q_21" class="q">Сколько стоит ведение учёта?</div>
 </div><div class="qf"><input type="text" inputmode="numeric" data-money data-integer data-limit-live id="acc_cost_month" value="10000" min="0" max="500000" step="100"><span data-t="un_17" class="un">₽/мес</span></div></div>
-<details class="more2 post-details accounting-details"><summary><svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-t="exp_04">Вот что мы заложили как основные этапы ведения учёта и бухгалтерии</span></summary><div class="in2 post-in2">
+<details class="more2 post-details accounting-details"><summary><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-t="exp_04">Вот что мы заложили как основные этапы ведения учёта и бухгалтерии</span></summary><div class="in2 post-in2">
 <div class="post-stages accounting-stages">
 <div class="post-stage"><div class="post-stage-title"><i>1</i><b>Учёт доходов и расходов</b></div><ul><li>фиксация доходов и расходов;</li><li>ведение книги учёта;</li><li>сверка операций с банковской выпиской.</li></ul></div>
 <div class="post-stage"><div class="post-stage-title"><i>2</i><b>Налоги и Страховые взносы</b></div><ul><li>расчёт налогов;</li><li>уплата налогов и страховых взносов;</li><li>контроль сроков обязательных платежей.</li></ul></div>
@@ -2530,7 +2717,7 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 <div class="post-stage"><div class="post-stage-title"><i>4</i><b>Взаимодействие с налоговой</b></div><ul><li>сверка с налоговой инспекцией;</li><li>проверка начислений и задолженности;</li><li>ответы на требования и уведомления.</li></ul></div>
 </div>
 </div></details>
-<label class="exc"><input type="checkbox" data-exc="Form011">Не учитывать этот блок в расчёте</label></div>
+<label class="exc"><input type="checkbox" data-exc="Form011">Не учитывать в расчёте</label></div>
 </div>
 
 <div class="form-section form-section-reserves" data-block-id="CALC-B032" data-block-name="Резервы">
@@ -2546,32 +2733,34 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 
 <div class="card" id="c_Form018" data-block-id="CALC-B024" data-block-name="Вопрос 19"><div class="bn">19</div>
 <h2 data-t="h2_14z">Резерв времени на простой и форс-мажоры</h2>
-<p data-t="hint_08z" class="hint">Заложите в расчёт часть времени на ситуации, которые возникают независимо лично от вас. Простой бывает всегда: периоды без заказов, переносы и отмены съёмок случаются у каждого специалиста. Форс-мажоры — реже: подвела погода, возникли проблемы с техникой или другие непредвиденные обстоятельства помешали работе.</p>
+<p data-t="hint_08z" class="hint purpose">Позволяет спокойно пережить периоды отсутствия заказов без ущерба для бюджета и гибко реагировать на отмены, переносы и непредвиденные срывы съёмок.</p>
 
 <div class="zap">
 <div class="zaph">
 <label class="flag"><input type="checkbox" id="fm_on">Учитывать резерв времени на простой и форс-мажоры</label>
 </div>
-<div data-t="qd_05" class="qd">Это время вы уже потратили, но не всегда можете получить за него оплату. Поэтому его важно заранее учитывать в расчёте стоимости рабочего часа.</div>
-<div class="zapn" data-t="qd_05b">Резерв не увеличивает ваши расходы — он уменьшает количество часов, которые вы реально сможете продать.</div>
 <div class="zaprow">
 <input type="range" id="fm_pct" min="0" max="15" step="1" value="5" disabled>
 <output id="fm_out">5%</output>
 </div>
 <div class="zapst" id="fm_st"></div>
 </div>
+<div class="reserve-proof-row">
+<div class="proof-item reserve-proof"><span class="proof-check"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 2.8l7.2 2.7v5.6c0 4.6-3 7.8-7.2 9.6-4.2-1.8-7.2-5-7.2-9.6V5.5L12 2.8z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M13 8.2L9.8 12.8h2.4L11 16.8l3.4-4.8H12z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg></span><span class="proof-copy"><span>Застраховаться от простоев</span></span></div>
+<div class="proof-item reserve-proof"><span class="proof-check"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 2v1.4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M12 3.6a8 8 0 0 1 8 8H4a8 8 0 0 1 8-8z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M12 4.6v6.9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M12 11.5v6a2.5 2.5 0 0 0 5 0v-.8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span><span class="proof-copy"><span>Нейтрализовать форс-мажоры</span></span></div>
+</div>
 </div>
 
 <div class="card" id="c_Form017" data-block-id="CALC-B026" data-block-name="Вопрос 20"><div class="bn">20</div>
-<h2 data-t="h2_16z">Резерв программы лояльности</h2>
-<p data-t="hint_10z" class="hint">Позволит вам уступать в цене, когда клиент требует скидку, и при этом не терять в доходе. Сможете гибко настроить собственную программу лояльности и привлекать дополнительный трафик в несезон.</p>
+<h2 data-t="h2_16z">Запас на скидку</h2>
+<p data-t="hint_10z" class="hint purpose">Сможете уступать в цене, когда клиент требует скидку, и при этом не терять в доходе.</p>
 
 <div class="zap">
 <div class="zaph">
-<label class="flag"><input type="checkbox" id="disc_on">Заложить резерв программы лояльности</label>
+<label class="flag"><input type="checkbox" id="disc_on">Заложить запас на скидку</label>
 </div>
-<div data-t="qd_23" class="qd">Без этого запаса ваши возможности будут сильно ограничены: вы сможете давать только небольшие скидки за объём или фактически доплачивать клиенту из своего кармана.</div>
-<div class="zapn" data-t="qd_23b">При включённом резерве программы лояльности вы получите сформированную программу лояльности на целый год, включая скидку за объём, специальные условия постоянным клиентам и комплект подарочных сертификатов под горячие направления.</div>
+<div data-t="qd_23" class="qd">Без этого запаса получится давать только небольшие скидки за объём или фактически доплачивать клиенту из своего кармана.</div>
+<div class="zapn" data-t="qd_23b">Внутри готовая программа лояльности на целый год + комплект подарочных сертификатов.</div>
 <div class="lvls" id="disc_lvls" data-branch-id="CALC-B026-S01" data-branch-name="Уровни программы лояльности">
 <label class="lvl a1"><input type="radio" name="disc_lvl" value="5"><div class="lv">5%</div><div class="ll">скромно</div></label>
 <label class="lvl a2"><input type="radio" name="disc_lvl" value="10"><div class="lv">10%</div><div class="ll">умеренно</div></label>
@@ -2580,7 +2769,32 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 <div class="lvnote" id="disc_note"></div>
 <input type="hidden" id="disc_pct" value="15">
 </div>
+<div class="reserve-proof-row">
+<div class="proof-item reserve-proof"><span class="proof-check"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 6.3C10.2 6.3 8.8 5.4 8.8 4.1c0-.8.6-1.4 1.4-1.4 1 0 1.8 1.7 1.8 3.6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="M12 6.3c1.8 0 3.2-.9 3.2-2.2 0-.8-.6-1.4-1.4-1.4-1 0-1.8 1.7-1.8 3.6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><rect x="3.5" y="6.3" width="17" height="3.7" rx="1" stroke="currentColor" stroke-width="1.8"/><path d="M5 10h14v9a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 5 19v-9z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M12 6.3v14.2" stroke="currentColor" stroke-width="1.8"/></svg></span><span class="proof-copy"><span>Сможете гибко настроить собственную программу лояльности</span></span></div>
+<div class="proof-item reserve-proof"><span class="proof-check"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="5.8" r="2.6" stroke="currentColor" stroke-width="1.8"/><path d="M8 15.5v-2a4 4 0 0 1 8 0v2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M5.8 15.3L6.39 16.99L8.18 17.03L6.75 18.11L7.27 19.82L5.8 18.8L4.33 19.82L4.85 18.11L3.42 17.03L5.21 16.99Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M12 14.3L12.68 16.26L14.76 16.3L13.1 17.56L13.71 19.55L12 18.36L10.29 19.55L10.9 17.56L9.24 16.3L11.32 16.26Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M18.2 15.3L17.61 16.99L15.82 17.03L17.25 18.11L16.73 19.82L18.2 18.8L19.67 19.82L19.15 18.11L20.58 17.03L18.79 16.99Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg></span><span class="proof-copy"><span>Привлекать дополнительный трафик в несезон</span></span></div>
 </div>
+</div>
+<div class="card" id="c_Form019" data-block-id="CALC-B042" data-block-name="Вопрос 21"><div class="bn">21</div>
+<h2>Буфер ликвидности</h2>
+<p class="hint purpose">Это ваша страховка на случай непредвиденных точечных трат.</p>
+<div class="zap">
+<div class="zaph">
+<label class="flag"><input type="checkbox" id="cushion_on">Создать буфер ликвидности</label>
+</div>
+<div class="zapn">Держите на счету несгораемый остаток, чтобы покрывать непредвиденные расходы.</div>
+<div class="zaprow">
+<input type="range" id="cushion_pct" min="0" max="100" step="1" value="10">
+<output id="cushion_out">10%</output>
+</div>
+<div class="zapst" id="cushion_st"></div>
+</div>
+<div class="reserve-proof-row">
+<div class="proof-item reserve-proof"><span class="proof-check"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M8.5 8L10 5.5h4L15.5 8" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><rect x="3" y="8" width="18" height="11" rx="2.5" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="13.5" r="3.6" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="13.5" r="1.2" fill="currentColor"/><path d="M20.32 12.88A2.4 2.4 0 1 1 18.62 11.18" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="M20.32 12.88L21.9 11.5M18.62 11.18L20.2 9.6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="M16.3 15.2L13.2 18.3" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></span><span class="proof-copy"><span>При поломках техники</span></span></div>
+<div class="proof-item reserve-proof"><span class="proof-check"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="7" width="18" height="10" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M10 7l2.5 3-2 2.5 2.5 3-1.5 1.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="proof-copy"><span>При кассовых разрывах</span></span></div>
+<div class="proof-item reserve-proof"><span class="proof-check"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="8" cy="12" r="5.5" stroke="currentColor" stroke-width="1.8"/><path d="M8 8.8V12l2.2 1.4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="17.5" cy="12" r="3.5" stroke="currentColor" stroke-width="1.8"/><circle cx="17.5" cy="12" r="1.4" stroke="currentColor" stroke-width="1.5"/></svg></span><span class="proof-copy"><span>При задержке оплаты</span></span></div>
+</div>
+</div>
+
 </div>
 
 <!-- 15.09, круг 17 (слово владельца): скидка поднята (19), прибыль опущена (20); тексты прибыли — новые. -->
@@ -2592,7 +2806,7 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 <div class="benefits-note banner-benefits" data-t="ss_profit" aria-label="Зачем нужна маржинальность">
 <div class="proof-item"><span class="proof-check"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="7" width="18" height="13" rx="2.5" stroke="var(--c-a-400)" stroke-width="1.8"/><path d="M8 7V5.5A1.5 1.5 0 0 1 9.5 4h5A1.5 1.5 0 0 1 16 5.5V7M3 11.5h18M10 11.5v2h4v-2" stroke="var(--c-a-400)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="proof-copy"><span>Вернуть</span><span>вложения</span></span></div>
 <div class="proof-item"><span class="proof-check"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 20h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M7.5 20v-4.5M12 20V10M16.5 20V5.5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg></span><span class="proof-copy"><span>Развиваться</span><span>и расти</span></span></div>
-<div class="proof-item"><span class="proof-check"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M19.2 8.5A7.8 7.8 0 0 0 6.7 5.8L4.5 8M4.5 8V4.5M4.5 8H8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M4.8 15.5a7.8 7.8 0 0 0 12.5 2.7l2.2-2.2m0 0v3.5m0-3.5H16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="m10.1 12.3 1.4 1.4 2.5-2.8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="proof-copy"><span>Закрывать</span><span>форс-мажоры</span></span></div>
+<div class="proof-item"><span class="proof-check"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><ellipse cx="8" cy="18.5" rx="5" ry="2" stroke="currentColor" stroke-width="1.8"/><path d="M3 18.5v-2.5c0-1.1 2.2-2 5-2s5 .9 5 2v2.5" stroke="currentColor" stroke-width="1.8"/><ellipse cx="8" cy="16" rx="5" ry="2" stroke="currentColor" stroke-width="1.8"/><path d="M17.5 19V8" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><path d="m13.8 11.7 3.7-3.7 3.7 3.7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="proof-copy"><span>Увеличить</span><span>доход</span></span></div>
 </div>
 <div class="section-ending">
 <h2 class="section-main-title" data-t="h2_15z">Добавить маржу</h2>
@@ -2600,33 +2814,21 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 </div>
 </div>
 
-<div class="card" id="c_Form016" data-block-id="CALC-B025" data-block-name="Вопрос 21"><div class="bn">21</div>
+<div class="card" id="c_Form016" data-block-id="CALC-B025" data-block-name="Вопрос 22"><div class="bn">22</div>
 <h2 data-t="h2_17z">Прибыльность вашего дела</h2>
-<div class="qd">Заложите в ставку долю чистой прибыли, чтобы вернуть инвестированные в бизнес средства и обеспечить финансовую устойчивость.</div>
+<div class="qd hint purpose">Заложите в ставку долю чистой прибыли, чтобы вернуть инвестированные в бизнес средства и обеспечить финансовую устойчивость.</div>
 <div class="zap">
 <div class="zaph">
 <label class="flag"><input type="checkbox" id="fund_on">Возврат инвестиций / доля чистой прибыли</label>
 </div>
 <div class="qd">По умолчанию выведена ставка, которая позволит окупить ваши вложения за 36 месяцев. Это оптимальный и безопасный срок окупаемости для микробизнеса с быстрой оборачиваемостью.</div>
 <div class="zapn">Рассчитано на основе введённых параметров.</div>
+
 <div class="zaprow">
 <input type="range" id="fund_pct" min="0" max="100" step="1" value="18">
 <output id="fund_out">18%</output>
 </div>
 <div class="zapst" id="fund_st"></div>
-</div>
-
-<div class="zap">
-<div class="zaph">
-<label class="flag"><input type="checkbox" id="cushion_on">Финансовая подушка</label>
-</div>
-<div class="qd">Это ваша страховка на случай непредвиденных точечных трат. По умолчанию выведено значение по классической схеме распределения прибыли — 30% от вашей чистой маржи.</div>
-<div class="zapn">Рассчитано на основе выбранного значения возврата инвестиций.</div>
-<div class="zaprow">
-<input type="range" id="cushion_pct" min="0" max="100" step="1" value="30">
-<output id="cushion_out">5,4%</output>
-</div>
-<div class="zapst" id="cushion_st"></div>
 </div>
 </div>
 
@@ -2640,10 +2842,10 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 <p>Кроме того, без чистой прибыли само ваше дело становится абсолютно уязвимым. У бизнеса нет собственного капитала, он не зарабатывает сам себя и при любой нестабильности начинает зависеть от внешних вливаний или долгов. Доля чистой прибыли — это не «лишние деньги», а обязательный фундамент.</p>
 <p class="context-notice-sub">Именно за счёт неё у вас появляются:</p>
 <ul class="context-list-frame">
-<li><b>Безопасность и защита от форс-мажоров</b> Собственная прибыль создает финансовую подушку, которая защищает вас от кассовых разрывов и сезонных спадов. Если сломается техника, потребуется срочное обслуживание или возникнут непредвиденные расходы, вы закроете эти дыры за счет бизнеса, а не будете залезать в долги или тратить деньги из семейного бюджета.</li>
-<li><b>Возврат вложений</b> За счёт этих средств вы полностью компенсируете всё, что вложили в своё дело. Это особенно важно, если ради старта или развития пришлось использовать личные сбережения, что-то продать или взять кредит.<p>Как только стартовые обязательства будут полностью закрыты, эта сумма станет вашей чистой прибылью. С этого момента вы сможете вынимать эти деньги себе как дополнительные дивиденды или направлять на развитие бизнеса.</p></li>
+<li><b>Возврат вложений</b> За счёт этих средств вы полностью компенсируете всё, что вложили в своё дело. Это особенно важно, если ради старта или развития пришлось использовать личные сбережения, что-то продать или взять кредит. Вложения вернутся к вам за тот срок, который вы выберете сами, и с этого момента бизнес станет полностью самоокупаемым.<p>Как только стартовые обязательства будут полностью закрыты, эта сумма станет вашей чистой прибылью. С этого момента вы сможете вынимать эти деньги себе как дополнительные дивиденды или направлять на развитие бизнеса.</p></li>
 <li><b>Развитие и рост</b> За счет этого ресурса вы сможете развивать свое дело: покупать более совершенное оборудование, подключать профессиональный софт для автоматизации процессов, проходить обучающие курсы для повышения чека и даже нанимать первых помощников или подрядчиков.</li>
 <li><b>Дополнительный личный доход</b> Как только инвестиции окупятся, вы можете забирать высвободившиеся деньги себе — полностью или частично — в качестве дополнительных чистых дивидендов на личные нужды.</li>
+
 </ul>
 </div>
 </div>
@@ -2666,17 +2868,6 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 <path d="M8.5 12h.01M12 12h.01M15.5 12h.01M8.5 16.5h.01M12 16.5h.01M15.5 16.5h.01"
 stroke="#fff" stroke-width="2.4" stroke-linecap="round"/></svg>
 <span>Рассчитать стоимость часа</span></button>
-<button class="btn wh" id="reset" type="button">
-<svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-<path d="M3.5 12a8.5 8.5 0 018.5-8.5c3.1 0 5.8 1.7 7.2 4.2" stroke="currentColor"
-stroke-width="1.9" stroke-linecap="round"/>
-<path d="M20.5 3.6v4.4h-4.4" stroke="currentColor" stroke-width="1.9"
-stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M20.5 12a8.5 8.5 0 01-8.5 8.5c-3.1 0-5.8-1.7-7.2-4.2" stroke="currentColor"
-stroke-width="1.9" stroke-linecap="round" opacity=".45"/>
-<path d="M3.5 20.4V16h4.4" stroke="currentColor" stroke-width="1.9"
-stroke-linecap="round" stroke-linejoin="round" opacity=".45"/></svg>
-<span id="resetTx">Вернуть значения по умолчанию</span></button>
 </div>
 
 <div class="trb" id="trial" data-block-id="CALC-B034" data-block-name="Пробный режим">
@@ -2729,6 +2920,10 @@ var $=function(id){return document.getElementById(id)};
     if(исключение){
       карт.insertBefore(низ,исключение);
       низ.appendChild(исключение);
+      /* 16.09 (слово владельца): предупреждение галочки — внутрь футера первым рядом:
+         под линией, над номером блока. */
+      var след=низ.nextElementSibling;
+      if(след&&след.classList.contains('fnote')){низ.insertBefore(след,низ.firstChild);низ.classList.add('has-fnote')}
     }else{
       карт.appendChild(низ);
     }
@@ -2750,7 +2945,7 @@ var $=function(id){return document.getElementById(id)};
 function обновитьОтступыЕдиниц(){
   R.querySelectorAll('.qf').forEach(function(qf){
     var input=qf.querySelector('input'), unit=qf.querySelector('.un');
-    if(!input||!unit)return;
+    if(!input||!unit||input.closest('.stepper'))return;
     var ширина=Math.ceil(unit.getBoundingClientRect().width);
     input.style.paddingRight=Math.max(52,ширина+28)+'px';
   });
@@ -2850,7 +3045,7 @@ R.addEventListener('blur',function(ev){
    после заполнения анкеты. Максимум применяем во время ввода; минимум — при
    выходе из поля, чтобы первая набранная цифра не мешала ввести большое число. */
 var ТЕКСТЫ_ПРЕДЕЛОВ={
-  income_month:{min:'Вы ввели значение ниже допустимого. Установлен минимум — 10 000 ₽ в месяц. Проверьте значение.',max:'Вы ввели значение выше допустимого. Установлен максимум — 3 000 000 ₽ в месяц. Проверьте значение.'},
+  income_month:{min:'Значение ниже допустимого. Установленный минимум - 10 000 ₽ в месяц. Пожалуйста, проверьте введённую сумму.',max:'Вы ввели значение выше допустимого. Установлен максимум — 3 000 000 ₽ в месяц. Проверьте значение.'},
   current_rate:{min:'Вы ввели значение ниже допустимого. Установлен минимум — 0 ₽ в час. Проверьте значение.',max:'Вы ввели значение выше допустимого. Установлен максимум — 1 000 000 ₽ в час. Проверьте значение.'},
   frames_out:{min:'Вы ввели значение ниже допустимого. Установлен минимум — 1 готовый кадр в час. Проверьте значение.',max:'Вы ввели значение выше допустимого. Установлен максимум — 1 000 готовых кадров в час. Проверьте значение.'},
   shutter_per_hour:{min:'Вы ввели значение ниже допустимого. Установлен минимум — 1 срабатывание затвора в час. Проверьте значение.',max:'Вы ввели значение выше допустимого. Установлен максимум — 1 000 срабатываний затвора в час. Проверьте значение.'},
@@ -2860,6 +3055,7 @@ var ТЕКСТЫ_ПРЕДЕЛОВ={
   client_time:{min:'Вы ввели значение ниже допустимого. Установлен минимум — 0,5 часа работы с клиентом на проект. Чтобы не учитывать блок, используйте галочку исключения. Проверьте значение.',max:'Вы ввели значение выше допустимого. Установлен максимум — 72 часа работы с клиентом на проект. Проверьте значение.'},
   promo_amt:{min:'Вы ввели значение ниже допустимого. Установлен минимум — 0,5 часа поиска заказов за выбранный период. Чтобы не учитывать блок, используйте галочку исключения. Проверьте значение.',max:'Вы ввели значение выше допустимого. Установлен максимум — 8 часов в день, 40 часов в неделю или 160 часов в месяц. Проверьте значение.'},
   mgmt_amt:{min:'Вы ввели значение ниже допустимого. Установлен минимум — 1 час управления делом за выбранный период. Проверьте значение.',max:'Вы ввели значение выше допустимого. Установлен максимум — 8 часов в день, 20 часов в неделю или 80 часов в месяц. Проверьте значение.'},
+
   home_rent:{min:'Вы ввели отрицательное значение. Установлен минимум — 0 ₽ в месяц. Проверьте значение.',max:'Вы ввели значение выше допустимого. Установлен максимум — 500 000 ₽ в месяц за жильё. Проверьте значение.'},
   home_util:{min:'Вы ввели отрицательное значение. Установлен минимум — 0 ₽ в месяц. Проверьте значение.',max:'Вы ввели значение выше допустимого. Установлен максимум — 100 000 ₽ в месяц на коммунальные платежи, интернет и связь. Проверьте значение.'},
   home_area:{min:'Вы ввели значение ниже допустимого. Установлен минимум — 1 м² общей площади жилья. Чтобы не учитывать поле, удалите строку крестиком. Проверьте значение.',max:'Вы ввели значение выше допустимого. Установлен максимум — 1 000 м² общей площади жилья. Проверьте значение.'},
@@ -3030,6 +3226,7 @@ Form004:{k:'life',rows:[['Retouch4me Heal',6900,3],['Retouch4me Dodge & Burn',69
 Form013:{k:'life',rows:[['\u041C\u0435\u0431\u0435\u043B\u044C',35000,7],['\u041A\u043E\u0441\u043C\u0435\u0442\u0438\u0447\u0435\u0441\u043A\u0438\u0439 \u0440\u0435\u043C\u043E\u043D\u0442',30000,7]]},
 Form006:{k:'months',rows:[['\u041A\u0443\u0440\u0441 \u043F\u043E \u0444\u043E\u0442\u043E\u0433\u0440\u0430\u0444\u0438\u0438',80000,4]]},
 Form007:{k:'per',rows:[['\u041E\u0431\u0441\u043B\u0443\u0436\u0438\u0432\u0430\u043D\u0438\u0435 \u0441\u0447\u0451\u0442\u0430 (\u0420\u041A\u041E)',0,12],['\u0421\u041C\u0421-\u0443\u0432\u0435\u0434\u043E\u043C\u043B\u0435\u043D\u0438\u044F',150,12]]},
+Form012:{k:'per',rows:[]},
 Form010:{k:'per',rows:[['\u0414\u043E\u043C\u0435\u043D \u0441\u0430\u0439\u0442\u0430',1500,1],['\u0425\u043E\u0441\u0442\u0438\u043D\u0433 \u0441\u0430\u0439\u0442\u0430',6000,1],
 ['\u042F\u043D\u0434\u0435\u043A\u0441 \u0414\u0438\u0440\u0435\u043A\u0442',15000,12],['\u0410\u0432\u0438\u0442\u043E',0,12],['\u0422\u0430\u0440\u0433\u0435\u0442\u0438\u0440\u043E\u0432\u0430\u043D\u043D\u0430\u044F \u0440\u0435\u043A\u043B\u0430\u043C\u0430',0,12],
 ['\u0420\u0430\u0437\u043C\u0435\u0449\u0435\u043D\u0438\u044F \u0443 \u0431\u043B\u043E\u0433\u0435\u0440\u043E\u0432',0,12],['\u041E\u0442\u043A\u043B\u0438\u043A\u0438 \u043D\u0430 Profi.ru',0,12]]}};
@@ -3044,7 +3241,7 @@ function mkRow(f,d,индекс){
   var c=CAT[f],tr=document.createElement('tr');
   var фикс=(НЕСНОСИМЫЕ[f]||[])[индекс];
   var per='<select class="c3"><option value="1">\u0413\u043E\u0434</option><option value="4">\u041A\u0432\u0430\u0440\u0442\u0430\u043B</option><option value="12">\u041C\u0435\u0441\u044F\u0446</option></select>';
-  var описаниеСтоимости=f==='Form001'?'одну позицию съёмочного оборудования':(f==='Form002'?'одну позицию офисного оборудования':(f==='Form003'?'один платёж подписки':(f==='Form004'?'одну купленную программу':(f==='Form013'?'одну позицию обустройства рабочего места':(f==='Form006'?'одну позицию обучения':(f==='Form010'?'один рекламный платёж':(f==='Form007'?'один регулярный банковский платёж':'')))))));
+  var описаниеСтоимости=f==='Form001'?'одну позицию съёмочного оборудования':(f==='Form002'?'одну позицию офисного оборудования':(f==='Form003'?'один платёж подписки':(f==='Form004'?'одну купленную программу':(f==='Form013'?'одну позицию обустройства рабочего места':(f==='Form006'?'одну позицию обучения':(f==='Form010'?'один рекламный платёж':(f==='Form007'?'один регулярный банковский платёж':(f==='Form012'?'один платёж по кредиту':''))))))));
   var максимумСтоимости=(f==='Form003'||f==='Form004'||f==='Form007')?100000:(f==='Form013'?500000:((f==='Form006'||f==='Form010')?1000000:10000000));
   var максимумСтоимостиТекст=(f==='Form003'||f==='Form004'||f==='Form007')?'100 000':(f==='Form013'?'500 000':((f==='Form006'||f==='Form010')?'1 000 000':'10 000 000'));
   var пределСтоимости=описаниеСтоимости?' data-limit-live data-integer min="0" max="'+максимумСтоимости+'" step="100" data-max-message="Вы ввели значение выше допустимого. Установлен максимум — '+максимумСтоимостиТекст+' ₽ за '+описаниеСтоимости+'. Проверьте значение."':'';
@@ -3052,7 +3249,7 @@ function mkRow(f,d,индекс){
   var максимумСрока=f==='Form004'?10:30;
   var пределСрока=категорияСрока?' data-limit-live data-integer min="1" max="'+максимумСрока+'" step="1" data-min-message="Вы ввели значение ниже допустимого. Установлен минимум — 1 год службы '+категорияСрока+'. Проверьте значение." data-max-message="Вы ввели значение выше допустимого. Установлен максимум — '+максимумСрока+' лет службы '+категорияСрока+'. Проверьте значение."':'';
   var пределМесяцев=f==='Form006'?' data-limit-live data-integer min="0" max="60" step="1" data-min-message="Вы ввели отрицательное значение. Установлен минимум — 0 месяцев обучения. Проверьте значение." data-max-message="Вы ввели значение выше допустимого. Установлен максимум — 60 месяцев обучения. Проверьте значение."':'';
-  tr.innerHTML='<td><input type="text" class="c1"'+(фикс?' placeholder="'+фикс+'"':'')+'></td>'+
+  tr.innerHTML='<td><input type="text" class="c1"'+(фикс?' placeholder="'+фикс+'"':(f==='Form012'?' placeholder="Наименование банка"':''))+'></td>'+
    '<td><input type="text" inputmode="numeric" data-money class="c2"'+пределСтоимости+
    (фикс?' placeholder="\u0421\u0442\u043e\u0438\u043c\u043e\u0441\u0442\u044c"':'')+'></td>'+
    '<td>'+(c.k==='per'?per:'<input type="number" inputmode="numeric" class="c3"'+пределСрока+пределМесяцев+'>')+'</td>'+
@@ -3061,6 +3258,9 @@ function mkRow(f,d,индекс){
   tr.querySelector('.c1').value=d[0];
   tr.querySelector('.c2').value=денежнаяСтрока(d[1]);
   tr.querySelector('.c3').value=d[2];
+  /* 16.09 (слово владельца): сроки службы и месяцы обучения — счётчики, как в прайсе. */
+  var жизнь=tr.querySelector('.c3');
+  if(жизнь&&жизнь.tagName==='INPUT'&&(f==='Form001'||f==='Form002'||f==='Form004'||f==='Form013'||f==='Form006'))построитьСчётчик(жизнь);
   /* Удаление строки — тоже изменение блока. События input тут нет,
      поэтому шлём своё: по нему оживает строка «вернуть значения». */
   tr.querySelector('.del').onclick=function(){
@@ -3301,6 +3501,120 @@ function построитьПериод(perId,inpId,максы){
 }
 построитьПериод('mgmt_per','mgmt_amt',{day:8,week:20,month:80});
 построитьПериод('promo_per','promo_amt',{day:8,week:40,month:160});
+
+/* 16.09 (слово владельца): выпадающие списки блока 02 — как в блоке 09 «Управление делом».
+   Тот же вид (.dd/.dd-btn/.dd-menu), меню строится из опций. Плюс прячем пункты,
+   которые скрипт лимитов скрыл или погасил (опция НПД при превышении). */
+function построитьСписок(selId){
+  var per=$(selId);
+  if(!per)return;
+  var об=document.createElement('div'); об.className='dd';
+  per.parentNode.insertBefore(об,per);
+  об.appendChild(per);
+  var кн=document.createElement('button'); кн.type='button';
+  кн.className='dd-btn'; кн.setAttribute('aria-haspopup','listbox');
+  кн.setAttribute('aria-expanded','false');
+  var подп=document.createElement('span'); подп.className='dd-val';
+  var SVGNS='http://www.w3.org/2000/svg';
+  var шев=document.createElementNS(SVGNS,'svg'); шев.setAttribute('class','dd-caret');
+  шев.setAttribute('viewBox','0 0 24 24'); шев.setAttribute('aria-hidden','true');
+  var п=document.createElementNS(SVGNS,'path');
+  п.setAttribute('d','M6 9l6 6 6-6');
+  п.setAttribute('fill','none'); п.setAttribute('stroke','currentColor');
+  п.setAttribute('stroke-width','2.2');
+  п.setAttribute('stroke-linecap','round'); п.setAttribute('stroke-linejoin','round');
+  шев.appendChild(п);
+  кн.appendChild(подп); кн.appendChild(шев);
+  об.appendChild(кн);
+  var меню=document.createElement('ul'); меню.className='dd-menu';
+  меню.setAttribute('role','listbox'); меню.hidden=true;
+  об.appendChild(меню);
+  Array.prototype.forEach.call(per.options,function(o){
+    var li=document.createElement('li');
+    li.setAttribute('role','option'); li.textContent=o.text;
+    li.setAttribute('data-val',o.value);
+    li.addEventListener('click',function(){
+      if(per.disabled||o.disabled||o.hidden)return;
+      per.value=o.value;
+      обновить();
+      per.dispatchEvent(new Event('input',{bubbles:true}));
+      per.dispatchEvent(new Event('change',{bubbles:true}));
+      закрыть();
+    });
+    меню.appendChild(li);
+  });
+  function опция(val){ return per.querySelector('option[value="'+val+'"]'); }
+  function обновить(){
+    var выбр=per.selectedIndex>=0?per.selectedIndex:0;
+    подп.textContent=per.options[выбр].text;
+    Array.prototype.forEach.call(меню.children,function(li){
+      var o=опция(li.getAttribute('data-val'));
+      var плох=o&&(o.disabled||o.hidden);
+      li.hidden=!!плох;
+      li.classList.toggle('sel',!плох&&li.getAttribute('data-val')===per.value);
+    });
+  }
+  function открыть(){
+    if(per.disabled||кн.disabled)return;
+    меню.hidden=false; кн.classList.add('open');
+    кн.setAttribute('aria-expanded','true');
+  }
+  function закрыть(){
+    меню.hidden=true; кн.classList.remove('open');
+    кн.setAttribute('aria-expanded','false');
+  }
+  кн.addEventListener('click',function(){
+    if(меню.hidden)открыть(); else закрыть();
+  });
+  document.addEventListener('click',function(ev){
+    if(!об.contains(ev.target))закрыть();
+  });
+  document.addEventListener('keydown',function(ev){
+    if(ev.key==='Escape')закрыть();
+  });
+  R.addEventListener('defaultsreset',обновить);
+  обновить();
+}
+построитьСписок('regime');
+построитьСписок('npd_who');
+/* 16.09 (слово владельца): счётчики −/+ — как «Длительность, часов» в прайсе.
+   Кнопки читают шаг и пределы из самого поля; тип и обработчики поля не меняются. */
+function построитьСчётчик(поле){
+  if(!поле||поле.closest('.stepper'))return;
+  var об=document.createElement('div'); об.className='stepper';
+  поле.parentNode.insertBefore(об,поле);
+  var минус=document.createElement('button'); минус.type='button'; минус.className='st-dn';
+  минус.setAttribute('aria-label','Меньше'); минус.textContent='−';
+  var плюс=document.createElement('button'); плюс.type='button'; плюс.className='st-up';
+  плюс.setAttribute('aria-label','Больше'); плюс.textContent='+';
+  поле.classList.add('cv');
+  об.appendChild(минус); об.appendChild(поле); об.appendChild(плюс);
+  function шаг(д){
+    if(поле.disabled)return;
+    var s=parseFloat(поле.getAttribute('step')); s=(isFinite(s)&&s>0)?s:1;
+    var тек=число(поле.value);
+    var мин=parseFloat(поле.getAttribute('min')), макс=parseFloat(поле.getAttribute('max'));
+    if(!String(поле.value).trim()&&isFinite(мин))тек=мин;
+    var знач=тек+д*s;
+    if(isFinite(мин))знач=Math.max(мин,знач);
+    if(isFinite(макс))знач=Math.min(макс,знач);
+    var точн=(String(s).split('.')[1]||'').length;
+    поле.value=String(Number(знач.toFixed(точн)));
+    поле.dispatchEvent(new Event('input',{bubbles:true}));
+    поле.dispatchEvent(new Event('change',{bubbles:true}));
+  }
+  минус.addEventListener('click',function(){шаг(-1);});
+  плюс.addEventListener('click',function(){шаг(1);});
+}
+построитьСчётчик($('shoot_manual'));
+построитьСчётчик($('post_ratio'));
+построитьСчётчик($('client_time'));
+построитьСчётчик($('promo_amt'));
+построитьСчётчик($('mgmt_amt'));
+построитьСчётчик($('edu_life'));
+построитьСчётчик($('site_life'));
+построитьСчётчик($('acc_per_quarter'));
+
 /* Единый слой участия каталогов: это условие используют и финансовая
    сумма, и пользовательская детализация report. */
 function каталогИсключён(f){
@@ -3308,6 +3622,7 @@ function каталогИсключён(f){
   if((f==='Form003'||f==='Form004')&&EXC['Form008b'])return true;
   if(f==='Form013'&&EXC['Form009b'])return true;
   if(f==='Form007'&&EXC['Form015b'])return true;
+  if(f==='Form012'&&EXC['Form015b'])return true;
   return false;
 }
 function sumF(f){
@@ -3360,9 +3675,9 @@ function уровни(){
   var кнопки=document.querySelectorAll('#disc_lvls .lvl');
   if(!cb||!пол)return;
   var ТЕКСТ={
-    5:'<b>Скромный резерв.</b> Хватит на скидки постоянным клиентам, но на сертификаты и глубокие ступени за объём денег почти не останется.',
-    10:'<b>Умеренный резерв.</b> Достаточно и для скидок за объём, и для постоянных клиентов, и на несколько подарочных сертификатов.',
-    15:'<b>Полная программа лояльности.</b> Хватит на всё: заметные ступени за объём, скидки постоянным и сертификаты к праздникам.'
+    5:'<b>Скромный резерв:</b> хватит только на точечные скидки постоянным клиентам.',
+    10:'<b>Умеренный резерв:</b> достаточно для скидок за объём, бонусов постоянным клиентам и нескольких подарочных сертификатов.',
+    15:'<b>Достаточный резерв:</b> он даёт свободу настраивать скидки за объём, привлекать клиентов с помощью подарочных сертификатов и предоставлять специальные условия постоянным клиентам.'
   };
   /* Ступени красим по тому же сценарию, что ползунки:
      15% рекомендуем — зелёный, 10% — синий, 5% — жёлтый. */
@@ -3417,6 +3732,7 @@ function подсказкаПрибыли(зн){
   if(!(R>0)||В<=0)return ['st-ok','Хороший запас'];
   var P=В/(R*зн/100);
   if(P>3)return ['st-warn','Риск кассовых разрывов — окупаемость за '+срокОкуп(P)];
+
   if(P>=1)return ['st-mid','Рекомендуемая доля — окупаемость за '+срокОкуп(P)];
   return ['st-ok','Хорошая наценка — окупаемость меньше года'];
 }
@@ -3482,7 +3798,7 @@ function зап(вкл,пол,вых,сост,реком,подсказка){
   var cb=$('fund_on'), fs=$('fund_pct'), cs=$('cushion_pct');
   if(cb)cb.addEventListener('change',function(){
     ФОНД.ручной=true;
-    /* 15.09 (слово владельца): включение доли переключает подушку с
+    /* 15.09 (слово владельца): включение доли переключает буфер с
        «% от выручки» на «% от маржи» — показатель сбрасывается на
        рекомендуемое по умолчанию. */
     if(cb.checked&&cs){
@@ -3493,16 +3809,16 @@ function зап(вкл,пол,вых,сост,реком,подсказка){
   });
   if(fs)fs.addEventListener('input',function(){ФОНД.ручной=true});
 })();
-/* 15.09: подушка безопасности — второй ползунок доли чистой прибыли.
+/* 15.09: буфер ликвидности — второй ползунок доли чистой прибыли.
    Значение ползунка — проценты ОТ МАРЖИ (возврата инвестиций), плашка
    показывает эффективную долю от выручки. Независимая добавка: в расчёт
-   идёт сумма возврата и подушки (см. profitP в calc()).
+   идёт сумма возврата и буфера (см. profitP в calc()).
    15.09 (слово владельца): оформление как у резерва времени на форс-мажоры
    (блок 19, зап()): не заложен — красный, меньше рекомендуемого (30) —
    жёлтый, хороший запас — зелёный; нижняя подпись та же, через состояние(). */
 (function(){
   var cb=$('cushion_on'), sl=$('cushion_pct'), out=$('cushion_out'),
-      st=$('cushion_st'), РЕК=30;
+      st=$('cushion_st'), РЕК=10;
   if(!cb||!sl)return;
   var box=sl.closest('.zap');
   function проц(n){return String(Math.round(n*10)/10).replace('.',',')}
@@ -3510,11 +3826,8 @@ function зап(вкл,пол,вых,сост,реком,подсказка){
     sl.disabled=!cb.checked;
     if(box)box.classList.toggle('on',cb.checked);
     var зн=parseFloat(sl.value)||0;
-    var фВкл=($('fund_on')||{}).checked===true;
-    var баз=parseFloat(($('fund_pct')||{}).value)||0;
-    /* 15.09 (слово владельца): доля отключена — подушка в % от выручки
-       (максимум 100); включена — % от маржи. */
-    var эф=фВкл?зн/100*баз:зн;               /* % от выручки */
+    /* 15.09: буфер — всегда проценты от выручки (максимум 100). */
+    var эф=зн;                               /* % от выручки */
     if(out)out.textContent=проц(эф)+'%';
     var мин=parseFloat(sl.min)||0, макс=parseFloat(sl.max)||100;
     var доля=макс>мин?(зн-мин)/(макс-мин)*100:0;
@@ -3533,6 +3846,7 @@ function зап(вкл,пол,вых,сост,реком,подсказка){
   cb.onchange=function(){обновить();recalc()};
   sl.oninput=function(){обновить();recalc()};
   обновить();
+
 })();
 уровни();
 function обновитьСвоёЖильё(){
@@ -3557,6 +3871,8 @@ var _rgSel=$('regime');
 function ктоВидим(){
   var w=$('npdWho'); if(!w||!_rgSel)return;
   w.style.display=_rgSel.value.indexOf('npd')===0?'grid':'none';
+  /* 16.09 (слово владельца): уведомление про усреднённую ставку — только при НПД. */
+  var nt=$('npdRateNote'); if(nt)nt.style.display=_rgSel.value.indexOf('npd')===0?'':'none';
 }
 if(_rgSel)_rgSel.addEventListener('change',function(){
   /* Ручной выбор отменяет только автоматический сценарий НПД. Если
@@ -3574,12 +3890,18 @@ if(_rgSel)_rgSel.addEventListener('change',function(){
 (function(){
   var cb=$('tax_auto'); if(!cb)return;
   var sel=$('regime'), off=$('tax_off'), card=cb.closest('.card');
+  /* 16.09 (слово владельца): карандаш активной кнопки — как «Редактировать данные» в отчёте. */
+  var КАРАНДАШ='<path d="M4 20h4.2L19 9.2a2.1 2.1 0 0 0 0-3l-1.2-1.2a2.1 2.1 0 0 0-3 0L4 15.8V20Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M13.6 6.4l4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>';
   function обновить(){
     var locked=!!cb.checked, без=off&&off.checked;
     if(card)card.classList.toggle('tax-auto-lock',locked);
     if(sel)sel.disabled=locked||без;
     var w=$('npd_who'); if(w)w.disabled=locked||без;
     if(off)off.disabled=locked;
+    /* 16.09 (слово владельца): активная кнопка — «Выбрать режим вручную» + карандаш. */
+    var кн=cb.closest('.autobtn'), подпись=кн&&кн.querySelector('span'), знак=кн&&кн.querySelector('svg');
+    if(подпись)подпись.textContent=locked?'Настроить режим вручную':'Подбирать режим автоматически';
+    if(знак){ if(locked){ if(!знак.getAttribute('data-avto'))знак.setAttribute('data-avto',знак.innerHTML); знак.innerHTML=КАРАНДАШ; } else if(знак.getAttribute('data-avto'))знак.innerHTML=знак.getAttribute('data-avto'); }
     /* Саму галочку не блокируем: повторный клик отключает автоподбор.
        А кнопки отката пересчитывают себя — в запертом блоке они мертвы. */
     cb.disabled=false;
@@ -3639,6 +3961,7 @@ function calc(){
   var mgmtPer=$('mgmt_per')?$('mgmt_per').value:'week';
   var МНОЖ_ПЕРИОД={day:ND,week:NW,month:MO}[mgmtPer]||NW;
   var mgmt=EXC['FormMgmt']?0:V('mgmt_amt')*МНОЖ_ПЕРИОД; /* 15.09, круг 22: управление делом — тоже стороннее время; ноль, когда блок исключён. 14.09: выбранный период (день/неделя/месяц) участвует в пересчёте */
+
   var self=rad('acc_mode')==='self', accEx=EXC['Form011'];
   var accT=(self&&!accEx)?V('acc_per_quarter')*Q:0;
   var idle=ND*(8-EFF);
@@ -3682,9 +4005,9 @@ function calc(){
   var sdiv=(!siteEx&&siteSelf&&V('site_life')>0&&NT>0)?V('site_hours')/(V('site_life')*NT):0;
 
   var equip=sumF('Form001')+sumF('Form002')+sumF('Form004');
-  var amort=equip+sumF('Form013')+eduY+siteY;
+  var amort=equip+sumF('Form013');
   var accM=(!self&&!accEx)?V('acc_cost_month')*MO:0;
-  var vari=sumF('Form003')+sumF('Form010')+sumF('Form007')+accM+wsY;
+  var vari=sumF('Form003')+sumF('Form010')+sumF('Form007')+sumF('Form012')+accM+wsY;
   var C=amort+vari;
   var Ny=V('income_month')*MO;
   /* Резерв на отпуск: один месячный доход на руки. Не новый расход,
@@ -3696,7 +4019,8 @@ function calc(){
   var acqPart=BANK_ACQ_ON?(V('acq_rate')/100)*(V('acq_share')/100):0;
   var extraBankPart=суммаДопКомиссий()/100;
   var a=EXC['Form015b']?0:acqPart+extraBankPart;
-  /* Чистая прибыль и резерв программы лояльности — два отдельных блока.
+  /* Чистая прибыль и запас на скидку — два отдельных блока.
+
      Оба считаются от выручки, поэтому входят в знаменатель, как эквайринг.
      Флажка «не учитывать» у них нет: галочка сама работает на включение. */
   var discP=CHK('disc_on')?V('disc_pct')/100:0;
@@ -3723,7 +4047,7 @@ function calc(){
      доля выходит делением. Округляем вверх: фактическая окупаемость
      получается чуть короче 3 лет. Пока человек не трогал галку и ползунок
      вручную, ползунок сам встаёт на рекомендацию. */
-  var ВЛОЖ=sumP('Form001')+sumP('Form002')+sumP('Form004')
+  var ВЛОЖ=sumP('Form001')+sumP('Form002')+sumP('Form004')+sumP('Form013')
     +(eduEx?0:(eduSum+eduOpp))+((siteEx||siteSelf)?0:V('site_cost'));
   var ЦЕЛЬ=ВЛОЖ/3, КЗ=1-a-sdiv-discP, РЕКОМ=0;
   if(ЦЕЛЬ>0&&КЗ>0){
@@ -3732,18 +4056,17 @@ function calc(){
   }
   if(!ФОНД.ручной){
     var _фп=$('fund_pct');
+
     if(_фп)_фп.value=String(РЕКОМ);
   }
   ФОНД.инв=ВЛОЖ; ФОНД.реком=РЕКОМ;
   var fundP=CHK('fund_on')?V('fund_pct')/100:0;
-  /* 15.09: подушка безопасности — независимая добавка к доле чистой прибыли.
-     При включённой доле ползунок задаёт проценты ОТ МАРЖИ (возврата
-     инвестиций), в расчёт идёт эффективная доля от выручки: подушка% × маржа%
-     (по умолчанию 30% от 18% = 5,4%; вместе с возвратом — 23,4%).
-     15.09 (слово владельца): при отключённой доле чистая прибыль — только
-     подушка, поэтому она берётся сразу в процентах ОТ ВЫРУЧКИ (максимум 100). */
-  var cushionBase=CHK('fund_on')?V('fund_pct')/100:1;
-  var cushionShare=CHK('cushion_on')?(V('cushion_pct')/100)*cushionBase:0;
+  /* 15.09: буфер ликвидности — независимая добавка к доле чистой прибыли.
+     Ползунок задаёт проценты напрямую ОТ ВЫРУЧКИ (по умолчанию 10%).
+     Связь с возвратом инвестиций убрана решением владельца: резерв
+     на непредвиденное не зависит от скорости окупаемости. */
+  var cushionShare=CHK('cushion_on')?(V('cushion_pct')/100):0;
+
   /* Границы для процентов: эквайринг больше 10 % не берёт ни один банк,
      ползунки чистой прибыли и скидки ограничены 100 и 15 %. Без этих рамок при
      ручной подстановке (30 % + 30 % + 15 %) знаменатель падал до 0,25
@@ -3754,6 +4077,7 @@ function calc(){
   var profitP=fundP+cushionShare;
   discP=Math.min(Math.max(discP,0),0.15);
   var D=1-a-sdiv-profitP-discP;
+
   if(D<0.40)D=0.40;          /* суммарные отчисления — не больше 60 %; 15.09: ползунок прибыли — до 100, пол держит математику, верх шкалы номинален */
   /* --- Налог как честная функция выручки ---
      Раньше база для УСН 15 и АУСН 20 бралась от желаемого дохода
@@ -3805,6 +4129,7 @@ function calc(){
      в конце каждого расчёта (в харнессе реестра ЗАПЫ нет — пропускаем). */
   if(typeof ЗАПЫ!=='undefined'&&ЗАПЫ['fund_pct']&&ЗАПЫ['fund_pct'].обновить)ЗАПЫ['fund_pct'].обновить();
   if(typeof ЗАПЫ!=='undefined'&&ЗАПЫ['cushion_pct']&&ЗАПЫ['cushion_pct'].обновить)ЗАПЫ['cushion_pct'].обновить();
+
   var taxAll=taxOf(R_), aq=R_*a;
   /* «Всего расходов» — утверждённая отдельная группа: Финансовые расходы
      плюс Налоги и Эквайринг. Резервный фонд и компенсация Инвестиционного
@@ -3855,12 +4180,12 @@ function calc(){
   var depShoot=sumF('Form001');            /* съёмочная техника        */
   var depOffice=sumF('Form002');           /* компьютер и периферия    */
   var depSoft=sumF('Form004');             /* плагины разово           */
-  var depEdu=eduY;                         /* обучение по сроку службы */
-  var depSite=siteY;                       /* сайт по сроку службы     */
+  var depEdu=0;                            /* 15.09: обучение не амортизируется, возвращается через маржу */
+  var depSite=0;                           /* 15.09: сайт не амортизируется, возвращается через маржу */
   var depWs=sumF('Form013');               /* обустройство места       */
   var varAds=sumF('Form010');              /* реклама                  */
   var varSoft=sumF('Form003');             /* подписки и сервисы       */
-  var varBank=sumF('Form007');             /* РКО и комиссии           */
+  var varBank=sumF('Form007')+sumF('Form012'); /* РКО, комиссии и платежи по кредиту */
   var varRent=wsY;                         /* аренда и коммунальные    */
   var varAcc=accM;                         /* бухгалтер                */
 
@@ -3954,6 +4279,7 @@ function calc(){
     var мгЕд='ч/'+({day:'день',week:'нед',month:'мес'}[mgmtPer]||'нед');
     отв(9,'Управление делом',V('mgmt_amt'),мгЕд);
   }
+
   позКаталога(10,'Form001'); позКаталога(11,'Form002');
   позКаталога(12,'Form003'); позКаталога(12,'Form004');
   function полеУдалено(id){
@@ -3984,7 +4310,7 @@ function calc(){
     else отв(15,'Сколько вы заплатили за создание сайта',V('site_cost'),'₽');
     отв(15,'За сколько лет окупить вложения в сайт',V('site_life'),'лет');
   }
-  позКаталога(16,'Form010'); позКаталога(17,'Form007');
+  позКаталога(16,'Form010'); позКаталога(17,'Form007'); позКаталога(17,'Form012');
   if(!EXC['Form015b']){
     if(BANK_ACQ_ON){
       отв(17,($('acq_name')&&$('acq_name').value)||'Эквайринг',V('acq_rate'),'%');
@@ -4000,6 +4326,7 @@ function calc(){
   if(CHK('fm_on'))отв(19,'Резерв времени на простой и форс-мажоры',V('fm_pct'),'%');
   if(CHK('disc_on'))отв(20,'Запас на скидку',discP*100,'%');
   if(CHK('fund_on')||CHK('cushion_on'))отв(21,'Чистая прибыль',Math.round(profitP*10000)/100,'%');
+
 
   return{answers:ответы,catalog:позиции,
     frames:framesOut,NT:NT,idle:idle,pool:pool,
@@ -4041,6 +4368,8 @@ function recalc(){
   ['Form001','Form002','Form003','Form004','Form013','Form006','Form007','Form010']
    .forEach(function(f){sumF(f)});
   лимит();
+  /* 16.09: автоподбор и смена по лимиту ставят режим без событий — подписи списков синхронизируем здесь. */
+  R.dispatchEvent(new Event('defaultsreset'));
 }
 
 /* --- Лимиты выручки по режимам, 2026 ---
@@ -4384,6 +4713,7 @@ function reportLink(d,url){
    другое число полей и значения разъедутся по соседним строкам. */
 function saveState(){
   var st={в:5,поля:[],строки:{},комиссии:0,эквайринг:BANK_ACQ_ON}; /* в:5 — 15.09: поиск заказов переведён на число + период, добавился селект promo_per */
+
   R.querySelectorAll('input,select').forEach(function(e){
     st.поля.push((e.type==='checkbox'||e.type==='radio')?(e.checked?1:0):e.value);
   });
@@ -4400,6 +4730,7 @@ function restoreState(){
   /* Снимок прежнего формата не применяем: там ключи по индексу обхода,
      и после любой правки разметки значения встали бы не в свои поля. */
   if(!st||st.в!==5||!st.поля)return false;
+
   /* Сначала приводим таблицы и комиссии к сохранённому виду, потом
      раскладываем значения — обход должен встретить ровно те же поля,
      что были при записи. */
@@ -4526,15 +4857,15 @@ Object.keys(CAT).forEach(function(f){
     кн.onclick=function(){
       if(!ждём){
         кн.classList.add('ask');
-        кн.setAttribute('data-tip','Нажмите ещё раз — все данные сотрутся');
+        кн.setAttribute('data-tip','Нажмите ещё раз для подтверждения');
         ждём=setTimeout(отмена,5000);
         return;
       }
       отмена();
       сбросить();
       try{localStorage.removeItem('phc_state');localStorage.removeItem('phc_report')}catch(e){}
-      if(R.scrollIntoView)R.scrollIntoView({behavior:'smooth',block:'start'});
-      if(window.СЧХТост)СЧХТост('Значения возвращены к исходным');
+      /* 16.09: прокрутка к началу убрана — после сброса остаёмся на месте. */
+      if(window.СЧХТост)СЧХТост('Настройки успешно сброшены до значений по умолчанию');
     };
   });
 })();
@@ -4629,7 +4960,7 @@ function СЧХЖестПлашки(bar){
        в нём уже недоступны, значит и откатывать нечего. Иначе кнопка
        оставалась бы единственным живым элементом выключенного блока.
        15.09: в карточке бывает несколько независимых запов (блок 21 —
-       возврат инвестиций + подушка безопасности): блокируем кнопку,
+       возврат инвестиций + буфер ликвидности): блокируем кнопку,
        только если выключены ВСЕ. */
     var заперт=!!карт&&(карт.classList.contains('off')||карт.classList.contains('taxdim')
                         ||карт.classList.contains('tax-auto-lock'));
@@ -4745,6 +5076,7 @@ function СЧХЖестПлашки(bar){
       share.value=share0;
       list.innerHTML='';
       обновитьОтступыЕдиниц();
+      scope.querySelectorAll('.field-limit-note.on').forEach(function(n){n.textContent='';n.classList.remove('on')});
       перезапереть(scope);
       recalc();
       показКомиссий();
@@ -4826,6 +5158,8 @@ function СЧХЖестПлашки(bar){
         row.classList.remove('field-row-removed');
         row.removeAttribute('aria-hidden');
       });
+      /* 16.09: сброс стирает и предупреждения у полей — иначе висят после отката. */
+      карт.querySelectorAll('.field-limit-note.on').forEach(function(n){n.textContent='';n.classList.remove('on')});
       перезапереть(карт);
       /* состояния, которые ведёт скрипт */
       карт.querySelectorAll('input[type=radio]:checked').forEach(function(r){
@@ -4863,6 +5197,39 @@ var ПОУМОЛЧАНИЮ=(function(){
   });
   return сн;
 })();
+/* 16.09 (слово владельца): кнопки общего сброса в меню зеленеют, пока анкета
+   отличается от значений по умолчанию. Сравнение то же, что у иконок
+   отката блоков: все поля против ПОУМОЛЧАНИЮ + число строк таблиц против CAT.
+   Слушаем ввод, выбор и клики (кнопки «добавить/удалить строку» событий
+   ввода не дают, но клик всплывает уже после их работы). */
+(function(){
+  function грязно(){
+    /* Только поля внутри карточек: поле ссылки «Поделиться» (#shmАдрес)
+       стоит вне карточек и в снимок ПОУМОЛЧАНИЮ не входит. */
+    var т=R.querySelectorAll('.card input,.card select'), i=0;
+if(т.length!==ПОУМОЛЧАНИЮ.length)return true;
+    for(;i<т.length;i++){
+      var e=т[i], v=(e.type==='checkbox'||e.type==='radio')?(e.checked?1:0):e.value;
+if(String(v)!==String(ПОУМОЛЧАНИЮ[i]))return true;
+    }
+    for(var f in CAT){if(!CAT.hasOwnProperty(f))continue;
+      var tb=$('t_'+f);
+if(tb&&tb.querySelectorAll('tr').length!==(CAT[f].rows||[]).length)return true;
+    }
+    return false;
+  }
+  function обновитьЗеленьМеню(){
+    var г=грязно();
+    ['topResetBtn','trustResetBtn'].forEach(function(id){
+      var кн=$(id); if(кн)кн.classList.toggle('on',г);
+    });
+  }
+  R.addEventListener('input',обновитьЗеленьМеню);
+  R.addEventListener('change',обновитьЗеленьМеню);
+  R.addEventListener('click',обновитьЗеленьМеню);
+  R.addEventListener('defaultsreset',обновитьЗеленьМеню);
+  обновитьЗеленьМеню();
+})();
 /* Снимок строк таблиц и всех полей сформирован выше, перед IIFE с
    иконками отката — см. блок после recalc(); объявлять второй раз не нужно. */
 
@@ -4877,6 +5244,7 @@ function применитьСостояния(){
       l.classList.toggle('on',l.querySelector('input').checked)});
   });
   R.querySelectorAll('[data-exc]').forEach(function(cb){применитьИсключение(cb)});
+  if(typeof применитьУправление==='function')применитьУправление();
   ['tax_auto','tax_off'].forEach(function(id){
     var cb=$(id); if(!cb)return; cb.disabled=false;
     cb.dispatchEvent(new Event('change',{bubbles:true}));
@@ -4927,6 +5295,10 @@ function сбросить(){
   применитьСостояния();
   /* 4. сохранённый ответ больше не наш — иначе отчёт покажет старые цифры */
   try{localStorage.removeItem('phc_state');localStorage.removeItem('phc_report')}catch(e){}
+  /* 16.09: общий сброс стирает и предупреждения у полей. */
+  R.querySelectorAll('.field-limit-note.on').forEach(function(n){n.textContent='';n.classList.remove('on')});
+  /* 16.09: общий сброс возвращает и вид кнопки автоподбора (текст + значок). */
+  var ta=$('tax_auto'); if(ta)ta.dispatchEvent(new Event('change',{bubbles:true}));
   recalc();
   /* Погасить локальные иконки отката после общего сброса формы. */
   R.dispatchEvent(new Event('defaultsreset'));
@@ -5511,3 +5883,4 @@ opacity:0;pointer-events:none;transition:opacity .16s}
 })();
 </script>
 <!--СПРАВОЧНИК-КОНЕЦ-->
+ЕЦ-->
