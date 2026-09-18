@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ru"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Счётикс · блок B029 — маржинальная прибыль</title>
+<!-- Вынос из Веб/report.html (REPORT-B029, хост #mpHost, скрипт #mpBody),
+     15.09.2026. Состояние А — уведомление (fundY=0, галка выкл);
+     состояние Б — баннер (fundY=228 000 ₽/год — цифра из примера
+     владельца; круг 20: карточка заменена баннером как плашки B028).
+     CSS — точные копии правил report.html (номера строк на 15.09),
+     палитра ужата до переменных блока. -->
+<style>
+@font-face{font-family:'PHR Prata';font-style:normal;font-weight:400;font-display:swap;
+src:url('../fonts/Prata-Regular.ttf') format('truetype')}
+#phr-root{
+--c-ink:#1A1A1A;--c-gr:#6B7280;--c-gr2:#9CA3AF;--c-ln:#E5E7EB;--c-ln2:#F0F2F5;
+--c-bg:#F5F6F8;--c-surf:#FAFBFC;--c-white:#FFFFFF;
+--c-a-50:#FFFBEF;--c-a-300:#F2C48A;--c-a-400:#F5B301;--c-a-800:#92400E;
+--c-b-300:#8FC7E8;--c-b-400:#5CA8E0;--c-b-600:#2F80C4;
+--ink:var(--c-ink);--gr:var(--c-gr);--r:20px;--sh:0 2px 12px rgba(16,24,40,.06);
+font-family:-apple-system,BlinkMacSystemFont,'SB Sans Text','Segoe UI',Roboto,Arial,sans-serif;
+color:var(--ink);line-height:1.5;-webkit-font-smoothing:antialiased;
+background:linear-gradient(180deg,var(--c-surf) 0%,var(--c-bg) 42%,var(--c-bg) 100%);
+padding:32px clamp(8px,2.5vw,16px) 80px;display:block}
+#phr-root *{box-sizing:border-box;margin:0;padding:0}
+#phr-root{min-width:320px}
+#phr-root .wp{max-width:1080px;margin:0 auto}
+/* только для этого файла: подпись между вариантами (как в 03_блок_скидок) */
+#phr-root .mkh{max-width:1000px;margin:44px auto 14px;font-size:13px;font-weight:700;
+letter-spacing:.08em;text-transform:uppercase;color:var(--c-gr);
+padding-bottom:9px;border-bottom:2px solid var(--c-ln)}
+#phr-root .mkh:first-child{margin-top:0}
+/* --- карточка (report.html:337,356) --- */
+#phr-root .card{background:#fff;border-radius:var(--r);padding:26px 28px;box-shadow:var(--sh);
+margin-bottom:16px;position:relative}
+#phr-root h2.big-h,#phr-root .card>h2{font-size:27px;font-weight:700;letter-spacing:-.025em;line-height:1.18;
+text-align:center;margin:6px 0 10px}
+@media(max-width:700px){#phr-root h2.big-h,#phr-root .card>h2{font-size:22px}}
+/* --- уведомление (report.html:1904-1923) --- */
+#phr-root .logi{position:relative;overflow:hidden;margin-bottom:16px;
+padding:24px 28px 24px 156px;border:1.5px solid #D9EBF7;border-radius:var(--r);
+background:none}
+#phr-root .logii{position:absolute;left:14px;top:50%;transform:translateY(-50%);
+width:118px;height:118px;z-index:0;pointer-events:none}
+#phr-root .logii svg{width:100%;height:100%;display:block}
+#phr-root .logit{position:relative;z-index:1}
+#phr-root .logit > b{display:block;font-size:16px;font-weight:700;letter-spacing:-.015em;
+color:var(--c-ink);line-height:1.3}
+#phr-root .logit span{display:block;font-size:13px;line-height:1.65;
+color:var(--gr);margin-top:6px}
+@media(max-width:700px){
+#phr-root .logi{padding:20px 20px 20px 108px}
+#phr-root .logii{width:82px;height:82px;left:10px}
+#phr-root .logit > b{font-size:15px}}
+@media(max-width:620px){
+#phr-root .logi{display:grid;grid-template-columns:auto 1fr;
+grid-template-areas:"знак заголовок" "текст текст";
+align-items:center;column-gap:12px;row-gap:8px;
+padding:20px 16px;text-align:left}
+#phr-root .logii{grid-area:знак;position:static;transform:none;
+width:44px;height:44px;margin:0;left:auto;top:auto}
+#phr-root .logit{display:contents}
+#phr-root .logit > b{grid-area:заголовок;align-self:center;
+text-align:left;font-size:15.5px}}
+/* --- только B029 (report.html:1567-1569): белая плашка без обводки, серая кнопка --- */
+#phr-root #mpHost .logi{background:var(--c-white);border:none;box-shadow:var(--sh)} /* круг 21: тень как у блоков */
+#phr-root #mpHost .logi .lgwb{color:var(--c-gr)}
+/* --- кнопка-ссылка и ссылка на справочник (report.html:2764-2770,2100-2102) --- */
+#phr-root .lgwb{display:table;margin-top:12px;
+padding:8px 15px;border-radius:12px;border:1px solid var(--c-a-300);
+background:var(--c-white);color:var(--c-a-800);font-size:12.5px;font-weight:700;
+text-decoration:none;transition:background .18s,border-color .18s,transform .12s}
+#phr-root .lgwb:hover{background:var(--c-a-50);border-color:var(--c-a-400)}
+#phr-root .lgwb:active{transform:translateY(1px)}
+@media print{#phr-root .lgwb{display:none}}
+#phr-root .logit .mblink{display:block;font-style:normal;margin-top:8px;font-size:12.5px;line-height:1.5}
+#phr-root .logit .mblink a{color:var(--c-gr2);font-weight:400;text-decoration:none;border-bottom:1px solid var(--c-ln)}
+#phr-root .logit .mblink a:hover{color:var(--c-gr);border-bottom-color:var(--c-gr2)}
+/* --- баннер (report.html:1593-1625,1725-1774; круг 20) --- */
+#phr-root .cnd{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:22px 0 0}
+#phr-root .cnd.nak{grid-template-columns:1fr;margin-top:24px}
+#phr-root .cn{border-radius:var(--r);padding:28px 26px;color:var(--c-white);position:relative;
+height:264px;min-height:264px;display:flex;flex-direction:column;justify-content:space-between;
+box-shadow:var(--sh);overflow:hidden}
+#phr-root .cn>div:last-child{display:flex;flex:1;flex-direction:column;justify-content:flex-end;
+width:100%;position:relative;z-index:1}
+#phr-root .cn:before,#phr-root .cn:after{content:'';position:absolute;border-radius:50%;
+background:rgba(255,255,255,.10);pointer-events:none}
+#phr-root .cn.a:before{right:-36px;top:-42px;width:142px;height:142px}
+#phr-root .cn.a:after{left:-22px;bottom:24px;width:72px;height:72px;background:rgba(255,255,255,.075)}
+#phr-root .cn.a{background:linear-gradient(140deg,var(--c-b-600),var(--c-b-400))}
+#phr-root .cnd.nak .cn{height:auto;min-height:200px;padding:26px 28px;
+justify-content:center}
+#phr-root .cnd.nak .cn .bg{height:auto;margin-top:0;padding-bottom:0;border-bottom:0;
+font-family:'PHR Prata','Times New Roman',serif;
+font-size:27px;font-weight:400;letter-spacing:-.035em;line-height:1;
+color:rgba(255,255,255,.92);font-variant-numeric:tabular-nums;
+align-items:baseline;flex-wrap:wrap}
+#phr-root .cnd.nak .cn .tp{height:auto;margin-top:0;
+font-size:clamp(15px,1.55vw,19px);font-weight:400;letter-spacing:-.015em;
+text-transform:none;line-height:1.5;color:rgba(255,255,255,.96);opacity:1}
+#phr-root .cnd.nak .cn .tpw{align-items:flex-start;flex:0 1 auto}
+#phr-root .cnd.nak .cn .tpw .bg{width:auto;display:block;white-space:nowrap}
+#phr-root .cnd.nak .cn .tpw .bg:after{content:'';display:block;width:100%;
+height:1px;background:rgba(255,255,255,.28);margin:8px 0}
+#phr-root .cnd.nak .cn .tpw .tp{white-space:nowrap}
+/* круг 20: подпись баннера B029 — заголовок целиком (перенос разрешён),
+   шкала цифры на десктопе — как у фото-баннеров, отступы — как у карточки */
+#phr-root #mpHost .cnd.nak{margin:0 0 16px}
+#phr-root .cnd.nak .cn.mp .tpw .tp{white-space:normal}
+@media(min-width:821px){#phr-root .cnd.nak .cn.mp .bg{font-size:clamp(44px,5.2vw,54px)}}
+</style>
+</head><body>
+<div id="phr-root"><div class="wp">
+
+<div class="mkh">Вариант А · галка выключена — уведомление «работает в ноль»</div>
+<div id="mpHost" data-block-id="REPORT-B029" data-block-name="Маржинальная прибыль"><div id="mpBody"><div class="logi"><div class="logii" aria-hidden="true"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="29" fill="var(--c-ln2)"/><g fill="var(--c-gr2)"><circle cx="24" cy="23" r="4.5"/><circle cx="40" cy="41" r="4.5"/><rect x="29.75" y="17" width="4.5" height="30" rx="2.25" transform="rotate(24 32 32)"/></g></svg></div><div class="logit" style="flex:1"><b data-t="rpp_01">Маржинальная прибыль не заложена</b> <span data-t="rpp_02">Ставка покрывает зарплату, расходы и налоги — и ничего сверх. Ваше дело работает в ноль: на развитие и себе не остаётся ничего. <a class="lgwb" href="calc.html#fund_on">Заложить долю маржинальной прибыли</a> <em class="mblink"><a class="спр" href="#спр-97">Что это такое</a></em></span></div></div></div></div>
+
+<div class="mkh">Вариант Б · галка включена — баннер</div>
+<!-- id повторяют вариант А намеренно: это один блок в двух состояниях -->
+<div id="mpHost" data-block-id="REPORT-B029" data-block-name="Маржинальная прибыль"><div id="mpBody"><div class="cnd nak"><div class="cn a mp"><div class="tpw"><div class="bg">228&nbsp;000&nbsp;₽ <span style="font-size:.5em">/ год</span></div><div class="tp">Ваше дело принесёт маржинальную прибыль</div></div></div></div></div></div>
+
+</div></div>
+</body></html>
