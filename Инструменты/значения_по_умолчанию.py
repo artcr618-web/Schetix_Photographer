@@ -314,15 +314,23 @@ for form, data in cat.items():
             annual = cost * factor
         if form in ('Form001', 'Form002'):
             cost_min, cost_max, cost_step = '0', '10000000', '100'
+        elif form == 'Form001b':
+            cost_min, cost_max, cost_step = '0', '10000000', '100'
         elif form in ('Form003', 'Form004', 'Form007'):
             cost_min, cost_max, cost_step = '0', '100000', '100'
         elif form == 'Form013':
             cost_min, cost_max, cost_step = '0', '500000', '100'
+        elif form == 'Form013b':
+            cost_min, cost_max, cost_step = '0', '10000000', '100'
         elif form in ('Form006', 'Form010'):
             cost_min, cost_max, cost_step = '0', '1000000', '100'
         else:
             cost_min, cost_max, cost_step = '', '', ''
         if form in ('Form001', 'Form002', 'Form013') and kind == 'life':
+            term_min, term_max, term_step = '1', '30', '1'
+        elif form == 'Form001b' and kind == 'life':
+            term_min, term_max, term_step = '1', '30', '1'
+        elif form == 'Form013b' and kind == 'life':
             term_min, term_max, term_step = '1', '30', '1'
         elif form == 'Form004' and kind == 'life':
             term_min, term_max, term_step = '1', '10', '1'
