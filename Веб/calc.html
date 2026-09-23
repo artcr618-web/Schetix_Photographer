@@ -775,27 +775,56 @@ min-width:64px;text-align:right;font-variant-numeric:tabular-nums;color:var(--c-
 #phc-root .zap.on.st-bad .zaprow output{color:var(--c-r-700)}
 #phc-root .zap.on.st-warn .zaprow output{color:var(--c-a-600)}
 #phc-root .zap.on.st-mid .zaprow output{color:var(--c-b-500)}
-/* 22.09: в «Проектной работе» оставляем дорожку и −/+ без внешней рамки и заливки.
-   Время — по центру над дорожкой, цифры и мигающие точки по образцу часов обложки.
-   Кнопки −/+ позволяют выбрать ровно минуту даже на короткой дорожке телефона. */
+/* 22.09: дорожка и −/+ остаются без рамки. Только циферблат с подписью «На один проект»
+   помещён в контур на всю ширину: рамка и скругление как у уведомления, без заливки
+   и значка. Цифры компактным обычным шрифтом; мигание точек сохранено. */
 #phc-root .client-time-picker{margin-top:28px}
 #phc-root .client-time-picker .zaprow{margin-top:0;padding-top:0;border-top:0}
 #phc-root .client-time-track{display:flex;align-items:center;gap:12px;flex:1;min-width:0}
-#phc-root .client-time-track input[type=range]{min-width:0;cursor:pointer}
-#phc-root .client-time-step{flex:none;width:40px;height:40px;border:1px solid var(--c-ln);
-border-radius:10px;background:var(--c-white);color:var(--c-ink2);
-font-family:inherit;font-size:20px;font-weight:600;line-height:1;cursor:pointer;transition:border-color .15s}
+/* Голубой — светлый край градиента фона раздела «Время» (--c-b-400). */
+#phc-root .client-time-track input[type=range]{min-width:0;cursor:pointer;--zc:var(--c-b-400)}
+#phc-root .client-time-track input[type=range]::-webkit-slider-thumb{border-color:var(--c-b-400)}
+#phc-root .client-time-track input[type=range]::-moz-range-thumb{border-color:var(--c-b-400)}
+#phc-root .client-time-step{display:flex;align-items:center;justify-content:center;flex:none;
+width:40px;height:40px;padding:0;border:1px solid var(--c-ln);border-radius:10px;
+background:var(--c-white);color:var(--gr);font-family:inherit;font-size:20px;font-weight:600;
+line-height:1;cursor:pointer;transition:border-color .15s}
+/* Видимый центр глифов в системном шрифте лежит на 0,5px ниже центра строки.
+   Отдельный span поднимает только знак, не двигая кнопку относительно дорожки. */
+#phc-root .client-time-step>span{display:block;font:inherit;line-height:1;
+text-box-trim:trim-both;text-box-edge:cap alphabetic;transform:translateY(-.5px)}
 #phc-root .client-time-step:hover:not(:disabled){border-color:var(--c-g-500)}
 #phc-root .client-time-step:focus-visible{outline:2px solid var(--c-g-500);outline-offset:2px}
 #phc-root .client-time-step:disabled{opacity:.4;cursor:default}
-#phc-root .client-time-clock{display:flex;align-items:baseline;justify-content:center;
-gap:10px;margin:0 0 16px;white-space:nowrap;
-font-family:'PHC Prata','Times New Roman',serif;
-font-size:clamp(42px,5.2vw,62px);font-weight:400;font-synthesis:none;
-line-height:1;letter-spacing:-.035em;color:var(--c-ink);font-variant-numeric:tabular-nums}
-@media(max-width:760px){#phc-root .client-time-clock{font-size:clamp(34px,5.7vw,43px)}}
-@media(max-width:620px){#phc-root .client-time-clock{font-size:clamp(28px,7.6vw,36px);gap:8px}}
-@media(max-width:420px){#phc-root .client-time-clock{font-size:clamp(25px,7.5vw,31px)}}
+/* 22.09: центрируем всю группу «время + На один проект», без пустого верхнего ряда.
+   Размер цифр — 32px, как надпись «Условия труда по ТК РФ» (.cn .bg), в том числе
+   на узком экране. Обычное начертание сохраняем; точки выровнены по высоте цифр. */
+#phc-root .client-time-display{display:flex;flex-direction:column;align-items:center;justify-content:center;
+/* Нижний видимый просвет остаётся 22,875px. Верхний увеличен ещё на 20%:
+   22,875px → 27,45px, поэтому верхний padding больше нижнего на 4,575px. */
+width:100%;margin:0 0 14px;padding:25.2px 16px 20.625px;
+border:1px solid var(--c-b-400);border-radius:12px;background:transparent;text-align:center}
+/* Подпись постпродакшна на 1px глубже по рисунку букв; уменьшаем оба базовых
+   отступа на 0,5px, сохраняя те же видимые 27,45px сверху и 22,875px снизу. */
+#phc-root .post-time-picker .client-time-display{padding-top:24.7px;padding-bottom:20.125px}
+#phc-root .client-time-clock{display:flex;align-items:center;justify-content:center;
+gap:6px;margin:0;white-space:nowrap;font-family:inherit;font-size:32px;font-weight:400;
+line-height:1;letter-spacing:normal;color:var(--c-ink);font-variant-numeric:tabular-nums}
+#phc-root [data-time-hours],#phc-root [data-time-minutes]{text-box-trim:trim-both;text-box-edge:cap alphabetic}
+/* Цифры остаются частью циферблата, но теперь редактируются вручную. Фокус
+   обозначаем мягко, не меняя размеры и центровку строки. */
+#phc-root [data-time-hours][contenteditable],#phc-root [data-time-minutes][contenteditable]{
+cursor:text;user-select:text;border-radius:4px;outline:none;caret-color:var(--c-b-600)}
+#phc-root [data-time-hours][contenteditable]:hover,#phc-root [data-time-minutes][contenteditable]:hover{background:var(--c-b-50)}
+#phc-root [data-time-hours][contenteditable]:focus,#phc-root [data-time-minutes][contenteditable]:focus{
+background:var(--c-b-50);box-shadow:0 0 0 3px var(--c-b-100)}
+/* У обычного шрифта видимая подпись имеет на 2,5px больше нижнего поля строки.
+   Сдвиг половины разницы даёт одинаковый видимый просвет до верхней и нижней рамки. */
+#phc-root .client-time-clock,#phc-root .client-time-caption{transform:translateY(1.25px)}
+/* У подписи «На один час съёмки» видимый низ на 1px глубже; компенсируем половину
+   разницы, чтобы и у копии поля просветы рамки были одинаковыми. */
+#phc-root .post-time-picker .client-time-clock,#phc-root .post-time-picker .client-time-caption{transform:translateY(1.75px)}
+#phc-root .client-time-caption{margin-top:4px;font-size:13px;font-weight:400;line-height:1.5;color:var(--c-gr2)}
 
 /* Галочка остаётся зелёной при любом значении: она про «учитывать»,
    а не про то, хватает ли резерва. */
@@ -1603,7 +1632,9 @@ color:var(--c-ink2);font-size:13px;line-height:1.6}
 #phc-root .workmore-law:before{content:'!';position:absolute;left:15px;top:13px;
 width:21px;height:21px;border-radius:50%;display:flex;align-items:center;justify-content:center;
 background:var(--c-b-400);color:var(--c-white);font-size:12px;font-weight:700}
-#phc-root .workmore-law b{color:var(--c-ink2);font-weight:600}
+/* 23.09 (слово владельца): весь текст уведомления, а не только финальная фраза,
+   семантически и визуально отмечен как важная информация. */
+#phc-root .workmore-law strong{color:var(--c-ink2);font-weight:600}
 /* 16.09 (слово владельца): важный комментарий — текст как обычный комментарий, вместо черты — флажок-стрелка на всю высоту комментария с красным градиентом; пенёк 70%, стрелка 30%; выделения красным r-550. */
 #phc-root .zapn.important{position:relative;font-size:12.5px;color:var(--c-gr2);border-left:0;padding-left:21px}
 #phc-root .zapn.important:before{content:'';position:absolute;left:0;top:0;bottom:0;width:13px;background:linear-gradient(140deg,var(--c-r-400),var(--c-r-550));clip-path:polygon(0 0,70% 0,100% 50%,70% 100%,0 100%)}
@@ -2246,8 +2277,10 @@ gap:clamp(7px,.8vw,10px);padding-bottom:.06em}
 #phc-root .hero-time .ht-dots i,#phc-root .client-time-clock .ht-dots i{width:clamp(6px,.62vw,8px);height:clamp(6px,.62vw,8px);
 border-radius:50%;background:rgba(255,255,255,.94);
 animation:ht-пульс 1.6s steps(1,end) infinite}
-/* На светлой карточке точки цвета цифр; на обложке остаются белыми. */
-#phc-root .client-time-clock .ht-dots i{background:currentColor}
+/* На светлой карточке точки цвета цифр и пропорциональны уменьшенному шрифту;
+   размер и цвет точек на обложке не меняются. */
+#phc-root .client-time-clock .ht-dots{gap:.16em;padding-bottom:0}
+#phc-root .client-time-clock .ht-dots i{width:.12em;height:.12em;background:currentColor}
 @keyframes ht-пульс{0%,49%{opacity:1}50%,100%{opacity:.18}}
 @media(prefers-reduced-motion:reduce){
 #phc-root .hero-time .ht-dots i,#phc-root .client-time-clock .ht-dots i{animation:none;opacity:.9}}
@@ -3003,8 +3036,8 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 <div class="workmore-note" data-block-id="CALC-B029" data-block-name="Можно ли работать больше">
 <p class="workmore-q">Можно ли работать больше?</p>
 <p class="workmore-lead">Конечно, если вы сами этого хотите. Дополнительные часы могут помогать быстрее расти или достигать своих целей.</p>
-<div class="workmore-law">
-<p>Если без переработок ваша экономика не сходится, стоит пересмотреть стоимость часа: иначе вы просто <b>создаёте себе рабочее место хуже, чем в найме.</b></p>
+<div class="workmore-law" role="note">
+<p><strong>Но если без переработок ваша экономика не сходится, стоит пересмотреть стоимость часа: иначе вы просто создаёте себе рабочее место хуже, чем в найме.</strong></p>
 </div>
 <p class="zapn">По ТК РФ сверхурочная работа оплачивается <b>не менее чем в 1,5 раза за первые два часа и не менее чем в 2 раза за последующие</b>. Работа в выходные и нерабочие праздничные дни — <b>не менее чем в двойном размере</b>.</p>
 </div>
@@ -3025,7 +3058,21 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 <h2>Время на постпродакшн</h2>
 <p data-t="qd_06" class="hint post-subtitle purpose">Параметр напрямую участвует в формировании стоимости часа, распределении рабочего времени и построении системы ценообразования.</p>
 <div data-t="q_06" class="q">Укажите, сколько времени в среднем вы тратите на подготовку материала за 1 час съёмки.</div>
-<div class="qf focus-field time-field"><input type="number" inputmode="decimal" data-limit-live data-step-live id="post_ratio" value="3" min="0" max="72" step="0.5"><span data-t="un_04" class="un">часа</span></div>
+<!-- 22.09: тот же минутный ползунок, что в «Проектной работе с клиентами».
+     Здесь сохраняем исходные пределы блока 0–72 часа и значение 3 часа. -->
+<div class="client-time-picker post-time-picker">
+<div class="client-time-display">
+<output id="post_ratio_out" class="client-time-clock" for="post_ratio" aria-label="3 часа 00 минут" aria-describedby="post_ratio_caption" aria-live="off"><span data-time-hours contenteditable="plaintext-only" inputmode="numeric" role="spinbutton" aria-label="Часы" spellcheck="false">3</span><span data-t="un_04" data-time-hours-unit hidden>часа</span><span class="ht-dots" aria-hidden="true"><i></i><i></i></span><span data-time-minutes contenteditable="plaintext-only" inputmode="numeric" role="spinbutton" aria-label="Минуты" spellcheck="false">00</span><span data-time-minutes-unit hidden>минут</span></output>
+<div class="client-time-caption" id="post_ratio_caption">На один час съёмки</div>
+</div>
+<div class="zaprow">
+<div class="client-time-track">
+<button type="button" class="client-time-step" data-minute-step="-1" aria-label="Уменьшить время на одну минуту" aria-controls="post_ratio"><span aria-hidden="true">−</span></button>
+<input type="range" id="post_ratio" value="3" min="0" max="72" step="0.016666666666666666" aria-label="Время на постпродакшн" aria-describedby="post_ratio_caption" aria-valuetext="3 часа 00 минут">
+<button type="button" class="client-time-step" data-minute-step="1" aria-label="Увеличить время на одну минуту" aria-controls="post_ratio"><span aria-hidden="true">+</span></button>
+</div>
+</div>
+</div>
 <div data-t="def_06" class="zapn">Мы уже измерили время, затрачиваемое на работу с отснятым материалом, на основе практики профессиональных фотографов и установили результат как значение по умолчанию. Вы можете использовать его или указать собственное.</div>
 <details class="more2 post-details"><summary><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-t="exp_01">Вот какие этапы постпродакшна учтены в значении по умолчанию</span></summary><div class="in2 post-in2">
 <ol class="stage-list">
@@ -3047,17 +3094,21 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 <h2>Проектная работа с клиентами</h2>
 <p class="hint client-subtitle purpose">Параметр напрямую участвует в формировании стоимости часа, распределении рабочего времени и построении системы ценообразования.</p>
 <div class="q">Сколько времени в среднем вы тратите на общение с клиентом и организацию одного уже подтверждённого проекта?</div>
-<!-- 22.09: дорожка без рамки; время Ч:ММ над ней по центру, с точками как на обложке.
-     Минимум и шаг — 1 минута, максимум — прежние 72 часа. В client_time остаются часы,
-     чтобы не менять единицу и порядок сохранённых полей. Названия единиц скрыты:
-     текстовый ключ сохранён для сведения, полное время доступно через aria-label. -->
+<!-- 22.09: циферблат Ч:ММ и подпись «На один проект» в отдельной рамке без заливки;
+     дорожка под ним без рамки. Минимум и шаг — 1 минута, максимум — 24 часа.
+     В client_time остаются часы, чтобы не менять единицу и порядок сохранённых полей.
+     Названия единиц скрыты: текстовый ключ сохранён для сведения,
+     полное время доступно через aria-label. -->
 <div class="client-time-picker">
-<output id="client_time_out" class="client-time-clock" for="client_time" aria-label="1 час 00 минут" aria-live="off"><span id="client_time_hours">1</span><span data-t="un_05" id="client_time_hours_unit" hidden>час</span><span class="ht-dots" aria-hidden="true"><i></i><i></i></span><span id="client_time_minutes">00</span><span id="client_time_minutes_unit" hidden>минут</span></output>
+<div class="client-time-display">
+<output id="client_time_out" class="client-time-clock" for="client_time" aria-label="1 час 00 минут" aria-describedby="client_time_caption" aria-live="off"><span id="client_time_hours" data-time-hours contenteditable="plaintext-only" inputmode="numeric" role="spinbutton" aria-label="Часы" spellcheck="false">1</span><span data-t="un_05" id="client_time_hours_unit" data-time-hours-unit hidden>час</span><span class="ht-dots" aria-hidden="true"><i></i><i></i></span><span id="client_time_minutes" data-time-minutes contenteditable="plaintext-only" inputmode="numeric" role="spinbutton" aria-label="Минуты" spellcheck="false">00</span><span id="client_time_minutes_unit" data-time-minutes-unit hidden>минут</span></output>
+<div class="client-time-caption" id="client_time_caption">На один проект</div>
+</div>
 <div class="zaprow">
 <div class="client-time-track">
-<button type="button" class="client-time-step" data-minute-step="-1" aria-label="Уменьшить время на одну минуту" aria-controls="client_time">−</button>
-<input type="range" id="client_time" value="1" min="0.016666666666666666" max="72" step="0.016666666666666666" aria-label="Время проектной работы с клиентами" aria-valuetext="1 час 00 минут">
-<button type="button" class="client-time-step" data-minute-step="1" aria-label="Увеличить время на одну минуту" aria-controls="client_time">+</button>
+<button type="button" class="client-time-step" data-minute-step="-1" aria-label="Уменьшить время на одну минуту" aria-controls="client_time"><span aria-hidden="true">−</span></button>
+<input type="range" id="client_time" value="1" min="0.016666666666666666" max="24" step="0.016666666666666666" aria-label="Время проектной работы с клиентами" aria-describedby="client_time_caption" aria-valuetext="1 час 00 минут">
+<button type="button" class="client-time-step" data-minute-step="1" aria-label="Увеличить время на одну минуту" aria-controls="client_time"><span aria-hidden="true">+</span></button>
 </div>
 </div>
 </div>
@@ -4142,7 +4193,7 @@ var ТЕКСТЫ_ПРЕДЕЛОВ={
   shutter_life:{min:'Вы ввели значение ниже допустимого. Установлен минимум — 10 000 срабатываний затвора. Проверьте значение.',max:'Вы ввели значение выше допустимого. Установлен максимум — 1 000 000 срабатываний затвора. Проверьте значение.'},
   shoot_manual:{min:'Вы ввели значение ниже допустимого. Установлен минимум — 0,5 часа. Проверьте значение.',max:'Вы ввели значение выше допустимого. Установлен максимум — 72 часа. Проверьте значение.'},
   post_ratio:{min:'Вы ввели отрицательное значение. Установлен минимум — 0 часов постпродакшна. Проверьте значение.',max:'Вы ввели значение выше допустимого. Установлен максимум — 72 часа постпродакшна на один час съёмки. Проверьте значение.'},
-  client_time:{min:'Вы ввели значение ниже допустимого. Установлен минимум — 1 минута работы с клиентом на проект. Чтобы не учитывать блок, используйте галочку исключения. Проверьте значение.',max:'Вы ввели значение выше допустимого. Установлен максимум — 72 часа работы с клиентом на проект. Проверьте значение.'},
+  client_time:{min:'Вы ввели значение ниже допустимого. Установлен минимум — 1 минута работы с клиентом на проект. Чтобы не учитывать блок, используйте галочку исключения. Проверьте значение.',max:'Вы ввели значение выше допустимого. Установлен максимум — 24 часа работы с клиентом на проект. Проверьте значение.'},
   promo_amt:{min:'Вы ввели значение ниже допустимого. Установлен минимум — 0,5 часа поиска заказов за выбранный период. Чтобы не учитывать блок, используйте галочку исключения. Проверьте значение.',max:'Вы ввели значение выше допустимого. Установлен максимум — 8 часов в день, 40 часов в неделю или 160 часов в месяц. Проверьте значение.'},
   mgmt_amt:{min:'Вы ввели значение ниже допустимого. Установлен минимум — 1 час управления делом за выбранный период. Проверьте значение.',max:'Вы ввели значение выше допустимого. Установлен максимум — 8 часов в день, 20 часов в неделю или 80 часов в месяц. Проверьте значение.'},
 
@@ -4827,7 +4878,6 @@ function построитьСчётчик(поле){
   плюс.addEventListener('click',function(){шаг(1);});
 }
 построитьСчётчик($('shoot_manual'));
-построитьСчётчик($('post_ratio'));
 построитьСчётчик($('promo_amt'));
 построитьСчётчик($('mgmt_amt'));
 /* 19.09 (двадцать третье слово владельца): поля площади в ветке «Работаю из дома» оформлены
@@ -4839,14 +4889,15 @@ function построитьСчётчик(поле){
 построитьСчётчик($('acq_share'));
 построитьСчётчик($('acc_per_quarter'));
 
-/* Пользователь видит обычное время, модель получает часы без округления до сотых.
-   Все сдвиги считаем в целых минутах: 59 → 60 автоматически переносит час.
-   Само поле и его место в сохранении прежние; общий и локальный сбросы работают
-   через существующие input/defaultsreset, как у ползунков резервов. */
-(function(){
-  var sl=$('client_time'),out=$('client_time_out');
-  if(!sl||!out)return;
-  var box=sl.closest('.client-time-picker');
+/* Пользователь видит обычное время, модель получает часы. Одна функция обслуживает
+   оба одинаковых поля: проектную работу и постпродакшн. Все сдвиги считаем в целых
+   минутах; общий и локальный сбросы работают через существующие input/defaultsreset. */
+function построитьПолзунокВремени(id){
+  var sl=$(id); if(!sl)return;
+  var box=sl.closest('.client-time-picker'),out=box&&box.querySelector('.client-time-clock');
+  if(!box||!out)return;
+  var часыУзел=box.querySelector('[data-time-hours]'),часыЕдиница=box.querySelector('[data-time-hours-unit]');
+  var минутыУзел=box.querySelector('[data-time-minutes]'),минутыЕдиница=box.querySelector('[data-time-minutes-unit]');
   var меньше=box.querySelector('[data-minute-step="-1"]'),больше=box.querySelector('[data-minute-step="1"]');
   var мин=Math.round(Number(sl.min)*60),макс=Math.round(Number(sl.max)*60);
   function минуты(){return Math.max(мин,Math.min(макс,Math.round(число(sl.value)*60)))}
@@ -4856,30 +4907,68 @@ function построитьСчётчик(поле){
     var чФорма=русскаяФорма(часы,['час','часа','часов']);
     var мФорма=русскаяФорма(остаток,['минута','минуты','минут']);
     var мТекст=(остаток<10?'0':'')+остаток;
-    $('client_time_hours').textContent=часы;
-    $('client_time_hours_unit').textContent=чФорма;
-    $('client_time_minutes').textContent=мТекст;
-    $('client_time_minutes_unit').textContent=мФорма;
+    часыУзел.textContent=часы; часыЕдиница.textContent=чФорма;
+    минутыУзел.textContent=мТекст; минутыЕдиница.textContent=мФорма;
+    часыУзел.setAttribute('aria-valuemin','0');
+    часыУзел.setAttribute('aria-valuemax',String(Math.floor(макс/60)));
+    часыУзел.setAttribute('aria-valuenow',String(часы));
+    минутыУзел.setAttribute('aria-valuemin','0');
+    минутыУзел.setAttribute('aria-valuemax','59');
+    минутыУзел.setAttribute('aria-valuenow',String(остаток));
     var время=часы+' '+чФорма+' '+мТекст+' '+мФорма;
-    sl.setAttribute('aria-valuetext',время);
-    out.setAttribute('aria-label',время);
-    sl.style.setProperty('--zp',((всего-мин)/(макс-мин)*100)+'%');
-    меньше.disabled=sl.disabled||всего<=мин;
-    больше.disabled=sl.disabled||всего>=макс;
+    sl.setAttribute('aria-valuetext',время); out.setAttribute('aria-label',время);
+    sl.style.setProperty('--zp',макс>мин?((всего-мин)/(макс-мин)*100)+'%':'0%');
+    меньше.disabled=sl.disabled||всего<=мин; больше.disabled=sl.disabled||всего>=макс;
   }
-  function сдвинуть(шаг){
-    if(sl.disabled)return;
-    sl.value=String(Math.max(мин,Math.min(макс,минуты()+шаг))/60);
+  function установитьМинуты(всего){
+    sl.value=String(Math.max(мин,Math.min(макс,всего))/60);
     sl.dispatchEvent(new Event('input',{bubbles:true}));
     sl.dispatchEvent(new Event('change',{bubbles:true}));
   }
+  function сдвинуть(шаг){
+    if(sl.disabled)return;
+    установитьМинуты(минуты()+шаг);
+  }
+  function выделитьВсё(узел){
+    var выбор=window.getSelection&&window.getSelection(); if(!выбор)return;
+    var диапазон=document.createRange(); диапазон.selectNodeContents(узел);
+    выбор.removeAllRanges(); выбор.addRange(диапазон);
+  }
+  function редактор(узел,этоЧасы){
+    var отмена=false;
+    узел.addEventListener('focus',function(){
+      отмена=false; setTimeout(function(){выделитьВсё(узел)},0);
+    });
+    узел.addEventListener('beforeinput',function(ev){
+      if(ev.inputType&&ev.inputType.indexOf('delete')===0)return;
+      if(ev.data!==null&&!/^\d+$/.test(ev.data))ev.preventDefault();
+    });
+    узел.addEventListener('input',function(){
+      /* Четыре цифры минут покрывают полный предел 72 часа (4320 минут). */
+      var чисто=узел.textContent.replace(/\D/g,'').slice(0,этоЧасы?3:4);
+      if(узел.textContent!==чисто){узел.textContent=чисто;выделитьВсё(узел)}
+    });
+    узел.addEventListener('keydown',function(ev){
+      if(ev.key==='Enter'){ev.preventDefault();узел.blur()}
+      else if(ev.key==='Escape'){ev.preventDefault();отмена=true;обновить();узел.blur()}
+    });
+    узел.addEventListener('blur',function(){
+      if(отмена){отмена=false;обновить();return}
+      var сыр=узел.textContent.replace(/\D/g,'');
+      if(!сыр){обновить();return}
+      var введено=parseInt(сыр,10),текущее=минуты();
+      /* Минуты можно вводить и больше 59: 75 превратятся в 1 час 15 минут. */
+      установитьМинуты(этоЧасы?введено*60+текущее%60:Math.floor(текущее/60)*60+введено);
+    });
+  }
+  редактор(часыУзел,true); редактор(минутыУзел,false);
   меньше.addEventListener('click',function(){сдвинуть(-1)});
   больше.addEventListener('click',function(){сдвинуть(1)});
-  sl.addEventListener('input',обновить);
-  sl.addEventListener('change',обновить);
-  R.addEventListener('defaultsreset',обновить);
-  обновить();
-})();
+  sl.addEventListener('input',обновить); sl.addEventListener('change',обновить);
+  R.addEventListener('defaultsreset',обновить); обновить();
+}
+построитьПолзунокВремени('post_ratio');
+построитьПолзунокВремени('client_time');
 
 /* Единый слой участия каталогов: это условие используют и финансовая
    сумма, и пользовательская детализация report. */
@@ -5259,7 +5348,7 @@ function calc(){
   var pool=gross-fmT;
   /* Ползунок задаёт целые минуты. Делим их на 60 здесь, чтобы модель не
      наследовала округление дробной строки самим браузером. */
-  var K=V('post_ratio'), cl=EXC['FormClientTime']?0:Math.round(V('client_time')*60)/60, M=1+K;
+  var K=Math.round(V('post_ratio')*60)/60, cl=EXC['FormClientTime']?0:Math.round(V('client_time')*60)/60, M=1+K;
   var S=V('shoot_manual');
   var framesOut=V('frames_out');
   var pt=S*M+cl, py=pt>0?pool/pt:0, sh=py*S, post=sh*K, clT=py*cl;

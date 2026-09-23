@@ -35,6 +35,11 @@ const КАТ    = срез(CJS, 'var CAT={', '\nvar EXC={').replace('\nvar EXC={
 const ФКАТИСКЛ = функция(CJS, 'каталогИсключён');
 const ФКАЛК  = функция(CJS, 'calc')
   + (CJS.includes('function посчитать(') ? '\nvar _кэш=null;\nfunction сброситьКэш(){_кэш=null}\n' + функция(CJS, 'посчитать') : '');
+/* 23.09: parts() опирается на две общие функции разделения fundY на долю
+   чистой прибыли и буфер ликвидности — вырезаем их вместе с parts, иначе
+   харнесс выполнит не настоящий код кольца. */
+const ФБУФ = функция(RJS, 'суммаБуфера');
+const ФПРИБ = функция(RJS, 'суммаЧистойПрибыли');
 const ФПАРТС = функция(RJS, 'parts');
 
 /* --- значения полей формы: берём фактические value= из разметки --- */
@@ -122,6 +127,8 @@ var ФОНД={ручной:true,R:0,инв:0,реком:0};
 function regimeName(rg){ return String(rg) }
 var PROF='\u0444\u043e\u0442\u043e\u0433\u0440\u0430\u0444\u0430';
 ${ФКАЛК}
+${ФБУФ}
+${ФПРИБ}
 ${ФПАРТС}
 var d = calc();
 if(process.env.HARNESS_FOND) d.__фонд={ручной:ФОНД.ручной,R:ФОНД.R,инв:ФОНД.инв,реком:ФОНД.реком};
@@ -129,7 +136,9 @@ d.__parts = parts({NT:d.NT, idle:d.idle, Ny:d.Ny, sh:d.sh, post:d.post, clT:d.cl
   accT:d.accT, fmT:d.fmT, equip:d.equip, promoM:d.promoM, depShoot:d.depShoot, depOffice:d.depOffice,
   depSoft:d.depSoft, depEdu:d.depEdu, depSite:d.depSite, depWs:d.depWs, varAds:d.varAds,
   varSoft:d.varSoft, varBank:d.varBank, varRent:d.varRent, varAcc:d.varAcc,
-  taxAll:d.taxAll, aq:d.aq, fundY:d.fundY, discY:d.discY});
+  taxAll:d.taxAll, aq:d.aq, fundY:d.fundY, discY:d.discY,
+  /* разделение fundY на чистую прибыль и буфер требует R и fundP */
+  R:d.R, fundP:d.fundP});
 console.log(JSON.stringify(d));
 `;
 try { eval(шим); } catch (e) { console.error('ОШИБКА ХАРНЕССА: ' + e.message); process.exit(2); }
