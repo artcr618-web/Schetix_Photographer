@@ -1,21 +1,19 @@
 <!DOCTYPE html>
 <html lang="ru"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Счётикс · блок B029 — маржинальная прибыль</title>
-<!-- Вынос из Веб/report.html (REPORT-B029, хост #mpHost, скрипт #mpBody),
-     15.09.2026. Состояние А — уведомление (fundY=0, галка выкл);
-     состояние Б — баннер (fundY=228 000 ₽/год — цифра из примера
-     владельца; круг 20: карточка заменена баннером как плашки B028).
-     CSS — точные копии правил report.html (номера строк на 15.09),
-     палитра ужата до переменных блока. -->
+<title>Счётикс · баннер B029 — ноль или доход</title>
+<!-- 24.09. Баннер доли чистой прибыли: либо доля не заложена, либо есть доход.
+     Расчётное дело в убыток эта доля не уводит. Сравнение текущей ставки
+     с расчётной — отдельный будущий разбор, не этот баннер. -->
 <style>
 @font-face{font-family:'PHR Prata';font-style:normal;font-weight:400;font-display:swap;
 src:url('../fonts/Prata-Regular.ttf') format('truetype')}
 #phr-root{
---c-ink:#1A1A1A;--c-gr:#6B7280;--c-gr2:#9CA3AF;--c-ln:#E5E7EB;--c-ln2:#F0F2F5;
+--c-ink:#1A1A1A;--c-ink2:#374151;--c-gr:#6B7280;--c-gr2:#9CA3AF;--c-ln:#E5E7EB;--c-ln2:#F0F2F5;
 --c-bg:#F5F6F8;--c-surf:#FAFBFC;--c-white:#FFFFFF;
---c-a-50:#FFFBEF;--c-a-300:#F2C48A;--c-a-400:#F5B301;--c-a-800:#92400E;
---c-b-300:#8FC7E8;--c-b-400:#5CA8E0;--c-b-600:#2F80C4;
+--c-a-50:#FFFBEF;--c-a-200:#FBE3AE;--c-a-300:#F2C48A;--c-a-400:#F5B301;--c-a-600:#C4551F;--c-a-800:#92400E;--c-a-900:#7A5309;
+--c-r-50:#FFF6F6;--c-r-200:#F7D3D3;--c-r-600:#C43D51;--c-r-700:#B91C1C;--c-r-800:#991B1B;--c-r-900:#7F1D1D;
+--c-b-300:#8FC7E8;--c-b-400:#5CA8E0;
 --ink:var(--c-ink);--gr:var(--c-gr);--r:20px;--sh:0 2px 12px rgba(16,24,40,.06);
 font-family:-apple-system,BlinkMacSystemFont,'SB Sans Text','Segoe UI',Roboto,Arial,sans-serif;
 color:var(--ink);line-height:1.5;-webkit-font-smoothing:antialiased;
@@ -23,101 +21,155 @@ background:linear-gradient(180deg,var(--c-surf) 0%,var(--c-bg) 42%,var(--c-bg) 1
 padding:32px clamp(8px,2.5vw,16px) 80px;display:block}
 #phr-root *{box-sizing:border-box;margin:0;padding:0}
 #phr-root{min-width:320px}
-#phr-root .wp{max-width:1080px;margin:0 auto}
-/* только для этого файла: подпись между вариантами (как в 03_блок_скидок) */
-#phr-root .mkh{max-width:1000px;margin:44px auto 14px;font-size:13px;font-weight:700;
-letter-spacing:.08em;text-transform:uppercase;color:var(--c-gr);
-padding-bottom:9px;border-bottom:2px solid var(--c-ln)}
+#phr-root .wp{max-width:920px;margin:0 auto}
+#phr-root .mkh{margin:48px 0 8px;font-size:13px;font-weight:700;letter-spacing:.08em;
+text-transform:uppercase;color:var(--c-gr);padding-bottom:9px;border-bottom:2px solid var(--c-ln)}
 #phr-root .mkh:first-child{margin-top:0}
-/* --- карточка (report.html:337,356) --- */
-#phr-root .card{background:#fff;border-radius:var(--r);padding:26px 28px;box-shadow:var(--sh);
-margin-bottom:16px;position:relative}
-#phr-root h2.big-h,#phr-root .card>h2{font-size:27px;font-weight:700;letter-spacing:-.025em;line-height:1.18;
-text-align:center;margin:6px 0 10px}
-@media(max-width:700px){#phr-root h2.big-h,#phr-root .card>h2{font-size:22px}}
-/* --- уведомление (report.html:1904-1923) --- */
-#phr-root .logi{position:relative;overflow:hidden;margin-bottom:16px;
-padding:24px 28px 24px 156px;border:1.5px solid #D9EBF7;border-radius:var(--r);
-background:none}
-#phr-root .logii{position:absolute;left:14px;top:50%;transform:translateY(-50%);
-width:118px;height:118px;z-index:0;pointer-events:none}
-#phr-root .logii svg{width:100%;height:100%;display:block}
-#phr-root .logit{position:relative;z-index:1}
-#phr-root .logit > b{display:block;font-size:16px;font-weight:700;letter-spacing:-.015em;
-color:var(--c-ink);line-height:1.3}
-#phr-root .logit span{display:block;font-size:13px;line-height:1.65;
-color:var(--gr);margin-top:6px}
-@media(max-width:700px){
-#phr-root .logi{padding:20px 20px 20px 108px}
-#phr-root .logii{width:82px;height:82px;left:10px}
-#phr-root .logit > b{font-size:15px}}
-@media(max-width:620px){
-#phr-root .logi{display:grid;grid-template-columns:auto 1fr;
-grid-template-areas:"знак заголовок" "текст текст";
-align-items:center;column-gap:12px;row-gap:8px;
-padding:20px 16px;text-align:left}
-#phr-root .logii{grid-area:знак;position:static;transform:none;
-width:44px;height:44px;margin:0;left:auto;top:auto}
-#phr-root .logit{display:contents}
-#phr-root .logit > b{grid-area:заголовок;align-self:center;
-text-align:left;font-size:15.5px}}
-/* --- только B029 (report.html:1567-1569): белая плашка без обводки, серая кнопка --- */
-#phr-root #mpHost .logi{background:var(--c-white);border:none;box-shadow:var(--sh)} /* круг 21: тень как у блоков */
-#phr-root #mpHost .logi .lgwb{color:var(--c-gr)}
-/* --- кнопка-ссылка и ссылка на справочник (report.html:2764-2770,2100-2102) --- */
-#phr-root .lgwb{display:table;margin-top:12px;
-padding:8px 15px;border-radius:12px;border:1px solid var(--c-a-300);
-background:var(--c-white);color:var(--c-a-800);font-size:12.5px;font-weight:700;
-text-decoration:none;transition:background .18s,border-color .18s,transform .12s}
-#phr-root .lgwb:hover{background:var(--c-a-50);border-color:var(--c-a-400)}
-#phr-root .lgwb:active{transform:translateY(1px)}
-@media print{#phr-root .lgwb{display:none}}
-#phr-root .logit .mblink{display:block;font-style:normal;margin-top:8px;font-size:12.5px;line-height:1.5}
-#phr-root .logit .mblink a{color:var(--c-gr2);font-weight:400;text-decoration:none;border-bottom:1px solid var(--c-ln)}
-#phr-root .logit .mblink a:hover{color:var(--c-gr);border-bottom-color:var(--c-gr2)}
-/* --- баннер (report.html:1593-1625,1725-1774; круг 20) --- */
-#phr-root .cnd{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:22px 0 0}
-#phr-root .cnd.nak{grid-template-columns:1fr;margin-top:24px}
-#phr-root .cn{border-radius:var(--r);padding:28px 26px;color:var(--c-white);position:relative;
-height:264px;min-height:264px;display:flex;flex-direction:column;justify-content:space-between;
-box-shadow:var(--sh);overflow:hidden}
-#phr-root .cn>div:last-child{display:flex;flex:1;flex-direction:column;justify-content:flex-end;
-width:100%;position:relative;z-index:1}
-#phr-root .cn:before,#phr-root .cn:after{content:'';position:absolute;border-radius:50%;
-background:rgba(255,255,255,.10);pointer-events:none}
-#phr-root .cn.a:before{right:-36px;top:-42px;width:142px;height:142px}
-#phr-root .cn.a:after{left:-22px;bottom:24px;width:72px;height:72px;background:rgba(255,255,255,.075)}
-#phr-root .cn.a{background:linear-gradient(140deg,var(--c-b-600),var(--c-b-400))}
-#phr-root .cnd.nak .cn{height:auto;min-height:200px;padding:26px 28px;
-justify-content:center}
-#phr-root .cnd.nak .cn .bg{height:auto;margin-top:0;padding-bottom:0;border-bottom:0;
-font-family:'PHR Prata','Times New Roman',serif;
-font-size:27px;font-weight:400;letter-spacing:-.035em;line-height:1;
-color:rgba(255,255,255,.92);font-variant-numeric:tabular-nums;
-align-items:baseline;flex-wrap:wrap}
-#phr-root .cnd.nak .cn .tp{height:auto;margin-top:0;
-font-size:clamp(15px,1.55vw,19px);font-weight:400;letter-spacing:-.015em;
-text-transform:none;line-height:1.5;color:rgba(255,255,255,.96);opacity:1}
-#phr-root .cnd.nak .cn .tpw{align-items:flex-start;flex:0 1 auto}
-#phr-root .cnd.nak .cn .tpw .bg{width:auto;display:block;white-space:nowrap}
-#phr-root .cnd.nak .cn .tpw .bg:after{content:'';display:block;width:100%;
-height:1px;background:rgba(255,255,255,.28);margin:8px 0}
-#phr-root .cnd.nak .cn .tpw .tp{white-space:nowrap}
-/* круг 20: подпись баннера B029 — заголовок целиком (перенос разрешён),
-   шкала цифры на десктопе — как у фото-баннеров, отступы — как у карточки */
-#phr-root #mpHost .cnd.nak{margin:0 0 16px}
-#phr-root .cnd.nak .cn.mp .tpw .tp{white-space:normal}
-@media(min-width:821px){#phr-root .cnd.nak .cn.mp .bg{font-size:clamp(44px,5.2vw,54px)}}
+#phr-root .lead{font-size:15px;line-height:1.6;color:var(--c-ink2);margin:0 0 18px}
+#phr-root .lead b{color:var(--c-ink);font-weight:700}
+#phr-root .note{background:#fff;border-radius:16px;box-shadow:var(--sh);padding:18px 20px;margin:0 0 14px}
+#phr-root .note p{font-size:14px;line-height:1.6;color:var(--c-ink2)}
+#phr-root .note p+p{margin-top:8px}
+#phr-root .note b{color:var(--c-ink)}
+#phr-root .when{margin:10px 0 0;font-size:13.5px;line-height:1.55;color:var(--c-gr)}
+#phr-root .when b{color:var(--c-ink2);font-weight:700}
+#phr-root .subline{margin:14px 0 8px;text-align:center}
+#phr-root .subline .h{font-size:22px;font-weight:700;letter-spacing:-.02em;line-height:1.2}
+#phr-root .subline .s{margin-top:5px;font-size:16px;font-weight:600;line-height:1.35}
+#phr-root .subline.zero .s{color:var(--c-a-900)}
+#phr-root .subline.plus .s{color:var(--c-ink)}
+#phr-root .subline.loss .s{color:var(--c-r-800)}
+#phr-root .tag{display:inline-block;margin-top:8px;font-size:12px;font-weight:700;letter-spacing:.04em;
+text-transform:uppercase;color:var(--c-gr)}
+
+#phr-root .cn.mp{position:relative;overflow:hidden;border-radius:var(--r);padding:26px 28px;
+min-height:200px;box-shadow:var(--sh);text-align:center;color:var(--c-white);
+background:#75B7E4;display:flex;flex-direction:column;justify-content:center}
+#phr-root .cn.mp:before,#phr-root .cn.mp:after{content:'';position:absolute;border-radius:50%;pointer-events:none}
+#phr-root .cn.mp:before{right:-36px;top:-42px;width:142px;height:142px;background:rgba(255,255,255,.10)}
+#phr-root .cn.mp:after{left:-22px;bottom:24px;width:72px;height:72px;background:rgba(255,255,255,.075)}
+#phr-root .mp-h,#phr-root .mp-n,#phr-root .mp-d{position:relative;z-index:1}
+#phr-root .cn.mp .mp-h{font-size:clamp(19px,2vw,24px);font-weight:700;letter-spacing:-.02em;line-height:1.3}
+#phr-root .cn.mp .mp-n{margin-top:14px;font-family:'PHR Prata','Times New Roman',serif;
+font-size:clamp(40px,4.8vw,54px);font-weight:400;letter-spacing:-.03em;line-height:1}
+#phr-root .cn.mp .mp-n span{font-size:.4em;letter-spacing:0;color:rgba(255,255,255,.85);margin-left:6px}
+#phr-root .cn.mp .mp-d{margin-top:16px;font-size:13.5px;line-height:1.55;color:rgba(255,255,255,.94)}
+
+#phr-root .mp-warn{position:relative;overflow:hidden;border-radius:var(--r);padding:26px 28px;
+min-height:200px;box-shadow:var(--sh);display:flex;flex-direction:column;justify-content:center;
+background:var(--c-a-50);color:var(--c-a-800)}
+#phr-root .mp-warn:before,#phr-root .mp-warn:after{content:'';position:absolute;border-radius:50%;pointer-events:none;background:var(--c-a-300);opacity:.16}
+#phr-root .mp-warn:before{right:-36px;top:-42px;width:142px;height:142px}
+#phr-root .mp-warn:after{left:-22px;bottom:24px;width:72px;height:72px;opacity:.12}
+#phr-root .mp-warn .mp-h{position:relative;z-index:1;font-size:clamp(19px,2vw,24px);font-weight:700;
+letter-spacing:-.02em;line-height:1.3;color:var(--c-a-900);text-align:center}
+#phr-root .mp-warn .mp-d{position:relative;z-index:1;margin-top:5px;font-size:13.5px;line-height:1.55;
+color:var(--c-a-800);text-align:center}
+#phr-root .mp-badges{position:relative;z-index:1;display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:18px}
+#phr-root .mp-badge{display:flex;align-items:center;gap:12px;min-height:106px;padding:12px 14px;
+border:1px solid var(--c-a-200);border-radius:14px;background:rgba(255,255,255,.5);text-align:left}
+#phr-root .mp-check{display:flex;align-items:center;justify-content:center;width:82px;height:82px;flex:none;color:var(--c-a-600)}
+#phr-root .mp-check svg{width:68px;height:68px;display:block}
+#phr-root .mp-copy{font-size:14.5px;font-weight:600;line-height:1.3;color:var(--c-a-900)}
+#phr-root .lgwb{position:relative;z-index:1;align-self:center;display:table;margin-top:18px;
+padding:8px 15px;border-radius:12px;border:1px solid var(--c-a-300);background:var(--c-white);
+color:var(--c-a-800);font-size:12.5px;font-weight:700;text-decoration:none}
+#phr-root .mp-more{position:relative;z-index:1;margin-top:12px}
+#phr-root .mp-more>summary{display:flex;align-items:center;gap:8px;list-style:none;cursor:pointer;
+color:var(--c-a-800);font-size:12.5px;font-weight:600}
+#phr-root .mp-more>summary::-webkit-details-marker{display:none}
+#phr-root .mp-more>summary svg{margin-left:auto;width:14px;height:14px;flex:none}
+#phr-root .mp-more-body{margin-top:10px;color:var(--c-a-900);font-size:12.5px;line-height:1.65}
+
+#phr-root .mp-loss{background:var(--c-r-50);color:var(--c-r-800)}
+#phr-root .mp-loss:before,#phr-root .mp-loss:after{background:var(--c-r-200);opacity:.7}
+#phr-root .mp-loss .mp-h{color:var(--c-r-900)}
+#phr-root .mp-loss .mp-n{position:relative;z-index:1;margin-top:14px;text-align:center;
+font-family:'PHR Prata','Times New Roman',serif;font-size:clamp(40px,4.8vw,54px);
+font-weight:400;letter-spacing:-.03em;line-height:1;color:var(--c-r-800)}
+#phr-root .mp-loss .mp-n span{font-size:.4em;margin-left:6px;color:var(--c-r-700)}
+#phr-root .mp-loss .mp-d{color:var(--c-r-800)}
+#phr-root .mp-loss .mp-badge{border-color:var(--c-r-200)}
+#phr-root .mp-loss .mp-check{color:var(--c-r-600)}
+#phr-root .mp-loss .mp-copy{color:var(--c-r-900)}
+#phr-root .mp-loss .lgwb{border-color:var(--c-r-200);color:var(--c-r-800)}
+#phr-root .mp-loss .mp-more>summary,#phr-root .mp-loss .mp-more-body{color:var(--c-r-800)}
+#phr-root .sheet{margin-top:28px;background:#fff;border-radius:16px;box-shadow:var(--sh);padding:22px 24px}
+#phr-root .sheet h2{font-size:20px;font-weight:700;letter-spacing:-.02em;margin-bottom:10px}
+#phr-root .sheet p{font-size:14.5px;line-height:1.6;color:var(--c-ink2);margin-bottom:10px}
+#phr-root .sheet p:last-child{margin-bottom:0}
+#phr-root .sheet b{color:var(--c-ink)}
+#phr-root table{width:100%;border-collapse:collapse;margin-top:8px;font-size:13.5px;line-height:1.45}
+#phr-root th,#phr-root td{text-align:left;vertical-align:top;padding:8px 10px;border-bottom:1px solid var(--c-ln)}
+#phr-root th{font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:var(--c-gr);font-weight:700}
+#phr-root td:first-child{font-weight:700;color:var(--c-ink);white-space:nowrap}
+@media(max-width:820px){#phr-root .mp-badges{grid-template-columns:1fr}}
+@media(max-width:640px){
+#phr-root .mp-warn,#phr-root .cn.mp{padding:16px 18px}
+#phr-root .mp-badge{min-height:82px}
+#phr-root .mp-check{width:56px;height:56px}
+#phr-root .mp-check svg{width:46px;height:46px}
+#phr-root td:first-child{white-space:normal}
+}
 </style>
 </head><body>
 <div id="phr-root"><div class="wp">
 
-<div class="mkh">Вариант А · галка выключена — уведомление «работает в ноль»</div>
-<div id="mpHost" data-block-id="REPORT-B029" data-block-name="Маржинальная прибыль"><div id="mpBody"><div class="logi"><div class="logii" aria-hidden="true"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="29" fill="var(--c-ln2)"/><g fill="var(--c-gr2)"><circle cx="24" cy="23" r="4.5"/><circle cx="40" cy="41" r="4.5"/><rect x="29.75" y="17" width="4.5" height="30" rx="2.25" transform="rotate(24 32 32)"/></g></svg></div><div class="logit" style="flex:1"><b data-t="rpp_01">Маржинальная прибыль не заложена</b> <span data-t="rpp_02">Ставка покрывает зарплату, расходы и налоги — и ничего сверх. Ваше дело работает в ноль: на развитие и себе не остаётся ничего. <a class="lgwb" href="calc.html#fund_on">Заложить долю маржинальной прибыли</a> <em class="mblink"><a class="спр" href="#спр-97">Что это такое</a></em></span></div></div></div></div>
+<div class="mkh">Как баннер решает, что показать</div>
+<p class="lead">Баннер смотрит не на одну цифру. <b>Ноль и доход</b> сегодня берутся из доли чистой прибыли, заложенной в расчётную ставку. <b>Убыток</b> в движке уже считается, но из другой величины: из текущей ставки. В живом отчёте третьей ветки ещё нет — ниже она собрана как макет.</p>
+<div class="note">
+<p>В текущем примере галка доли выключена, поэтому баннер нулевой. При этом текущая ставка 6&nbsp;000&nbsp;₽/ч выше точки безубыточности 2&nbsp;572&nbsp;₽/ч, и после затрат остаётся <b>+609&nbsp;829&nbsp;₽</b> за год. Слова «работает в ноль» здесь значат «в расчётную цену прибыль не заложена», а не «дело теряет деньги».</p>
+</div>
 
-<div class="mkh">Вариант Б · галка включена — баннер</div>
-<!-- id повторяют вариант А намеренно: это один блок в двух состояниях -->
-<div id="mpHost" data-block-id="REPORT-B029" data-block-name="Маржинальная прибыль"><div id="mpBody"><div class="cnd nak"><div class="cn a mp"><div class="tpw"><div class="bg">228&nbsp;000&nbsp;₽ <span style="font-size:.5em">/ год</span></div><div class="tp">Ваше дело принесёт маржинальную прибыль</div></div></div></div></div></div>
+<div class="mkh">Ноль · доля чистой прибыли не заложена</div>
+<p class="when"><b>Когда.</b> Галка «Заложить долю чистой прибыли» выключена, либо доля равна нулю. Текущая ставка при этом не убыточна. Цифры на баннере нет — так решено 23.09.</p>
+<div class="subline zero">
+<div class="tag">Строка под блоком «Вы уже вложили»</div>
+<div class="h">Вы уже вложили в своё дело:</div>
+<div class="s">Ваше дело работает в ноль</div>
+</div>
+<div class="mp-warn" role="note">
+<div class="mp-h">Ваше дело работает в ноль</div>
+<div class="mp-d">Доля чистой прибыли не заложена. Ставка покрывает зарплату, расходы и налоги — и ничего сверх.</div>
+<div class="mp-badges">
+<div class="mp-badge"><span class="mp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M9 14 4 9l5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="m3 3 18 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span><span class="mp-copy">Возврат инвестиций невозможен</span></div>
+<div class="mp-badge"><span class="mp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M22 7 13.5 15.5 8.5 10.5 2 17" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 7h6v6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="m3 3 18 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span><span class="mp-copy">Денег на развитие нет</span></div>
+<div class="mp-badge"><span class="mp-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="m3 3 18 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span><span class="mp-copy">Доход как предпринимателя у вас тоже нулевой</span></div>
+</div>
+<a class="lgwb" href="../calc.html#fund_on">Заложить долю чистой прибыли</a>
+<details class="mp-more"><summary><span>Что это такое?</span><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></summary>
+<div class="mp-more-body">Доля чистой прибыли — часть выручки сверх зарплаты, расходов и налогов. Она позволяет вернуть вложенные в дело средства, обеспечить финансовую устойчивость, развиваться и увеличивать личный доход.</div></details>
+</div>
+
+<div class="mkh">Доход · доля заложена в расчётную ставку</div>
+<p class="when"><b>Когда.</b> Галка включена и годовая чистая прибыль больше нуля. Цифра — эта прибыль за год, уже без буфера ликвидности. Сумма на макете примерная: в текущем примере галка выключена, живой цифры нет.</p>
+<div class="subline plus">
+<div class="tag">Строка под блоком «Вы уже вложили»</div>
+<div class="h">Вы уже вложили в своё дело:</div>
+<div class="s">Ваше дело принесёт чистую прибыль</div>
+</div>
+<div class="cn mp">
+<div class="mp-h">Ваше дело принесёт чистую прибыль</div>
+<div class="mp-n">320&nbsp;000&nbsp;₽<span>/ год</span></div>
+<div class="mp-d">Эта сумма останется у вас сверх зарплаты, расходов, налогов и резервов. Вы можете направить её на возврат вложений, развитие дела или дополнительный доход.</div>
+</div>
+
+<div class="mkh">Убыток к этому баннеру не относится</div>
+<p class="when">Слово владельца 24.09. Расчётное дело этой долей в убыток не уходит: оно либо в ноль, либо с доходом. Работает ли человек сейчас в минус — это уже сравнение его текущей ставки с идеальной расчётной. Это отдельный будущий разбор, не баннер доли чистой прибыли.</p>
+
+<div class="sheet">
+<h2>Откуда берутся два состояния</h2>
+<p>Расчётная ставка собирается так, чтобы после вычетов остался желаемый доход. Доля чистой прибыли — один из вычетов: процент от выручки, галка <b>fund_on</b>, ползунок <b>fund_pct</b>. Годовая сумма этой доли и есть цифра синего баннера. Буфер ликвидности в неё не входит: если в старых данных он смешан с долей, скрипт отчёта его отделяет.</p>
+<p>Пока галка выключена, доля равна нулю. Это янтарный баннер «Доля чистой прибыли не заложена». Точка безубыточности считается отдельно и в эту долю не входит.</p>
+<p>Расчётное дело в минус не уходит: ставка подбирается так, чтобы покрыть зарплату, расходы и налоги. Сравнение текущей ставки человека с этой идеальной ставкой — будущий разбор. На баннер B029 его не выводим, даже если в данных есть <b>currentResult</b> и <b>currentIsLoss</b>.</p>
+<table>
+<thead><tr><th>Состояние</th><th>Условие</th><th>Что на баннере</th></tr></thead>
+<tbody>
+<tr><td>Ноль</td><td>Доля не заложена</td><td>Жёлтый баннер без цифры</td></tr>
+<tr><td>Доход</td><td>Доля больше нуля</td><td>Синий баннер и сумма за год</td></tr>
+</tbody>
+</table>
+</div>
 
 </div></div>
 </body></html>
