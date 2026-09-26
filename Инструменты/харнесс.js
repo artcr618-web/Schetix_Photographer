@@ -133,12 +133,12 @@ ${ФПАРТС}
 var d = calc();
 if(process.env.HARNESS_FOND) d.__фонд={ручной:ФОНД.ручной,R:ФОНД.R,инв:ФОНД.инв,реком:ФОНД.реком};
 d.__parts = parts({NT:d.NT, idle:d.idle, Ny:d.Ny, sh:d.sh, post:d.post, clT:d.clT, promo:d.promo,
-  accT:d.accT, fmT:d.fmT, equip:d.equip, promoM:d.promoM, depShoot:d.depShoot, depOffice:d.depOffice,
+  accT:d.accT, fmT:d.fmT, mgmtT:d.mgmtT, equip:d.equip, promoM:d.promoM, depShoot:d.depShoot, depOffice:d.depOffice,
   depSoft:d.depSoft, depEdu:d.depEdu, depSite:d.depSite, depWs:d.depWs, varAds:d.varAds,
-  varSoft:d.varSoft, varBank:d.varBank, varRent:d.varRent, varAcc:d.varAcc,
+  varSoft:d.varSoft, varBank:d.varBank, varRent:d.varRent, varAcc:d.varAcc, varEmp:d.varEmp,
   taxAll:d.taxAll, aq:d.aq, fundY:d.fundY, discY:d.discY,
   /* разделение fundY на чистую прибыль и буфер требует R и fundP */
-  R:d.R, fundP:d.fundP});
+  R:d.R, fundP:d.fundP, workHours:d.workHours, rateWork:d.rateWork, vacY:d.vacY});
 console.log(JSON.stringify(d));
 `;
 try { eval(шим); } catch (e) { console.error('ОШИБКА ХАРНЕССА: ' + e.message); process.exit(2); }

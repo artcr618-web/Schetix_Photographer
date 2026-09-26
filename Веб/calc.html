@@ -114,12 +114,12 @@ margin-bottom:16px;position:relative}
    уже отложил в сторону, причём без подтверждения.
    Мышь отсекается здесь, клавиатура — атрибутом disabled в скрипте
    (функция заперетьБлок), вид кнопки — правилом .card.off .rst-ic ниже. */
-#phc-root .card.off>:not(.card-foot),
+#phc-root .card.off>:not(.card-foot):not(#promoOffNote),
 #phc-root .card.taxdim>:not(.card-foot):not(#taxOffNote){opacity:.65;
 transition:opacity .18s}
-#phc-root .card.off>:not(.card-foot),
+#phc-root .card.off>:not(.card-foot):not(#promoOffNote),
 #phc-root .card.taxdim>:not(.card-foot):not(#taxOffNote){pointer-events:none}
-#phc-root .card.taxdim>#taxOffNote{opacity:1}
+#phc-root .card.taxdim>#taxOffNote,#phc-root .card.off>#promoOffNote{opacity:1}
 #phc-root .card.off>.card-foot,#phc-root .card.taxdim>.card-foot{opacity:1}
 /* Номер блока больше не позиционируется поверх содержимого. До сборки
    нижней строки он скрыт, затем появляется справа в .card-foot. */
@@ -518,6 +518,8 @@ border-radius:12px;padding:12px 16px 12px 48px;margin-top:12px}
 #phc-root .fnote:before{content:'';position:absolute;left:15px;top:12px;width:21px;height:21px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 3.5 2.4 20.5h19.2L12 3.5Z' fill='%23F5B301'/%3E%3Cpath d='M12 9.5v5' stroke='white' stroke-width='2' stroke-linecap='round'/%3E%3Ccircle cx='12' cy='17.5' r='1.15' fill='white'/%3E%3C/svg%3E") center/contain no-repeat}
 #phc-root .fnote.on{display:block}
 #phc-root .fnote b{font-weight:600}
+#phc-root .fnote a{color:inherit;font-weight:600;text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px}
+#phc-root .fnote a:hover{color:var(--c-ink);text-decoration-thickness:2px}
 /* Уведомление «Живу в своём» вынесено из левой колонки вопроса и
    занимает всю доступную ширину верхней части блока 12. */
 #phc-root .ownnote{width:100%;margin-top:9px}
@@ -883,6 +885,11 @@ cursor:help;margin-left:6px;vertical-align:1px}
 #phc-root .exc{color:var(--gr);margin-top:22px;padding-top:18px;border-top:1px solid var(--ln)}
 /* Пока флажок стоит, подпись тоже красная — видно, что блок изъят */
 #phc-root .exc:has(input:checked){color:var(--c-r-700);font-weight:600}
+/* Поиск заказов — делегирование на аутсорс: это развитие, а не изъятие.
+   Галочка зелёная при включении, а не красная — хорошо, человек растёт.
+   В выключенном состоянии — как обычные блоки. */
+#phc-root #c_FormPromoTime .exc input{accent-color:var(--c-g-500)}
+#phc-root #c_FormPromoTime .exc:has(input:checked){color:var(--c-g-800);font-weight:600}
 /* Единая нижняя строка карточки по референсу блока 10. Базово идут 22px
    от последнего объекта до разделителя и 18px от линии до строки. В коротких
    блоках 01–08 первый интервал визуально компенсируется до 28px. Галочка
@@ -3184,6 +3191,8 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 </ol>
 </div></details>
 <div class="post-exclude search-exclude">Если задач больше, увеличьте количество часов или делегируйте их на аутсорс, вынеся оплату сотрудника в регулярные расходы.</div>
+<label class="exc"><input type="checkbox" data-exc="FormPromoTime">Делегирую на аутсорс. Не учитывать в расчёте</label>
+<div class="fnote" id="promoOffNote">При включенной галочке блоки <a href="#c_FormMgmt">«Управление делом» (09)</a> и <a href="#c_Form024">«Наёмные сотрудники» (18)</a> не могут быть нулевыми.</div>
 </div>
 <div class="equipment-market-note section-context-notice search-context-notice">
 <p class="context-notice-title">Поиск заказов — ключевая часть работы фотографа, без которой невозможно обеспечить ни стабильность доходов, ни саму жизнеспособность Вашего дела.</p>
@@ -3905,7 +3914,7 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 <p class="hint purpose">Это ваша страховка на случай непредвиденных точечных трат.</p>
 <div class="zap">
 <div class="zaph">
-<label class="flag"><input type="checkbox" id="cushion_on">Создать буфер ликвидности</label>
+<label class="flag"><input type="checkbox" id="cushion_on" checked>Создать буфер ликвидности</label>
 </div>
 <div class="zapn">Держите на счету несгораемый остаток, чтобы покрывать непредвиденные расходы.</div>
 <div class="zaprow">
@@ -3953,7 +3962,7 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 <div class="qd hint purpose">Заложите в ставку долю чистой прибыли, чтобы вернуть инвестированные в бизнес средства и обеспечить финансовую устойчивость.</div>
 <div class="zap">
 <div class="zaph">
-<label class="flag"><input type="checkbox" id="fund_on">Возврат инвестиций / доля чистой прибыли</label>
+<label class="flag"><input type="checkbox" id="fund_on" checked>Возврат инвестиций / доля чистой прибыли</label>
 </div>
 <div class="qd">По умолчанию выведена ставка, которая позволит окупить ваши вложения за 36 месяцев. Это оптимальный и безопасный срок окупаемости для микробизнеса с быстрой оборачиваемостью.</div>
 <div class="zapn">Рассчитано на основе введённых параметров.</div>
@@ -4411,9 +4420,9 @@ function mkRow(f,d,индекс){
   var c=CAT[f],tr=document.createElement('tr');
   var фикс=(НЕСНОСИМЫЕ[f]||[])[индекс];
   var per='<select class="c3"><option value="1">\u0413\u043E\u0434</option><option value="4">\u041A\u0432\u0430\u0440\u0442\u0430\u043B</option><option value="12">\u041C\u0435\u0441\u044F\u0446</option></select>';
-  var описаниеСтоимости=f==='Form001'?'одну позицию съёмочного оборудования':(f==='Form002'?'одну позицию офисного оборудования':(f==='Form003'?'один платёж подписки':(f==='Form004'?'одну купленную программу':(f==='Form013'?'одну позицию обустройства рабочего места':(f==='Form006'?'одну позицию обучения':(f==='Form010'?'один рекламный платёж':(f==='Form007'?'один регулярный банковский платёж':(f==='Form012'?'один платёж по кредиту':(f==='Form001b'?'одну позицию дополнительного оборудования':(f==='Form013b'?'одну позицию ремонта помещения':''))))))))));
-  var максимумСтоимости=(f==='Form003'||f==='Form004'||f==='Form007')?100000:(f==='Form013'?500000:((f==='Form006'||f==='Form010')?1000000:10000000));
-  var максимумСтоимостиТекст=(f==='Form003'||f==='Form004'||f==='Form007')?'100 000':(f==='Form013'?'500 000':((f==='Form006'||f==='Form010')?'1 000 000':'10 000 000'));
+  var описаниеСтоимости=f==='Form001'?'одну позицию съёмочного оборудования':(f==='Form002'?'одну позицию офисного оборудования':(f==='Form003'?'один платёж подписки':(f==='Form004'?'одну купленную программу':(f==='Form013'?'одну позицию обустройства рабочего места':(f==='Form006'?'одну позицию обучения':(f==='Form010'?'один рекламный платёж':(f==='Form007'?'один регулярный банковский платёж':(f==='Form012'?'один платёж по кредиту':(f==='Form001b'?'одну позицию дополнительного оборудования':(f==='Form013b'?'одну позицию ремонта помещения':(f==='Form024'?'зарплату одного сотрудника':'')))))))))));
+  var максимумСтоимости=(f==='Form003'||f==='Form004'||f==='Form007')?100000:(f==='Form013'||f==='Form024'?500000:((f==='Form006'||f==='Form010')?1000000:10000000));
+  var максимумСтоимостиТекст=(f==='Form003'||f==='Form004'||f==='Form007')?'100 000':(f==='Form013'||f==='Form024'?'500 000':((f==='Form006'||f==='Form010')?'1 000 000':'10 000 000'));
   var пределСтоимости=описаниеСтоимости?' data-limit-live data-integer min="0" max="'+максимумСтоимости+'" step="100" data-max-message="Вы ввели значение выше допустимого. Установлен максимум — '+максимумСтоимостиТекст+' ₽ за '+описаниеСтоимости+'. Проверьте значение."':'';
   var категорияСрока=f==='Form001'?'съёмочного оборудования':(f==='Form002'?'офисного оборудования':(f==='Form004'?'купленной программы':(f==='Form013'?'обустройства рабочего места':(f==='Form001b'?'дополнительного оборудования':(f==='Form013b'?'ремонта помещения':'')))));
   var максимумСрока=f==='Form004'?10:30;
@@ -4634,6 +4643,8 @@ function заперетьБлок(карт,выкл){
   if(!карт)return;
   карт.querySelectorAll('input,select,textarea,button,summary,a[href]').forEach(function(e){
     if(e.closest('.card-foot'))return;
+    if(e.closest('#taxOffNote'))return;
+    if(e.closest('#promoOffNote'))return;
     var своё=('disabled' in e);
     if(выкл){
       if(e.getAttribute('data-lock'))return;
@@ -4666,8 +4677,62 @@ R.querySelectorAll('[data-exc]').forEach(function(cb){
   /* Браузер восстанавливает галочки сам при обычной перезагрузке —
      состояние блока приводим в соответствие сразу, не дожидаясь клика. */
   применитьИсключение(cb);
-  cb.onchange=function(){применитьИсключение(cb);recalc()};
+  cb.onchange=function(){применитьИсключение(cb);проверитьУправление();recalc()};
 });
+/* 24.09, правило владельца: управление — обязательно, если есть сотрудники
+   или любой аутсорс. Вместо красной ошибки просто прячем галочку «Не учитывать»
+   и ставим дефолт 2 ч/нед. Человек не может держать сотрудников, не управляя ими. */
+function проверитьУправление(){
+  try{
+    var hasEmp = !EXC['Form024'];
+    if(hasEmp){
+      try{ hasEmp = sumF('Form024')>0.5; }catch(e){ hasEmp=true; }
+    }
+    var hasOut = !!(EXC['FormClientTime']||EXC['Form011']||EXC['Form010']||EXC['Form014']||EXC['Form006']||EXC['Form008b']||EXC['Form009b']);
+    var promoOut = !!EXC['FormPromoTime'];
+    var mgmtCb = R.querySelector('input[data-exc="FormMgmt"]');
+    var mgmtLabel = mgmtCb ? mgmtCb.closest('label.exc') : null;
+    var mgmtCard = $('c_FormMgmt');
+    var empCb = R.querySelector('input[data-exc="Form024"]');
+    var empLabel = empCb ? empCb.closest('label.exc') : null;
+    var mustManage = hasEmp || hasOut || promoOut;
+    if(mgmtCb && mgmtLabel){
+      if(mustManage){
+        if(mgmtCb.checked){
+          mgmtCb.checked=false;
+          применитьИсключение(mgmtCb);
+        }
+        mgmtLabel.style.display='none';
+        if(mgmtCard) mgmtCard.classList.remove('off');
+      }else{
+        mgmtLabel.style.display='';
+      }
+    }
+    /* Если поиск делегирован — сотрудники обязательны */
+    if(promoOut && empCb && empLabel){
+      if(empCb.checked){
+        empCb.checked=false;
+        применитьИсключение(empCb);
+        try{
+          var tb=$('t_Form024');
+          if(tb && tb.querySelectorAll('tr').length===0){
+            var btn=R.querySelector('[data-add="Form024"]');
+            if(btn) btn.click();
+          }
+        }catch(e){}
+      }
+      empLabel.style.display='none';
+      var empCard=$('c_Form024');
+      if(empCard) empCard.classList.remove('off');
+    }else if(empCb && empLabel && !hasEmp){
+      if(!promoOut){
+        empLabel.style.display='';
+      }
+    }
+  }catch(e){}
+}
+R.addEventListener('change',function(){ setTimeout(проверитьУправление,0); });
+setTimeout(проверитьУправление,100);
 /* 14.09 (слово владельца): период управления делом — день/неделя/месяц.
    Предел поля зависит от выбранного периода. 15.09: нативный select заменён
    на выпадающий список в стиле Canva — теперь и в блоке 08 «Поиск заказов»
@@ -5304,6 +5369,30 @@ if(_rgSel)_rgSel.addEventListener('change',function(){
   обновить();
 })();
 
+/* Поиск заказов — делегирование на аутсорс: жёлтое .fnote как в блоке 02.
+   Показываем предупреждение только когда галочка включена. */
+(function(){
+  var cb=R.querySelector('input[data-exc="FormPromoTime"]'); if(!cb)return;
+  var нот=$('promoOffNote');
+  function обновить(){
+    if(нот)нот.classList.toggle('on',cb.checked);
+  }
+  cb.addEventListener('change',function(){ обновить(); });
+  обновить();
+  /* Кликабельные ссылки на обязательные блоки: плавный скролл + подсветка */
+  if(нот){
+    нот.addEventListener('click',function(e){
+      var a=e.target.closest('a[href^=\"#\"]'); if(!a)return;
+      var id=a.getAttribute('href').slice(1), цель=$(id);
+      if(!цель)return;
+      e.preventDefault();
+      цель.scrollIntoView({behavior:'smooth',block:'center'});
+      цель.classList.add('hl');
+      setTimeout(function(){ цель.classList.remove('hl'); }, 1800);
+    });
+  }
+})();
+
 /* Название режима — из самого списка, чтобы тексты не разъезжались. */
 function regimeName(rg){
   /* Для НПД дописываем ставку и состав заказчиков: в списке остался один
@@ -5380,7 +5469,8 @@ function calc(){
   var equip=sumF('Form001')+sumF('Form001b')+sumF('Form002')+sumF('Form004');
   var amort=equip+sumF('Form013')+sumF('Form013b');
   var accM=(!self&&!accEx)?V('acc_cost_month')*MO:0;
-  var vari=sumF('Form003')+sumF('Form010')+sumF('Form007')+sumF('Form012')+sumF('Form024')+accM+wsY; /* Form024 — наёмные сотрудники (20.09, 44-е слово); снятая галочка включает их в постоянные */
+  var varEmp=sumF('Form024'); /* 28.09 revert: сотрудники — регулярный финансовый расход, внутри vari (решение владельца: inside_vari) */
+  var vari=sumF('Form003')+sumF('Form010')+sumF('Form007')+sumF('Form012')+varEmp+accM+wsY;
   var C=amort+vari;
   var Ny=V('income_month')*MO;
   /* Резерв на отпуск: один месячный доход на руки. Не новый расход,
@@ -5561,6 +5651,7 @@ function calc(){
   var varBank=sumF('Form007')+sumF('Form012'); /* РКО, комиссии и платежи по кредиту */
   var varRent=wsY;                         /* аренда и коммунальные    */
   var varAcc=accM;                         /* бухгалтер                */
+  varEmp=sumF('Form024');                  /* 28.09 revert: сотрудники внутри vari, отдельная строка для детализации */
 
   /* ── величины, которые раньше считались в отчёте и в прототипе
      детализации. Источник правды один: считаем здесь, наружу отдаём
@@ -5754,7 +5845,7 @@ function calc(){
     fundY:goalFund,discY:goalDiscountReserve,fundP:fundP,discP:discP,
     /* разбивка расходов */
     depShoot:depShoot,depOffice:depOffice,depSoft:depSoft,depEdu:depEdu,depSite:depSite,depWs:depWs,
-    varAds:varAds,varSoft:varSoft,varBank:varBank,varRent:varRent,varAcc:varAcc,
+    varAds:varAds,varSoft:varSoft,varBank:varBank,varRent:varRent,varAcc:varAcc,varEmp:varEmp,
     /* параметры модели и сравнение с текущей ставкой */
     NW:NW,K:K,cl:cl,curRate:cur,regime:regimeName(rg),regimeCode:rg,
     clients:($('npd_who')?$('npd_who').value:'mix'),
@@ -5763,7 +5854,7 @@ function calc(){
 function recalc(){
   обновитьСклонения();
   обновитьПодсветкуПолей();
-  ['Form001','Form001b','Form002','Form003','Form004','Form013','Form013b','Form006','Form007','Form010']
+  ['Form001','Form001b','Form002','Form003','Form004','Form013','Form013b','Form006','Form007','Form010','Form012','Form024']
    .forEach(function(f){sumF(f)});
   лимит();
   /* 16.09: автоподбор и смена по лимиту ставят режим без событий — подписи списков синхронизируем здесь. */
@@ -6050,6 +6141,29 @@ function проверитьПоля(){
       return false;
     }
   }
+  /* 24.09, правило владельца: если есть наёмные сотрудники и хоть одна
+     галочка аутсорса включена, управление не может быть нулевым.
+     Наёмные — Form024 (галочка снята = есть сотрудники). Аутсорс — это
+     любая галочка времени/услуги, которую человек делегирует: поиск
+     заказов FormPromoTime, работа с клиентами FormClientTime, бухгалтерия
+     Form011, сайт Form010/Form014 и т.д. */
+  try{
+    var hasEmp = !EXC['Form024'];
+    if(hasEmp){
+      try{ hasEmp = sumF('Form024')>0.5; }catch(e){}
+    }
+    var hasOut = !!(EXC['FormClientTime']||EXC['Form011']||EXC['Form010']||EXC['Form014']||EXC['Form006']);
+    if(hasEmp && EXC['FormMgmt']){
+      if(window.СЧХТост)СЧХТост('У вас есть наёмные сотрудники — время на управление делом не может быть нулевым. Снимите галочку «Не учитывать» в блоке Управление делом.','ошибка');
+      var м=R.querySelector('#c_FormMgmt'); if(м)подсветить(м.querySelector('input')||м);
+      return false;
+    }
+    if(hasEmp && hasOut && EXC['FormMgmt']){
+      if(window.СЧХТост)СЧХТост('При делегировании задач на аутсорс и наличии сотрудников нужно время на управление. Укажите время в блоке Управление делом.','ошибка');
+      var м2=R.querySelector('#c_FormMgmt'); if(м2)подсветить(м2.querySelector('input')||м2);
+      return false;
+    }
+  }catch(e){}
   return true;
 }
 

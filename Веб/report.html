@@ -1606,10 +1606,10 @@ margin-left:-20px;margin-right:-20px}}
 #phr-root #инвестиции{padding-top:22px;padding-bottom:26px;margin-bottom:.6rem}
 /* 24.09 (слово владельца): B029 — над блоком «Как распределяется ваше время»,
    сразу под вложениями. Зазор между блоками 0,6rem. Пустой узел скрыт. */
-#phr-root #mpHost{margin:0 0 46px}
+#phr-root #mpHost{margin:46px 0 46px}
 #phr-root #mpHost:has(#mpBody:empty){display:none;margin:0}
 #phr-root #mpZero:empty{display:none}
-#phr-root #mpZero:not(:empty){margin:0 0 46px}
+#phr-root #mpZero:not(:empty){margin:46px 0 46px}
 #phr-root #mpZero .mp-warn{margin-bottom:0}
 /* 15.09, круг 10 (слово владельца): уведомление маржи — на белой подложке, отдельным блоком (не на фоне). */
 #phr-root #mpHost .logi{background:var(--c-white);border:none;box-shadow:var(--sh)} /* 15.09, круг 21: тень как у блоков — уведомление читается отдельным блоком. */
@@ -2967,14 +2967,18 @@ margin:-2px 0 8px;padding-left:1px;text-align:left}
 border-radius:14px;padding:12px 15px;background:var(--c-surf);position:relative;overflow:hidden}
 #phr-root .lgi .fill{position:absolute;left:0;top:0;bottom:0;opacity:.13;border-radius:14px}
 #phr-root .lgi.zero{opacity:1;background:var(--c-a-50);border:1px dashed var(--c-a-300)}
+#phr-root .lgi.zero.ok-row{background:var(--c-g-50);border-color:var(--c-g-300)}
 #phr-root .lgi.zero .ltx b,#phr-root .lgi.zero .ltx em{color:var(--c-gr)}
+#phr-root .lgi.zero.ok-row .ltx b{color:var(--c-g-900)}
 #phr-root .lgi.zero .ltx i{opacity:1}
 /* З-115 (слово владельца): сама строка-уведомление уже несёт фон и рамку —
    внутреннее предупреждение без рамки и подложки; жёлтый знак «!»
    перенесён в правый верхний угол строки (.zex вместо «не заложено») */
-#phr-root .lgi .note.warn{grid-column:1/-1;z-index:2;margin-top:10px;
+#phr-root .lgi .note.warn,
+#phr-root .lgi .note.ok{grid-column:1/-1;z-index:2;margin-top:10px;
 border:0;background:none;padding:0}
-#phr-root .lgi .note.warn:before{display:none}
+#phr-root .lgi .note.warn:before,
+#phr-root .lgi .note.ok:before{display:none}
 /* Кнопка внутри предупреждения: ведёт к нужному полю анкеты.
    Гамма предупреждения, чтобы не спорить с плашкой. */
 #phr-root .lgwb{display:table;margin-top:12px;
@@ -4321,6 +4325,11 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 <div class="dnsum res" id="dnRes"></div>
 <div class="lgd" id="lg3"></div>
 </div>
+
+<div id="mpHost" data-block-id="REPORT-B029" data-block-name="Доля чистой прибыли"><div id="mpBody"><div class="cnd nak"><div class="cn mp"><div class="mp-h">Ваше дело принесёт чистую прибыль</div><div class="mp-n">775&nbsp;137&nbsp;₽<span>/ год</span></div><div class="mp-d">Эта сумма останется у вас сверх зарплаты, расходов, налогов и резервов. Вы можете направить её на возврат вложений, развитие дела или дополнительный доход.</div></div></div></div></div>
+<div id="mpZero"></div>
+
+
 <!-- ═══ СКОЛЬКО ВЫ ЗАРАБАТЫВАЕТЕ В МЕСЯЦ (REPORT-B030, 08.09, слово
      владельца) — тот же состав ролей, что в блоке 01, но пересчитанный
      на месяц. Доходные секторы покрывают 11 месяцев трат, поэтому
@@ -4396,7 +4405,7 @@ line-height:1.05;color:var(--c-white);margin-top:8px;font-variant-numeric:tabula
 #phr-root .invfig>img{width:100%;display:block}
 @media (max-width:720px){
 #phr-root .invfig{display:grid;grid-template-columns:1fr 1fr;
-grid-template-areas:"t1 t1" "img img" "b1 b2";column-gap:12px;row-gap:24px;margin:6px 0 8px!important}
+grid-template-areas:"t1 t1" "img img" "b1 b2";column-gap:14px;row-gap:14px;margin:14px 0 8px!important}
 #phr-root .invfig>img{grid-area:img;margin:0}
 #phr-root .invfig .cam-chip{position:relative!important;width:auto!important;
 left:auto!important;right:auto!important;top:auto!important;bottom:auto!important;
@@ -4482,8 +4491,7 @@ border:2px solid var(--c-white);transform:translateX(-50%)}
 
 
 </div>
-<div id="mpHost" data-block-id="REPORT-B029" data-block-name="Доля чистой прибыли"><div id="mpBody"></div></div>
-<div id="mpZero"></div>
+
   <div class="card" id="card02" data-block-id="REPORT-B008" data-block-name="Как распределяется время"><div class="bn">06</div>
 <h2 data-t="rh2_09">Как распределяется ваше время</h2>
 <p class="hint" data-t="rhi_09">Структура вашей рабочей недели на основе введённых данных</p>
@@ -4746,7 +4754,7 @@ margin-left:4px;letter-spacing:inherit}
 @media (max-width:720px){
 #phr-root .camfig{display:grid;grid-template-columns:1fr 1fr;
 grid-template-areas:"t1 t2" "img img" "b1 b2";
-column-gap:12px;row-gap:24px;margin:6px 0 8px!important}
+column-gap:14px;row-gap:14px;margin:6px 0 8px!important}
 #phr-root .camfig>img{grid-area:img;margin:0}
 /* Жёстко возвращаем плашки в сетку 2×2 — перекрываем любые inline-стили,
    которые мог оставить перетаскиватель в десктоп-версии. */
@@ -5912,10 +5920,18 @@ var REFD=[
   ZWA[12]=['disc_on','\u0417\u0430\u043b\u043e\u0436\u0438\u0442\u044c \u0440\u0435\u0437\u0435\u0440\u0432 \u043d\u0430 \u0441\u043a\u0438\u0434\u043a\u0443'];
   ZWA[15]=['fm_on','\u0417\u0430\u043b\u043e\u0436\u0438\u0442\u044c \u0440\u0435\u0437\u0435\u0440\u0432 \u043d\u0430 \u0444\u043e\u0440\u0441-\u043c\u0430\u0436\u043e\u0440\u044b'];
   ZWA[17]=['cushion_on','\u0421\u043e\u0437\u0434\u0430\u0442\u044c \u0431\u0443\u0444\u0435\u0440 \u043b\u0438\u043a\u0432\u0438\u0434\u043d\u043e\u0441\u0442\u0438'];
+  ZWA[16]=['c_FormMgmt','\u0417\u0430\u043b\u043e\u0436\u0438\u0442\u044c \u0432\u0440\u0435\u043c\u044f \u043d\u0430 \u0443\u043f\u0440\u0430\u0432\u043b\u0435\u043d\u0438\u0435'];
+  ZWA[4]=['c_Form011','\u0417\u0430\u043b\u043e\u0436\u0438\u0442\u044c \u0432\u0440\u0435\u043c\u044f \u043d\u0430 \u0443\u0447\u0451\u0442'];
+  ZWA[3]=['c_FormPromoTime','\u0417\u0430\u043b\u043e\u0436\u0438\u0442\u044c \u0432\u0440\u0435\u043c\u044f \u043d\u0430 \u043f\u043e\u0438\u0441\u043a \u0437\u0430\u043a\u0430\u0437\u043e\u0432'];
+  ZWA[18]=['c_Form024','\u0417\u0430\u043b\u043e\u0436\u0438\u0442\u044c \u0431\u044e\u0434\u0436\u0435\u0442 \u043d\u0430 \u0441\u043e\u0442\u0440\u0443\u0434\u043d\u0438\u043a\u043e\u0432'];
   ZW[11]='\u0422\u0435\u0445\u043d\u0438\u043a\u0443 \u043f\u0440\u0438\u0434\u0451\u0442\u0441\u044f \u043c\u0435\u043d\u044f\u0442\u044c \u0438\u0437 \u0441\u0432\u043e\u0435\u0433\u043e \u043a\u0430\u0440\u043c\u0430\u043d\u0430 \u0438\u043b\u0438 \u0432 \u043a\u0440\u0435\u0434\u0438\u0442. \u0410\u043c\u043e\u0440\u0442\u0438\u0437\u0430\u0446\u0438\u044f \u043f\u043e\u043a\u0440\u044b\u0432\u0430\u0435\u0442 \u0442\u043e\u043b\u044c\u043a\u043e \u0437\u0430\u043c\u0435\u043d\u0443 \u0442\u043e\u0433\u043e, \u0447\u0442\u043e \u0443\u0436\u0435 \u0435\u0441\u0442\u044c, \u2014 \u043d\u0430 \u043d\u043e\u0432\u043e\u0435 \u0441\u0442\u0435\u043a\u043b\u043e, \u0432\u0442\u043e\u0440\u043e\u0439 \u043a\u043e\u0440\u043f\u0443\u0441 \u0438 \u043e\u0431\u0443\u0447\u0435\u043d\u0438\u0435 \u0434\u0435\u043d\u0435\u0433 \u0432 \u0440\u0430\u0441\u0447\u0451\u0442\u0435 \u043d\u0435\u0442.';
   ZW[12]='\u041b\u044e\u0431\u0430\u044f \u0441\u043a\u0438\u0434\u043a\u0430 \u00ab\u043f\u0440\u043e\u0441\u0442\u043e \u0442\u0430\u043a\u00bb \u0431\u0443\u0434\u0435\u0442 \u0432\u044b\u0447\u0442\u0435\u043d\u0430 \u0438\u0437 \u0432\u0430\u0448\u0435\u0433\u043e \u0434\u043e\u0445\u043e\u0434\u0430. \u041e\u0441\u0442\u0430\u043d\u0435\u0442\u0441\u044f \u0442\u043e\u043b\u044c\u043a\u043e \u0441\u043a\u0438\u0434\u043a\u0430 \u0437\u0430 \u043e\u0431\u044a\u0451\u043c \u2014 \u043e\u043d\u0430 \u043f\u043e\u0441\u0447\u0438\u0442\u0430\u043d\u0430 \u043d\u0438\u0436\u0435 \u0438 \u0431\u0435\u0440\u0451\u0442\u0441\u044f \u0438\u0437 \u043d\u0430\u043a\u043b\u0430\u0434\u043d\u044b\u0445 \u0440\u0430\u0441\u0445\u043e\u0434\u043e\u0432.';
   ZW[15]='\u041e\u0442\u043c\u0435\u043d\u0430 \u0438\u043b\u0438 \u043f\u0435\u0440\u0435\u043d\u043e\u0441 \u0441\u044a\u0451\u043c\u043a\u0438, \u0431\u043e\u043b\u0435\u0437\u043d\u044c, \u0442\u0435\u0445\u043d\u0438\u043a\u0430 \u0432 \u0440\u0435\u043c\u043e\u043d\u0442\u0435 \u2014 \u044d\u0442\u043e\u0442 \u043f\u0440\u043e\u0441\u0442\u043e\u0439 \u043d\u0438\u0447\u0435\u043c \u043d\u0435 \u043f\u043e\u043a\u0440\u044b\u0442. \u0412\u044b\u043f\u0430\u0432\u0448\u0438\u0435 \u0447\u0430\u0441\u044b \u0432\u044b \u043e\u043f\u043b\u0430\u0442\u0438\u0442\u0435 \u0438\u0437 \u0441\u0432\u043e\u0435\u0433\u043e \u043a\u0430\u0440\u043c\u0430\u043d\u0430: \u0440\u0430\u0441\u0445\u043e\u0434\u044b \u0437\u0430 \u043c\u0435\u0441\u044f\u0446 \u043d\u0438\u043a\u0443\u0434\u0430 \u043d\u0435 \u0434\u0435\u043d\u0443\u0442\u0441\u044f, \u0430 \u0432\u044b\u0440\u0443\u0447\u043a\u0438 \u0437\u0430 \u043d\u0438\u0445 \u043d\u0435 \u0431\u0443\u0434\u0435\u0442.';
   ZW[17]='При поломке техники, кассовом разрыве или задержке оплаты непредвиденные расходы придётся покрывать из оборота или личных денег.';
+  ZW[16]='Вы не заложили время на управление делом — стратегию, решения, развитие, управление процессами. Эта работа всё равно делается, но бесплатно: за неё вы ничего не зарабатываете, и она не входит в расчёт ставки. В результате час съёмки стоит дешевле, чем должен.';
+  ZW[4]='Время на учёт, отчётность и документы не заложено. Если вы ведёте учёт сами, это время не оплачивается и не входит в расчёт ставки.';
+  ZW[3]='Поиск заказов делегирован на аутсорс. При включенной галочке «Передаю поиск заказов на аутсорс» обязателен бюджет в блоке <a href="calc.html#c_Form024">«Наёмные сотрудники» (18)</a> и время в блоке <a href="calc.html#c_FormMgmt">«Управление делом» (09)</a>. Дополнительно можно заложить бюджет в <a href="calc.html#c_Form010">«Реклама и продвижение» (10)</a> — без этого заказы не появятся.';
+  ZW[18]='Вы не заложили бюджет на наёмных сотрудников. Если поиск заказов делегирован на аутсорс, эту работу должен делать сотрудник или подрядчик — заложите его зарплату, иначе заказы не появятся.';
   /* З-115 (слово владельца 27.08, ночь): заголовок строки, когда резерв
      не заложен, — «…не заложен», а не «Отложите резерв…». */
   var ZT=[];
@@ -5923,12 +5939,20 @@ var REFD=[
   ZT[12]='\u0420\u0435\u0437\u0435\u0440\u0432 \u043d\u0430 \u0441\u043a\u0438\u0434\u043a\u0443 \u043d\u0435 \u0437\u0430\u043b\u043e\u0436\u0435\u043d';
   ZT[15]='\u0420\u0435\u0437\u0435\u0440\u0432 \u0432\u0440\u0435\u043c\u0435\u043d\u0438 \u043d\u0430 \u0444\u043e\u0440\u0441-\u043c\u0430\u0436\u043e\u0440\u044b \u043d\u0435 \u0437\u0430\u043b\u043e\u0436\u0435\u043d';
   ZT[17]='\u0411\u0443\u0444\u0435\u0440 \u043b\u0438\u043a\u0432\u0438\u0434\u043d\u043e\u0441\u0442\u0438 \u043d\u0435 \u0437\u0430\u043b\u043e\u0436\u0435\u043d';
+  ZT[16]='\u0423\u043f\u0440\u0430\u0432\u043b\u0435\u043d\u0438\u0435 \u0434\u0435\u043b\u043e\u043c \u043d\u0435 \u0437\u0430\u043b\u043e\u0436\u0435\u043d\u043e';
+  ZT[4]='\u0423\u0447\u0451\u0442 \u043d\u0435 \u0437\u0430\u043b\u043e\u0436\u0435\u043d';
+  ZT[3]='Поиск заказов делегирован на аутсорс';
+  ZT[18]='\u041d\u0430\u0451\u043c\u043d\u044b\u0435 \u0441\u043e\u0442\u0440\u0443\u0434\u043d\u0438\u043a\u0438 \u043d\u0435 \u0437\u0430\u043b\u043e\u0436\u0435\u043d\u044b';
   function lgRow(i){
     var w=mx>0?P[i]/mx*100:0, zero=P[i]<0.5;
+    var isPromoOut = (i===3 && zero);
     var col=RESC[i]||CO[i];
-    return '<div class="lgi'+(zero?' zero':'')+'" id="lgr'+i+'" style="--hlc:'+(zero?'var(--c-a-400)':col)+'">'+
+    var hlCol = isPromoOut ? 'var(--c-g-400)' : 'var(--c-a-400)';
+    var lgiClass = isPromoOut ? 'lgi zero ok-row' : 'lgi'+(zero?' zero':'');
+    var noteClass = isPromoOut ? 'note ok lgw' : 'note warn lgw';
+    return '<div class="'+lgiClass+'" id="lgr'+i+'" style="--hlc:'+(zero?hlCol:col)+'">'+
     '<div class="fill" style="--w:'+w.toFixed(1)+'%;width:'+w.toFixed(1)+'%;background:'+col+'"></div>'+
-    '<div class="ltx"><i style="background:'+(zero?'var(--c-a-400)':col)+'"></i><div><b>'+(zero&&ZT[i]?ZT[i]:LB[i])+'</b>'+
+    '<div class="ltx"><i style="background:'+(zero?hlCol:col)+'"></i><div><b>'+(zero&&ZT[i]?ZT[i]:LB[i])+'</b>'+
     (function(){
       /* Вместо пересказа состава — ссылка на пункт справочника.
          Определение живёт в одном месте и не расходится по блокам. */
@@ -5938,14 +5962,16 @@ var REFD=[
         ' \u0421\u043f\u0440\u0430\u0432\u043e\u0447\u043d\u0438\u043a\u0430</a></em>';
       return SUB[i]?'<em>'+SUB[i]+'</em>':'';
     })()+'</div></div>'+
-    '<div class="lvv"><div class="a">'+(zero?'<span class="zex">!</span>':f0(P[i]/d.sh))+'</div>'+
+    '<div class="lvv"><div class="a">'+(zero?'<span class="zex" style="'+(isPromoOut?'background:var(--c-g-500)':'')+'">'+(isPromoOut?'✓':'!')+'</span>':f0(P[i]/d.sh))+'</div>'+
     /* у нулевой строки часы не печатаем: «за 0 минут» — шум (08.09) */
     (HRS[i]!==undefined&&!zero?'<div class="b2">\u0437\u0430 '+чм(HRS[i])+'</div>':'')+
     '</div>'+
-    (zero&&ZW[i]?'<div class="note warn lgw">'+ZW[i]+
+    (zero&&ZW[i]?'<div class="'+noteClass+'">'+ZW[i]+
       /* Кнопка ведёт прямо к нужному полю анкеты — человек может
-         сразу исправить, не разыскивая вопрос вручную. */
-      (ZWA[i]?'<a class="lgwb" href="'+EDIT_URL+'#'+ZWA[i][0]+'">'+ZWA[i][1]+'</a>':'')+
+         сразу исправить, не разыскивая вопрос вручную.
+         Для делегированного поиска (promo=0) кнопку «Заложить время»
+         не показываем — время поиска делегировано, нужны бюджет в 18 и время в 09. */
+      (ZWA[i]&&!isPromoOut?'<a class="lgwb" href="'+EDIT_URL+'#'+ZWA[i][0]+'">'+ZWA[i][1]+'</a>':'')+
       '</div>':'')+
     '</div>';
   }
