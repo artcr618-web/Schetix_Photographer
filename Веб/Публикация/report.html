@@ -1,10 +1,56 @@
+<!-- GENERATED: source=Веб/report.html sha256=d795c8cfb67392c3f7d866d8490763cff153e0a135aeacb39e1e90c91eeaa0bf; command=python3 Инструменты/собрать_публикационный_отчёт.py -->
 <!DOCTYPE html>
 <html lang="ru"><head>
+<!-- PUBLICATION-ONLY: generated from report.html; do not edit directly. -->
+<script>
+/* До разбора body скрываем отчёт, если настоящий расчёт не был передан.
+   Это не даёт статической разметке development-отчёта мелькнуть на экране. */
+(function(){
+  function read(){
+    try{
+      var q=location.search.match(/[?&]data=([^&]+)/);
+      if(q){
+        var byQuery=JSON.parse(decodeURIComponent(escape(atob(decodeURIComponent(q[1])))));
+        if(byQuery&&typeof byQuery==='object')return byQuery;
+      }
+    }catch(e){}
+    try{
+      var raw=localStorage.getItem('phc_report');
+      var byStorage=raw&&JSON.parse(raw);
+      if(byStorage&&typeof byStorage==='object')return byStorage;
+    }catch(e){}
+    return null;
+  }
+  if(!read())document.documentElement.classList.add('phr-no-result');
+})();
+</script>
+<style id="publication-no-result-style">
+#publication-empty{display:none;min-height:100vh;padding:32px 16px;
+  align-items:center;justify-content:center;background:#F6F7F8;
+  color:#202124;font:16px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}
+html.phr-no-result #phr-root,html.phr-no-result .shm,html.phr-no-result .thxm{display:none!important}
+html.phr-no-result #publication-empty{display:flex}
+#publication-empty .publication-empty-card{width:min(100%,620px);padding:36px;
+  border:1px solid #E5E7EB;border-radius:20px;background:#FFF;box-shadow:0 8px 28px rgba(16,24,40,.08);text-align:center}
+#publication-empty h1{margin:0 0 12px;font-size:clamp(25px,4vw,36px);line-height:1.15;letter-spacing:-.025em}
+#publication-empty p{margin:0;color:#667085}
+#publication-empty .publication-empty-action{display:inline-flex;align-items:center;justify-content:center;margin-top:24px;
+  min-height:48px;padding:0 20px;border-radius:12px;background:#1B9331;color:#FFF;text-decoration:none;font-weight:700}
+#publication-empty .publication-empty-action:hover{background:#147B28}
+</style>
+
 
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Счётикс — расчёт стоимости часа</title>
 </head><body>
+<main id="publication-empty" role="main" aria-labelledby="publication-empty-title">
+  <section class="publication-empty-card">
+    <h1 id="publication-empty-title">Сначала рассчитайте свою ставку</h1>
+    <p>Этот отчёт формируется только по результату заполненной анкеты. Вернитесь в калькулятор, заполните данные — и мы покажем ваш персональный результат.</p>
+    <a class="publication-empty-action" href="calc.html">Заполнить анкету</a>
+  </section>
+</main>
 <div id="phr-root" data-page-id="PAGE-REPORT">
 <style>
 #phr-root{
@@ -727,7 +773,6 @@ border:1px solid var(--c-r-200);text-align:left}
 font-size:12.5px;color:var(--gr)}
 #phr-root .slg span{display:flex;align-items:center;gap:6px}
 #phr-root .slg i{width:11px;height:11px;border-radius:3px;display:block;flex:none}
-#phr-root .slg i.log-empty{box-sizing:border-box;background:transparent;border:1.5px solid #F5F6F8}
 /* ═══ БЛОК 06 · 15.09 (слово владельца) ═══
    Легенда — две группы: «Оплачиваемое время» (съёмка) и «Скрытое
    время (не оплачивается напрямую)» (остальные виды). Ниже легенды —
@@ -738,19 +783,13 @@ font-size:12.5px;color:var(--gr)}
 /* 15.09 (слово владельца): легенда — по ячейкам таблицы: начало
    текста первой ячейки (рамка 1px + паддинг 12px = 13px), а не
    по краю карточки. */
-/* Заголовок отделяет легенду от календаря, не меняя смысл самих групп. */
-#phr-root #card02 .slg-h{margin:18px 0 0;padding-left:13px;font-size:15px;
-font-weight:700;line-height:1.35;color:var(--c-gr)}
 #phr-root #card02 .slg{flex-direction:column;align-items:flex-start;gap:8px;
-margin-top:8px;padding-left:13px}
+padding-left:13px}
 #phr-root #card02 .slg .slg-g{display:flex;align-items:center;justify-content:flex-start;
 flex-wrap:wrap;gap:6px 16px}
 /* 15.09 (слово владельца): заголовки групп — тем же цветом, что текст
    самих обозначений (var(--gr)), а не чёрным. */
 #phr-root #card02 .slg .slg-t{font-weight:700;letter-spacing:.01em;color:var(--gr)}
-/* Пояснение к группе — обычным начертанием: жирным остаётся только
-   само название времени, а не его расшифровка в скобках. */
-#phr-root #card02 .slg .slg-note{font-style:normal;font-weight:400;color:var(--gr)}
 /* 15.09 (слово владельца, 3-й круг): формула — не полоска, а баннер в
    языке баннеров документа: зелёный градиент блока 11 .rate-plq
    (радиал 88% 0% + 140deg g-700→g-500, тень плашки), заголовок
@@ -785,11 +824,8 @@ white-space:normal;overflow-wrap:anywhere}
 
 
 
-/* На узком экране нижний отступ уравнен с фактическим верхним:
-   более позднее общее правило .wf-split держит 48 px до баннера,
-   поэтому заголовку таблицы нужны те же 48 px после него. */
-#phr-root .wf-split{margin-top:48px}
-#phr-root #card02 .wt-h{margin-top:48px}
+/* 15.09, круг 6 (слово владельца): таблица ближе к баннеру на ~30% (зазор 48→34px). */
+#phr-root #card02 .wt-h{margin-top:26px}
 #phr-root #card02 .wt-div{margin-top:24px}
 #phr-root #card02 .wrap{--w-имя:142px;--w-знач:104px}
 #phr-root #card02 table.rt td:first-child{white-space:normal;overflow-wrap:break-word;line-height:1.35}}
@@ -1032,10 +1068,7 @@ font-variant-numeric:tabular-nums;letter-spacing:-.025em}
 /* Нижний отступ равен расстоянию от черты с номером до низа обычного
    блока (46px): номера здесь нет, но поле должно совпадать, иначе
    главный блок «недостаёт» до общей сетки. Решение владельца 27.08. */
-/* Вертикальный ритм главного экрана совпадает с CALC-B004/B005:
-   баннер → плашки = 22px, между плашками = 16px, плашки → следующее действие = 22px.
-   Боковые поля отчёта намеренно не меняем: его структура отличается от анкеты. */
-#phr-root .hcards{margin:0;padding:22px 28px 46px}
+#phr-root .hcards{margin:0;padding:20px 28px 46px}
 #phr-root .hcards-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
 gap:16px;width:100%;position:relative;z-index:2}
 #phr-root .hcard{display:flex;flex-direction:column;align-items:flex-start;
@@ -1073,9 +1106,7 @@ font-variant-numeric:tabular-nums}
    при кегле 16px занимает 83px. Держим ряд, поджимая поля и кегль.
    Иконка над цифрой, как на широком экране. */
 @media(min-width:641px) and (max-width:760px){
-/* В calc.html при этой ширине баннер → плашки = 20px, а плашки ещё стоят в ряд с зазором 16px. */
-#phr-root .hcards{padding-top:20px}
-#phr-root .hcards-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+#phr-root .hcards-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
 #phr-root .hcard{padding:16px 14px}
 #phr-root .hcard-icon{width:42px;height:42px;border-radius:12px}
 #phr-root .hcard-icon svg{width:21px;height:21px}
@@ -1089,9 +1120,9 @@ margin:12px 0 8px;padding-bottom:8px}
    и подпись. Поля ужаты с 28/26px до 14/12px — на узком экране
    пиксель нужен содержимому, а не воздуху. */
 @media(max-width:640px){
-/* 621–640px: как у calc.html после его 760px-ступени. Боковые поля свои. */
-#phr-root .hcards{padding:20px clamp(8px,2.5vw,16px) 50px}
-#phr-root .hcards-grid{gap:16px}
+/* Верхний отступ 22px: плашки прилипали к зелёному баннеру. */
+#phr-root .hcards{padding:22px clamp(8px,2.5vw,16px) 50px}
+#phr-root .hcards-grid{gap:10px}
 #phr-root .hcard{display:grid;grid-template-columns:auto 1fr;
 grid-template-rows:auto auto;column-gap:14px;row-gap:2px;
 align-items:center;padding:14px 16px}
@@ -1103,12 +1134,6 @@ min-height:0;font-size:23px;margin:0;padding-bottom:6px;
 border-bottom:1px solid rgba(255,255,255,.24)}
 #phr-root .hcard-text{grid-column:2;align-self:start;
 font-size:12px;line-height:1.4;padding-top:5px}}
-/* На телефоне calc.html переходит на ритм 18 / 12 / 18px. */
-@media(max-width:620px){
-#phr-root .hcards{padding-top:18px}
-#phr-root .hcards-grid{gap:12px}
-#phr-root .hcards .savebar.top{margin-top:18px}
-}
 
 #phr-root .ex .exm:before{content:'';position:absolute;left:0;top:7px;
 width:9px;height:9px;border-radius:2px;transform:rotate(45deg);
@@ -1624,18 +1649,7 @@ margin-left:-20px;margin-right:-20px}}
    остальных (блок «Вы уже вложили», решение владельца 07.09). */
 #phr-root .card.plain{background:none;box-shadow:none}
 /* 15.09 (слово владельца): .bn удалён — нижний отступ блока 09 подтянут до симметрии с верхом (26px). Низ блока: 26+16=42. */
-/* Блок лежит прямо на фоне страницы, поэтому горизонтальных полей
-   белой карточки у него нет: заголовок, сцена и баннер идут от края
-   до края рабочей колонки, как самостоятельные блоки .накоп. */
-#phr-root #инвестиции{padding:22px 0 26px;margin-bottom:.6rem}
-/* REPORT-B024: положительная окупаемость — самостоятельный баннер того
-   же языка, что «Отложите в резерв». Он не является шапкой карточки,
-   поэтому скруглён со всех сторон; сцена вложений и баннер начинаются
-   на одной полной ширине рабочей колонки. */
-#phr-root #инвестиции .invfig{margin:26px 0 14px}
-#phr-root #инвПлашка.dnsum.res{margin:26px 0 0;border-radius:var(--r)}
-#phr-root #инвПлашка.inv-payback-warn{margin:26px 0 0}
-@media(max-width:600px){#phr-root #инвПлашка.dnsum.res{margin-left:0;margin-right:0}}
+#phr-root #инвестиции{padding-top:22px;padding-bottom:26px;margin-bottom:.6rem}
 /* 27.09 (слово владельца): B029 стоит сразу после главного экрана,
    над блоком «Из чего складывается ваша цена». Пустой узел скрыт. */
 #phr-root #mpHost{margin:46px 0 46px}
@@ -3507,16 +3521,8 @@ letter-spacing:-.01em;padding:24px 28px 24px 56px;margin-top:16px}
 @media(max-width:700px){#phr-root .note.warn.lg{font-size:15px;padding:18px 18px 18px 46px}
 #phr-root .note.warn.lg:before{left:16px;top:19px;width:19px;height:19px;font-size:11px}}
 
-/* ---------- календарная матрица B008 ----------
-   Один короткий план — одна неделя. Длинный заказ разворачивает тот же
-   календарь в несколько компактных недельных сеток: это единая видимая
-   матрица, не страницы и не свайп. */
-#phr-root .wk{margin-top:6px}
-#phr-root .wk-plan{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px}
-#phr-root .wk-week{display:grid;grid-template-columns:58px repeat(5,1fr);gap:7px;align-content:start}
-#phr-root .wk-week:before{content:attr(data-week);grid-column:1/-1;text-align:center;
-font-size:12px;font-weight:700;color:var(--c-gr);letter-spacing:.02em;margin-bottom:1px}
-#phr-root .wk-week:first-child:before{display:none}
+/* ---------- неделя ---------- */
+#phr-root .wk{display:grid;grid-template-columns:58px repeat(5,1fr);gap:7px;margin-top:6px}
 #phr-root .wk .hd{font-size:12px;color:var(--gr);text-align:center;font-weight:600;
 padding-bottom:6px;letter-spacing:.02em}
 #phr-root .wk .hr{font-size:11px;color:var(--c-gr3);text-align:right;padding-right:10px;
@@ -3547,9 +3553,7 @@ padding:0 4px;text-align:center;line-height:1.15;overflow:hidden}
    Ниже — только цветовые обозначения; что означает каждый цвет,
    расшифровывает легенда .slg под сеткой. */
 @media(max-width:519px){#phr-root .wk i span{display:none}}
-@media(max-width:700px){
-#phr-root .wk-plan{grid-template-columns:1fr;gap:14px}
-#phr-root .wk-week{grid-template-columns:44px repeat(5,1fr);gap:5px}
+@media(max-width:700px){#phr-root .wk{grid-template-columns:44px repeat(5,1fr);gap:5px}
 #phr-root .wk i{height:30px;border-radius:12px}
 #phr-root .wk .hr{line-height:30px;font-size:10px}}
 
@@ -3806,7 +3810,7 @@ white-space:normal}
    иначе оно сбрасывает нижнее поле. */
 #phr-root .card{padding:20px 20px 78px}
 #phr-root .bn{left:20px;right:20px;bottom:20px;padding-top:16px}
-#phr-root .wk-week{grid-template-columns:42px repeat(5,1fr)}
+#phr-root .wk{grid-template-columns:42px repeat(5,1fr)}
 #phr-root .nmg{grid-template-columns:1fr}
 #phr-root .scn .g{grid-template-columns:1fr 1fr}
 #phr-root .npd .g{grid-template-columns:1fr}
@@ -4205,31 +4209,6 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 @media(prefers-reduced-motion:reduce){.thx-искра{display:none}}
 
 
-
-/* B030 · нулевое направление — полноценное предупреждение, а не обычная
-   доходная плашка. Это правило стоит после mobile-градиентов намеренно:
-   жёлтое состояние должно сохраняться и на телефоне. */
-#phr-root .monfig .cam-chip.mon-zero{
-  background:var(--c-a-50)!important;
-  border:1.5px dashed var(--c-a-400)!important;
-  box-shadow:none!important;
-}
-#phr-root .monfig .cam-chip.mon-zero .cc-h{color:var(--c-a-900)!important}
-#phr-root .monfig .cam-chip.mon-zero .cc-v{color:var(--c-a-800)!important;
-  border-bottom-color:var(--c-a-300)!important}
-#phr-root .monfig .cam-chip.mon-zero .cc-d{color:var(--c-a-800)!important}
-#phr-root .monfig .cam-chip .mon-zero-link{
-  display:inline-flex;align-items:center;justify-content:center;gap:4px;
-  max-width:100%;color:var(--c-a-800)!important;text-decoration:none!important;
-  font:inherit;font-weight:700;line-height:1.22;
-}
-#phr-root .monfig .cam-chip .mon-zero-link:hover{color:var(--c-a-900)!important;
-  text-decoration:underline!important}
-#phr-root .monfig .cam-chip .mon-zero-link svg{
-  display:block;width:13px!important;height:13px!important;min-width:13px;
-  max-width:13px;max-height:13px;flex:0 0 13px;stroke:currentColor;
-}
-
 </style>
 
 <div class="wp">
@@ -4320,6 +4299,7 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 <div id="mpHost" data-block-id="REPORT-B029" data-block-name="Доля чистой прибыли"><div id="mpBody"><div class="cnd nak"><div class="cn mp"><div class="mp-h">Ваше дело принесёт чистую прибыль</div><div class="mp-n">775&nbsp;137&nbsp;₽<span>/ год</span></div><div class="mp-d">Эта сумма останется у вас сверх зарплаты, расходов, налогов и резервов. Вы можете направить её на возврат вложений, развитие дела или дополнительный доход.</div></div></div></div></div>
 <div id="mpZero"></div>
 
+
 <div class="wnote" data-block-id="REPORT-B005" data-block-name="Из чего складывается цена">
 <div class="wnh" data-t="rbd_nh">Из чего складывается ваша цена</div>
 <div class="wnkey" data-t="rbd_h2a">Клиент готов оплачивать только время, проведённое вами на съёмочной площадке, зачастую не подозревая о колоссальном объёме закулисной работы.</div>
@@ -4396,8 +4376,6 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 <div class="lgd" id="lg3"></div>
 </div>
 
-
-
 <!-- ═══ СКОЛЬКО ВЫ ЗАРАБАТЫВАЕТЕ В МЕСЯЦ (REPORT-B030, 08.09, слово
      владельца) — тот же состав ролей, что в блоке 01, но пересчитанный
      на месяц. Доходные секторы покрывают 11 месяцев трат, поэтому
@@ -4433,26 +4411,17 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
      уведомление — канон .note.info, тот же вид, что в блоке 08. -->
 <div class="note info" id="pieNote"></div>
 </div>
-<!-- ═══ ЧТО НАКОПИТСЯ ПРИ ЭТОЙ СТАВКЕ (REPORT-B028) — отпуск и замена техники. Маржинальная прибыль — свой блок B029. -->
-<!-- ═══ ЧТО НАКОПИТСЯ ПРИ ЭТОЙ СТАВКЕ (REPORT-B028, 07.09) — резервы и
-     амортизация как накопления: отпуск и замена техники.
-     12.09 (слово владельца): подложка карточки снята, номер блока и
-     подпись под баннерами убраны — два баннера стоят сами по себе.
-     15.09, круг 7: маржа — карточка B029 наверху под баннером; ряд из двух. Низ ряда = низу блока 09 (42px).
-     Технический ID сохранён: блок остаётся смысловой единицей
-     контракта (20 блоков в .wp). -->
+<!-- ═══ ЧТО НАКОПИТСЯ ПРИ ЭТОЙ СТАВКЕ (REPORT-B028) — отпуск и замена техники.
+     B029 вынесен выше: он стоит непосредственно перед B005. -->
+<!-- ═══ REPORT-B028, 07.09 — резервы и амортизация как накопления:
+     отпуск и замена техники. Подложка карточки и номер блока убраны;
+     две плашки стоят сами по себе. Технический ID сохранён как смысловая
+     единица контракта. -->
 <div class="накоп" id="накопления" data-block-id="REPORT-B028" data-block-name="Что накопится при этой ставке">
 <h2>За 1 год работы вы накопите</h2>
 <div class="cnd nak" id="накопПлашки"></div>
 </div>
-<!-- 24.09 (слово владельца): вложения и баннер B029 стоят над блоком 06.
-     Пустой узел баннера не занимает место: прибыль пишется в #mpHost,
-     ноль — в #mpZero. -->
-<!-- ═══ ВЫ УЖЕ ВЛОЖИЛИ В СВОЁ ДЕЛО — над блоком «Как распределяется ваше время».
-     24.09 (слово владельца): сюда же баннер доли чистой прибыли — «Ваше дело
-     работает в ноль» либо баннер прибыли, который показывается вместо него.
-     Зазор до баннера выше и от нулевого баннера до блока времени — 46px,
-     как от «За 1 год работы вы накопите» до блока выше. -->
+<!-- ═══ ВЫ УЖЕ ВЛОЖИЛИ В СВОЁ ДЕЛО — над блоком «Как распределяется ваше время». -->
 <div class="card plain" id="инвестиции" data-block-id="REPORT-B024" data-block-name="Вы вложили в своё дело">
 <style>
 /* 23.09 (слово владельца): «Всего инвестиций» — та же плашка, что
@@ -4469,7 +4438,7 @@ background:rgba(255,255,255,.10);pointer-events:none}
 #phr-root .inv-hero .ihv{font-size:clamp(34px,5vw,48px);font-weight:800;letter-spacing:-.035em;
 line-height:1.05;color:var(--c-white);margin-top:8px;font-variant-numeric:tabular-nums}
 /* Поле сцены — как .camfig блока 08 */
-#phr-root .invfig{position:relative;margin:26px 0 14px}
+#phr-root .invfig{position:relative;margin:26px 12px 14px}
 #phr-root .invfig>img{width:100%;display:block}
 @media (max-width:720px){
 #phr-root .invfig{display:grid;grid-template-columns:1fr 1fr;
@@ -4585,7 +4554,7 @@ border:2px solid var(--c-white);transform:translateX(-50%)}
 <!-- 15.09 (слово владельца): таблица времени по периодам — разметка в
      точности как у таблиц подробной детализации: свайп-подсказка,
      .wrap + table.rt с colgroup и классами шапки. -->
-<h3 class="wt-h">Вот столько времени вы тратите на выполнение каждого вида работ:</h3>
+<h3 class="wt-h">Полезные цифры</h3>
 <div class="свайп" id="wtSw" aria-hidden="true"><div class="свайп-полоса"><svg class="свайп-рука" viewBox="0 0 64 64" fill="none"><path d="M58.9 29.6c-2.8-2.1-6.8-1.9-9.4.3-1.1.9-2 2.1-3 3.2l-1.5 1.7c0-6.2 0-12.5 0-18.7 0-1.8.1-3.5-1.1-5.1-2.5-3.3-7.9-3.2-10.1.3-1 1.5-.8 3.2-.8 4.9v5.4c-2-.5-4.3 0-5.7 1.8-.4.5-.6.9-.8 1.5-.6-.2-1.1-.3-1.7-.3-2.4 0-4.2 1.4-4.9 3.4-2-.6-4.3-.2-5.8 1.5-1.6 1.8-1.2 4.3-1.2 6.5v3.7c0 4.1-.6 8.8 1.7 12.5 1 1.6 1.9 3.2 3.1 4.6 2.1 2.4 5.2 3.6 8.3 3.7h5.4c2 0 4 .1 5.9-.4 4-1.2 6.9-4.7 9.5-7.8 4.3-5.1 8.6-10.2 12.8-15.3 2.1-2.6 2-5.6-.5-7.5z" fill="currentColor"/></svg></div></div>
 <div class="wrap" id="wtWrap"><table class="rt" id="wtab"><colgroup><col class="cn"><col class="cv"><col class="cv"><col class="cv"><col class="cv"></colgroup>
 <thead><tr><th class="ш-имя">Наименование</th><th class="ш-знач">За 1 час съёмки</th><th class="ш-знач">За неделю</th><th class="ш-знач">За месяц</th><th class="ш-знач">За год</th></tr></thead>
@@ -5218,10 +5187,10 @@ var hword=function(n){
   if(d1>=2&&d1<=4)return '\u0447\u0430\u0441\u0430';
   return '\u0447\u0430\u0441\u043e\u0432';};
 
-var CO=['#0B6B22','#127528','#158026','#1B9331','#21A038','#C5D0C8','#C43D51','#D6563A','#E07038','#E8832A','#F09A20','#3DAA4E','#6FD183','#A9DDB8','#CC4A45'];
+var CO=['#0B6B22','#127528','#158026','#1B9331','#21A038','#C5D0C8','#C43D51','#D6563A','#E07038','#E8832A','#F09A20','#3DAA4E','#6FD183','#A9DDB8','#CC4A45','#C5D0C8','#0F766E','#A9DDB8','#D56A3A'];
 /* Термин справочника для каждой строки легенды блока 01.
    Порядок совпадает с LB. */
-var REFLB=['Съёмка','Постпродакшн','Проектная работа с клиентами','Реклама','Учёт','Неэффективное рабочее время','Съёмочное оборудование','Реклама','Содержание рабочего места','Налоги','Эквайринг','Доля чистой прибыли','Фонд программы лояльности','Резерв на отпуск','Обучение','Резерв времени на простой и форс-мажоры',null,null];
+var REFLB=['Съёмка','Постпродакшн','Проектная работа с клиентами','Реклама','Учёт','Неэффективное рабочее время','Съёмочное оборудование','Реклама','Содержание рабочего места','Налоги','Эквайринг','Доля чистой прибыли','Фонд программы лояльности','Резерв на отпуск','Обучение','Резерв времени на простой и форс-мажоры',null,null,'Наёмные сотрудники'];
 /* Подписи подсказки на секторах кольца (07.09, слово владельца): коротко,
    без дублирования «часа съёмки» — он написан в центре кольца. */
 var TIPLB=[['\u0417\u0430 \u0441\u044a\u0451\u043c\u043a\u0443','\u0434\u043e\u0445\u043e\u0434'],
@@ -5241,7 +5210,8 @@ var TIPLB=[['\u0417\u0430 \u0441\u044a\u0451\u043c\u043a\u0443','\u0434\u043e\u0
 ['\u041e\u0431\u0443\u0447\u0435\u043d\u0438\u0435','\u0440\u0430\u0441\u0445\u043e\u0434\u044b'],
 null,
 ['\u0417\u0430 \u0443\u043f\u0440\u0430\u0432\u043b\u0435\u043d\u0438\u0435 \u0434\u0435\u043b\u043e\u043c','\u0434\u043e\u0445\u043e\u0434'],
-['\u0412 \u0431\u0443\u0444\u0435\u0440 \u043b\u0438\u043a\u0432\u0438\u0434\u043d\u043e\u0441\u0442\u0438','\u0440\u0435\u0437\u0435\u0440\u0432']];
+['\u0412 \u0431\u0443\u0444\u0435\u0440 \u043b\u0438\u043a\u0432\u0438\u0434\u043d\u043e\u0441\u0442\u0438','\u0440\u0435\u0437\u0435\u0440\u0432'],
+['Наёмные сотрудники','расходы']];
 var LB=['\u0421\u044a\u0451\u043c\u043a\u0430 \u2014 \u043a\u0430\u043a \u0444\u043e\u0442\u043e\u0433\u0440\u0430\u0444',
 '\u041e\u0431\u0440\u0430\u0431\u043e\u0442\u043a\u0430 \u2014 \u043a\u0430\u043a \u0444\u043e\u0442\u043e\u0433\u0440\u0430\u0444',
 '\u0420\u0430\u0431\u043e\u0442\u0430 \u0441 \u043a\u043b\u0438\u0435\u043d\u0442\u043e\u043c \u2014 \u043a\u0430\u043a \u043e\u0442\u0434\u0435\u043b \u043f\u0440\u043e\u0434\u0430\u0436',
@@ -5259,40 +5229,11 @@ var LB=['\u0421\u044a\u0451\u043c\u043a\u0430 \u2014 \u043a\u0430\u043a \u0444\u
 '\u0412\u0435\u0440\u043d\u0451\u0442\u0435 \u0432\u043b\u043e\u0436\u0435\u043d\u0438\u044f \u0432 \u043e\u0431\u0443\u0447\u0435\u043d\u0438\u0435',
 '\u041a\u043e\u043c\u043f\u0435\u043d\u0441\u0430\u0446\u0438\u044f \u0437\u0430 \u043f\u0440\u043e\u0441\u0442\u043e\u0439 \u0438 \u0444\u043e\u0440\u0441-\u043c\u0430\u0436\u043e\u0440\u044b',
 '\u0423\u043f\u0440\u0430\u0432\u043b\u0435\u043d\u0438\u0435 \u0434\u0435\u043b\u043e\u043c \u2014 \u043a\u0430\u043a \u0443\u043f\u0440\u0430\u0432\u043b\u044f\u044e\u0449\u0438\u0439',
-'\u0411\u0443\u0444\u0435\u0440 \u043b\u0438\u043a\u0432\u0438\u0434\u043d\u043e\u0441\u0442\u0438'];
+'\u0411\u0443\u0444\u0435\u0440 \u043b\u0438\u043a\u0432\u0438\u0434\u043d\u043e\u0441\u0442\u0438',
+'Потратите на наёмных сотрудников'];
 
-/* ДЕМО-НАБОР. Не выдумка: расчёт по значениям анкеты по умолчанию,
-   пересобран 23.09.2026 из calc(). Показывается, когда нет ?data=
-   и нет сохранённого phc_report. */
+/* Публикационная сборка не содержит технический DEMO-набор. */
 
-/* ТЕХНИЧЕСКИЙ DEMO development-отчёта. Не отдельный пример:
-   это снимок чистого старта calc.html в пустом браузере. Пересобирается
-   Инструменты/демо.py; публикационная копия без DEMO — отдельная задача. */
-var DEMO={
-answers:[{"b":1,"n":"Желаемый доход","v":110216,"u":"₽/мес"},{"b":2,"n":"Налоговый режим","v":"ИП, УСН «Доходы» — 6%","u":""},{"b":3,"n":"Текущая ставка","v":6000,"u":"₽/ч"},{"b":4,"n":"Готовых кадров за 1 час","v":80,"u":"шт"},{"b":4,"n":"Срабатываний затвора за 1 час","v":350,"u":"шт"},{"b":4,"n":"Ресурс затвора","v":300000,"u":"шт"},{"b":5,"n":"Минимальный заказ","v":1,"u":"ч"},{"b":6,"n":"Время на постпродакшн","v":3,"u":"× ч"},{"b":7,"n":"Проектная работа с клиентами","v":1,"u":"ч"},{"b":8,"n":"Поиск заказов","v":2,"u":"ч/день"},{"b":13,"n":"Где находится рабочее место","v":"Дома","u":""},{"b":13,"n":"Сколько вы платите за жильё в месяц","v":40000,"u":"₽/мес"},{"b":13,"n":"Коммунальные платежи, интернет и связь","v":7000,"u":"₽/мес"},{"b":13,"n":"Общая площадь вашего жилья","v":50,"u":"м²"},{"b":13,"n":"Сколько метров выделено под рабочую зону","v":6,"u":"м²"},{"b":14,"n":"За сколько лет окупить вложения в обучение","v":7,"u":"лет"},{"b":15,"n":"Кто делал сайт","v":"Заказывал у специалистов","u":""},{"b":15,"n":"Сколько вы заплатили за создание сайта","v":70000,"u":"₽"},{"b":15,"n":"За сколько лет окупить вложения в сайт","v":7,"u":"лет"},{"b":17,"n":"Эквайринг","v":2.7,"u":"%"},{"b":17,"n":"Доля безналичных платежей","v":100,"u":"%"},{"b":18,"n":"Кто ведёт учёт","v":"Веду сам","u":""},{"b":18,"n":"Время на ведение учёта","v":1,"u":"ч/нед"},{"b":21,"n":"Чистая прибыль","v":30,"u":"%"}],
-catalog:[{"b":10,"n":"Canon EOS R6 Mark II Body","price":166999,"term":4,"kind":"life"},{"b":10,"n":"Canon RF 24–105mm f/4.0 L IS USM","price":130999,"term":7,"kind":"life"},{"b":10,"n":"Godox V1Pro C","price":36990,"term":5,"kind":"life"},{"b":10,"n":"Godox XPro II C","price":9355,"term":5,"kind":"life"},{"b":10,"n":"Аккумулятор LP-E6NH","price":12978,"term":5,"kind":"life"},{"b":10,"n":"SanDisk Extreme PRO 256 ГБ #1","price":6990,"term":2,"kind":"life"},{"b":10,"n":"SanDisk Extreme PRO 256 ГБ #2","price":6990,"term":2,"kind":"life"},{"b":10,"n":"Рюкзак Lowepro ProTactic","price":27962,"term":7,"kind":"life"},{"b":10,"n":"Godox RFT-05 отражатель","price":3000,"term":7,"kind":"life"},{"b":10,"n":"X-Rite ColorChecker","price":5000,"term":7,"kind":"life"},{"b":11,"n":"Системный блок","price":180000,"term":5,"kind":"life"},{"b":11,"n":"Монитор ASUS ProArt","price":55000,"term":5,"kind":"life"},{"b":11,"n":"Calibrite ColorChecker","price":30000,"term":5,"kind":"life"},{"b":11,"n":"Колонки Logitech Z207","price":5000,"term":5,"kind":"life"},{"b":11,"n":"Клавиатура Logitech K380","price":3500,"term":7,"kind":"life"},{"b":11,"n":"Мышь Logitech M650","price":4000,"term":3,"kind":"life"},{"b":11,"n":"Веб-камера Logitech Brio","price":15999,"term":5,"kind":"life"},{"b":11,"n":"Микрофон FIFINE K669B","price":3500,"term":5,"kind":"life"},{"b":11,"n":"Принтер Canon PIXMA G640","price":29999,"term":5,"kind":"life"},{"b":12,"n":"Adobe Creative Cloud Photography","price":2000,"term":12,"kind":"per"},{"b":12,"n":"Яндекс Диск 1 ТБ","price":250,"term":12,"kind":"per"},{"b":12,"n":"AmoCRM (CRM-система)","price":0,"term":12,"kind":"per"},{"b":12,"n":"СБИС (обмен электронными документами)","price":0,"term":12,"kind":"per"},{"b":12,"n":"Retouch4me Heal","price":6900,"term":3,"kind":"life"},{"b":12,"n":"Retouch4me Dodge & Burn","price":6900,"term":3,"kind":"life"},{"b":12,"n":"Retouch4me Fabric","price":6900,"term":3,"kind":"life"},{"b":12,"n":"Retouch4me Clean Backdrop","price":6900,"term":3,"kind":"life"},{"b":12,"n":"Retouch4me Dust","price":6900,"term":3,"kind":"life"},{"b":13,"n":"Компьютерный стол","price":15000,"term":7,"kind":"life"},{"b":13,"n":"Стул","price":9000,"term":7,"kind":"life"},{"b":13,"n":"Стеллаж для хранения","price":12000,"term":7,"kind":"life"},{"b":13,"n":"Шторы","price":6000,"term":7,"kind":"life"},{"b":13,"n":"Жалюзи","price":5000,"term":7,"kind":"life"},{"b":13,"n":"Карниз","price":2500,"term":7,"kind":"life"},{"b":13,"n":"Коврик под ноги","price":3000,"term":7,"kind":"life"},{"b":13,"n":"Ремонт помещения под ключ","price":30000,"term":7,"kind":"life"},{"b":14,"n":"Курс по фотографии","price":80000,"term":4,"kind":"months"},{"b":16,"n":"Домен сайта","price":1500,"term":1,"kind":"per"},{"b":16,"n":"Хостинг сайта","price":6000,"term":1,"kind":"per"},{"b":16,"n":"Яндекс Директ","price":15000,"term":12,"kind":"per"},{"b":16,"n":"Авито","price":0,"term":12,"kind":"per"},{"b":16,"n":"Таргетированная реклама","price":0,"term":12,"kind":"per"},{"b":16,"n":"Размещения у блогеров","price":0,"term":12,"kind":"per"},{"b":16,"n":"Отклики на Profi.ru","price":0,"term":12,"kind":"per"},{"b":17,"n":"Обслуживание счёта (РКО)","price":0,"term":12,"kind":"per"},{"b":17,"n":"СМС-уведомления","price":150,"term":12,"kind":"per"},{"b":17,"n":"","price":0,"term":12,"kind":"per"}],
-frames:80,NT:1533,idle:219,pool:1051.2,calDays:365,weekend:104,holidays:14,WD:247,VAC:20,SICK:8,ND:219,EFF:7,shutterPerHour:350,
-shutterLife:300000,shotsYear:76650.00000000001,camName:'Canon EOS R6 Mark II Body',camPrice:166999,camLife:4,camAmort:41749.75,
-camWear:0.5446803652968035,shootEquipmentWear:1.1018385052651194,costHour:2426.988383180505,markup:4.463350675250518,
-rateHour:13259.488622074376,rateZero:2426.9883831805046,workHours:1752,rateWork:691.9954337899543,rateWorkFull:1894.2126602963397,
-vacY:110216,minShootsY:32.068232558029294,minShootsM:2.672352713169108,zeroShootsY:219.00000000000003,zeroShootsM:18.250000000000004,
-loadGoal:{"shoots":175.2,"hours":1533,"days":219,"freeDays":146,"dayHours":7,"shootsPerDay":0.7999999999999999},
-loadCur:{"shoots":387.17706776457175,"hours":2804.862406587431,"days":400.69462951249017,"freeDays":-35.69462951249017,"dayHours":12.807590897659502,"shootsPerDay":1.7679318162765834},
-loadZero:{"shoots":957.1790383038909,"hours":6224.8742298233465,"days":889.267747117621,"freeDays":-524.267747117621,"dayHours":28.424083241202496,"shootsPerDay":4.370680540200415},
-promo:438,accT:43.8,fmT:0,mgmtT:0,S:1,pt:6.000000000000001,py:175.2,sh:219.00000000000003,post:657.0000000000001,clT:175.2,
-projectPlan:{"version":1,"weeks":1,"step":0.5,"minShoot":1,"capacity":24.000000000000004,"projects":[{"shoot":1.5000000000000009,"post":4.500000000000003,"client":1},{"shoot":1.5,"post":4.5,"client":1},{"shoot":1,"post":3,"client":1},{"shoot":1,"post":3,"client":1}],"regular":{"promo":10,"acc":1,"fm":0,"idle":5,"mgmt":0},"totals":{"shoot":5.000000000000001,"post":15.000000000000004,"client":4}},
-amort:173474.56904761904,vari:283980,C:457454.569047619,totalExpenses:710087.6057640022,Ny:1322592,R:2903828.0082342885,
-taxAll:174229.6804940573,aq:78403.3562223258,goalFund:871148.4024702867,goalDiscountReserve:0,goalSelfSiteCost:0,
-goalCostsTotal:1581236.0082342888,goalResult:1322591.9999999998,cur:6000,Rc:1314000.0000000002,leftC:348027.4309523811,
-taxC:78840.00000000001,aqC:35478.00000000001,currentFund:394200.0000000001,currentDiscountReserve:0,currentSelfSiteCost:0,
-currentCostsTotal:965972.5690476191,currentResult:348027.4309523811,currentIncome:348027.4309523811,currentLoss:0,currentIsLoss:false,
-currentBreakEvenMargin:0.5955019361365826,Rb:531510.4559165306,taxB:59705.10455916531,aqB:14350.782309746328,wsY:67680,siteY:10000,
-eduY:74409.14285714286,fundY:871148.4024702867,profitY:580765.6016468577,cushionY:290382.800823429,discY:0,fundP:0.2,discP:0,
-investmentShoot:407263,investmentPost:361498,investmentTime:590864,investmentTotal:1359625,investmentPaybackYears:2.341090787995289,
-depShoot:84455.92142857143,depOffice:65732.93333333333,depSoft:11500,depEdu:0,depSite:0,depWs:11785.714285714286,varAds:187500,varSoft:27000,
-varBank:1800,varRent:67680,varAcc:0,varEmp:0,directFrameCosts:268154.569047619,NW:43.8,K:3,cl:1,curRate:6000,
-regime:'\u0418\u041f, \u0423\u0421\u041d \u00ab\u0414\u043e\u0445\u043e\u0434\u044b\u00bb \u2014 6%',regimeCode:'usn6',clients:'mix',
-profession:'\u0444\u043e\u0442\u043e\u0433\u0440\u0430\u0444\u0430'};
 
 function loadData(){
   try{
@@ -5306,10 +5247,8 @@ function loadData(){
     var s=localStorage.getItem('phc_report');
     if(s)return JSON.parse(s);
   }catch(e){}
-  /* Расчёта нет — показываем расчёт по значениям анкеты по умолчанию.
-     Это не выдуманные числа: набор пересобирается скриптом части/демо.py
-     из настоящего calc(), и проверка следит, чтобы они совпадали. */
-  return DEMO;
+  /* В публикации прямой отчёт без результата не подменяем DEMO-набором. */
+  return null;
 }
 /* Куда ведёт «Поблагодарить проект». Заглушка: поставьте сюда адрес
    страницы благодарности (боости, ЮMoney и т.п.) — подставится во все
@@ -5319,6 +5258,15 @@ function loadData(){
 var EDIT_URL='calc.html';
 
 var d=loadData();
+/* Без результата останавливаем рендер отчёта. Ранний guard в <head> уже
+   скрыл разметку; здесь задаём явный публичный мост для поздних скриптов. */
+if(!d){
+  document.documentElement.classList.add('phr-no-result');
+  var publicationRoot=document.getElementById('phr-root');
+  if(publicationRoot)publicationRoot.hidden=true;
+  window.PHR_D=null;
+  return;
+}
 /* Мост для поздних скриптов вне этого замыкания (блок REPORT-B022
    «Как сформировать прайс»): отдаём готовый расчёт наружу, как PHR_PRINT.
    Данные не копируются и не пересчитываются — та же ссылка на d. */
@@ -5550,7 +5498,7 @@ var WCd_sh='#0B6B22',WCd_po='#A9DDB8',WCd_cl='#F5B301',WCd_pr='#EC4899',
     WCd_ac='#EF4444',WCd_fm='#9CA3AF',WCd_id='#B6BCC4';
 /* пастельные тона той же светлоты для сетки недели */
 var WK_sh='#6FD183',WK_po='#D8EEDF',WK_cl='#FEF3D6',WK_pr='#FCE7F3',
-    WK_ac='#FDE8E8',WK_fm='#E5E7EB',WK_id='#F5F6F8',WK_mg='#E7F0FA',WK_lu='#F5F6F8';
+    WK_ac='#FDE8E8',WK_fm='#E5E7EB',WK_id='#F5F6F8',WK_mg='#E7F0FA';
 function render(){
   var rate=d.R/d.sh;
   function установитьПечатнуюШапку(mode){
@@ -6159,7 +6107,7 @@ var REFD=[
          бухгалтерия, затем управленец. По часовой это маркетинг,
          управленец, бухгалтер, фотограф: от зелёного против часовой
          идут бухгалтер и сразу за ним управленец. */
-      {n:'Как управляющий',       o:'Стратегия, решения, развитие дела',   ч:(d.mgmtT||0),          c:'#0F766E', img:'управляющий', chip:4, href:'calc.html#c_FormMgmt', go:'Заложить время на управление'},
+      {n:'Как управляющий',       o:'Стратегия, решения, развитие дела',   ч:(d.mgmtT||0),          c:'#0F766E', img:'управляющий', chip:4},
       {n:'Как бухгалтер',        o:'Учёт, отчётность, документы',         ч:(d.accT||0),           c:'#8B5CF6', img:'бухгалтер', chip:3},
       /* 11.09: точки-магниты у всех ролей — середина кольца сектора
          (см. расчёт точек ниже), поэтому персональные углы t не нужны. */
@@ -6764,61 +6712,43 @@ var t=-Math.PI/2 - Math.PI/6, секторы=[];
 
         var мг=по('p-mg');
         var бух=по('p-rm');
-        if(мг && бух && бр){
-          /* Утверждённая привязка управляющего:
-             1) центры плашек управляющего и бухгалтера лежат на одной
-                вертикальной оси;
-             2) расстояние UL(управляющий) → BR(маркетинг) равно
-                расстоянию BR(маркетинг) → внешнее кольцо диаграммы. */
+        if(мг && бух && бр && лм){
+          /* Точно над бухгалтером (та же вертикаль). Поднимаем, пока
+             расстояние от ближнего края маркетинга до ближнего края
+             управляющего не станет равно расстоянию от плашки фотографа
+             до ближайшей точки диаграммы. */
+          стоп(мг);
           var hМ=мг.getBoundingClientRect().height;
           var wМ=мг.getBoundingClientRect().width;
           var acc=бух.getBoundingClientRect();
-          /* Выбранное владельцем выравнивание: ЦЕНТР плашки точно над
-             центром плашки бухгалтера. */
           var left=acc.left+(acc.width-wМ)/2;
-          var marketing=бр.getBoundingClientRect();
+          var Gф=зазор(лм);
+          function между(a,b){
+            var dx=0, dy=0;
+            if(a.right<b.left) dx=b.left-a.right;
+            else if(b.right<a.left) dx=a.left-b.right;
+            if(a.bottom<b.top) dy=b.top-a.bottom;
+            else if(b.bottom<a.top) dy=a.top-b.bottom;
+            if(dx===0 && dy===0) return 0;
+            if(dx===0) return dy;
+            if(dy===0) return dx;
+            return Math.sqrt(dx*dx+dy*dy);
+          }
           function поставитьНад(top){
             мг.style.left=(left-P.left)+'px';
             мг.style.top=(top-P.top)+'px';
           }
-          /* Точное ближайшее расстояние до внешнего контура кольца.
-             Контур состоит из верхней и нижней внешних эллиптических дуг
-             и двух торцевых отрезков объёмной диаграммы. */
-          function расстояниеДоВнешнегоКольца(px,py){
-            function дуга(cy){
-              function d(t){
-                var x=kb.left+(600+220*Math.cos(t))*kм;
-                var y=kb.top+(cy+110*Math.sin(t))*kм;
-                return Math.hypot(px-x,py-y);
-              }
-              var шаг=Math.PI*2/720, лучший=0, значение=Infinity;
-              for(var i=0;i<720;i++){var t=i*шаг,v=d(t);if(v<значение){значение=v;лучший=t;}}
-              var l=лучший-шаг,r=лучший+шаг;
-              for(var j=0;j<42;j++){var m1=(2*l+r)/3,m2=(l+2*r)/3;if(d(m1)<d(m2))r=m2;else l=m1;}
-              return d((l+r)/2);
-            }
-            function отрезок(x1,y1,x2,y2){
-              var vx=x2-x1,vy=y2-y1,den=vx*vx+vy*vy;
-              var t=den?Math.max(0,Math.min(1,((px-x1)*vx+(py-y1)*vy)/den)):0;
-              return Math.hypot(px-(x1+t*vx),py-(y1+t*vy));
-            }
-            var xl=kb.left+380*kм,xr=kb.left+820*kм,yt=kb.top+340*kм,yb=kb.top+386*kм;
-            return Math.min(дуга(340),дуга(386),отрезок(xl,yt,xl,yb),отрезок(xr,yt,xr,yb));
+          var низМ=бр.getBoundingClientRect().bottom;
+          var lo=низМ-hМ;
+          var hi=acc.top-hМ-1;
+          if(hi<lo) hi=lo;
+          for(var it=0;it<28;it++){
+            var mid=(lo+hi)/2;
+            поставитьНад(mid);
+            var g=между(бр.getBoundingClientRect(), мг.getBoundingClientRect());
+            if(g>Gф) hi=mid; else lo=mid;
           }
-          var Gмаркетинг=расстояниеДоВнешнегоКольца(marketing.right,marketing.bottom);
-          /* Формула без подбора и без запасного смещения:
-             (marketing.right − manager.left)² +
-             (manager.top − marketing.bottom)² = Gмаркетинг². */
-          var dx=marketing.right-left;
-          var квадрат=Gмаркетинг*Gмаркетинг-dx*dx;
-          if(квадрат<0) return; /* штатная композиция даёт действительное решение */
-          /* У уравнения две ветви. Нужна НИЖНЯЯ: управляющий поднимается
-             от бухгалтера, но остаётся ниже нижней кромки маркетинга.
-             Ветка со знаком «−» ставила его выше маркетинга — именно
-             она и уводила плашку к уровню продаж. */
-          var top=marketing.bottom+Math.sqrt(квадрат);
-          стоп(мг);
-          поставитьНад(top);
+          поставитьНад(hi);
         }
         var подз=document.querySelector('#card01m .hint');
         if(подз && (window.innerWidth||1024)<=820){
@@ -7217,7 +7147,6 @@ var t=-Math.PI/2 - Math.PI/6, секторы=[];
       '<circle cx="9" cy="12" r="1.6"/><circle cx="15" cy="12" r="1.6"/>'+
       '<circle cx="9" cy="18" r="1.6"/><circle cx="15" cy="18" r="1.6"/></svg>';
     var svgК=$('monFig')?$('monFig').querySelector('.monfig-svg'):null;
-    var линииК=svgК?svgК.querySelectorAll('polyline'):[];
     var кружки=svgК?svgК.querySelectorAll('circle'):[];
     /* ШКАЛА РОСТА ПЕРСОНАЖА — слово владельца, уточнено 12.09.2026.
        Единица измерения — высота плашки (--ч-плашки), поэтому шкала
@@ -7228,7 +7157,7 @@ var t=-Math.PI/2 - Math.PI/6, секторы=[];
                      «минимальная величина 1,25 плашки, максимальная 4»).
        Между ними линейно: кратность = 1,25 + 2,75 × доля.
        Полное описание — Документация/ПРАВИЛО_ДИАГРАММА_И_РОСТ_ПЕРСОНАЖЕЙ.md */
-    var ФИКС_РОСТ={0:2.759,1:1.627,2:2.036,3:1.329,4:1.360};
+    var МИН_РОСТ=1.25, МАКС_РОСТ=4;
     /* Общий масштаб группы «персонаж + плашка» в мобильной версии
        (владелец 12.09: «персонажи слишком большие»). Одно число на все
        четыре группы — пропорции внутри и между ними сохраняются. */
@@ -7237,24 +7166,22 @@ var t=-Math.PI/2 - Math.PI/6, секторы=[];
       var эл=$('monC'+о.chip);
       if(!эл) return;
       var пц=итог>0?о.руб/итог*100:0;
-      var кратность=ФИКС_РОСТ[о.chip];
-      var нулеваяРоль=(о.ч||0)<=0.005;
-      эл.classList.toggle('mon-zero',нулеваяРоль);
+      var кратность=МИН_РОСТ+(МАКС_РОСТ-МИН_РОСТ)*(пц/100);
       эл.innerHTML=РУЧКА+
         '<div class="cc-h">'+о.n+'</div>'+
         /* 11.09 (слово владельца): в плашке — «сумма ₽/мес» одной
            строкой, «/мес» сокращённо и тем же кеглем, что число. */
         '<div class="cc-v">'+f0(о.руб)+'/мес</div>'+
-        (нулеваяРоль
-          ? '<div class="cc-d"><a class="mon-zero-link" href="'+о.href+'">'+о.go+'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>'
-          : '<div class="cc-d"><b>'+(пц<1?пц.toFixed(1):пц.toFixed(0))+'%</b> от общего дохода</div>')+
+        /* 12.09 (слово владельца): под разделительной линией — доля
+           направления в общем доходе. Прежнее пояснение убрано,
+           процент перенесён сюда с кольца диаграммы. */
+        '<div class="cc-d"><b>'+(пц<1?пц.toFixed(1):пц.toFixed(0))+
+        '%</b> от общего дохода</div>'+
         '<img class="mon-man" alt="" draggable="false" src="data:image/png;base64,'+ЛЮДИ[о.img]+'">';
       эл.style.setProperty('--рост', кратность.toFixed(3));
-      if(линииК[о.chip]) линииК[о.chip].style.display=нулеваяРоль?'none':'';
-      if(кружки[о.chip]) кружки[о.chip].style.display=нулеваяРоль?'none':'';
       /* точка коннектора — на внешнем ребре сектора (порядок = порядок плашек) */
       var тчк=точки[ин];
-      if(!нулеваяРоль&&тчк&&кружки[о.chip]){ кружки[о.chip].setAttribute('cx',тчк[0].toFixed(1)); кружки[о.chip].setAttribute('cy',тчк[1].toFixed(1)); }
+      if(тчк&&кружки[о.chip]){ кружки[о.chip].setAttribute('cx',тчк[0].toFixed(1)); кружки[о.chip].setAttribute('cy',тчк[1].toFixed(1)); }
     });
 
     /* 10.09 (слово владельца): уведомление канона .note.info — текст
@@ -7726,7 +7653,8 @@ var t=-Math.PI/2 - Math.PI/6, секторы=[];
      ['\u041f\u0440\u043e\u0434\u0432\u0438\u0436\u0435\u043d\u0438\u0435 \u0438 \u0440\u0435\u043a\u043b\u0430\u043c\u0430',d.varAds],
      ['\u0421\u043e\u0434\u0435\u0440\u0436\u0430\u043d\u0438\u0435 \u0440\u0430\u0431\u043e\u0447\u0435\u0433\u043e \u043c\u0435\u0441\u0442\u0430',d.varRent],
      ['\u0411\u0430\u043d\u043a \u0438 \u0420\u041a\u041e',(d.varBank||0)+(d.aq||0)],
-     ['\u0412\u0435\u0434\u0435\u043d\u0438\u0435 \u0443\u0447\u0451\u0442\u0430',d.varAcc]].forEach(function(x){
+     ['\u0412\u0435\u0434\u0435\u043d\u0438\u0435 \u0443\u0447\u0451\u0442\u0430',d.varAcc],
+     ['Наёмные сотрудники',d.varEmp]].forEach(function(x){
        if(x[1]>0) rows.push(trow(x[0],f0(x[1]),f0(x[1]/MO)+'/\u043c\u0435\u0441'));
      });
     /* итог — сумма показанных строк, а не equip+promoM:
@@ -7734,7 +7662,7 @@ var t=-Math.PI/2 - Math.PI/6, секторы=[];
     /* итог — сумма показанных строк, включая эквайринг в «Банк и РКО» */
     var sumC=0;
     [d.depShoot,d.depOffice,d.depSoft,d.varSoft,d.depEdu,d.depSite,d.depWs,
-     d.varAds,d.varRent,d.varBank,d.aq,d.varAcc].forEach(function(v){sumC+=v||0});
+     d.varAds,d.varRent,d.varBank,d.aq,d.varAcc,d.varEmp].forEach(function(v){sumC+=v||0});
     rows.push(trow('<b>\u0412\u0441\u0435\u0433\u043e \u0440\u0430\u0441\u0445\u043e\u0434\u043e\u0432</b>','<b>'+f0(sumC)+'</b>',f0(sumC/MO)+'/\u043c\u0435\u0441'));
 
     rows.push(tgrp('\u041d\u0430\u043b\u043e\u0433\u0438 \u0438 \u0432\u0437\u043d\u043e\u0441\u044b'));
@@ -8154,218 +8082,147 @@ var t=-Math.PI/2 - Math.PI/6, секторы=[];
      ? '<b>\u041c\u0430\u0442\u0435\u043c\u0430\u0442\u0438\u043a\u0430 \u043d\u0435\u0443\u043c\u043e\u043b\u0438\u043c\u0430</b> \u2014 \u0432\u0430\u043c \u043f\u0440\u0438\u0434\u0451\u0442\u0441\u044f \u0440\u0430\u0431\u043e\u0442\u0430\u0442\u044c \u043d\u0430 \u043f\u0440\u0435\u0434\u0435\u043b\u0435 \u0447\u0435\u043b\u043e\u0432\u0435\u0447\u0435\u0441\u043a\u0438\u0445 \u0432\u043e\u0437\u043c\u043e\u0436\u043d\u043e\u0441\u0442\u0435\u0439: \u0431\u0435\u0437 \u043e\u0442\u043f\u0443\u0441\u043a\u043e\u0432, \u043f\u043e\u0447\u0442\u0438 \u0431\u0435\u0437 \u0432\u044b\u0445\u043e\u0434\u043d\u044b\u0445, \u0438\u0433\u043d\u043e\u0440\u0438\u0440\u0443\u044f \u0431\u043e\u043b\u0435\u0437\u043d\u0438 \u0438 \u0441\u043e\u0431\u0441\u0442\u0432\u0435\u043d\u043d\u044b\u0435 \u043f\u043e\u0442\u0440\u0435\u0431\u043d\u043e\u0441\u0442\u0438.'
      : '\u0413\u0440\u0430\u0444\u0438\u043a \u043f\u043b\u043e\u0442\u043d\u044b\u0439, \u043d\u043e \u0432\u044b\u043f\u043e\u043b\u043d\u0438\u043c\u044b\u0439. \u0420\u0435\u0448\u0430\u0442\u044c \u0432\u0430\u043c: \u0431\u0440\u0430\u0442\u044c \u0431\u043e\u043b\u044c\u0448\u0435 \u0437\u0430\u043a\u0430\u0437\u043e\u0432 \u0438\u043b\u0438 \u043f\u043e\u0434\u043d\u044f\u0442\u044c \u0446\u0435\u043d\u0443.')+'</div>';
 
-  /* --- B008: календарь — только размещение готового плана calc.html. ---
-     projectPlan уже содержит число недель, допустимые проекты и точные
-     часы каждой роли в горизонте. Отчёт не меняет d, не выводит число
-     заказов из часов и не создаёт дробный заказ самостоятельно. */
-  var WK=['ПН','ВТ','СР','ЧТ','ПТ'];
-  var H0=9, HN=20, BASE_FIRST=0, BASE_LAST=19-H0;
-  var LUNCH_HOUR=14, LUNCH_SLOT=LUNCH_HOUR-H0, SLOTS=HN-H0;
-  var PLAN=d.projectPlan, WEEKS=Math.max(1,Math.round(PLAN.weeks||1)), DAYS=WEEKS*5;
-  var T10=10-H0,T15=15-H0,T16=16-H0,T17=17-H0,T18=18-H0;
-  /* Режим рабочего места — активный ответ ядра. */
-  var ОТДЕЛЬНОЕ_ПОМЕЩЕНИЕ=(d.answers||[]).some(function(a){
-    return Number(a.b)===13&&a.n==='Где находится рабочее место'&&a.v==='Отдельное помещение';
-  });
-  /* Эти значения приходят в составе расчётного горизонта, а не получаются
-     календарём из d.*. Средненедельная подпись нужна только легенде. */
-  var PR=PLAN.regular||{}, PT=PLAN.totals||{}, NWv=d.NW||43.8;
-  var shW=(PT.shoot||0)/WEEKS, poW=(PT.post||0)/WEEKS, clW=(PT.client||0)/WEEKS,
-      prW=(PR.promo||0)/WEEKS, acW=(PR.acc||0)/WEEKS, fmW=(PR.fm||0)/WEEKS,
-      idW=(PR.idle||0)/WEEKS, mgW=(PR.mgmt||0)/WEEKS;
-  var WC={sh:WK_sh,po:WK_po,cl:WK_cl,pr:WK_pr,ac:WK_ac,fm:WK_fm,id:WK_id,mg:WK_mg,lu:WK_lu};
-  var РОЛИ={
-    sh:{key:'sh',c:WC.sh,n:'Съёмка'}, po:{key:'po',c:WC.po,n:'Обработка'},
-    cl:{key:'cl',c:WC.cl,n:'Работа с клиентом'}, pr:{key:'pr',c:WC.pr,n:'Продвижение'},
-    ac:{key:'ac',c:WC.ac,n:'Учёт'}, id:{key:'id',c:WC.id,n:'Рабочие паузы'},
-    fm:{key:'fm',c:WC.fm,n:'Форс-мажоры',idle:true}, mg:{key:'mg',c:WC.mg,n:'Управление'}
-  };
-  /* Каждая внутренняя ячейка хранит точные доли часов. Это позволяет
-     календарю показать данные ядра без целочисленных квот и без потери
-     дробного остатка. */
-  var grid=[];
-  for(var dd=0;dd<DAYS;dd++){
-    grid[dd]=[];
-    for(var ss=0;ss<SLOTS;ss++)grid[dd][ss]={parts:[],kind:''};
-    grid[dd][LUNCH_SLOT]={parts:[],kind:'lunch'};
-  }
-  function used(cell){return cell.parts.reduce(function(sum,x){return sum+x.h},0)}
-  function free(day,slot){
-    var cell=grid[day][slot];
-    return cell.kind?0:Math.max(0,1-used(cell));
-  }
-  function add(day,slot,role,hours){
-    var take=Math.min(Math.max(0,hours||0),free(day,slot));
-    if(take<=1e-9)return 0;
-    var cell=grid[day][slot], last=cell.parts[cell.parts.length-1];
-    if(last&&last.key===role.key)last.h+=take;
-    else cell.parts.push({key:role.key,c:role.c,n:role.n,idle:!!role.idle,h:take});
-    return take;
-  }
-  function baseCandidates(slots,shift){
-    var out=[],seen={};
-    function push(day,slot){
-      var key=day+':'+slot;
-      if(day<0||day>=DAYS||slot<BASE_FIRST||slot>BASE_LAST||slot===LUNCH_SLOT||seen[key])return;
-      seen[key]=true;out.push([day,slot]);
-    }
-    /* Первый проход разносит регулярные задачи по дням всего горизонта. */
-    (slots||[]).forEach(function(slot){
-      for(var day=0;day<DAYS;day++)push((day+(shift||0))%DAYS,slot);
-    });
-    for(var slot=BASE_FIRST;slot<=BASE_LAST;slot++)
-      for(var day=0;day<DAYS;day++)push(day,slot);
-    return out;
-  }
-  function placeExact(role,hours,candidates){
-    var left=Math.max(0,Number(hours)||0), list=candidates||baseCandidates();
-    for(var i=0;i<list.length&&left>1e-8;i++)left-=add(list[i][0],list[i][1],role,left);
-    return left;
-  }
-  /* Проектные съёмки приходят готовыми поштучно. Их размещение не меняет
-     их длительность: каждый проект остаётся не короче calc().minShoot. */
-  function projectCandidates(index){
-    var order=[];
-    for(var w=0;w<WEEKS;w++)[0,2,4,1,3].forEach(function(day){order.push(w*5+day)});
-    if(order.length){var shift=index%order.length;order=order.slice(shift).concat(order.slice(0,shift));}
-    var out=[];
-    /* Сначала сохраняем час до первой съёмки во всех доступных днях.
-       Лишь затем, если проект действительно длиннее этой ёмкости,
-       разрешаем занять 10:00. Так логистика вытесняет модельную работу
-       в 09:00, а не исчезает перед съёмкой, начатой в 10:00. */
-    order.forEach(function(day){
-      for(var slot=11-H0;slot<=BASE_LAST;slot++)if(slot!==LUNCH_SLOT)out.push([day,slot]);
-    });
-    order.forEach(function(day){
-      for(var early=BASE_FIRST;early<11-H0;early++)if(early!==LUNCH_SLOT)out.push([day,early]);
-    });
-    return out;
-  }
-  /* Проекты остаются целыми. Длинные съёмки первыми получают разнесённые
-     дни недели — именно так они были показаны в утверждённом календаре. */
-  var ПРОЕКТЫ=(PLAN.projects||[]).slice().sort(function(a,b){return (b.shoot||0)-(a.shoot||0);});
-  ПРОЕКТЫ.forEach(function(project,index){
-    placeExact(РОЛИ.sh,project.shoot,projectCandidates(index));
-  });
-  function hasShoot(day,slot){return grid[day][slot].parts.some(function(x){return x.key==='sh'})}
-  var СЪЁМОЧНЫЕ_ДНИ=[];
-  function logistics(day){
-    var shoots=[];
-    for(var slot=0;slot<SLOTS;slot++)if(hasShoot(day,slot))shoots.push(slot);
-    if(!shoots.length){
-      grid[day][0].kind=ОТДЕЛЬНОЕ_ПОМЕЩЕНИЕ?'log':'logempty';
-      grid[day][SLOTS-1].kind=ОТДЕЛЬНОЕ_ПОМЕЩЕНИЕ?'log':'logempty';
-      return;
-    }
-    СЪЁМОЧНЫЕ_ДНИ.push(day);
-    var before=shoots[0]-1, after=shoots[shoots.length-1]+1;
-    if(before>=0&&before!==LUNCH_SLOT)grid[day][before]={parts:[],kind:'log'};
-    if(after<SLOTS&&after!==LUNCH_SLOT)grid[day][after]={parts:[],kind:'log'};
-  }
-  /* Логистика резервируется ДО модельной работы: она остаётся ровно до
-     первой и после последней съёмки, а не вытесняет весь день на края. */
-  for(var logDay=0;logDay<DAYS;logDay++)logistics(logDay);
-  function pairs(days,slot){return days.map(function(day){return [day,slot];});}
-  function withFallback(list){return list.concat(baseCandidates());}
-  var НЕСЪЁМОЧНЫЕ=[];
-  for(var d0=0;d0<DAYS;d0++)if(СЪЁМОЧНЫЕ_ДНИ.indexOf(d0)<0)НЕСЪЁМОЧНЫЕ.push(d0);
-  var T09=0,T11=11-H0,T12=12-H0,T13=13-H0,T19=19-H0;
-  /* Утреннее продвижение остаётся в дни со съёмкой; свободный день
-     сохраняет контурные 09:00/19:00 из утверждённого вида. */
-  var promo=pairs(СЪЁМОЧНЫЕ_ДНИ,T09).concat(pairs(НЕСЪЁМОЧНЫЕ,T10),baseCandidates([T17,T16,T18,T15],0));
-  placeExact(РОЛИ.pr,PR.promo,withFallback(promo));
-  placeExact(РОЛИ.id,PR.idle,baseCandidates([T18,T17,T16,T15,T10],0));
-  placeExact(РОЛИ.ac,PR.acc,baseCandidates([T16,T15,T17,T18,T10],2));
-  placeExact(РОЛИ.mg,PR.mgmt,baseCandidates([T16,T15,T17,T18,T10],1));
-  placeExact(РОЛИ.fm,PR.fm,baseCandidates([T18,T17,T16,T15,T10],4));
-  /* Работа с клиентом заполняет свободные слоты у логистики, затем вечер
-     одной съёмочной смены; так календарь сохраняет читабельную форму. */
-  var clientOrder=[];
-  [1,3,4,2,0].forEach(function(day){for(var w=0;w<WEEKS;w++)clientOrder.push([w*5+day,T13]);});
-  [2,0,1,4,3].forEach(function(day){for(var w=0;w<WEEKS;w++)clientOrder.push([w*5+day,T19]);});
-  placeExact(РОЛИ.cl,PT.client,withFallback(clientOrder));
-  /* Обработка занимает оставшееся проектное время: несъёмочный час 11:00,
-     дробные хвосты в 12:00, затем дневные и вечерние свободные ячейки. */
-  var post=pairs(НЕСЪЁМОЧНЫЕ,T11).concat(baseCandidates([T12,T15,T16],0),pairs(СЪЁМОЧНЫЕ_ДНИ,T19));
-  placeExact(РОЛИ.po,PT.post,withFallback(post));
+  /* --- неделя: реальная раскладка по видам работ --- */
+  var WK=['\u041f\u041d','\u0412\u0422','\u0421\u0420','\u0427\u0422','\u041f\u0422'];
+  var H0=10, HN=18;                       /* 8 рабочих часов 10:00-18:00 */
+  var SLOTS=HN-H0, CELLS=SLOTS*5;         /* 40 ячеек в неделе */
+  var NWv=d.NW||43.8;
 
-  function paint(parts){
-    var at=0,stops=[];
-    parts.forEach(function(x){var end=Math.min(1,at+x.h);stops.push(x.c+' '+(at*100).toFixed(2)+'% '+(end*100).toFixed(2)+'%');at=end;});
-    if(at<.999)stops.push('var(--c-bg) '+(at*100).toFixed(2)+'% 100%');
-    return stops.length?'linear-gradient(to bottom,'+stops.join(',')+')':'var(--c-bg)';
-  }
-  function cellHtml(cell){
-    if(cell.kind==='lunch')return '<i style="background:'+WC.lu+'" title="Обед"><span class="wtxt wdsh">Обед</span><span class="wmb wdsh" aria-hidden="true">—</span></i>';
-    if(cell.kind==='log')return '<i style="background:'+WC.id+'" title="Логистика"><span class="wtxt wdsh">Логистика</span><span class="wmb wdsh" aria-hidden="true">—</span></i>';
-    if(cell.kind==='logempty')return '<i class="log-empty" aria-hidden="true"></i>';
-    if(!cell.parts.length)return '<i class="free"></i>';
-    var names=[],only=cell.parts[0].n,same=true,shootOnly=true,hatch=false;
-    cell.parts.forEach(function(x){if(names.indexOf(x.n)<0)names.push(x.n);if(x.n!==only)same=false;if(x.key!=='sh')shootOnly=false;if(x.idle)hatch=true;});
-    var label=same?only:names.join(' · '), title=names.join(' · ');
-    return '<i class="'+(hatch?'hatch':'')+'" style="background:'+paint(cell.parts)+'" title="'+title+'">'
-      +'<span class="wtxt '+(shootOnly?'wlbl':'')+'">'+label+'</span>'
-      +'<span class="wmb '+(shootOnly?'wlbl':'wdsh')+'" aria-hidden="true">'+(shootOnly?'₽':'—')+'</span></i>';
-  }
-  function weekHtml(week){
-    var html='<div class="wk-week" data-week="Неделя '+(week+1)+'"><div></div>'+WK.map(function(w){return '<div class="hd">'+w+'</div>'}).join('');
-    for(var slot=0;slot<SLOTS;slot++){
-      var hour=H0+slot;
-      html+='<div class="hr">'+(hour<10?'0':'')+hour+':00</div>';
-      for(var day=0;day<5;day++)html+='<div class="wk-cell" data-day="'+day+'" data-hour="'+hour+'">'+cellHtml(grid[week*5+day][slot])+'</div>';
+  /* часы в неделю по видам */
+  var shW=d.sh/NWv, poW=d.post/NWv, clW=d.clT/NWv,
+      prW=d.promo/NWv, acW=d.accT/NWv, fmW=d.fmT/NWv, idW=d.idle/NWv, mgW=(d.mgmtT||0)/NWv;
+
+  var WC={sh:WK_sh,po:WK_po,cl:WK_cl,pr:WK_pr,ac:WK_ac,fm:WK_fm,id:WK_id,mg:WK_mg};
+  /* сетка: grid[day][slot] = {c:цвет, n:название, idle:bool} */
+  var grid=[];
+  for(var dd=0;dd<5;dd++){grid.push([]); for(var ss=0;ss<SLOTS;ss++)grid[dd].push(null)}
+
+  /* 1. Съёмки: сперва по одной в каждый день недели — так фотографу удобнее,
+     и логистика на каждый выезд тратится всё равно. Только когда все пять
+     дней заняты, остаток добавляется временем к уже назначенным съёмкам,
+     а не заводит второй выезд в тот же день. */
+  var Sh=Math.max(d.S||1,0.5);
+  var shoots=[], left=shW;
+  while(left>=Sh-0.001 && shoots.length<5){shoots.push(Sh); left-=Sh}
+  if(left>0.15){
+    if(shoots.length<5) shoots.push(left);          /* ещё есть свободный день */
+    else {                                          /* дни кончились — распределяем */
+      var доб=left/shoots.length;
+      shoots=shoots.map(function(v){return v+доб});
     }
-    return html+'</div>';
   }
-  var weekMarkup='';
-  for(var week=0;week<WEEKS;week++)weekMarkup+=weekHtml(week);
-  var wkNode=$('wk');
-  if(wkNode){wkNode.classList.toggle('wk-plan',WEEKS>1);wkNode.innerHTML=weekMarkup;}
+  var shDays=[0,2,4,1,3];   /* ПН, СР, ПТ, ВТ, ЧТ — вразбивку */
+  var placed=[];
+  shoots.forEach(function(len,k){
+    var day=shDays[k%5];
+    var full=Math.floor(len+0.001), frac=len-full;
+    if(frac<0.1)frac=0;
+    var need=full+(frac>0?1:0);
+    if(need<1){need=1;frac=0}
+    var st=1;
+    for(var q=0;q<need && st+q<SLOTS;q++){
+      grid[day][st+q]={c:WC.sh,n:'\u0421\u044a\u0451\u043c\u043a\u0430',
+                       part:(frac>0&&q===need-1)?frac:1};
+    }
+    placed.push([day,len]);
+  });
+
+  /* 2. остальное — заполняем оставшиеся ячейки по кругу */
+  var queue=[
+    [poW,WC.po,'\u041e\u0431\u0440\u0430\u0431\u043e\u0442\u043a\u0430',false],
+    [prW,WC.pr,'\u041f\u0440\u043e\u0434\u0432\u0438\u0436\u0435\u043d\u0438\u0435',false],
+    [clW,WC.cl,'\u041a\u043b\u0438\u0435\u043d\u0442',false],
+    [idW,WC.id,'\u0420\u0430\u0431\u043e\u0447\u0438\u0435 \u043f\u0430\u0443\u0437\u044b',false],
+    [fmW,WC.fm,'\u0424\u043e\u0440\u0441-\u043c\u0430\u0436\u043e\u0440\u044b',true],
+    [acW,WC.ac,'\u0423\u0447\u0451\u0442',false],
+    [mgW,WC.mg,'\u0423\u043f\u0440\u0430\u0432\u043b\u0435\u043d\u0438\u0435',false]];
+  var slotsFree=[];
+  for(var ss=0;ss<SLOTS;ss++)for(var dd=0;dd<5;dd++)
+    if(!grid[dd][ss])slotsFree.push([dd,ss]);
+  /* распределяем по наибольшим остаткам, чтобы мелкие роли не терялись */
+  var capacity=slotsFree.length;
+  var raw=queue.map(function(q){return q[0]});
+  var sumRaw=0; raw.forEach(function(v){sumRaw+=v});
+  var need=raw.map(function(v){return sumRaw>0?v/sumRaw*capacity:0});
+  var got=need.map(function(v){return Math.floor(v)});
+  /* каждой ненулевой роли — минимум одна ячейка */
+  for(var q1=0;q1<got.length;q1++)if(raw[q1]>0.05&&got[q1]===0)got[q1]=1;
+  var used=0; got.forEach(function(v){used+=v});
+  var rest=capacity-used;
+  var frac=need.map(function(v,i){return [i,v-Math.floor(v)]})
+    .sort(function(a,b){return b[1]-a[1]});
+  var fp=0;
+  while(rest>0&&frac.length){got[frac[fp%frac.length][0]]++;rest--;fp++}
+  while(rest<0){
+    var mx=0; for(var q2=1;q2<got.length;q2++)if(got[q2]>got[mx])mx=q2;
+    if(got[mx]<=1)break; got[mx]--; rest++;
+  }
+  var fi=0;
+  queue.forEach(function(q,qi){
+    for(var k=0;k<got[qi] && fi<slotsFree.length;k++,fi++){
+      var p=slotsFree[fi];
+      grid[p[0]][p[1]]={c:q[1],n:q[2],idle:q[3]};
+    }
+  });
+
+  /* 3. отрисовка */
+  var html='<div></div>'+WK.map(function(w){return '<div class="hd">'+w+'</div>'}).join('');
+  for(var ss=0;ss<SLOTS;ss++){
+    var hh=H0+ss;
+    html+='<div class="hr">'+(hh<10?'0':'')+hh+':00</div>';
+    for(var dd=0;dd<5;dd++){
+      var c=grid[dd][ss];
+      if(!c){html+='<div><i class="free"></i></div>';continue}
+      /* З-118 (слово владельца 27.08): подпись стоит в каждой занятой
+         ячейке календаря — на десктопе помещаются все подписи. */
+      /* 15.09 (слово владельца): текстовые подписи — на десктопе и
+         планшете, как было. При сужении экрана (≤519px, Z-118 — подписи
+         не помещаются) ячейки не остаются пустыми: съёмка — ₽,
+         неоплачиваемое — белый прочерк. Подсказка title сохраняется.
+         Оба span абсолютно позиционированы — геометрия сетки не
+         меняется. */
+      var isSh=(c.n==='\u0421\u044a\u0451\u043c\u043a\u0430');
+      var lbl='<span class="wtxt'+(isSh?' wlbl':'')+'"'+'>'+c.n+'</span>'
+        +'<span class="wmb'+(isSh?' wlbl':' wdsh')+'" aria-hidden="true">'
+        +(isSh?'\u20bd':'\u2014')+'</span>';
+      /* неполный час закрашивается на свою долю, сверху вниз */
+      var bg=(c.part!=null&&c.part<0.999)
+        ? 'linear-gradient(to bottom,'+c.c+' 0 '+(c.part*100).toFixed(0)+'%,'+
+          'var(--c-bg) '+(c.part*100).toFixed(0)+'% 100%)'
+        : c.c;
+      html+='<div><i class="'+(c.idle?'hatch':'')+'" style="background:'+bg+'" title="'+c.n+'">'+lbl+'</i></div>';
+    }
+  }
+  $('wk').innerHTML=html;
 
   /* --- легенда цветов под сеткой (13.09, повторный: возврат на
      прежнее место, как было размещено ранее) --- */
-   /* Легенда различает оплату съёмки, скрытую работу внутри её цены и
-      обязательное неоплачиваемое время: обед и логистику. */
+  /* --- 15.09 (слово владельца): легенда — две группы:
+     «Оплачиваемое время» (только съёмка) и «Скрытое время
+     (не оплачивается напрямую)» (все остальные виды). --- */
   var wlg=$('wklg');
   if(wlg){
     function слгЭл(x){
-      var ноль=(x[3]||0)<=0.005?' — 0 ч':'';
-      return '<span><i'+(x[2]?' class="hatch"':'')+' style="background:'+x[0]+'"></i>'+x[1]+ноль+'</span>';
+      return '<span><i'+(x[2]?' class="hatch"':'')+' style="background:'+x[0]+'"></i>'+x[1]+'</span>';
     }
-    /* Легенда — полный словарь модели, даже если на этой неделе вид равен 0.
-       Нулевое время не рисуется в кольцах, но не должно исчезать из линейного
-       календаря и расшифровки: работа остаётся частью модели. */
-    var СКР=[[WC.po,'\u041e\u0431\u0440\u0430\u0431\u043e\u0442\u043a\u0430',false,poW],
-             [WC.pr,'\u041f\u0440\u043e\u0434\u0432\u0438\u0436\u0435\u043d\u0438\u0435',false,prW],
-             [WC.cl,'\u0420\u0430\u0431\u043e\u0442\u0430 \u0441 \u043a\u043b\u0438\u0435\u043d\u0442\u043e\u043c',false,clW],
-             [WC.ac,'\u0423\u0447\u0451\u0442',false,acW],
-             [WC.id,'\u0420\u0430\u0431\u043e\u0447\u0438\u0435 \u043f\u0430\u0443\u0437\u044b',false,idW],
-             [WC.fm,'\u0424\u043e\u0440\u0441-\u043c\u0430\u0436\u043e\u0440\u044b',true,fmW],
-             [WC.mg,'\u0423\u043f\u0440\u0430\u0432\u043b\u0435\u043d\u0438\u0435',false,mgW]];
-    var логПодпись=ОТДЕЛЬНОЕ_ПОМЕЩЕНИЕ
-      ? 'Логистика — 1 ч до начала и 1 ч после окончания рабочего дня'
-      : 'Логистика — 1 ч до и 1 ч после съёмки';
-    var пустаяЛогистика=!ОТДЕЛЬНОЕ_ПОМЕЩЕНИЕ
-      ? '<span><i class="log-empty"></i>Рамка — свободный слот под логистику в день без съёмки</span>'
-      : '';
-    wlg.innerHTML='<div class="slg-h">Условные обозначения</div>'
-      +'<div class="slg-g"><span>Оплачиваемое время:</span>'
-      +'<span><i style="background:'+WC.sh+'"></i>Съёмка'+(shW<=0.005?' — 0 ч':'')+'</span></div>'
-      +'<div class="slg-g"><b class="slg-t">Скрытая работа</b>'
-      +'<span class="slg-note">(не оплачивается напрямую, но входит в состав стоимости съёмочного часа):</span>'
-      +СКР.filter(function(x){return x[1].trim()}).map(слгЭл).join('')+'</div>'
-      +'<div class="slg-g"><b class="slg-t">Неоплаченное время</b>'
-      +'<span class="slg-note">(не входит в стоимость съёмочного часа, но всегда выделяется):</span>'
-      +'<span><i style="background:'+WC.id+'"></i>Обед — 14:00–15:00</span>'
-      +'<span><i style="background:'+WC.id+'"></i>'+логПодпись+'</span>'+пустаяЛогистика+'</div>';
-
+    var СКР=[[WC.po,'\u041e\u0431\u0440\u0430\u0431\u043e\u0442\u043a\u0430',false],
+             [WC.pr,'\u041f\u0440\u043e\u0434\u0432\u0438\u0436\u0435\u043d\u0438\u0435',false],
+             [WC.cl,'\u0420\u0430\u0431\u043e\u0442\u0430 \u0441 \u043a\u043b\u0438\u0435\u043d\u0442\u043e\u043c',false],
+             [WC.ac,'\u0423\u0447\u0451\u0442',false],
+             [WC.id,'\u0420\u0430\u0431\u043e\u0447\u0438\u0435 \u043f\u0430\u0443\u0437\u044b',false]];
+    if(fmW>0.05) СКР.push([WC.fm,'\u0424\u043e\u0440\u0441-\u043c\u0430\u0436\u043e\u0440\u044b',true]);
+    wlg.innerHTML='<div class="slg-g"><b class="slg-t">\u041e\u043f\u043b\u0430\u0447\u0438\u0432\u0430\u0435\u043c\u043e\u0435 \u0432\u0440\u0435\u043c\u044f:</b>'
+      +'<span><i style="background:'+WC.sh+'"></i>\u0421\u044a\u0451\u043c\u043a\u0430</span></div>'
+      +'<div class="slg-g"><b class="slg-t">\u0421\u043a\u0440\u044b\u0442\u043e\u0435 \u0432\u0440\u0435\u043c\u044f (\u043d\u0435 \u043e\u043f\u043b\u0430\u0447\u0438\u0432\u0430\u0435\u0442\u0441\u044f \u043d\u0430\u043f\u0440\u044f\u043c\u0443\u044e):</b>'
+      +СКР.filter(function(x){return x[1].trim()}).map(слгЭл).join('')+'</div>';
   }
 
   /* --- 15.09 (слово владельца, 2-е): главная формула «1 час съёмки =
      X часов рабочего времени» — одна большая зелёная плашка.
      X = всё рабочее время на час съёмки: (съёмка + обработка +
-     клиент + продвижение + учёт + управление + паузы [+ форс-мажоры]) ÷ часы
-     съёмки. Демо без управления: 1752 ÷ 216,6 = 8,1. --- */
-  var ВСЕ_Ч=d.sh>0?(d.sh+d.post+d.promo+d.clT+d.accT+d.idle+(d.fmT||0)+(d.mgmtT||0))/d.sh:0;
+     клиент + продвижение + учёт + паузы [+ форс-мажоры]) ÷ часы
+     съёмки. Демо: 1752 ÷ 216,6 = 8,1. --- */
+  var ВСЕ_Ч=d.sh>0?(d.sh+d.post+d.promo+d.clT+d.accT+d.idle+(d.fmT||0))/d.sh:0;
   function чСлово(x){
     var ц=Math.floor(x), д=Math.round((x-ц)*100);
     if(д>0)return '\u0447\u0430\u0441\u0430';
@@ -8388,16 +8245,13 @@ var t=-Math.PI/2 - Math.PI/6, секторы=[];
      неделю / месяц / год. Те же соотношения, что в таблицах
      детализации «время»: деление на 43,8 недели (NW), на 12
      месяцев и на часы съёмки (÷ d.sh). --- */
-  /* Таблица, в отличие от кольцевых диаграмм, показывает все виды работы.
-     Так нулевое управление или резерв не маскируются под отсутствие задачи. */
   var ВТ=[['\u0421\u044a\u0451\u043c\u043a\u0430',d.sh],
           ['\u041e\u0431\u0440\u0430\u0431\u043e\u0442\u043a\u0430',d.post],
           ['\u041f\u0440\u043e\u0434\u0432\u0438\u0436\u0435\u043d\u0438\u0435',d.promo],
           ['\u0420\u0430\u0431\u043e\u0442\u0430 \u0441 \u043a\u043b\u0438\u0435\u043d\u0442\u043e\u043c',d.clT],
           ['\u0423\u0447\u0451\u0442',d.accT],
-          ['\u0420\u0430\u0431\u043e\u0447\u0438\u0435 \u043f\u0430\u0443\u0437\u044b',d.idle],
-          ['\u0424\u043e\u0440\u0441-\u043c\u0430\u0436\u043e\u0440\u044b',d.fmT||0],
-          ['\u0423\u043f\u0440\u0430\u0432\u043b\u0435\u043d\u0438\u0435',d.mgmtT||0]];
+          ['\u0420\u0430\u0431\u043e\u0447\u0438\u0435 \u043f\u0430\u0443\u0437\u044b',d.idle]];
+  if((d.fmT||0)>0)ВТ.push(['\u0424\u043e\u0440\u0441-\u043c\u0430\u0436\u043e\u0440\u044b',d.fmT]);
   function чТ(x){
     if(!isFinite(x)||Math.abs(x)<0.005)x=0;
     return x.toLocaleString('ru-RU',{minimumFractionDigits:0,maximumFractionDigits:2})+'\u00a0\u0447';
@@ -8413,6 +8267,7 @@ var t=-Math.PI/2 - Math.PI/6, секторы=[];
       +'<td>'+чТ(x[1]/12)+'</td>'
       +'<td>'+чТ(x[1])+'</td></tr>';
   }).join('');
+
 
   /* З-137 (слово владельца 27.08): уведомление «За неделю у вас …
      съёмки» удалено из блока 02 совсем. Текстовой комментарий
@@ -9903,9 +9758,6 @@ var _p=$('dlpdf'); if(_p)_p.onclick=function(){if(window.PHR_PRINT)window.PHR_PR
       var dx=0, dy=0, стартX=0, стартY=0, тащим=false;
       function down(e){
         if(!десктоп()) return;
-        /* Ссылка в нулевой плашке — навигация, а не начало
-           перетаскивания; иначе preventDefault ниже гасил бы переход. */
-        if(e.target.closest&&e.target.closest('a')) return;
         тащим = true;
         плашка.classList.add('dragging');
         var кф = поле.getBoundingClientRect();
@@ -10083,32 +9935,15 @@ var _p=$('dlpdf'); if(_p)_p.onclick=function(){if(window.PHR_PRINT)window.PHR_PR
      одновременно окупить каждую покупку. */
   var прибыль=Number(Д.profitY)||0,
       срок=Number(Д.investmentPaybackYears);
-  function периодОкупаемости(n){
-    var x=Math.round(n*10)/10, i=Math.floor(x), слово;
-    if(x!==i)слово='года';
-    else {var d1=i%10,d2=i%100; слово=(d2>=11&&d2<=14)?'лет':(d1===1?'год':(d1>=2&&d1<=4?'года':'лет'));}
-    return {число:x.toLocaleString('ru-RU'),слово:слово};
-  }
+  function летСлово(n){ var x=Math.round(n*10)/10, i=Math.floor(x); if(x!==i) return x.toLocaleString('ru-RU')+' года'; var d1=i%10,d2=i%100; if(d2>=11&&d2<=14)return i+' лет'; if(d1===1)return i+' год'; if(d1>=2&&d1<=4)return i+' года'; return i+' лет'; }
   var пл=document.getElementById('инвПлашка');
   if(прибыль>0 && isFinite(срок)){
-    if(пл){
-      var период=периодОкупаемости(срок);
-      пл.className='dnsum res inv-payback';
-      пл.removeAttribute('role');
-      пл.innerHTML='<svg class="dsdeco" viewBox="0 0 32 32" fill="none" aria-hidden="true">'
-        +'<rect x="10.95" y="2.09" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 7.14)" fill="var(--c-b-600)"/>'
-        +'<rect x="19.81" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 24.86 16)" fill="var(--c-b-600)"/>'
-        +'<rect x="10.95" y="19.81" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 24.86)" fill="var(--c-b-600)"/>'
-        +'<rect x="2.09" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 7.14 16)" fill="var(--c-b-600)"/></svg>'
-        +'<div class="dsh">Ваше вложение окупится за</div>'
-        +'<div class="dsb">'+период.число+' '+период.слово+'</div>'
-        +'<div class="dsl">После возврата инвестиций вы сможете направить эти средства на развитие бизнеса или увеличить личный доход.</div>';
-    }
+    if(пл){ пл.classList.remove('never');
+      пл.innerHTML='<div class="ip-v">Вложения окупятся за <b>'+летСлово(срок)+'</b></div>'
+        +'<div class="ip-s">Считаем по чистой прибыли: '+руб(прибыль)+' \u20BD/год</div>'; }
   }else if(пл){
-    пл.className='mp-sec inv-payback-warn';
-    пл.setAttribute('role','note');
-    пл.innerHTML='<div class="mp-alert"><span class="mp-bang" aria-hidden="true">!</span>'
-      +'<div class="mp-txt"><b>Вложения не окупятся</b> <p>никогда</p></div></div>';
+    пл.classList.add('never');
+    пл.innerHTML='<div class="ip-v">Вложения не окупятся <b>никогда</b></div>';
   }
   [['инвВремя',время],['инвСъём',съём],['инвПост',пост]].forEach(function(x){
     if(x[1]<=0){ var э=document.getElementById(x[0]), плашка=э&&э.closest('.cam-chip'); if(плашка) плашка.style.display='none'; }
@@ -10230,4 +10065,3 @@ var _p=$('dlpdf'); if(_p)_p.onclick=function(){if(window.PHR_PRINT)window.PHR_PR
 </script>
 
 <script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a4089da49d26adee',t:'MTc5MDMyNDQ5MA=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body></html>
-e.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body></html>

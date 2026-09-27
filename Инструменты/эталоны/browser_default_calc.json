@@ -1,0 +1,701 @@
+{
+  "format": 1,
+  "scenario": "fresh-calc-html",
+  "storage": {
+    "reportAbsent": true,
+    "stateAbsent": true
+  },
+  "form": {
+    "exclusions": {
+      "FormPromoTime": false,
+      "FormMgmt": true,
+      "Form001": false,
+      "Form002": false,
+      "Form008b": false,
+      "Form009b": false,
+      "Form006": false,
+      "Form010": false,
+      "Form015b": false,
+      "Form011": false,
+      "Form024": true
+    },
+    "controls": {
+      "regime": "usn6",
+      "npdWho": "mix",
+      "taxAuto": true,
+      "taxOff": false,
+      "fundOn": true,
+      "fundPct": "20",
+      "cushionOn": true,
+      "discOn": false,
+      "fmOn": false
+    },
+    "taxUi": {
+      "heading": "Режим налогообложения подбирается автоматически.",
+      "manualQuestionIsDirect": true,
+      "manualHidden": true,
+      "manualSelectDisabled": true,
+      "autoButtonLabel": "Настроить вручную",
+      "taxOffEnabled": true,
+      "limitToastVisible": false
+    },
+    "fund": {
+      "manual": false,
+      "R": 2903828.0082342885,
+      "investment": 1442125,
+      "recommendation": 20
+    }
+  },
+  "result": {
+    "answers": [
+      {
+        "b": 1,
+        "n": "Желаемый доход",
+        "v": 110216,
+        "u": "₽/мес"
+      },
+      {
+        "b": 2,
+        "n": "Налоговый режим",
+        "v": "ИП, УСН «Доходы» — 6%",
+        "u": ""
+      },
+      {
+        "b": 3,
+        "n": "Текущая ставка",
+        "v": 6000,
+        "u": "₽/ч"
+      },
+      {
+        "b": 4,
+        "n": "Готовых кадров за 1 час",
+        "v": 80,
+        "u": "шт"
+      },
+      {
+        "b": 4,
+        "n": "Срабатываний затвора за 1 час",
+        "v": 350,
+        "u": "шт"
+      },
+      {
+        "b": 4,
+        "n": "Ресурс затвора",
+        "v": 300000,
+        "u": "шт"
+      },
+      {
+        "b": 5,
+        "n": "Минимальный заказ",
+        "v": 1,
+        "u": "ч"
+      },
+      {
+        "b": 6,
+        "n": "Время на постпродакшн",
+        "v": 3,
+        "u": "× ч"
+      },
+      {
+        "b": 7,
+        "n": "Проектная работа с клиентами",
+        "v": 1,
+        "u": "ч"
+      },
+      {
+        "b": 8,
+        "n": "Поиск заказов",
+        "v": 2,
+        "u": "ч/день"
+      },
+      {
+        "b": 13,
+        "n": "Где находится рабочее место",
+        "v": "Дома",
+        "u": ""
+      },
+      {
+        "b": 13,
+        "n": "Сколько вы платите за жильё в месяц",
+        "v": 40000,
+        "u": "₽/мес"
+      },
+      {
+        "b": 13,
+        "n": "Коммунальные платежи, интернет и связь",
+        "v": 7000,
+        "u": "₽/мес"
+      },
+      {
+        "b": 13,
+        "n": "Общая площадь вашего жилья",
+        "v": 50,
+        "u": "м²"
+      },
+      {
+        "b": 13,
+        "n": "Сколько метров выделено под рабочую зону",
+        "v": 6,
+        "u": "м²"
+      },
+      {
+        "b": 14,
+        "n": "За сколько лет окупить вложения в обучение",
+        "v": 7,
+        "u": "лет"
+      },
+      {
+        "b": 15,
+        "n": "Кто делал сайт",
+        "v": "Заказывал у специалистов",
+        "u": ""
+      },
+      {
+        "b": 15,
+        "n": "Сколько вы заплатили за создание сайта",
+        "v": 70000,
+        "u": "₽"
+      },
+      {
+        "b": 15,
+        "n": "За сколько лет окупить вложения в сайт",
+        "v": 7,
+        "u": "лет"
+      },
+      {
+        "b": 17,
+        "n": "Эквайринг",
+        "v": 2.7,
+        "u": "%"
+      },
+      {
+        "b": 17,
+        "n": "Доля безналичных платежей",
+        "v": 100,
+        "u": "%"
+      },
+      {
+        "b": 18,
+        "n": "Кто ведёт учёт",
+        "v": "Веду сам",
+        "u": ""
+      },
+      {
+        "b": 18,
+        "n": "Время на ведение учёта",
+        "v": 1,
+        "u": "ч/нед"
+      },
+      {
+        "b": 21,
+        "n": "Чистая прибыль",
+        "v": 30,
+        "u": "%"
+      }
+    ],
+    "catalog": [
+      {
+        "b": 10,
+        "n": "Canon EOS R6 Mark II Body",
+        "price": 166999,
+        "term": 4,
+        "kind": "life"
+      },
+      {
+        "b": 10,
+        "n": "Canon RF 24–105mm f/4.0 L IS USM",
+        "price": 130999,
+        "term": 7,
+        "kind": "life"
+      },
+      {
+        "b": 10,
+        "n": "Godox V1Pro C",
+        "price": 36990,
+        "term": 5,
+        "kind": "life"
+      },
+      {
+        "b": 10,
+        "n": "Godox XPro II C",
+        "price": 9355,
+        "term": 5,
+        "kind": "life"
+      },
+      {
+        "b": 10,
+        "n": "Аккумулятор LP-E6NH",
+        "price": 12978,
+        "term": 5,
+        "kind": "life"
+      },
+      {
+        "b": 10,
+        "n": "SanDisk Extreme PRO 256 ГБ #1",
+        "price": 6990,
+        "term": 2,
+        "kind": "life"
+      },
+      {
+        "b": 10,
+        "n": "SanDisk Extreme PRO 256 ГБ #2",
+        "price": 6990,
+        "term": 2,
+        "kind": "life"
+      },
+      {
+        "b": 10,
+        "n": "Рюкзак Lowepro ProTactic",
+        "price": 27962,
+        "term": 7,
+        "kind": "life"
+      },
+      {
+        "b": 10,
+        "n": "Godox RFT-05 отражатель",
+        "price": 3000,
+        "term": 7,
+        "kind": "life"
+      },
+      {
+        "b": 10,
+        "n": "X-Rite ColorChecker",
+        "price": 5000,
+        "term": 7,
+        "kind": "life"
+      },
+      {
+        "b": 11,
+        "n": "Системный блок",
+        "price": 180000,
+        "term": 5,
+        "kind": "life"
+      },
+      {
+        "b": 11,
+        "n": "Монитор ASUS ProArt",
+        "price": 55000,
+        "term": 5,
+        "kind": "life"
+      },
+      {
+        "b": 11,
+        "n": "Calibrite ColorChecker",
+        "price": 30000,
+        "term": 5,
+        "kind": "life"
+      },
+      {
+        "b": 11,
+        "n": "Колонки Logitech Z207",
+        "price": 5000,
+        "term": 5,
+        "kind": "life"
+      },
+      {
+        "b": 11,
+        "n": "Клавиатура Logitech K380",
+        "price": 3500,
+        "term": 7,
+        "kind": "life"
+      },
+      {
+        "b": 11,
+        "n": "Мышь Logitech M650",
+        "price": 4000,
+        "term": 3,
+        "kind": "life"
+      },
+      {
+        "b": 11,
+        "n": "Веб-камера Logitech Brio",
+        "price": 15999,
+        "term": 5,
+        "kind": "life"
+      },
+      {
+        "b": 11,
+        "n": "Микрофон FIFINE K669B",
+        "price": 3500,
+        "term": 5,
+        "kind": "life"
+      },
+      {
+        "b": 11,
+        "n": "Принтер Canon PIXMA G640",
+        "price": 29999,
+        "term": 5,
+        "kind": "life"
+      },
+      {
+        "b": 12,
+        "n": "Adobe Creative Cloud Photography",
+        "price": 2000,
+        "term": 12,
+        "kind": "per"
+      },
+      {
+        "b": 12,
+        "n": "Яндекс Диск 1 ТБ",
+        "price": 250,
+        "term": 12,
+        "kind": "per"
+      },
+      {
+        "b": 12,
+        "n": "AmoCRM (CRM-система)",
+        "price": 0,
+        "term": 12,
+        "kind": "per"
+      },
+      {
+        "b": 12,
+        "n": "СБИС (обмен электронными документами)",
+        "price": 0,
+        "term": 12,
+        "kind": "per"
+      },
+      {
+        "b": 12,
+        "n": "Retouch4me Heal",
+        "price": 6900,
+        "term": 3,
+        "kind": "life"
+      },
+      {
+        "b": 12,
+        "n": "Retouch4me Dodge & Burn",
+        "price": 6900,
+        "term": 3,
+        "kind": "life"
+      },
+      {
+        "b": 12,
+        "n": "Retouch4me Fabric",
+        "price": 6900,
+        "term": 3,
+        "kind": "life"
+      },
+      {
+        "b": 12,
+        "n": "Retouch4me Clean Backdrop",
+        "price": 6900,
+        "term": 3,
+        "kind": "life"
+      },
+      {
+        "b": 12,
+        "n": "Retouch4me Dust",
+        "price": 6900,
+        "term": 3,
+        "kind": "life"
+      },
+      {
+        "b": 13,
+        "n": "Компьютерный стол",
+        "price": 15000,
+        "term": 7,
+        "kind": "life"
+      },
+      {
+        "b": 13,
+        "n": "Стул",
+        "price": 9000,
+        "term": 7,
+        "kind": "life"
+      },
+      {
+        "b": 13,
+        "n": "Стеллаж для хранения",
+        "price": 12000,
+        "term": 7,
+        "kind": "life"
+      },
+      {
+        "b": 13,
+        "n": "Шторы",
+        "price": 6000,
+        "term": 7,
+        "kind": "life"
+      },
+      {
+        "b": 13,
+        "n": "Жалюзи",
+        "price": 5000,
+        "term": 7,
+        "kind": "life"
+      },
+      {
+        "b": 13,
+        "n": "Карниз",
+        "price": 2500,
+        "term": 7,
+        "kind": "life"
+      },
+      {
+        "b": 13,
+        "n": "Коврик под ноги",
+        "price": 3000,
+        "term": 7,
+        "kind": "life"
+      },
+      {
+        "b": 13,
+        "n": "Ремонт помещения под ключ",
+        "price": 30000,
+        "term": 7,
+        "kind": "life"
+      },
+      {
+        "b": 14,
+        "n": "Курс по фотографии",
+        "price": 80000,
+        "term": 4,
+        "kind": "months"
+      },
+      {
+        "b": 16,
+        "n": "Домен сайта",
+        "price": 1500,
+        "term": 1,
+        "kind": "per"
+      },
+      {
+        "b": 16,
+        "n": "Хостинг сайта",
+        "price": 6000,
+        "term": 1,
+        "kind": "per"
+      },
+      {
+        "b": 16,
+        "n": "Яндекс Директ",
+        "price": 15000,
+        "term": 12,
+        "kind": "per"
+      },
+      {
+        "b": 16,
+        "n": "Авито",
+        "price": 0,
+        "term": 12,
+        "kind": "per"
+      },
+      {
+        "b": 16,
+        "n": "Таргетированная реклама",
+        "price": 0,
+        "term": 12,
+        "kind": "per"
+      },
+      {
+        "b": 16,
+        "n": "Размещения у блогеров",
+        "price": 0,
+        "term": 12,
+        "kind": "per"
+      },
+      {
+        "b": 16,
+        "n": "Отклики на Profi.ru",
+        "price": 0,
+        "term": 12,
+        "kind": "per"
+      },
+      {
+        "b": 17,
+        "n": "Обслуживание счёта (РКО)",
+        "price": 0,
+        "term": 12,
+        "kind": "per"
+      },
+      {
+        "b": 17,
+        "n": "СМС-уведомления",
+        "price": 150,
+        "term": 12,
+        "kind": "per"
+      },
+      {
+        "b": 17,
+        "n": "",
+        "price": 0,
+        "term": 12,
+        "kind": "per"
+      }
+    ],
+    "frames": 80,
+    "NT": 1533,
+    "idle": 219,
+    "pool": 1051.2,
+    "calDays": 365,
+    "weekend": 104,
+    "holidays": 14,
+    "WD": 247,
+    "VAC": 20,
+    "SICK": 8,
+    "ND": 219,
+    "EFF": 7,
+    "shutterPerHour": 350,
+    "shutterLife": 300000,
+    "shotsYear": 76650.00000000001,
+    "camName": "Canon EOS R6 Mark II Body",
+    "camPrice": 166999,
+    "camLife": 4,
+    "camAmort": 41749.75,
+    "camWear": 0.5446803652968035,
+    "shootEquipmentWear": 1.1018385052651194,
+    "costHour": 2426.988383180505,
+    "markup": 4.463350675250518,
+    "rateHour": 13259.488622074376,
+    "rateZero": 2426.9883831805046,
+    "workHours": 1752,
+    "rateWork": 691.9954337899543,
+    "rateWorkFull": 1894.2126602963397,
+    "vacY": 110216,
+    "minShootsY": 32.068232558029294,
+    "minShootsM": 2.672352713169108,
+    "zeroShootsY": 219.00000000000003,
+    "zeroShootsM": 18.250000000000004,
+    "loadGoal": {
+      "shoots": 175.2,
+      "hours": 1533,
+      "days": 219,
+      "freeDays": 146,
+      "dayHours": 7,
+      "shootsPerDay": 0.7999999999999999
+    },
+    "loadCur": {
+      "shoots": 387.17706776457175,
+      "hours": 2804.862406587431,
+      "days": 400.69462951249017,
+      "freeDays": -35.69462951249017,
+      "dayHours": 12.807590897659502,
+      "shootsPerDay": 1.7679318162765834
+    },
+    "loadZero": {
+      "shoots": 957.1790383038909,
+      "hours": 6224.8742298233465,
+      "days": 889.267747117621,
+      "freeDays": -524.267747117621,
+      "dayHours": 28.424083241202496,
+      "shootsPerDay": 4.370680540200415
+    },
+    "promo": 438,
+    "accT": 43.8,
+    "fmT": 0,
+    "mgmtT": 0,
+    "S": 1,
+    "pt": 6.000000000000001,
+    "py": 175.2,
+    "sh": 219.00000000000003,
+    "post": 657.0000000000001,
+    "clT": 175.2,
+    "projectPlan": {
+      "version": 1,
+      "weeks": 1,
+      "step": 0.5,
+      "minShoot": 1,
+      "capacity": 24.000000000000004,
+      "projects": [
+        {
+          "shoot": 1.5000000000000009,
+          "post": 4.500000000000003,
+          "client": 1
+        },
+        {
+          "shoot": 1.5,
+          "post": 4.5,
+          "client": 1
+        },
+        {
+          "shoot": 1,
+          "post": 3,
+          "client": 1
+        },
+        {
+          "shoot": 1,
+          "post": 3,
+          "client": 1
+        }
+      ],
+      "regular": {
+        "promo": 10,
+        "acc": 1,
+        "fm": 0,
+        "idle": 5,
+        "mgmt": 0
+      },
+      "totals": {
+        "shoot": 5.000000000000001,
+        "post": 15.000000000000004,
+        "client": 4
+      }
+    },
+    "amort": 173474.56904761904,
+    "vari": 283980,
+    "C": 457454.569047619,
+    "totalExpenses": 710087.6057640022,
+    "Ny": 1322592,
+    "R": 2903828.0082342885,
+    "taxAll": 174229.6804940573,
+    "aq": 78403.3562223258,
+    "goalFund": 871148.4024702867,
+    "goalDiscountReserve": 0,
+    "goalSelfSiteCost": 0,
+    "goalCostsTotal": 1581236.0082342888,
+    "goalResult": 1322591.9999999998,
+    "cur": 6000,
+    "Rc": 1314000.0000000002,
+    "leftC": 348027.4309523811,
+    "taxC": 78840.00000000001,
+    "aqC": 35478.00000000001,
+    "currentFund": 394200.0000000001,
+    "currentDiscountReserve": 0,
+    "currentSelfSiteCost": 0,
+    "currentCostsTotal": 965972.5690476191,
+    "currentResult": 348027.4309523811,
+    "currentIncome": 348027.4309523811,
+    "currentLoss": 0,
+    "currentIsLoss": false,
+    "currentBreakEvenMargin": 0.5955019361365826,
+    "Rb": 531510.4559165306,
+    "taxB": 59705.10455916531,
+    "aqB": 14350.782309746328,
+    "wsY": 67680,
+    "siteY": 10000,
+    "eduY": 74409.14285714286,
+    "fundY": 871148.4024702867,
+    "profitY": 580765.6016468577,
+    "cushionY": 290382.800823429,
+    "discY": 0,
+    "fundP": 0.2,
+    "discP": 0,
+    "investmentShoot": 407263,
+    "investmentPost": 361498,
+    "investmentTime": 590864,
+    "investmentTotal": 1359625,
+    "investmentPaybackYears": 2.341090787995289,
+    "depShoot": 84455.92142857143,
+    "depOffice": 65732.93333333333,
+    "depSoft": 11500,
+    "depEdu": 0,
+    "depSite": 0,
+    "depWs": 11785.714285714286,
+    "varAds": 187500,
+    "varSoft": 27000,
+    "varBank": 1800,
+    "varRent": 67680,
+    "varAcc": 0,
+    "varEmp": 0,
+    "directFrameCosts": 268154.569047619,
+    "NW": 43.8,
+    "K": 3,
+    "cl": 1,
+    "curRate": 6000,
+    "regime": "ИП, УСН «Доходы» — 6%",
+    "regimeCode": "usn6",
+    "clients": "mix",
+    "profession": "фотографа"
+  }
+}

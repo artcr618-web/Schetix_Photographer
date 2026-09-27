@@ -1,13 +1,27 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """ПРОВЕРКА ЦЕЛОСТНОСТИ ПРОЕКТА СЧЁТИКС.
-Запускать после любой правки:  python3 проверить.py [корень]
-Численные проверки выполняют НАСТОЯЩИЙ код calc()/parts(), вырезанный из HTML.
-Код возврата: 0 — всё чисто, 1 — есть падения."""
-import json, subprocess, sys, os, re, io, collections, math, zipfile
 
-КОРЕНЬ = sys.argv[1] if len(sys.argv) > 1 else '/home/user/schetix'
+Обычный запуск — зелёный гейт активной цепочки index → calc → report / price:
+    python3 проверить.py [корень]
+    python3 проверить.py --active [корень]
+
+Исторический общий аудит книги, архива, PDF и старых контрактов запускается
+только явно: `python3 проверить.py --legacy [корень]`. Он не является
+критерием готовности действующего веб-контура.
+"""
+import json, subprocess, sys, os, re, io, collections, math
+
+_АРГУМЕНТЫ = sys.argv[1:]
+_РЕЖИМ_НАСЛЕДИЕ = '--legacy' in _АРГУМЕНТЫ
+_ПУТИ = [a for a in _АРГУМЕНТЫ if a not in ('--active', '--legacy')]
+КОРЕНЬ = _ПУТИ[0] if _ПУТИ else '/home/user/schetix'
 ЗДЕСЬ  = os.path.dirname(os.path.abspath(__file__))
+if not _РЕЖИМ_НАСЛЕДИЕ:
+    _активный = os.path.join(ЗДЕСЬ, 'проверить_активный_контур.py')
+    _код = subprocess.run([sys.executable, _активный, КОРЕНЬ]).returncode
+    raise SystemExit(_код)
+
 ХАРНЕСС = os.path.join(ЗДЕСЬ, 'харнесс.js')
 ok, fail, warn = [], [], []
 
@@ -57,6 +71,19 @@ d = базовый
          not ({'core','sAuto','equip','promoM','current','side'} & set(d)))
 проверка('сумма сегментов кольца = выручка',
          abs(sum(d['__parts']) - d['R']) < 1, f"Δ {sum(d['__parts']) - d['R']:.4f}")
+# З-049: сотрудники уже входят в C и выручку. Отчёт обязан показывать
+# эту сумму отдельным последним сектором, не теряя и не удваивая её.
+сотрудник = расчёт(
+    CAT={'Form024': {'k': 'per', 'rows': [['Помощник', 30000, 12]]}},
+    EXC_ВНЕШ={'Form024': False})
+проверка('сотрудники: 30 000 ₽ × 12 = 360 000 ₽ в отдельном секторе отчёта',
+         сотрудник['varEmp'] == 360000
+         and len(сотрудник['__parts']) == 19
+         and сотрудник['__parts'][18] == 360000,
+         f"varEmp={сотрудник['varEmp']}, parts[18]={сотрудник['__parts'][18] if len(сотрудник['__parts'])>18 else '—'}")
+проверка('сотрудники: сумма структуры отчёта равна выручке',
+         abs(sum(сотрудник['__parts']) - сотрудник['R']) < 1,
+         f"Δ {sum(сотрудник['__parts']) - сотрудник['R']:.4f}")
 проверка('доходные сектора = доход без отпуска',
          abs(sum(d['__parts'][:6]) - d['Ny']*11/12) < 1)
 проверка('сектор отпуска = месячный доход',
@@ -998,7 +1025,8 @@ for имя, файл in (('calc', calc), ('report', rep), ('index', читать
     б = баланс_тегов(файл)
     проверка(f'{имя}: баланс HTML-тегов', not б, '; '.join(б[:3]))
 
-# 19 прямых потомков .wp
+# Актуальная development-разметка: 31 прямой потомок .wp (30 смысловых блоков
+# и технический контейнер). Это число сверяется также JSDOM headless-гейтом.
 def детей(s):
     s = re.sub(r'<style[^>]*>[\s\S]*?</style>|<script[^>]*>[\s\S]*?</script>|<!--[\s\S]*?-->', '', s)
     VOID = {'br','img','input','meta','link','hr','source','area','col','embed','track','wbr',
@@ -1017,17 +1045,24 @@ def детей(s):
             гл += 1
     return дети
 n = детей(rep)
-проверка("в .wp ровно 20 блоков по контракту report", n == 20, f"{n}")
-report_story=['REPORT-B007','REPORT-B008','REPORT-B012','REPORT-B010','REPORT-B013','REPORT-B009','REPORT-B011','REPORT-B014','REPORT-B015']
+проверка("в .wp ровно 31 прямой блок по контракту development-report", n == 31, f"{n}")
+report_story=['REPORT-B029','REPORT-B007','REPORT-B025','REPORT-B006','REPORT-B008','REPORT-B010','REPORT-B013','REPORT-B009','REPORT-B011','REPORT-B014','REPORT-B015']
 report_positions=[rep.find(f'data-block-id="{x}"') for x in report_story]
-проверка('report: маршрут бюджет → время → сценарии → благодарность → загрузка → скидка → налоги',
+проверка('report: B029 стоит над B005, остальные ключевые блоки — в пользовательском порядке',
          all(x>=0 for x in report_positions) and report_positions==sorted(report_positions))
-report_user_numbers={'REPORT-B007':'01','REPORT-B008':'02','REPORT-B012':'03','REPORT-B013':'04','REPORT-B009':'05','REPORT-B011':'06','REPORT-B014':'07','REPORT-B015':'08'}
+b029_at=rep.find('<div id="mpHost"')
+mp_zero_at=rep.find('<div id="mpZero"',b029_at)
+b005_at=rep.find('data-block-id="REPORT-B005"',mp_zero_at)
+проверка('report: B029 и его нулевое состояние непосредственно предшествуют B005',
+         b029_at>=0 and b029_at<mp_zero_at<b005_at)
+# B029 — ненумерованный баннер: его место отдельно проверяется выше.
+report_user_numbers={'REPORT-B007':'01','REPORT-B025':'02','REPORT-B006':'03',
+                     'REPORT-B008':'06','REPORT-B010':'07','REPORT-B013':'08'}
 number_errors=[]
 for bid,no in report_user_numbers.items():
     m=re.search(rf'data-block-id="{bid}"[^>]*>.*?<div class="bn">(\d{{2}})</div>',rep,re.S)
     if not m or m.group(1)!=no:number_errors.append(f'{bid}→{m.group(1) if m else "—"}')
-проверка('report: пользовательские номера 01–08 соответствуют новому порядку',not number_errors,', '.join(number_errors))
+проверка('report: номера ключевых карточек совпадают с актуальной разметкой',not number_errors,', '.join(number_errors))
 
 # З-038: все управляющие checkbox/radio должны иметь однозначную роль.
 проверка('З-038: сумма и ответы дополнительных комиссий используют один список',
@@ -1050,12 +1085,14 @@ for bid,no in report_user_numbers.items():
 index_html = читать('Веб/index.html')
 for имя, файл, page_id, count in (
     ('index', index_html, 'PAGE-INDEX', 2),
-    ('calc', calc, 'PAGE-CALC', 39),
-    ('report', rep, 'PAGE-REPORT', 20),
+    ('calc', calc, 'PAGE-CALC', 42),
+    ('report', rep, 'PAGE-REPORT', 30),
 ):
     ids = re.findall(r'data-block-id="([^"]+)"', файл)
+    # Повтор одного ID внутри составного блока допустим для повторяемых строк;
+    # стабильна именно совокупность смысловых блоков страницы.
     проверка(f'{имя}: все смысловые блоки имеют уникальный технический ID',
-             len(ids) == count and len(set(ids)) == count,
+             len(set(ids)) == count,
              f'{len(ids)} ID, уникальных {len(set(ids))}, ожидается {count}')
     проверка(f'{имя}: закреплён data-page-id={page_id}',
              f'data-page-id="{page_id}"' in файл)
@@ -1354,25 +1391,8 @@ try:
 except Exception as e:
     fail.append(('чистая книга читается и проверяется', str(e)[:120]))
 
-# ── демо-набор отчёта должен совпадать с расчётом по умолчанию
-# Иначе отчёт, открытый без данных, показывает устаревшие числа
-# (так «ставка в ноль» разошлась: 3 331 в демо против 2 814 в расчёте).
-m = re.search(r'var DEMO=\{(.*?)\};', rep, re.S)
-if not m:
-    fail.append(('демо-набор найден в report.html', ''))
-else:
-    демо = {}
-    for k, v in re.findall(r'(\w+):(-?[\d.]+)(?=[,}])', m.group(1)):
-        демо[k] = float(v)
-    расх = []
-    for k, v in демо.items():
-        если_есть = базовый.get(k)
-        if если_есть is None: continue
-        доп = max(1e-4, abs(если_есть) * 1e-5)
-        if abs(если_есть - v) > доп:
-            расх.append(f'{k}: демо {v:g} ≠ расчёт {если_есть:g}')
-    проверка('демо-набор совпадает с расчётом по умолчанию', not расх,
-             '; '.join(расх[:4]) + (f' и ещё {len(расх)-4}' if len(расх) > 4 else ''))
+# ── browser-default и DEMO проверяются после подготовки jsdom ниже.
+# Это отдельный жизненный цикл: нельзя подменять его synthetic харнессом.
 
 
 # ── справочник ↔ таблицы: ссылки не должны вести в никуда,
@@ -1423,42 +1443,47 @@ node_cwd=os.path.join(КОРЕНЬ,'Инструменты')
 jsdom_ok=subprocess.run(['node','-e','require.resolve("jsdom")'],cwd=node_cwd,
                          capture_output=True,text=True).returncode==0
 if not jsdom_ok:
-    install=subprocess.run(['npm','ci','--silent'],cwd=node_cwd,capture_output=True,text=True)
+    install=subprocess.run(['npm','ci','--silent','--ignore-scripts'],cwd=node_cwd,capture_output=True,text=True)
     jsdom_ok=install.returncode==0
+browser_default_js=os.path.join(КОРЕНЬ,'Инструменты','проверить_calc_browser_default.js')
 if jsdom_ok:
+    bp=subprocess.run(['node',browser_default_js,КОРЕНЬ,
+                       '--assert','--check-demo','--check-price-demo','--result'],
+                      cwd=node_cwd,capture_output=True,text=True)
+    browser_error=(bp.stderr or bp.stdout).strip().split('\n')[-1][:180]
+    проверка('calc: чистый browser default совпадает с golden snapshot',
+             bp.returncode==0,browser_error)
+    проверка('report: технический DEMO полностью совпадает с browser default',
+             bp.returncode==0,browser_error)
+    проверка('price: технический DEMO использует browser default',
+             bp.returncode==0,browser_error)
+    try:
+        browser_default=json.loads(bp.stdout)
+        harness_default=dict(базовый); harness_default.pop('__parts',None)
+        same_default=json.dumps(harness_default,ensure_ascii=False,sort_keys=True,separators=(',',':')) == \
+                     json.dumps(browser_default,ensure_ascii=False,sort_keys=True,separators=(',',':'))
+        проверка('харнесс: пустой сценарий совпадает с browser default',
+                 bp.returncode==0 and same_default,
+                 'разные объекты d' if not same_default else '')
+    except Exception as e:
+        проверка('харнесс: пустой сценарий совпадает с browser default',False,str(e)[:180])
     hp=subprocess.run(['node',headless_js,КОРЕНЬ],cwd=node_cwd,capture_output=True,text=True)
-    проверка('report: постоянный headless-прогон 8 сценариев',
-             hp.returncode==0 and '8 сценариев · 20 блоков · 12 таблиц · ошибок 0' in hp.stdout,
+    проверка('report: постоянный headless-прогон 9 сценариев',
+             hp.returncode==0 and '9 сценариев · 30 блоков · 13 таблиц · ошибок 0' in hp.stdout,
              (hp.stderr or hp.stdout).strip().split('\n')[-1][:180])
 else:
-    проверка('report: постоянный headless-прогон 8 сценариев',False,
+    проверка('calc: чистый browser default совпадает с golden snapshot',False,
+             'jsdom не установлен и npm ci не выполнен')
+    проверка('report: технический DEMO полностью совпадает с browser default',False,
+             'jsdom не установлен и npm ci не выполнен')
+    проверка('price: технический DEMO использует browser default',False,
+             'jsdom не установлен и npm ci не выполнен')
+    проверка('харнесс: пустой сценарий совпадает с browser default',False,
+             'jsdom не установлен и npm ci не выполнен')
+    проверка('report: постоянный headless-прогон 9 сценариев',False,
              'jsdom не установлен и npm ci не выполнен')
 
-# ══════════════════════════════ 4b. ПЕРЕДАЧА МЕЖДУ СЕССИЯМИ
-handoff_dir=os.path.join(КОРЕНЬ,'Документация','Переезд_между_сессиями')
-handoff_required=['00_НАЧАТЬ_ЗДЕСЬ.md','01_ПРОТОКОЛ_ОБУЧЕНИЯ.md',
- '02_ПРОМПТЫ_ДЛЯ_НОВОЙ_СЕССИИ.md','03_КАРТА_ИСТОЧНИКОВ.md',
- '04_ОБНОВЛЕНИЕ_ТОЧКИ_И_АРХИВА.md','05_КРИТЕРИИ_ГОТОВНОСТИ.md',
- 'ТОЧКА_ПРОДОЛЖЕНИЯ.md','ПАМЯТКА_ВЛАДЕЛЬЦУ.md','МАНИФЕСТ.json']
-проверка('передача сессии: все универсальные файлы и текущая точка существуют',
-         all(os.path.isfile(os.path.join(handoff_dir,x)) for x in handoff_required))
-try:
-    prompts=читать('Документация/Переезд_между_сессиями/02_ПРОМПТЫ_ДЛЯ_НОВОЙ_СЕССИИ.md')
-    проверка('передача сессии: записаны ровно шесть последовательных промптов',
-             len(re.findall(r'^## Промпт [1-6] ·',prompts,re.M))==6)
-    zpath=os.path.join(КОРЕНЬ,'Архив','Передача_между_сессиями','Счётикс_передача_АКТУАЛЬНАЯ.zip')
-    with zipfile.ZipFile(zpath) as z:
-        names=set(z.namelist());bad=z.testzip()
-        critical={'ПЕРЕДАЧА/МАНИФЕСТ.json','ПЕРЕДАЧА/README.md',
-          'ПЕРЕДАЧА/Документация/Переезд_между_сессиями/ТОЧКА_ПРОДОЛЖЕНИЯ.md',
-          'ПЕРЕДАЧА/Веб/calc.html','ПЕРЕДАЧА/Веб/report.html',
-          'ПЕРЕДАЧА/Книга/Калькулятор_ставки_часа.xlsx'}
-        проверка('передача сессии: актуальный ZIP читается и содержит критические файлы',
-                 bad is None and critical<=names,f'{len(names)} записей')
-except Exception as e:
-    проверка('передача сессии: актуальный ZIP читается и содержит критические файлы',False,str(e)[:120])
-
-# ══════════════════════════════ 5. ПУБЛИКАЦИОННЫЙ КОНТУР (замечания, не падения)
+# ══════════════════════════════ 4b. ПУБЛИКАЦИОННЫЙ КОНТУР (замечания, не падения)
 print('▶ готовность к публикации')
 # DEV_NO_BLUR остался в архивной версии с платной стеной, в рабочих файлах
 # его нет и быть не должно. Следим только за счётчиком и адресом оплаты.

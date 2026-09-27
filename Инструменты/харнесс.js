@@ -33,11 +33,11 @@ const КОНСТ2 = срез(CJS, 'var WD=', 'DW=5;');
 const КОНСТ3 = срез(CJS, 'var ND=WD-VAC-SICK', ';');
 const КАТ    = срез(CJS, 'var CAT={', '\nvar EXC={').replace('\nvar EXC={', '');
 const ФКАТИСКЛ = функция(CJS, 'каталогИсключён');
+const ФРЕЖИМ = функция(CJS, 'regimeName');
 const ФКАЛК  = функция(CJS, 'calc')
   + (CJS.includes('function посчитать(') ? '\nvar _кэш=null;\nfunction сброситьКэш(){_кэш=null}\n' + функция(CJS, 'посчитать') : '');
-/* 23.09: parts() опирается на две общие функции разделения fundY на долю
-   чистой прибыли и буфер ликвидности — вырезаем их вместе с parts, иначе
-   харнесс выполнит не настоящий код кольца. */
+/* parts() использует два общих доступа к готовым полям profitY/cushionY;
+   вырезаем их вместе с parts, иначе харнесс выполнит не настоящий код кольца. */
 const ФБУФ = функция(RJS, 'суммаБуфера');
 const ФПРИБ = функция(RJS, 'суммаЧистойПрибыли');
 const ФПАРТС = функция(RJS, 'parts');
@@ -53,10 +53,13 @@ for (const m of разметка.matchAll(/<input\b[^>]*>/g)) {
   if (тип === 'checkbox' || тип === 'radio') ПОЛЯ_ВНЕШ[id] = /\bchecked\b/.test(t);
   else ПОЛЯ_ВНЕШ[id] = (t.match(/value="([^"]*)"/) || ['', ''])[1];
 }
+const ВАРИАНТЫ_ВНЕШ = {};
 for (const m of разметка.matchAll(/<select\b[^>]*id="([^"]+)"[\s\S]*?<\/select>/g)) {
   const блок = m[0], id = m[1];
   const выбр = блок.match(/<option value="([^"]*)"[^>]*selected/) || блок.match(/<option value="([^"]*)"/);
   ПОЛЯ_ВНЕШ[id] = выбр ? выбр[1] : '';
+  ВАРИАНТЫ_ВНЕШ[id] = [...блок.matchAll(/<option\b[^>]*value="([^"]*)"[^>]*>([\s\S]*?)<\/option>/g)]
+    .map(x => ({value: x[1], text: x[2].replace(/<[^>]+>/g, '').trim()}));
 }
 const РАДИО_ВНЕШ = {};
 for (const m of разметка.matchAll(/<input[^>]*type="radio"[^>]*>/g)) {
@@ -66,8 +69,23 @@ for (const m of разметка.matchAll(/<input[^>]*type="radio"[^>]*>/g)) {
 }
 Object.assign(ПОЛЯ_ВНЕШ, ПЕРЕОПР.поля || {});
 Object.assign(РАДИО_ВНЕШ, ПЕРЕОПР.радио || {});
-const EXC_ВНЕШ = Object.assign({}, ПЕРЕОПР.EXC_ВНЕШ || {});
-
+/* В браузере применитьСостояния() переносит стартовые data-exc в EXC до
+   первого recalc(). Харнесс должен делать то же: пустой сценарий означает
+   чистый старт анкеты, а не «все блоки включены». */
+const EXC_РАЗМЕТКИ = {};
+for (const m of разметка.matchAll(/<input\b[^>]*>/g)) {
+  const t = m[0];
+  const имя = (t.match(/\bdata-exc="([^"]+)"/) || [])[1];
+  if (имя) EXC_РАЗМЕТКИ[имя] = /\bchecked\b/.test(t);
+}
+const EXC_ВНЕШ = Object.assign({}, EXC_РАЗМЕТКИ, ПЕРЕОПР.EXC_ВНЕШ || {});
+/* В реальном UI ФОНД.ручной становится true только после действия человека
+   в полях фонда. Переопределение этих полей в synthetic-сценарии означает
+   такое действие; иначе calc() применяет актуальную рекомендацию. */
+const ФОНД_РУЧНОЙ = typeof ПЕРЕОПР.ФОНД_РУЧНОЙ === 'boolean'
+  ? ПЕРЕОПР.ФОНД_РУЧНОЙ
+  : Object.prototype.hasOwnProperty.call(ПЕРЕОПР.поля || {}, 'fund_pct')
+    || Object.prototype.hasOwnProperty.call(ПЕРЕОПР.поля || {}, 'fund_on');
 /* --- шим окружения --- */
 const шим = `
 ${КОНСТ1}
@@ -77,6 +95,7 @@ ${КАТ}
 var CAT_OVERRIDE=${JSON.stringify(ПЕРЕОПР.CAT || {})};
 Object.keys(CAT_OVERRIDE).forEach(function(k){CAT[k]=CAT_OVERRIDE[k]});
 var ПОЛЯ=${JSON.stringify(ПОЛЯ_ВНЕШ)}, РАДИО=${JSON.stringify(РАДИО_ВНЕШ)}, EXC=${JSON.stringify(EXC_ВНЕШ)};
+var ВАРИАНТЫ=${JSON.stringify(ВАРИАНТЫ_ВНЕШ)};
 var BANK_ACQ_ON = ${ПЕРЕОПР.BANK_ACQ_ON === false ? 'false' : 'true'};
 var ДОПКОМИССИИ = ${JSON.stringify(ПЕРЕОПР.допКомиссии || 0)};
 var УДАЛЕНЫ = ${JSON.stringify(ПЕРЕОПР.удалены || [])};
@@ -92,17 +111,39 @@ function списокДопКомиссий(){
 }
 function суммаДопКомиссий(){ return списокДопКомиссий().reduce(function(s,x){return s+x.rate},0) }
 function $(id){
-  if(id==='regime') return {value: ПОЛЯ.regime};
-  if(id==='npd_who') return {value: ПОЛЯ.npd_who};
-  if(id==='fm_on')   return {checked: !!ПОЛЯ.fm_on};
-  if(id==='t_Form006') return {querySelectorAll:function(){ 
-      return CAT.Form006.rows.map(function(r){ return {querySelector:function(s){ 
-        return {value: s==='.c2'? r[1] : r[2]} }} }) }};
-  if(id in ПОЛЯ) return {value:ПОЛЯ[id],checked:!!ПОЛЯ[id],closest:function(sel){
-      if(sel==='.removable-field-row'&&УДАЛЕНЫ.indexOf(id)>=0)
-        return {classList:{contains:function(c){return c==='field-row-removed'}}};
-      return null;
-    }};
+  /* В конце calc() список позиций считывается из DOM-строк. Строим для
+     каждого каталога минимальный эквивалент строки, чтобы нормализация
+     пустого числового input ('' → 0) совпадала с браузером. */
+  if(id.indexOf('t_')===0 && CAT[id.slice(2)]){
+    var _cat=CAT[id.slice(2)];
+    return {querySelectorAll:function(){ return _cat.rows.map(function(r){
+      return {querySelector:function(s){
+        return {value: s==='.c1'?r[0]:(s==='.c2'?r[1]:r[2])};
+      }};
+    }); }};
+  }
+  /* calc() в авторежиме записывает рекомендованный fund_pct обратно в DOM.
+     Геттер/сеттер здесь воспроизводит этот контракт: следующая V('fund_pct')
+     читает уже рекомендацию, а не исходный HTML value. */
+  if(id in ПОЛЯ) {
+    var e={
+      get value(){return ПОЛЯ[id]}, set value(v){ПОЛЯ[id]=String(v)},
+      get checked(){return !!ПОЛЯ[id]}, set checked(v){ПОЛЯ[id]=!!v},
+      closest:function(sel){
+        if(sel==='.removable-field-row'&&УДАЛЕНЫ.indexOf(id)>=0)
+          return {classList:{contains:function(c){return c==='field-row-removed'}}};
+        return null;
+      }
+    };
+    if(ВАРИАНТЫ[id]){
+      e.options=ВАРИАНТЫ[id];
+      Object.defineProperty(e,'selectedIndex',{get:function(){
+        for(var i=0;i<e.options.length;i++)if(e.options[i].value===ПОЛЯ[id])return i;
+        return -1;
+      }});
+    }
+    return e;
+  }
   return null;
 }
 ${ФКАТИСКЛ}
@@ -116,29 +157,32 @@ function sumF(f){
   return s;
 }
 /* sumP поверх CAT — та же полная стоимость позиций, что в браузере читается
-   из строк таблицы. ФОНД ручной: тесты задают долю явно, авторежим не нужен. */
+   из строк таблицы. В auto-режиме calc() сам обновит fund_pct через shim $. */
 function sumP(f){
   if(каталогИсключён(f)) return 0;
   var c=CAT[f]; if(!c) return 0; var s=0;
   c.rows.forEach(function(r){ s+=число(r[1]); });
   return s;
 }
-var ФОНД={ручной:true,R:0,инв:0,реком:0};
-function regimeName(rg){ return String(rg) }
+var ФОНД={ручной:${ФОНД_РУЧНОЙ},R:0,инв:0,реком:0};
+${ФРЕЖИМ}
 var PROF='\u0444\u043e\u0442\u043e\u0433\u0440\u0430\u0444\u0430';
 ${ФКАЛК}
 ${ФБУФ}
 ${ФПРИБ}
 ${ФПАРТС}
+/* Начальное значение скрытого ручного списка — УСН 6%, совпадающее с
+   выбором чистого автоподбора. Настоящий browser-default отдельно проверяет
+   сам перебор режимов и интерфейс; переопределение поля regime в харнессе
+   означает явный synthetic ручной сценарий. */
 var d = calc();
 if(process.env.HARNESS_FOND) d.__фонд={ручной:ФОНД.ручной,R:ФОНД.R,инв:ФОНД.инв,реком:ФОНД.реком};
 d.__parts = parts({NT:d.NT, idle:d.idle, Ny:d.Ny, sh:d.sh, post:d.post, clT:d.clT, promo:d.promo,
   accT:d.accT, fmT:d.fmT, mgmtT:d.mgmtT, equip:d.equip, promoM:d.promoM, depShoot:d.depShoot, depOffice:d.depOffice,
   depSoft:d.depSoft, depEdu:d.depEdu, depSite:d.depSite, depWs:d.depWs, varAds:d.varAds,
   varSoft:d.varSoft, varBank:d.varBank, varRent:d.varRent, varAcc:d.varAcc, varEmp:d.varEmp,
-  taxAll:d.taxAll, aq:d.aq, fundY:d.fundY, discY:d.discY,
-  /* разделение fundY на чистую прибыль и буфер требует R и fundP */
-  R:d.R, fundP:d.fundP, workHours:d.workHours, rateWork:d.rateWork, vacY:d.vacY});
+  taxAll:d.taxAll, aq:d.aq, fundY:d.fundY, profitY:d.profitY, cushionY:d.cushionY, discY:d.discY,
+  workHours:d.workHours, rateWork:d.rateWork, vacY:d.vacY});
 console.log(JSON.stringify(d));
 `;
 try { eval(шим); } catch (e) { console.error('ОШИБКА ХАРНЕССА: ' + e.message); process.exit(2); }

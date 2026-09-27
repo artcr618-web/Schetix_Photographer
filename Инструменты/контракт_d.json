@@ -1,0 +1,1209 @@
+{
+  "format": 1,
+  "name": "Контракт d: calc.html → report.html / price.html",
+  "source": {
+    "producer": "Веб/calc.html · calc()",
+    "exactTopLevelFieldCount": 114,
+    "snapshot": "Инструменты/эталоны/browser_default_calc.json"
+  },
+  "transport": {
+    "localStorageKey": "phc_report",
+    "queryParameter": "data",
+    "externalTimestamp": "_ts добавляет saveReport(); он не является полем d"
+  },
+  "rules": [
+    "Все перечисленные поля обязательны в новом результате calc().",
+    "Числа передаются без пользовательского форматирования; округление — задача представления.",
+    "answers и catalog содержат только активные эффективные ветки анкеты.",
+    "Потребитель не читает неизвестное поле d: каждое чтение должно быть объявлено в контракте.",
+    "Изменение состава, типа или смысла поля требует изменения этого контракта, golden snapshot и проверок."
+  ],
+  "groups": {
+    "input": {
+      "title": "Пользовательские вводные для детализации",
+      "unit": "структурированные данные",
+      "fields": [
+        "answers",
+        "catalog"
+      ]
+    },
+    "calendar": {
+      "title": "Календарь и производственный норматив",
+      "unit": "дни/год (NW — недели/год)",
+      "fields": [
+        "NT",
+        "idle",
+        "calDays",
+        "weekend",
+        "holidays",
+        "WD",
+        "VAC",
+        "SICK",
+        "ND",
+        "EFF",
+        "NW"
+      ]
+    },
+    "time": {
+      "title": "Рабочее и проектное время",
+      "unit": "часы/год, кроме S и pt",
+      "fields": [
+        "pool",
+        "workHours",
+        "promo",
+        "accT",
+        "fmT",
+        "mgmtT",
+        "S",
+        "pt",
+        "py",
+        "sh",
+        "post",
+        "clT",
+        "projectPlan"
+      ]
+    },
+    "camera": {
+      "title": "Камера, кадры и износ",
+      "unit": "деньги/год, кадры или годы — по названию поля",
+      "fields": [
+        "frames",
+        "shutterPerHour",
+        "shutterLife",
+        "shotsYear",
+        "camName",
+        "camPrice",
+        "camLife",
+        "camAmort",
+        "camWear",
+        "shootEquipmentWear"
+      ]
+    },
+    "rates": {
+      "title": "Ставки, себестоимость и объём",
+      "unit": "₽, ₽/ч, проекты или доли — по названию поля",
+      "fields": [
+        "costHour",
+        "markup",
+        "rateHour",
+        "rateZero",
+        "rateWork",
+        "rateWorkFull",
+        "vacY",
+        "minShootsY",
+        "minShootsM",
+        "zeroShootsY",
+        "zeroShootsM",
+        "K",
+        "cl",
+        "cur",
+        "curRate"
+      ]
+    },
+    "load": {
+      "title": "Нагрузка при целевой, текущей и нулевой ставке",
+      "unit": "объекты нагрузки",
+      "fields": [
+        "loadGoal",
+        "loadCur",
+        "loadZero"
+      ]
+    },
+    "goal": {
+      "title": "Целевой годовой финансовый сценарий",
+      "unit": "₽/год, кроме долей",
+      "fields": [
+        "amort",
+        "vari",
+        "C",
+        "totalExpenses",
+        "Ny",
+        "R",
+        "taxAll",
+        "aq",
+        "goalFund",
+        "goalDiscountReserve",
+        "goalSelfSiteCost",
+        "goalCostsTotal",
+        "goalResult"
+      ]
+    },
+    "current": {
+      "title": "Сценарий по текущей ставке",
+      "unit": "₽/год или логическое значение",
+      "fields": [
+        "Rc",
+        "leftC",
+        "taxC",
+        "aqC",
+        "currentFund",
+        "currentDiscountReserve",
+        "currentSelfSiteCost",
+        "currentCostsTotal",
+        "currentResult",
+        "currentIncome",
+        "currentLoss",
+        "currentIsLoss",
+        "currentBreakEvenMargin"
+      ]
+    },
+    "breakEven": {
+      "title": "Точка безубыточности",
+      "unit": "₽/год",
+      "fields": [
+        "Rb",
+        "taxB",
+        "aqB"
+      ]
+    },
+    "funds": {
+      "title": "Инвестиции, фонды и резервы",
+      "unit": "₽/год или доля выручки",
+      "fields": [
+        "wsY",
+        "siteY",
+        "eduY",
+        "fundY",
+        "profitY",
+        "cushionY",
+        "discY",
+        "fundP",
+        "discP"
+      ]
+    },
+    "investment": {
+      "title": "Единовременные вложения витрины и срок возврата",
+      "unit": "₽ или годы",
+      "fields": [
+        "investmentShoot",
+        "investmentPost",
+        "investmentTime",
+        "investmentTotal",
+        "investmentPaybackYears"
+      ]
+    },
+    "costBreakdown": {
+      "title": "Структура амортизации и регулярных расходов",
+      "unit": "₽/год",
+      "fields": [
+        "depShoot",
+        "depOffice",
+        "depSoft",
+        "depEdu",
+        "depSite",
+        "depWs",
+        "varAds",
+        "varSoft",
+        "varBank",
+        "varRent",
+        "varAcc",
+        "varEmp",
+        "directFrameCosts"
+      ]
+    },
+    "meta": {
+      "title": "Параметры модели и подписи",
+      "unit": "строка или числовой коэффициент",
+      "fields": [
+        "regime",
+        "regimeCode",
+        "clients",
+        "profession"
+      ]
+    }
+  },
+  "shapes": {
+    "answers": {
+      "itemRequired": [
+        "b",
+        "n",
+        "v",
+        "u"
+      ],
+      "itemTypes": {
+        "b": "number",
+        "n": "string",
+        "v": "number|string",
+        "u": "string"
+      }
+    },
+    "catalog": {
+      "itemRequired": [
+        "b",
+        "n",
+        "price",
+        "term",
+        "kind"
+      ],
+      "itemTypes": {
+        "b": "number",
+        "n": "string",
+        "price": "number",
+        "term": "number",
+        "kind": "string"
+      }
+    },
+    "loadGoal/loadCur/loadZero": {
+      "nullable": true,
+      "itemRequired": [
+        "shoots",
+        "hours",
+        "days",
+        "freeDays",
+        "dayHours",
+        "shootsPerDay"
+      ],
+      "itemTypes": "number"
+    },
+    "projectPlan": {
+      "required": [
+        "version",
+        "weeks",
+        "step",
+        "minShoot",
+        "capacity",
+        "projects",
+        "regular",
+        "totals"
+      ],
+      "projectRequired": [
+        "shoot",
+        "post",
+        "client"
+      ],
+      "regularRequired": [
+        "promo",
+        "acc",
+        "fm",
+        "idle",
+        "mgmt"
+      ],
+      "totalsRequired": [
+        "shoot",
+        "post",
+        "client"
+      ]
+    }
+  },
+  "fields": {
+    "answers": {
+      "type": "array",
+      "unit": "структурированные данные",
+      "group": "input",
+      "consumers": [
+        "report"
+      ],
+      "meaning": "Активные одиночные ответы для детализации; неактивные ветки отсутствуют."
+    },
+    "catalog": {
+      "type": "array",
+      "unit": "структурированные данные",
+      "group": "input",
+      "consumers": [
+        "report"
+      ],
+      "meaning": "Активные позиции каталогов для детализации; исключённые каталоги отсутствуют."
+    },
+    "frames": {
+      "type": "number",
+      "unit": "кадров/ч",
+      "group": "camera",
+      "consumers": [
+        "report"
+      ]
+    },
+    "NT": {
+      "type": "number",
+      "unit": "дни/год (NW — недели/год)",
+      "group": "calendar",
+      "consumers": [
+        "report",
+        "price"
+      ]
+    },
+    "idle": {
+      "type": "number",
+      "unit": "дни/год (NW — недели/год)",
+      "group": "calendar",
+      "consumers": [
+        "report"
+      ]
+    },
+    "pool": {
+      "type": "number",
+      "unit": "часы/год, кроме S и pt",
+      "group": "time",
+      "consumers": [
+        "report",
+        "price"
+      ],
+      "meaning": "Доступное время проекта за год."
+    },
+    "calDays": {
+      "type": "number",
+      "unit": "дни/год (NW — недели/год)",
+      "group": "calendar",
+      "consumers": [
+        "report"
+      ]
+    },
+    "weekend": {
+      "type": "number",
+      "unit": "дни/год (NW — недели/год)",
+      "group": "calendar",
+      "consumers": [
+        "report"
+      ]
+    },
+    "holidays": {
+      "type": "number",
+      "unit": "дни/год (NW — недели/год)",
+      "group": "calendar",
+      "consumers": [
+        "report"
+      ]
+    },
+    "WD": {
+      "type": "number",
+      "unit": "дни/год (NW — недели/год)",
+      "group": "calendar",
+      "consumers": [
+        "report"
+      ]
+    },
+    "VAC": {
+      "type": "number",
+      "unit": "дни/год (NW — недели/год)",
+      "group": "calendar",
+      "consumers": []
+    },
+    "SICK": {
+      "type": "number",
+      "unit": "дни/год (NW — недели/год)",
+      "group": "calendar",
+      "consumers": []
+    },
+    "ND": {
+      "type": "number",
+      "unit": "дни/год (NW — недели/год)",
+      "group": "calendar",
+      "consumers": [
+        "report"
+      ]
+    },
+    "EFF": {
+      "type": "number",
+      "unit": "дни/год (NW — недели/год)",
+      "group": "calendar",
+      "consumers": [
+        "report"
+      ]
+    },
+    "shutterPerHour": {
+      "type": "number",
+      "unit": "срабатываний/ч",
+      "group": "camera",
+      "consumers": [
+        "report"
+      ]
+    },
+    "shutterLife": {
+      "type": "number",
+      "unit": "срабатываний",
+      "group": "camera",
+      "consumers": [
+        "report"
+      ]
+    },
+    "shotsYear": {
+      "type": "number",
+      "unit": "кадров/год",
+      "group": "camera",
+      "consumers": [
+        "report"
+      ]
+    },
+    "camName": {
+      "type": "string",
+      "unit": "деньги/год, кадры или годы — по названию поля",
+      "group": "camera",
+      "consumers": []
+    },
+    "camPrice": {
+      "type": "number",
+      "unit": "₽",
+      "group": "camera",
+      "consumers": []
+    },
+    "camLife": {
+      "type": "number",
+      "unit": "лет",
+      "group": "camera",
+      "consumers": [
+        "report"
+      ]
+    },
+    "camAmort": {
+      "type": "number",
+      "unit": "₽/год",
+      "group": "camera",
+      "consumers": [
+        "report"
+      ]
+    },
+    "camWear": {
+      "type": "number",
+      "unit": "₽/кадр",
+      "group": "camera",
+      "consumers": [
+        "report"
+      ]
+    },
+    "costHour": {
+      "type": "number",
+      "unit": "₽/ч",
+      "group": "rates",
+      "consumers": []
+    },
+    "markup": {
+      "type": "number",
+      "unit": "доля",
+      "group": "rates",
+      "consumers": []
+    },
+    "rateHour": {
+      "type": "number",
+      "unit": "₽/ч съёмки",
+      "group": "rates",
+      "consumers": [
+        "report"
+      ]
+    },
+    "rateZero": {
+      "type": "number",
+      "unit": "₽/ч съёмки",
+      "group": "rates",
+      "consumers": [
+        "report"
+      ]
+    },
+    "workHours": {
+      "type": "number",
+      "unit": "часы/год, кроме S и pt",
+      "group": "time",
+      "consumers": [
+        "report"
+      ]
+    },
+    "rateWork": {
+      "type": "number",
+      "unit": "₽/рабочий ч",
+      "group": "rates",
+      "consumers": [
+        "report"
+      ]
+    },
+    "rateWorkFull": {
+      "type": "number",
+      "unit": "₽/рабочий ч",
+      "group": "rates",
+      "consumers": [
+        "report",
+        "price"
+      ],
+      "meaning": "Полная рабочая ставка; базовая ставка прайса."
+    },
+    "vacY": {
+      "type": "number",
+      "unit": "₽, ₽/ч, проекты или доли — по названию поля",
+      "group": "rates",
+      "consumers": [
+        "report"
+      ]
+    },
+    "minShootsY": {
+      "type": "number",
+      "unit": "₽, ₽/ч, проекты или доли — по названию поля",
+      "group": "rates",
+      "consumers": []
+    },
+    "minShootsM": {
+      "type": "number",
+      "unit": "₽, ₽/ч, проекты или доли — по названию поля",
+      "group": "rates",
+      "consumers": [
+        "report"
+      ]
+    },
+    "zeroShootsY": {
+      "type": "number",
+      "unit": "₽, ₽/ч, проекты или доли — по названию поля",
+      "group": "rates",
+      "consumers": []
+    },
+    "zeroShootsM": {
+      "type": "number",
+      "unit": "₽, ₽/ч, проекты или доли — по названию поля",
+      "group": "rates",
+      "consumers": []
+    },
+    "loadGoal": {
+      "type": "object",
+      "unit": "объекты нагрузки",
+      "group": "load",
+      "consumers": [
+        "report"
+      ]
+    },
+    "loadCur": {
+      "type": "object",
+      "unit": "объекты нагрузки",
+      "group": "load",
+      "consumers": [
+        "report"
+      ]
+    },
+    "loadZero": {
+      "type": "object",
+      "unit": "объекты нагрузки",
+      "group": "load",
+      "consumers": [
+        "report"
+      ]
+    },
+    "promo": {
+      "type": "number",
+      "unit": "часы/год, кроме S и pt",
+      "group": "time",
+      "consumers": [
+        "report"
+      ]
+    },
+    "accT": {
+      "type": "number",
+      "unit": "часы/год, кроме S и pt",
+      "group": "time",
+      "consumers": [
+        "report"
+      ]
+    },
+    "fmT": {
+      "type": "number",
+      "unit": "часы/год, кроме S и pt",
+      "group": "time",
+      "consumers": [
+        "report"
+      ]
+    },
+    "mgmtT": {
+      "type": "number",
+      "unit": "часы/год, кроме S и pt",
+      "group": "time",
+      "consumers": [
+        "report"
+      ],
+      "meaning": "Годовое время управления делом; ноль, когда исключён FormMgmt."
+    },
+    "S": {
+      "type": "number",
+      "unit": "ч/съёмку",
+      "group": "time",
+      "consumers": [
+        "report",
+        "price"
+      ]
+    },
+    "pt": {
+      "type": "number",
+      "unit": "ч/проект",
+      "group": "time",
+      "consumers": [
+        "report"
+      ]
+    },
+    "py": {
+      "type": "number",
+      "unit": "проектов/год",
+      "group": "time",
+      "consumers": [
+        "report"
+      ]
+    },
+    "sh": {
+      "type": "number",
+      "unit": "ч съёмки/год",
+      "group": "time",
+      "consumers": [
+        "report",
+        "price"
+      ],
+      "meaning": "Съёмочные часы за год."
+    },
+    "post": {
+      "type": "number",
+      "unit": "ч/год",
+      "group": "time",
+      "consumers": [
+        "report"
+      ]
+    },
+    "clT": {
+      "type": "number",
+      "unit": "ч/год",
+      "group": "time",
+      "consumers": [
+        "report"
+      ]
+    },
+    "projectPlan": {
+      "type": "object",
+      "unit": "структурированный план расчётного горизонта",
+      "group": "time",
+      "consumers": [
+        "report"
+      ],
+      "meaning": "Готовый план B008 из calc(): число недель, сформированные допустимые проекты, их съёмка/обработка/клиентское время и точные регулярные часы горизонта. report.html только размещает его в календарной матрице."
+    },
+    "amort": {
+      "type": "number",
+      "unit": "₽/год, кроме долей",
+      "group": "goal",
+      "consumers": [
+        "report"
+      ]
+    },
+    "vari": {
+      "type": "number",
+      "unit": "₽/год, кроме долей",
+      "group": "goal",
+      "consumers": [
+        "report"
+      ]
+    },
+    "C": {
+      "type": "number",
+      "unit": "₽/год, кроме долей",
+      "group": "goal",
+      "consumers": [
+        "report"
+      ],
+      "meaning": "Амортизация и регулярные финансовые расходы без налогов и эквайринга."
+    },
+    "totalExpenses": {
+      "type": "number",
+      "unit": "₽/год, кроме долей",
+      "group": "goal",
+      "consumers": [
+        "report"
+      ],
+      "meaning": "Полные расходы целевого сценария без фондов: C + налоги + эквайринг."
+    },
+    "Ny": {
+      "type": "number",
+      "unit": "₽/год, кроме долей",
+      "group": "goal",
+      "consumers": [
+        "report"
+      ],
+      "meaning": "Желаемый доход на руки за год."
+    },
+    "R": {
+      "type": "number",
+      "unit": "₽/год, кроме долей",
+      "group": "goal",
+      "consumers": [
+        "report",
+        "price"
+      ],
+      "meaning": "Итоговая требуемая годовая выручка."
+    },
+    "taxAll": {
+      "type": "number",
+      "unit": "₽/год, кроме долей",
+      "group": "goal",
+      "consumers": [
+        "report"
+      ]
+    },
+    "aq": {
+      "type": "number",
+      "unit": "₽/год, кроме долей",
+      "group": "goal",
+      "consumers": [
+        "report"
+      ]
+    },
+    "goalFund": {
+      "type": "number",
+      "unit": "₽/год, кроме долей",
+      "group": "goal",
+      "consumers": [
+        "report"
+      ]
+    },
+    "goalDiscountReserve": {
+      "type": "number",
+      "unit": "₽/год, кроме долей",
+      "group": "goal",
+      "consumers": [
+        "report"
+      ]
+    },
+    "goalSelfSiteCost": {
+      "type": "number",
+      "unit": "₽/год, кроме долей",
+      "group": "goal",
+      "consumers": [
+        "report"
+      ]
+    },
+    "goalCostsTotal": {
+      "type": "number",
+      "unit": "₽/год, кроме долей",
+      "group": "goal",
+      "consumers": [
+        "report"
+      ]
+    },
+    "goalResult": {
+      "type": "number",
+      "unit": "₽/год, кроме долей",
+      "group": "goal",
+      "consumers": []
+    },
+    "cur": {
+      "type": "number",
+      "unit": "₽/ч",
+      "group": "rates",
+      "consumers": []
+    },
+    "Rc": {
+      "type": "number",
+      "unit": "₽/год или логическое значение",
+      "group": "current",
+      "consumers": [
+        "report"
+      ]
+    },
+    "leftC": {
+      "type": "number",
+      "unit": "₽/год или логическое значение",
+      "group": "current",
+      "consumers": []
+    },
+    "taxC": {
+      "type": "number",
+      "unit": "₽/год или логическое значение",
+      "group": "current",
+      "consumers": [
+        "report"
+      ]
+    },
+    "aqC": {
+      "type": "number",
+      "unit": "₽/год или логическое значение",
+      "group": "current",
+      "consumers": [
+        "report"
+      ]
+    },
+    "currentFund": {
+      "type": "number",
+      "unit": "₽/год или логическое значение",
+      "group": "current",
+      "consumers": [
+        "report"
+      ]
+    },
+    "currentDiscountReserve": {
+      "type": "number",
+      "unit": "₽/год или логическое значение",
+      "group": "current",
+      "consumers": [
+        "report"
+      ]
+    },
+    "currentSelfSiteCost": {
+      "type": "number",
+      "unit": "₽/год или логическое значение",
+      "group": "current",
+      "consumers": [
+        "report"
+      ]
+    },
+    "currentCostsTotal": {
+      "type": "number",
+      "unit": "₽/год или логическое значение",
+      "group": "current",
+      "consumers": [
+        "report"
+      ]
+    },
+    "currentResult": {
+      "type": "number",
+      "unit": "₽/год или логическое значение",
+      "group": "current",
+      "consumers": [
+        "report"
+      ]
+    },
+    "currentIncome": {
+      "type": "number",
+      "unit": "₽/год или логическое значение",
+      "group": "current",
+      "consumers": []
+    },
+    "currentLoss": {
+      "type": "number",
+      "unit": "₽/год или логическое значение",
+      "group": "current",
+      "consumers": []
+    },
+    "currentIsLoss": {
+      "type": "boolean",
+      "unit": "логическое",
+      "group": "current",
+      "consumers": []
+    },
+    "Rb": {
+      "type": "number",
+      "unit": "₽/год",
+      "group": "breakEven",
+      "consumers": [
+        "report"
+      ]
+    },
+    "taxB": {
+      "type": "number",
+      "unit": "₽/год",
+      "group": "breakEven",
+      "consumers": [
+        "report"
+      ]
+    },
+    "aqB": {
+      "type": "number",
+      "unit": "₽/год",
+      "group": "breakEven",
+      "consumers": [
+        "report"
+      ]
+    },
+    "wsY": {
+      "type": "number",
+      "unit": "₽/год или доля выручки",
+      "group": "funds",
+      "consumers": []
+    },
+    "siteY": {
+      "type": "number",
+      "unit": "₽/год или доля выручки",
+      "group": "funds",
+      "consumers": []
+    },
+    "eduY": {
+      "type": "number",
+      "unit": "₽/год или доля выручки",
+      "group": "funds",
+      "consumers": []
+    },
+    "fundY": {
+      "type": "number",
+      "unit": "₽/год или доля выручки",
+      "group": "funds",
+      "consumers": [
+        "report"
+      ],
+      "meaning": "Общая годовая сумма чистой прибыли и буфера ликвидности: profitY + cushionY; сохранена для совместимости прежних результатов."
+    },
+    "discY": {
+      "type": "number",
+      "unit": "₽/год или доля выручки",
+      "group": "funds",
+      "consumers": [
+        "report"
+      ],
+      "meaning": "Годовой резерв программы лояльности."
+    },
+    "fundP": {
+      "type": "number",
+      "unit": "доля выручки",
+      "group": "funds",
+      "consumers": []
+    },
+    "discP": {
+      "type": "number",
+      "unit": "доля выручки",
+      "group": "funds",
+      "consumers": [
+        "report",
+        "price"
+      ]
+    },
+    "depShoot": {
+      "type": "number",
+      "unit": "₽/год",
+      "group": "costBreakdown",
+      "consumers": [
+        "report"
+      ]
+    },
+    "depOffice": {
+      "type": "number",
+      "unit": "₽/год",
+      "group": "costBreakdown",
+      "consumers": [
+        "report"
+      ]
+    },
+    "depSoft": {
+      "type": "number",
+      "unit": "₽/год",
+      "group": "costBreakdown",
+      "consumers": [
+        "report"
+      ]
+    },
+    "depEdu": {
+      "type": "number",
+      "unit": "₽/год",
+      "group": "costBreakdown",
+      "consumers": [
+        "report"
+      ]
+    },
+    "depSite": {
+      "type": "number",
+      "unit": "₽/год",
+      "group": "costBreakdown",
+      "consumers": [
+        "report"
+      ]
+    },
+    "depWs": {
+      "type": "number",
+      "unit": "₽/год",
+      "group": "costBreakdown",
+      "consumers": [
+        "report"
+      ]
+    },
+    "varAds": {
+      "type": "number",
+      "unit": "₽/год",
+      "group": "costBreakdown",
+      "consumers": [
+        "report"
+      ]
+    },
+    "varSoft": {
+      "type": "number",
+      "unit": "₽/год",
+      "group": "costBreakdown",
+      "consumers": [
+        "report"
+      ]
+    },
+    "varBank": {
+      "type": "number",
+      "unit": "₽/год",
+      "group": "costBreakdown",
+      "consumers": [
+        "report"
+      ]
+    },
+    "varRent": {
+      "type": "number",
+      "unit": "₽/год",
+      "group": "costBreakdown",
+      "consumers": [
+        "report"
+      ]
+    },
+    "varAcc": {
+      "type": "number",
+      "unit": "₽/год",
+      "group": "costBreakdown",
+      "consumers": [
+        "report"
+      ]
+    },
+    "varEmp": {
+      "type": "number",
+      "unit": "₽/год",
+      "group": "costBreakdown",
+      "consumers": [
+        "report"
+      ],
+      "meaning": "Годовые расходы на наёмных сотрудников."
+    },
+    "NW": {
+      "type": "number",
+      "unit": "дни/год (NW — недели/год)",
+      "group": "calendar",
+      "consumers": [
+        "report"
+      ]
+    },
+    "K": {
+      "type": "number",
+      "unit": "коэффициент",
+      "group": "rates",
+      "consumers": [
+        "report",
+        "price"
+      ]
+    },
+    "cl": {
+      "type": "number",
+      "unit": "ч/проект",
+      "group": "rates",
+      "consumers": [
+        "report",
+        "price"
+      ]
+    },
+    "curRate": {
+      "type": "number",
+      "unit": "₽/ч",
+      "group": "rates",
+      "consumers": [
+        "report"
+      ]
+    },
+    "regime": {
+      "type": "string",
+      "unit": "строка или числовой коэффициент",
+      "group": "meta",
+      "consumers": [
+        "report"
+      ],
+      "meaning": "Пользовательское название эффективного налогового режима."
+    },
+    "regimeCode": {
+      "type": "string",
+      "unit": "строка или числовой коэффициент",
+      "group": "meta",
+      "consumers": [
+        "report"
+      ],
+      "meaning": "Машинный код эффективного налогового режима."
+    },
+    "clients": {
+      "type": "string",
+      "unit": "строка или числовой коэффициент",
+      "group": "meta",
+      "consumers": [
+        "report"
+      ]
+    },
+    "profession": {
+      "type": "string",
+      "unit": "строка или числовой коэффициент",
+      "group": "meta",
+      "consumers": [
+        "report"
+      ]
+    },
+    "shootEquipmentWear": {
+      "type": "number",
+      "unit": "₽/срабатывание",
+      "group": "camera",
+      "consumers": [
+        "report"
+      ],
+      "meaning": "Годовой износ всего съёмочного комплекта на одно срабатывание затвора."
+    },
+    "currentBreakEvenMargin": {
+      "type": "number|null",
+      "unit": "доля текущей выручки",
+      "group": "current",
+      "consumers": [
+        "report"
+      ],
+      "meaning": "(Rc − Rb) / Rc: доля текущей выручки, которую можно потерять до точки безубыточности; отрицательное значение означает, что текущая ставка уже ниже неё; при Rc=0 — null."
+    },
+    "profitY": {
+      "type": "number",
+      "unit": "₽/год",
+      "group": "funds",
+      "consumers": [
+        "report"
+      ],
+      "meaning": "Годовая чистая прибыль без буфера ликвидности: R × fundP. Единственный поток для возврата вложений."
+    },
+    "cushionY": {
+      "type": "number",
+      "unit": "₽/год",
+      "group": "funds",
+      "consumers": [
+        "report"
+      ],
+      "meaning": "Годовой буфер ликвидности: R × cushionShare. Не используется для возврата вложений."
+    },
+    "investmentShoot": {
+      "type": "number",
+      "unit": "₽",
+      "group": "investment",
+      "consumers": [
+        "report"
+      ],
+      "meaning": "Разовая стоимость съёмочного оборудования в инвестиционной витрине B024."
+    },
+    "investmentPost": {
+      "type": "number",
+      "unit": "₽",
+      "group": "investment",
+      "consumers": [
+        "report"
+      ],
+      "meaning": "Разовая стоимость офисного оборудования и купленного ПО в инвестиционной витрине B024."
+    },
+    "investmentTime": {
+      "type": "number",
+      "unit": "₽",
+      "group": "investment",
+      "consumers": [
+        "report"
+      ],
+      "meaning": "Вложения в обучение с упущенным доходом и заказной сайт в инвестиционной витрине B024."
+    },
+    "investmentTotal": {
+      "type": "number",
+      "unit": "₽",
+      "group": "investment",
+      "consumers": [
+        "report"
+      ],
+      "meaning": "Сумма трёх показанных направлений инвестиционной витрины B024."
+    },
+    "investmentPaybackYears": {
+      "type": "number|null",
+      "unit": "лет",
+      "group": "investment",
+      "consumers": [
+        "report"
+      ],
+      "meaning": "investmentTotal / profitY; null, если чистой прибыли или показанных вложений нет. Это не окупаемость отдельной камеры."
+    },
+    "directFrameCosts": {
+      "type": "number",
+      "unit": "₽/год",
+      "group": "costBreakdown",
+      "consumers": [
+        "report"
+      ],
+      "meaning": "Годовая сумма прямых расходов на создание и обработку готовых кадров: depShoot + depOffice + depSoft + varSoft + depWs + varRent."
+    }
+  },
+  "compatibility": {
+    "allowedNonDataMemberReads": [
+      "addEventListener",
+      "closest",
+      "innerHTML",
+      "open",
+      "x",
+      "y"
+    ]
+  }
+}

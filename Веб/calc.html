@@ -345,20 +345,23 @@ padding:12px 16px;border-radius:12px;font-size:12.5px;line-height:1.55}
    Размеры от кнопок отчёта: высота 72 и радиус блока. */
 #phc-root .autobtn{display:flex;width:100%;align-items:center;justify-content:center;
 gap:11px;margin-top:16px;height:72px;padding:0 26px;border-radius:var(--r);
-background:var(--c-g-50);border:1.5px solid var(--c-g-300);color:var(--c-g-800);
+/* Ручной режим предлагает включить автоматический подбор — уверенный
+   зелёный призыв, как прежняя активная кнопка «Настроить вручную». */
+background:linear-gradient(135deg,var(--c-g-700),var(--c-g-500));
+border:1.5px solid var(--c-g-700);color:var(--c-white);box-shadow:0 6px 20px rgba(33,160,56,.28);
 font-size:17px;font-weight:600;letter-spacing:-.01em;line-height:1.3;
 text-align:center;cursor:pointer;user-select:none;
 transition:background .16s,border-color .16s,color .16s,box-shadow .16s}
-#phc-root .autobtn:hover{background:var(--c-g-100);border-color:var(--c-g-500)}
+#phc-root .autobtn:hover{background:linear-gradient(135deg,var(--c-g-800),var(--c-g-600))}
 #phc-root .autobtn:active{transform:translateY(1px)}
 /* Галочка внутри не показывается: состояние видно по самой кнопке */
 #phc-root .autobtn input{position:absolute;opacity:0;width:0;height:0;pointer-events:none}
+/* Активный подбор уже работает: оставляем спокойную «ручную» кнопку.
+   Пиктограмма меняется только скриптом, а не стилями этого состояния. */
 #phc-root .autobtn:has(input:checked){
-background:linear-gradient(135deg,var(--c-g-700),var(--c-g-500));
-border-color:var(--c-g-700);color:var(--c-white);
-box-shadow:0 6px 20px rgba(33,160,56,.28)}
+background:var(--c-g-50);border-color:var(--c-g-300);color:var(--c-g-800);box-shadow:none}
 #phc-root .autobtn:has(input:checked):hover{
-background:linear-gradient(135deg,var(--c-g-800),var(--c-g-600))}
+background:var(--c-g-100);border-color:var(--c-g-500)}
 #phc-root .abi{width:22px;height:22px;flex:none;display:block}
 #phc-root .autonote{font-size:12.5px;line-height:1.55;color:var(--c-gr);
 margin:12px 0 8px;padding:13px 16px;border:1px solid var(--c-ln);
@@ -527,16 +530,10 @@ border-radius:12px;padding:12px 16px 12px 48px;margin-top:12px}
 /* В выключенном налоговом блоке вопросы недоступны, но визуально он
    приглушается по тому же мягкому правилу, что остальные карточки.
    Блокировка ввода задана выше, вместе с правилом для .card.off. */
-/* При включённом автоподборе вопросы и исключение налогов недоступны.
-   Живой остаётся только зелёная кнопка автоподбора: повторное нажатие
-   выключает режим. Кнопка отката гаснет вместе с остальным. */
-#phc-root .card.tax-auto-lock>:not(.card-title-row):not(.autobtn):not(.auto-toggle-hint){opacity:.42;pointer-events:none}
-#phc-root .card.tax-auto-lock>.autobtn{opacity:1;pointer-events:auto}
-#phc-root .card.tax-auto-lock>.card-title-row>h2{opacity:.42}
-/* При автоподборе откатывать нечего: настройки задаёт калькулятор,
-   а не человек. Кнопка гаснет полностью — ни клика, ни подсказки. */
-#phc-root .card.tax-auto-lock .rst-ic{opacity:.46;pointer-events:none;
-color:var(--c-gr2)}
+/* Автоподбор не выключает карточку: скрываются только прямые дочерние
+   вопросы ручного выбора. Так строка-вопрос остаётся оформленной точно как
+   остальные вопросы карточки, а не меняет ритм из-за лишней обёртки. */
+#phc-root .tax-manual[hidden]{display:none}
 
 /* Одно состояние: модель не помещается в выбранный режим. Это не ошибка,
    поэтому мягкий жёлтый, а не красный. Красного тут больше нет. */
@@ -2931,28 +2928,28 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 </div>
 
 <div class="card" data-block-id="CALC-B008" data-block-name="Вопрос 02"><div class="bn">02</div>
-<h2 data-t="h2_02">Ваш режим налогообложения</h2>
+<h2 id="taxHeading" data-t="h2_02">Ваш режим налогообложения</h2>
 <!-- 21.09 (пятьдесят второе слово владельца): строка подзаголовка расслоилась, как в блоке 03:
     Фраза «Выберите…» стала вопросом q_27 над рядом (ключ qd_02 остался на подзаголовке — по нашему обычаю ключ
      живёт на элементе), а подзаголовок принял обычную фразу про регулярный расход. -->
 <p data-t="qd_02" class="hint purpose">Регулярный расход закладывается в постоянную часть финансовой модели при расчёте стоимости услуг.</p>
-<div data-t="q_27" class="q">Выберите свой режим налогообложения или воспользуйтесь автоматическим подбором.</div>
-<div class="qr no-top-line two-col-row"><div class="qf"><select id="regime">
-<option value="npd" selected>Самозанятый (НПД)</option>
-<option value="usn6">ИП, УСН «Доходы» — 6%</option>
+<div id="taxManual" data-t="q_27" class="q tax-manual" hidden>Выберите свой режим налогообложения или воспользуйтесь автоматическим подбором.</div>
+<div id="taxRegimeManual" class="qr no-top-line two-col-row tax-manual" hidden><div class="qf"><select id="regime">
+<option value="npd">Самозанятый (НПД)</option>
+<option value="usn6" selected>ИП, УСН «Доходы» — 6%</option>
 <option value="usn15">ИП, УСН «Доходы минус расходы» — 15%</option>
 <option value="ausn8">ИП, АУСН «Доходы» — 8%</option>
 <option value="ausn20">ИП, АУСН «Доходы минус расходы» — 20%</option></select></div></div>
-<div class="qr two-col-row" id="npdWho" data-branch-id="CALC-B008-S01" data-branch-name="Заказчики НПД"><div>
+<div class="qr two-col-row tax-manual" id="npdWho" data-branch-id="CALC-B008-S01" data-branch-name="Заказчики НПД" hidden><div>
 <div data-t="q_02b" class="q">С кем вы чаще работаете?</div>
 </div><div class="qf"><select id="npd_who">
 <option value="mix" selected>С компаниями и частными лицами</option>
 <option value="phys">Только с частными лицами</option>
 <option value="jur">Только с компаниями и ИП</option></select></div></div>
 <!-- 16.09 (слово владельца): здесь не уведомление, а комментарий. -->
-<div class="zapn" id="npdRateNote" data-t="qd_02b">Если Вы работаете как с частными лицами так и с компаниями НПД будет рассчитываться по усреднённой ставке 5%.</div>
+<div class="zapn tax-manual" id="npdRateNote" data-t="qd_02b" hidden>Если Вы работаете как с частными лицами так и с компаниями НПД будет рассчитываться по усреднённой ставке 5%.</div>
 <label class="autobtn" id="autoBox">
-<input type="checkbox" id="tax_auto">
+<input type="checkbox" id="tax_auto" checked>
 <svg class="abi" viewBox="0 0 24 24" fill="none" aria-hidden="true">
 <path d="M12 2.6l2.2 5.1 5.1 2.2-5.1 2.2L12 17.2l-2.2-5.1L4.7 9.9l5.1-2.2z" fill="currentColor"/>
 <circle cx="18.6" cy="17.4" r="1.9" fill="currentColor" opacity=".55"/>
@@ -5318,15 +5315,19 @@ if(_rgSel)_rgSel.addEventListener('change',function(){
    обычный переключатель: повторное нажатие возвращает ручной режим. */
 (function(){
   var cb=$('tax_auto'); if(!cb)return;
-  var sel=$('regime'), off=$('tax_off'), card=cb.closest('.card');
+  var sel=$('regime'), off=$('tax_off'), manual=R.querySelectorAll('.tax-manual'), heading=$('taxHeading');
   /* 16.09 (слово владельца): карандаш активной кнопки — как «Редактировать данные» в отчёте. */
   var КАРАНДАШ='<path d="M4 20h4.2L19 9.2a2.1 2.1 0 0 0 0-3l-1.2-1.2a2.1 2.1 0 0 0-3 0L4 15.8V20Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M13.6 6.4l4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>';
   function обновить(){
     var locked=!!cb.checked, без=off&&off.checked;
-    if(card)card.classList.toggle('tax-auto-lock',locked);
+    /* Автоматический выбор не запирает карточку: ручные настройки просто
+       уходят из интерфейса до нажатия «Настроить вручную». */
+    for(var mi=0;mi<manual.length;mi++)manual[mi].hidden=locked;
+    if(heading)heading.textContent=locked
+      ? 'Режим налогообложения подбирается автоматически.'
+      : 'Ваш режим налогообложения';
     if(sel)sel.disabled=locked||без;
     var w=$('npd_who'); if(w)w.disabled=locked||без;
-    if(off)off.disabled=locked;
     /* 16.09 (слово владельца): активная кнопка — «Выбрать режим вручную» + карандаш. */
     var кн=cb.closest('.autobtn'), подпись=кн&&кн.querySelector('span'), знак=кн&&кн.querySelector('svg');
     if(подпись)подпись.textContent=locked?'Настроить вручную':'Выбрать автоматически самый выгодный';
@@ -5344,6 +5345,10 @@ if(_rgSel)_rgSel.addEventListener('change',function(){
       off.checked=false;
       off.dispatchEvent(new Event('change',{bubbles:true}));
     }
+    /* Авто никогда не считается вынужденной сменой режима пользователя. */
+    ПЕРЕКЛЮЧЕНО=false;
+    ВОЗВРАЩЕНО_НПД=false;
+    ПОЛОСА_ЗАКРЫТА=false;
     обновить();
     recalc();
   };
@@ -5365,7 +5370,18 @@ if(_rgSel)_rgSel.addEventListener('change',function(){
     var a=$('tax_auto'); if(a)a.disabled=cb.checked;
     заперетьБлок(карт,cb.checked);
   }
-  cb.onchange=function(){обновить();recalc()};
+  cb.onchange=function(){
+    /* Это альтернативный режим. При его выборе возвращаем доступ к
+       автоподбору, но не оставляем два взаимоисключающих состояния. */
+    if(cb.checked){
+      var a=$('tax_auto');
+      if(a&&a.checked){
+        a.checked=false;
+        a.dispatchEvent(new Event('change',{bubbles:true}));
+      }
+    }
+    обновить();recalc();
+  };
   обновить();
 })();
 
@@ -5440,7 +5456,60 @@ function calc(){
   var K=Math.round(V('post_ratio')*60)/60, cl=EXC['FormClientTime']?0:Math.round(V('client_time')*60)/60, M=1+K;
   var S=V('shoot_manual');
   var framesOut=V('frames_out');
-  var pt=S*M+cl, py=pt>0?pool/pt:0, sh=py*S, post=sh*K, clT=py*cl;
+  /* Проектная модель строит только допустимые выезды. S — минимум из
+     анкеты, а не искусственная средняя длина всех съёмок. Сначала берём
+     самый короткий горизонт из целых рабочих недель, в котором помещается
+     хотя бы один полный минимальный заказ. Затем число заказов округляем
+     вниз. Поэтому в модели не появляется самостоятельный «огрызочный»
+     проект короче S, а клиентское время учитывается строго раз на каждый
+     созданный проект.
+
+     Весь остаток проектной ёмкости сохраняется: после N клиентских блоков
+     он делится между съёмкой и обработкой в утверждённой пропорции 1:K.
+     Индивидуальные длительности плана нужны B008: полные полчаса хвоста
+     распределяются между проектами максимально ровно, а остаток меньше
+     получаса прикрепляется к первому. Шаг 0,5 ч — шаг поля shoot_manual,
+     а не дополнительный минимум, введённый алгоритмом. */
+  var ptMin=S*M+cl, projectWeek=NW>0?pool/NW:0;
+  var planWeeks=1, periodPool=projectWeek, projectCount=0,
+      clientPeriod=0, shootPeriod=0, postPeriod=0, planProjects=[];
+  if(pool>0&&S>0&&M>0&&ptMin>0&&projectWeek>0){
+    planWeeks=Math.max(1,Math.ceil(ptMin/projectWeek-1e-10));
+    periodPool=projectWeek*planWeeks;
+    projectCount=Math.max(1,Math.floor(periodPool/ptMin+1e-10));
+    clientPeriod=projectCount*cl;
+    shootPeriod=Math.max(0,(periodPool-clientPeriod)/M);
+    postPeriod=shootPeriod*K;
+
+    var tail=Math.max(0,shootPeriod-projectCount*S), step=0.5;
+    var halfUnits=Math.floor(tail/step+1e-10), perProject=Math.floor(halfUnits/projectCount),
+        extraUnits=halfUnits%projectCount, exactRest=tail-halfUnits*step;
+    if(Math.abs(exactRest)<1e-9)exactRest=0;
+    for(var projectIndex=0;projectIndex<projectCount;projectIndex++){
+      var extra=perProject*step+(projectIndex<extraUnits?step:0);
+      if(projectIndex===0)extra+=exactRest;
+      var shootHours=S+extra;
+      planProjects.push({shoot:shootHours,post:shootHours*K,client:cl});
+    }
+    /* Защита от машинной погрешности: состав плана должен точно сходиться
+       с периодными итогами, которые далее масштабируются в годовые d.*. */
+    if(planProjects.length){
+      var planShoot=planProjects.reduce(function(sum,x){return sum+x.shoot},0);
+      planProjects[0].shoot+=shootPeriod-planShoot;
+      planProjects[0].post=planProjects[0].shoot*K;
+    }
+  }
+  var periodFactor=planWeeks>0?NW/planWeeks:0;
+  var py=projectCount*periodFactor,
+      sh=shootPeriod*periodFactor,
+      post=postPeriod*periodFactor,
+      clT=clientPeriod*periodFactor,
+      pt=py>0?pool/py:ptMin;
+  var projectPlan={version:1,weeks:planWeeks,step:0.5,minShoot:S,
+    capacity:periodPool,projects:planProjects,
+    regular:{promo:promo/NW*planWeeks,acc:accT/NW*planWeeks,
+      fm:fmT/NW*planWeeks,idle:idle/NW*planWeeks,mgmt:mgmt/NW*planWeeks},
+    totals:{shoot:shootPeriod,post:postPeriod,client:clientPeriod}};
 
   var wsEx=EXC['Form009b'];
   var wsShare=V('home_area')>0?V('cab_area')/V('home_area'):0;
@@ -5601,7 +5670,13 @@ function calc(){
   /* Идеальный сценарий отдаёт готовый состав затрат. Каждый необязательный
      параметр остаётся в единой формуле, но при отключении его эффективное
      значение равно нулю. Так отчёт не собирает кольцо своей математикой. */
-  var goalFund=R_*profitP;
+  /* Явно разделяем две части общей доли: чистая прибыль — деньги,
+     которыми можно возвращать вложения, а буфер ликвидности остаётся
+     неприкосновенным резервом. fundY сохраняем как их сумму для обратной
+     совместимости с прежними результатами. */
+  var goalFund=R_*profitP;                 /* прежняя общая сумма — без изменения */
+  var profitY=R_*fundP;
+  var cushionY=goalFund-profitY;           /* сохраняет точное fundY = profitY + cushionY */
   var goalDiscountReserve=R_*discP;
   var goalSelfSiteCost=R_*sdiv;
   var goalCostsTotal=C+aq+taxAll+goalFund+goalDiscountReserve+goalSelfSiteCost;
@@ -5622,6 +5697,11 @@ function calc(){
      финансовый результат: он может быть отрицательным. */
   var leftC=currentResult;
   var Rb=выручкаПод(0,1-a-sdiv), taxB=taxOf(Rb), aqB=Rb*a;
+  /* Запас выручки до точки безубыточности — именно текущий сценарий:
+     какую часть текущей выручки можно потерять до нуля. Отрицательный
+     результат честно показывает, что текущая ставка уже ниже точки.
+     При нулевой текущей выручке доля не определена. */
+  var currentBreakEvenMargin=Rc>0?(Rc-Rb)/Rc:null;
   var rateZero=sh>0?Rb/sh:0;
   /* Количество съёмок для покрытия расходов именно при Ставке в ноль.
      Это отдельный сценарный показатель: minShoots ниже считает то же
@@ -5652,6 +5732,20 @@ function calc(){
   var varRent=wsY;                         /* аренда и коммунальные    */
   var varAcc=accM;                         /* бухгалтер                */
   varEmp=sumF('Form024');                  /* 28.09 revert: сотрудники внутри vari, отдельная строка для детализации */
+  /* Прямые расходы на готовые кадры — единственная утверждённая сумма для
+     B023: техника, рабочий софт/подписки и содержание рабочего места.
+     Реклама, банк, бухгалтерия, обучение и сайт в создание кадра не входят. */
+  var directFrameCosts=depShoot+depOffice+depSoft+varSoft+depWs+varRent;
+  /* Инвестиционная витрина B024: состав точно повторяет три показанные
+     направления — съёмка, постпродакшн и время. Рабочее место в этой
+     витрине не показано и поэтому в её итог не входит. Срок — не
+     «окупаемость камеры»: он относится ко всей показанной сумме и считает
+     только поток чистой прибыли без буфера ликвидности. */
+  var investmentShoot=sumP('Form001')+sumP('Form001b');
+  var investmentPost=sumP('Form002')+sumP('Form004');
+  var investmentTime=(eduEx?0:eduSum+eduOpp)+((siteEx||siteSelf)?0:V('site_cost'));
+  var investmentTotal=investmentShoot+investmentPost+investmentTime;
+  var investmentPaybackYears=profitY>0&&investmentTotal>0?investmentTotal/profitY:null;
 
   /* ── величины, которые раньше считались в отчёте и в прототипе
      детализации. Источник правды один: считаем здесь, наружу отдаём
@@ -5660,6 +5754,9 @@ function calc(){
   var shPerHour=V('shutter_per_hour')||350;      /* срабатываний за час съёмки */
   var shLife=V('shutter_life')||300000;          /* ресурс затвора             */
   var shotsYear=shPerHour*sh;                    /* срабатываний за год        */
+  /* Полная стоимость износа съёмочного комплекта за срабатывание. Отчёт
+     только форматирует готовое число, не делит годовую амортизацию сам. */
+  var shootEquipmentWear=shotsYear>0?depShoot/shotsYear:0;
   /* Камера. С 19.09 (слово владельца) в таблице «Камера» может быть несколько строк:
      кнопка «+ Добавить камеру» добавляет обычную удаляемую строку, а годовое списание
      и износ на кадр считаются суммой по всем строкам таблицы — вторая и последующие
@@ -5709,12 +5806,13 @@ function calc(){
      получить тот же доход. Требуемая выручка одна и та же (R_), меняется
      только ставка — значит меняются съёмки, дни и длина рабочего дня. */
   function загрузка(ставка){
-    if(!(ставка>0)||!(S>0))return null;
-    /* Ставка задана за один съёмочный час. Сначала находим съёмочные часы,
-       затем делим их на длительность одной съёмки и получаем число проектов.
-       При S=1 эти величины равны, поэтому прежняя ошибка была незаметна. */
+    if(!(ставка>0)||!(S>0)||!(py>0)||!(sh>0))return null;
+    /* Ставка задана за один съёмочный час. После введения минимального
+       заказа S остаётся нижней границей, поэтому фактический средний объём
+       проекта берём из готовой модели sh / py, а не подменяем им S. */
     var съёмочныхЧасов=R_/ставка;
-    var съёмок=съёмочныхЧасов/S;
+    var часовНаПроект=sh/py;
+    var съёмок=часовНаПроект>0?съёмочныхЧасов/часовНаПроект:0;
     var часов=съёмок*pt+side+fmT;                /* всё рабочее время       */
     var дней=EFF>0?часов/EFF:0;                  /* при рабочем дне 7 часов */
     return {shoots:съёмок, hours:часов, days:дней,
@@ -5823,7 +5921,7 @@ function calc(){
     calDays:CAL,weekend:WEEKEND,holidays:HOLI,WD:WD,VAC:VAC,SICK:SICK,ND:ND,EFF:EFF,
     shutterPerHour:shPerHour,shutterLife:shLife,shotsYear:shotsYear,
     camName:камРяд[0],camPrice:камЦена,camLife:камСрок,camAmort:камАм,
-    camWear:shotsYear>0?камАм/shotsYear:0,
+    camWear:shotsYear>0?камАм/shotsYear:0,shootEquipmentWear:shootEquipmentWear,
     /* себестоимость и наценка */
     costHour:костHour,markup:костHour>0?rateHour/костHour-1:0,
     rateHour:rateHour,rateZero:rateZero,
@@ -5832,7 +5930,7 @@ function calc(){
     zeroShootsY:zeroShootsY,zeroShootsM:zeroShootsM,
     /* загрузка под желаемый доход при трёх ценах часа */
     loadGoal:загрузкаЦель,loadCur:загрузкаТек,loadZero:загрузкаНоль,promo:promo,accT:accT,fmT:fmT,mgmtT:mgmt,pool:pool,S:S,pt:pt,py:py,sh:sh,
-    post:post,clT:clT,amort:amort,vari:vari,C:C,totalExpenses:totalExpenses,Ny:Ny,R:R_,taxAll:taxAll,aq:aq,
+    post:post,clT:clT,projectPlan:projectPlan,amort:amort,vari:vari,C:C,totalExpenses:totalExpenses,Ny:Ny,R:R_,taxAll:taxAll,aq:aq,
     goalFund:goalFund,goalDiscountReserve:goalDiscountReserve,
     goalSelfSiteCost:goalSelfSiteCost,goalCostsTotal:goalCostsTotal,
     goalResult:goalResult,
@@ -5840,12 +5938,16 @@ function calc(){
     currentFund:currentFund,currentDiscountReserve:currentDiscountReserve,
     currentSelfSiteCost:currentSelfSiteCost,currentCostsTotal:currentCostsTotal,
     currentResult:currentResult,currentIncome:currentIncome,currentLoss:currentLoss,
-    currentIsLoss:currentIsLoss,
+    currentIsLoss:currentIsLoss,currentBreakEvenMargin:currentBreakEvenMargin,
     Rb:Rb,taxB:taxB,aqB:aqB,wsY:wsY,siteY:siteY,eduY:eduY,
-    fundY:goalFund,discY:goalDiscountReserve,fundP:fundP,discP:discP,
+    fundY:goalFund,profitY:profitY,cushionY:cushionY,discY:goalDiscountReserve,fundP:fundP,discP:discP,
+    investmentShoot:investmentShoot,investmentPost:investmentPost,
+    investmentTime:investmentTime,investmentTotal:investmentTotal,
+    investmentPaybackYears:investmentPaybackYears,
     /* разбивка расходов */
     depShoot:depShoot,depOffice:depOffice,depSoft:depSoft,depEdu:depEdu,depSite:depSite,depWs:depWs,
     varAds:varAds,varSoft:varSoft,varBank:varBank,varRent:varRent,varAcc:varAcc,varEmp:varEmp,
+    directFrameCosts:directFrameCosts,
     /* параметры модели и сравнение с текущей ставкой */
     NW:NW,K:K,cl:cl,curRate:cur,regime:regimeName(rg),regimeCode:rg,
     clients:($('npd_who')?$('npd_who').value:'mix'),
