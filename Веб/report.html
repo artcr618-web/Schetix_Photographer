@@ -727,7 +727,8 @@ border:1px solid var(--c-r-200);text-align:left}
 font-size:12.5px;color:var(--gr)}
 #phr-root .slg span{display:flex;align-items:center;gap:6px}
 #phr-root .slg i{width:11px;height:11px;border-radius:3px;display:block;flex:none}
-#phr-root .slg i.log-empty{box-sizing:border-box;background:transparent;border:1.5px solid #F5F6F8}
+#phr-root .slg i.log{box-sizing:border-box;background:transparent;border:1.5px solid #F5F6F8}
+#phr-root .slg i.log-empty{background:transparent;border:0}
 /* ═══ БЛОК 06 · 15.09 (слово владельца) ═══
    Легенда — две группы: «Оплачиваемое время» (съёмка) и «Скрытое
    время (не оплачивается напрямую)» (остальные виды). Ниже легенды —
@@ -738,11 +739,13 @@ font-size:12.5px;color:var(--gr)}
 /* 15.09 (слово владельца): легенда — по ячейкам таблицы: начало
    текста первой ячейки (рамка 1px + паддинг 12px = 13px), а не
    по краю карточки. */
-/* Заголовок отделяет легенду от календаря, не меняя смысл самих групп. */
-#phr-root #card02 .slg-h{margin:18px 0 0;padding-left:13px;font-size:15px;
-font-weight:700;line-height:1.35;color:var(--c-gr)}
+/* «Условные обозначения» — тот же дополнительный заголовок, что
+   «Содержание рабочего места» в CALC-B018: компактный капителли,
+   полужирный серый шрифт. Левый край общий с текстом легенды. */
+#phr-root #card02 .slg-h{margin:22px 0 14px;padding-left:0;font-size:13px;
+font-weight:600;color:var(--gr);text-transform:uppercase;letter-spacing:.04em}
 #phr-root #card02 .slg{flex-direction:column;align-items:flex-start;gap:8px;
-margin-top:8px;padding-left:13px}
+margin-top:0;padding-left:13px}
 #phr-root #card02 .slg .slg-g{display:flex;align-items:center;justify-content:flex-start;
 flex-wrap:wrap;gap:6px 16px}
 /* 15.09 (слово владельца): заголовки групп — тем же цветом, что текст
@@ -3513,28 +3516,38 @@ letter-spacing:-.01em;padding:24px 28px 24px 56px;margin-top:16px}
    матрица, не страницы и не свайп. */
 #phr-root .wk{margin-top:6px}
 #phr-root .wk-plan{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px}
-#phr-root .wk-week{display:grid;grid-template-columns:58px repeat(5,1fr);gap:7px;align-content:start}
+#phr-root .wk-week{display:grid;grid-template-columns:58px repeat(5,1fr);column-gap:7px;row-gap:1px;align-content:start;
+position:relative;padding-bottom:14px}
 #phr-root .wk-week:before{content:attr(data-week);grid-column:1/-1;text-align:center;
 font-size:12px;font-weight:700;color:var(--c-gr);letter-spacing:.02em;margin-bottom:1px}
 #phr-root .wk-week:first-child:before{display:none}
 #phr-root .wk .hd{font-size:12px;color:var(--gr);text-align:center;font-weight:600;
 padding-bottom:6px;letter-spacing:.02em}
+/* Метка стоит на верхней границе строки: 09:00 — начало интервала
+   09:00–10:00. Закрывающая отметка 20:00 рисуется отдельно снизу сетки. */
 #phr-root .wk .hr{font-size:11px;color:var(--c-gr3);text-align:right;padding-right:10px;
-line-height:38px;font-variant-numeric:tabular-nums}
+line-height:1.1;font-variant-numeric:tabular-nums;align-self:start}
+#phr-root .wk-week .hr-end{position:absolute;left:0;bottom:0;width:58px;
+line-height:1.1;white-space:nowrap}
 #phr-root .wk i{display:block;height:38px;border-radius:12px;background:var(--c-bg);
 position:relative;transition:.15s}
 #phr-root .wk i.free{background:var(--c-bg)}
+/* В дни без съёмки 09:00 и 19:00 — не логистика, а свободный
+   предусмотренный слот. Он остаётся пустым и читается по серой рамке. */
+/* Пустой слот остаётся совсем пустым. Логистика, напротив, читается
+   только тонким контуром без заливки — тем же тоном, что рабочие паузы. */
+#phr-root .wk i.log-empty{background:transparent;border:0}
+#phr-root .wk i.log{box-sizing:border-box;background:transparent!important;border:1.5px solid #F5F6F8}
 #phr-root .wk i.hatch{background-image:repeating-linear-gradient(45deg,
 rgba(255,255,255,.6) 0 4px,transparent 4px 8px)}
 #phr-root .wk i span{position:absolute;inset:0;display:flex;align-items:center;
 justify-content:center;font-size:10.5px;font-weight:600;color:var(--c-ink3);letter-spacing:.01em;
 padding:0 4px;text-align:center;line-height:1.15;overflow:hidden}
 #phr-root .wk i span.wlbl{color:#fff;font-weight:700}
-/* 15.09 (слово владельца): прочерки в неоплачиваемых ячейках — белые,
-   чтобы не мозолили глаза. Символьные подписи (₽ / прочерк) видны
-   ТОЛЬКО там, где текстовые пропадают (≤519px) — на десктопе и
-   планшете читаются тексты, как было. */
-#phr-root .wk i span.wdsh{color:rgba(255,255,255,.9);font-weight:700}
+/* Символьные подписи (₽ / прочерк) появляются только при скрытом
+   тексте на малом экране. На светлых ячейках они остаются тёмными и
+   читаемыми; белый текст оставлен только для тёмной логистики и съёмки. */
+#phr-root .wk i span.wdsh{color:var(--c-ink3);font-weight:700}
 #phr-root .wk i .wmb{display:none}
 @media(max-width:519px){
 #phr-root .wk i .wtxt{display:none}
@@ -3549,9 +3562,10 @@ padding:0 4px;text-align:center;line-height:1.15;overflow:hidden}
 @media(max-width:519px){#phr-root .wk i span{display:none}}
 @media(max-width:700px){
 #phr-root .wk-plan{grid-template-columns:1fr;gap:14px}
-#phr-root .wk-week{grid-template-columns:44px repeat(5,1fr);gap:5px}
+#phr-root .wk-week{grid-template-columns:44px repeat(5,1fr);column-gap:5px;row-gap:1px}
 #phr-root .wk i{height:30px;border-radius:12px}
-#phr-root .wk .hr{line-height:30px;font-size:10px}}
+#phr-root .wk .hr{line-height:1.1;font-size:10px}
+#phr-root .wk-week .hr-end{width:44px}}
 
 
 /* ═══ СПРАВОЧНИК И ПОДРОБНАЯ ДЕТАЛИЗАЦИЯ ═══ */
@@ -6643,6 +6657,15 @@ var t=-Math.PI/2 - Math.PI/6, секторы=[];
         var фЛ=лм.querySelector('.mon-man'), фР=рм.querySelector('.mon-man');
         if(фЛ&&фР){
           var отЛев=фЛ.getBoundingClientRect().left-K.left;
+          /* Фигуры больше не масштабируются от доли сектора, но desktop-якорь
+             пары «бухгалтер + управляющий» в присланном эталоне был построен
+             от прежней утверждённой ширины фотографа (рост 2.633). Сохраняем
+             только этот геометрический якорь: PNG остаётся текущего фиксированного
+             размера, меняется лишь точка, от которой симметрично ставится пара. */
+          var текущийРостФото=parseFloat(лм.style.getPropertyValue('--рост'))||2.759;
+          var ширФото=фЛ.getBoundingClientRect().width;
+          var эталоннаяШирФото=ширФото*(2.633/текущийРостФото);
+          отЛев+=ширФото-эталоннаяШирФото;
           var wР=рм.getBoundingClientRect().width;
           /* насколько фигура бухгалтера торчит правее своей плашки */
           рм.style.left=(K.right-K.left-wР)+'px';
@@ -6764,61 +6787,43 @@ var t=-Math.PI/2 - Math.PI/6, секторы=[];
 
         var мг=по('p-mg');
         var бух=по('p-rm');
-        if(мг && бух && бр){
-          /* Утверждённая привязка управляющего:
-             1) центры плашек управляющего и бухгалтера лежат на одной
-                вертикальной оси;
-             2) расстояние UL(управляющий) → BR(маркетинг) равно
-                расстоянию BR(маркетинг) → внешнее кольцо диаграммы. */
+        if(мг && бух && бр && лм){
+          /* Точно над бухгалтером (та же вертикаль). Поднимаем, пока
+             расстояние от ближнего края маркетинга до ближнего края
+             управляющего не станет равно расстоянию от плашки фотографа
+             до ближайшей точки диаграммы. */
+          стоп(мг);
           var hМ=мг.getBoundingClientRect().height;
           var wМ=мг.getBoundingClientRect().width;
           var acc=бух.getBoundingClientRect();
-          /* Выбранное владельцем выравнивание: ЦЕНТР плашки точно над
-             центром плашки бухгалтера. */
           var left=acc.left+(acc.width-wМ)/2;
-          var marketing=бр.getBoundingClientRect();
+          var Gф=зазор(лм);
+          function между(a,b){
+            var dx=0, dy=0;
+            if(a.right<b.left) dx=b.left-a.right;
+            else if(b.right<a.left) dx=a.left-b.right;
+            if(a.bottom<b.top) dy=b.top-a.bottom;
+            else if(b.bottom<a.top) dy=a.top-b.bottom;
+            if(dx===0 && dy===0) return 0;
+            if(dx===0) return dy;
+            if(dy===0) return dx;
+            return Math.sqrt(dx*dx+dy*dy);
+          }
           function поставитьНад(top){
             мг.style.left=(left-P.left)+'px';
             мг.style.top=(top-P.top)+'px';
           }
-          /* Точное ближайшее расстояние до внешнего контура кольца.
-             Контур состоит из верхней и нижней внешних эллиптических дуг
-             и двух торцевых отрезков объёмной диаграммы. */
-          function расстояниеДоВнешнегоКольца(px,py){
-            function дуга(cy){
-              function d(t){
-                var x=kb.left+(600+220*Math.cos(t))*kм;
-                var y=kb.top+(cy+110*Math.sin(t))*kм;
-                return Math.hypot(px-x,py-y);
-              }
-              var шаг=Math.PI*2/720, лучший=0, значение=Infinity;
-              for(var i=0;i<720;i++){var t=i*шаг,v=d(t);if(v<значение){значение=v;лучший=t;}}
-              var l=лучший-шаг,r=лучший+шаг;
-              for(var j=0;j<42;j++){var m1=(2*l+r)/3,m2=(l+2*r)/3;if(d(m1)<d(m2))r=m2;else l=m1;}
-              return d((l+r)/2);
-            }
-            function отрезок(x1,y1,x2,y2){
-              var vx=x2-x1,vy=y2-y1,den=vx*vx+vy*vy;
-              var t=den?Math.max(0,Math.min(1,((px-x1)*vx+(py-y1)*vy)/den)):0;
-              return Math.hypot(px-(x1+t*vx),py-(y1+t*vy));
-            }
-            var xl=kb.left+380*kм,xr=kb.left+820*kм,yt=kb.top+340*kм,yb=kb.top+386*kм;
-            return Math.min(дуга(340),дуга(386),отрезок(xl,yt,xl,yb),отрезок(xr,yt,xr,yb));
+          var низМ=бр.getBoundingClientRect().bottom;
+          var lo=низМ-hМ;
+          var hi=acc.top-hМ-1;
+          if(hi<lo) hi=lo;
+          for(var it=0;it<28;it++){
+            var mid=(lo+hi)/2;
+            поставитьНад(mid);
+            var g=между(бр.getBoundingClientRect(), мг.getBoundingClientRect());
+            if(g>Gф) hi=mid; else lo=mid;
           }
-          var Gмаркетинг=расстояниеДоВнешнегоКольца(marketing.right,marketing.bottom);
-          /* Формула без подбора и без запасного смещения:
-             (marketing.right − manager.left)² +
-             (manager.top − marketing.bottom)² = Gмаркетинг². */
-          var dx=marketing.right-left;
-          var квадрат=Gмаркетинг*Gмаркетинг-dx*dx;
-          if(квадрат<0) return; /* штатная композиция даёт действительное решение */
-          /* У уравнения две ветви. Нужна НИЖНЯЯ: управляющий поднимается
-             от бухгалтера, но остаётся ниже нижней кромки маркетинга.
-             Ветка со знаком «−» ставила его выше маркетинга — именно
-             она и уводила плашку к уровню продаж. */
-          var top=marketing.bottom+Math.sqrt(квадрат);
-          стоп(мг);
-          поставитьНад(top);
+          поставитьНад(hi);
         }
         var подз=document.querySelector('#card01m .hint');
         if(подз && (window.innerWidth||1024)<=820){
@@ -8229,15 +8234,14 @@ var t=-Math.PI/2 - Math.PI/6, секторы=[];
     for(var w=0;w<WEEKS;w++)[0,2,4,1,3].forEach(function(day){order.push(w*5+day)});
     if(order.length){var shift=index%order.length;order=order.slice(shift).concat(order.slice(0,shift));}
     var out=[];
-    /* Сначала сохраняем час до первой съёмки во всех доступных днях.
-       Лишь затем, если проект действительно длиннее этой ёмкости,
-       разрешаем занять 10:00. Так логистика вытесняет модельную работу
-       в 09:00, а не исчезает перед съёмкой, начатой в 10:00. */
+    /* У съёмочного дня всегда остаются обе крайние логистические ячейки:
+       09:00 — перед первой съёмкой и 19:00 — после последней. Поэтому
+       съёмка никогда не ставится в эти слоты. Сначала заполняем 11:00–18:00
+       (без обеда), затем при длинном проекте разрешаем 10:00: это даёт
+       восемь съёмочных часов в дне и сохраняет логистику с двух сторон. */
     order.forEach(function(day){
-      for(var slot=11-H0;slot<=BASE_LAST;slot++)if(slot!==LUNCH_SLOT)out.push([day,slot]);
-    });
-    order.forEach(function(day){
-      for(var early=BASE_FIRST;early<11-H0;early++)if(early!==LUNCH_SLOT)out.push([day,early]);
+      for(var slot=11-H0;slot<19-H0;slot++)if(slot!==LUNCH_SLOT)out.push([day,slot]);
+      out.push([day,T10]);
     });
     return out;
   }
@@ -8296,13 +8300,21 @@ var t=-Math.PI/2 - Math.PI/6, секторы=[];
     return stops.length?'linear-gradient(to bottom,'+stops.join(',')+')':'var(--c-bg)';
   }
   function cellHtml(cell){
-    if(cell.kind==='lunch')return '<i style="background:'+WC.lu+'" title="Обед"><span class="wtxt wdsh">Обед</span><span class="wmb wdsh" aria-hidden="true">—</span></i>';
-    if(cell.kind==='log')return '<i style="background:'+WC.id+'" title="Логистика"><span class="wtxt wdsh">Логистика</span><span class="wmb wdsh" aria-hidden="true">—</span></i>';
+    if(cell.kind==='lunch')return '<i style="background:'+WC.lu+'" title="Обед"><span class="wtxt">Обед</span><span class="wmb" aria-hidden="true">—</span></i>';
+    if(cell.kind==='log')return '<i class="log" title="Логистика"><span class="wtxt">Логистика</span><span class="wmb" aria-hidden="true">—</span></i>';
     if(cell.kind==='logempty')return '<i class="log-empty" aria-hidden="true"></i>';
     if(!cell.parts.length)return '<i class="free"></i>';
-    var names=[],only=cell.parts[0].n,same=true,shootOnly=true,hatch=false;
-    cell.parts.forEach(function(x){if(names.indexOf(x.n)<0)names.push(x.n);if(x.n!==only)same=false;if(x.key!=='sh')shootOnly=false;if(x.idle)hatch=true;});
-    var label=same?only:names.join(' · '), title=names.join(' · ');
+    var only=cell.parts[0].n,same=true,shootOnly=true,hatch=false,несъёмка=null;
+    cell.parts.forEach(function(x){
+      if(x.n!==only)same=false;
+      if(x.key!=='sh'){shootOnly=false;if(!несъёмка)несъёмка=x;}
+      if(x.idle)hatch=true;
+    });
+    /* Ячейка может быть визуально поделена между двумя точными долями часа,
+       но подпись всегда называет только один вид работы. В смешанном часу
+       приоритет у несъёмочной части: белый текст остаётся только у чистой
+       съёмки и никогда не ложится на светлую половину обработки. */
+    var label=same?only:(несъёмка?несъёмка.n:only), title=label;
     return '<i class="'+(hatch?'hatch':'')+'" style="background:'+paint(cell.parts)+'" title="'+title+'">'
       +'<span class="wtxt '+(shootOnly?'wlbl':'')+'">'+label+'</span>'
       +'<span class="wmb '+(shootOnly?'wlbl':'wdsh')+'" aria-hidden="true">'+(shootOnly?'₽':'—')+'</span></i>';
@@ -8314,6 +8326,8 @@ var t=-Math.PI/2 - Math.PI/6, секторы=[];
       html+='<div class="hr">'+(hour<10?'0':'')+hour+':00</div>';
       for(var day=0;day<5;day++)html+='<div class="wk-cell" data-day="'+day+'" data-hour="'+hour+'">'+cellHtml(grid[week*5+day][slot])+'</div>';
     }
+    /* 20:00 — нижняя граница последнего интервала, окончание рабочего дня. */
+    html+='<div class="hr hr-end" aria-label="Окончание рабочего дня">20:00</div>';
     return html+'</div>';
   }
   var weekMarkup='';
@@ -8344,11 +8358,9 @@ var t=-Math.PI/2 - Math.PI/6, секторы=[];
     var логПодпись=ОТДЕЛЬНОЕ_ПОМЕЩЕНИЕ
       ? 'Логистика — 1 ч до начала и 1 ч после окончания рабочего дня'
       : 'Логистика — 1 ч до и 1 ч после съёмки';
-    var пустаяЛогистика=!ОТДЕЛЬНОЕ_ПОМЕЩЕНИЕ
-      ? '<span><i class="log-empty"></i>Рамка — свободный слот под логистику в день без съёмки</span>'
-      : '';
+    var пустаяЛогистика='';
     wlg.innerHTML='<div class="slg-h">Условные обозначения</div>'
-      +'<div class="slg-g"><span>Оплачиваемое время:</span>'
+      +'<div class="slg-g"><b class="slg-t">Оплачиваемое время:</b>'
       +'<span><i style="background:'+WC.sh+'"></i>Съёмка'+(shW<=0.005?' — 0 ч':'')+'</span></div>'
       +'<div class="slg-g"><b class="slg-t">Скрытая работа</b>'
       +'<span class="slg-note">(не оплачивается напрямую, но входит в состав стоимости съёмочного часа):</span>'
@@ -8356,7 +8368,7 @@ var t=-Math.PI/2 - Math.PI/6, секторы=[];
       +'<div class="slg-g"><b class="slg-t">Неоплаченное время</b>'
       +'<span class="slg-note">(не входит в стоимость съёмочного часа, но всегда выделяется):</span>'
       +'<span><i style="background:'+WC.id+'"></i>Обед — 14:00–15:00</span>'
-      +'<span><i style="background:'+WC.id+'"></i>'+логПодпись+'</span>'+пустаяЛогистика+'</div>';
+      +'<span><i class="log"></i>'+логПодпись+'</span>'+пустаяЛогистика+'</div>';
 
   }
 
