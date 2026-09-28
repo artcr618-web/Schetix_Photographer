@@ -2,7 +2,7 @@
    на подставленных значениях полей — без браузера.
    Запуск: node харнесс.js [корень] [json-переопределений]           */
 const fs = require('fs');
-const КОРЕНЬ = process.argv[2] || '/home/user/schetix';
+const КОРЕНЬ = process.argv[2] || require('path').resolve(__dirname, '..');  /* 28.09: по умолчанию — корень проекта */
 const ПЕРЕОПР = process.argv[3] ? JSON.parse(process.argv[3]) : {};
 
 const calcHtml = fs.readFileSync(КОРЕНЬ + '/Веб/calc.html', 'utf8');

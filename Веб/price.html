@@ -928,7 +928,7 @@ color:var(--c-ink);margin:0 0 4px}
    любая величина уменьшилась бы вместе с баннером. */
 #phr-root #pc-print-view .pv-клон+.pv-group{margin-top:8mm}
 /* Полоса набора слепка: обложка + секции таблиц в одной ячейке. Нижний
-   колонтитул — поле листа @bottom-* (Окна/прайс_печать.js). */
+   колонтитул — поле листа @bottom-* (Tools/printPage.js). */
 #phr-root #pc-print-view table.pv-pages{width:100%;border-collapse:collapse;table-layout:fixed;border:0}
 #phr-root #pc-print-view table.pv-pages>tbody>tr>td{padding:0;border:0;background:transparent;vertical-align:top}
 /* Нижний колонтитул (решение владельца 07.09): логотип «счётикс» справа,
@@ -971,7 +971,7 @@ body.print-price #pc-print-view .pv-sect:has(.pv-terms) .wrap{break-inside:avoid
    пропадал. Отрицательный отступ обложки не годится: всё, что выше поля,
    Chromium срезает (замечание владельца 07.09 про «узкий» баннер). */
 body.print-price #pc-print-view .pv-клон{break-inside:avoid!important;page-break-inside:avoid!important}
-/* Нижний колонтитул — поле листа @bottom-* (Окна/прайс_печать.js,
+/* Нижний колонтитул — поле листа @bottom-* (Tools/printPage.js,
    установитьКолонтитулы): знак «счётикс» слева, schetiks.ru справа. */
 body.print-price #pc-print-view *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
 /* Firefox не печатает поля @page (@top-left и т. д.), поэтому верхний
@@ -980,7 +980,7 @@ body.print-price #pc-print-view *{-webkit-print-color-adjust:exact;print-color-a
    14mm (как в Chromium), распорка thead 12mm сдвигает текст на те же 20mm;
    на обложке строку закрывает белая маска — SVG, а не фон, чтобы печаталась
    и без «фоновой графики». Номера страниц: counter(page) Firefox не знает,
-   поэтому разбивку на листы считает скрипт (Окна/прайс_печать.js,
+   поэтому разбивку на листы считает скрипт (Tools/printPage.js,
    проставитьНомераСтраниц) и ставит метки .pv-pagemark — см. ниже. */
 @-moz-document url-prefix(){
   @page{margin-top:8mm}
@@ -1135,7 +1135,7 @@ font-size:12.5px;font-weight:600;line-height:1.4;box-shadow:0 8px 28px rgba(16,2
    дата) размещены здесь той же типографикой и в той же последовательности,
    что и на главном экране calc.html. Prata — локальный шрифт проекта. */
 @font-face{font-family:'PHC Prata';font-style:normal;font-weight:400;font-display:swap;
-src:url('fonts/Prata-Regular.ttf') format('truetype')}
+src:url('Fonts/Prata-Regular.ttf') format('truetype')}
 #phr-root .price-hero{position:relative;width:100%;aspect-ratio:auto;margin:0 0 4px;display:flex;flex-direction:column;
 overflow:hidden;min-height:calc(100cqi*0.515625);background:#111;border-radius:0;isolation:isolate}
 /* cqi-единицы для высоты баннера считаем от обёртки. */
@@ -3619,7 +3619,7 @@ WIJXsgy8WsWIFwN01E0LFiD/2Q==
      (решение владельца 07.09): отдельный блок-карточка с редактируемыми
      заголовком и текстом (как «Логистика»); тексты владельца дословно.
      В слепке печатается последним блоком техническим текстом (см.
-     Окна/прайс_печать.js). Уведомление в синей рамке — ДЛЯ ФОТОГРАФА,
+     Tools/printPage.js). Уведомление в синей рамке — ДЛЯ ФОТОГРАФА,
      в печать не идёт. ═══ -->
 <section class="card" id="pcBlockDisc" data-block-id="PRICE-B00Z" data-block-name="Условия предоставления и ценообразования дополнительных услуг" data-exc="disc">
 <div class="card-title-row"><h2 class="pc-edit" data-edit="h" contenteditable="true" spellcheck="false" data-placeholder="Введите заголовок">Условия предоставления и ценообразования дополнительных услуг</h2></div>
@@ -3765,7 +3765,7 @@ WIJXsgy8WsWIFwN01E0LFiD/2Q==
 </div>
 
 </div><!-- /phr-root -->
-<script src="Окна/прайс_печать.js"></script>
+<script src="Tools/printPage.js"></script>
 <script>
 
 /* ── Самодиагностика страницы: если в скрипте возникает ошибка, показываем
@@ -5057,7 +5057,7 @@ function ИНИЦ_ПРАЙСА(){
   });
 
   /* ── Печать прайса. Сборщик печатного слепка (обложка, таблицы на общей
-     сетке, колонтитулы) вынесен в Окна/прайс_печать.js — один код на
+     сетке, колонтитулы) вынесен в Tools/printPage.js — один код на
      просмотр, контрольный PDF и печать (правило владельца 07.09.2026,
      Документация/ПРАВИЛО_ТРИ_ВИДА_ПРАЙСА.md). Здесь только подключение. ── */
   /* Длительность консультации в печати — именительный падеж: 1 час / 2 часа / 5 часов. */
@@ -5068,7 +5068,7 @@ function ИНИЦ_ПРАЙСА(){
     return 'часов';
   }
   function xmlА(x){ return String(x).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
-  if(!window.СЧХПечатьПрайса) throw new Error('Не подключён Окна/прайс_печать.js — печать и просмотр прайса недоступны');
+  if(!window.СЧХПечатьПрайса) throw new Error('Не подключён Tools/printPage.js — печать и просмотр прайса недоступны');
   var ПЕЧАТЬ = window.СЧХПечатьПрайса.создать({ КОРЕНЬ: КОРЕНЬ, изПоля: изПоля, рубли: рубли, словоДень: словоДень, словоКонс: словоКонс, словоЧас: словоЧас, словоЧасИм: словоЧасИм, часыКонс: часыКонс, часыСтроки: часыСтроки, часыСъёмки: часыСъёмки, числоВПоле: числоВПоле, дниГотовности: дниГотовности, подставитьЧисла: подставитьЧисла, столбцыТаблицы: столбцыТаблицы, xmlА: xmlА });
   var собратьПечать = ПЕЧАТЬ.собратьПечать, установитьКолонтитулы = ПЕЧАТЬ.установитьКолонтитулы, проставитьНомераСтраниц = ПЕЧАТЬ.проставитьНомераСтраниц,
       титулПрайса = ПЕЧАТЬ.титулПрайса,
@@ -5193,7 +5193,7 @@ function ИНИЦ_ПРАЙСА(){
   /* ── «Скачать прайс» (решение владельца 07.09): без всплывающего окна —
         самодостаточный HTML-файл прайса сразу уходит в загрузки. Печать и
         «Поделиться» — отдельные кнопки меню. Окно «Сохранить документ»
-        (Окна/сохранить.js) прайсом больше не используется. ── */
+        (Tools/savePage.js) прайсом больше не используется. ── */
   function имяФайлаПрайса(){
     return титулПрайса().replace(/[\\/:*?"<>|]+/g, ' ').replace(/\s+/g, ' ').trim() + '.html';
   }

@@ -2,9 +2,10 @@
 # -*- coding: utf-8 -*-
 """Зелёный гейт исполняемого веб-контура «Счётикса». 
 
-Проверяет только активную цепочку index → calc → report / price. Книга,
-архив, PDF и Веб/Части намеренно не читаются: для них остаётся отдельный
-исторический аудит `проверить.py --legacy`.
+Проверяет только активную цепочку calc → report / price (обложка index.html
+удалена из репозитория 28.09). Книга, архив, PDF и Веб/Части не читаются.
+Исторический аудит `--legacy` и скрипты синхронизации книги удалены 28.09
+по решению владельца.
 
 Запуск:
     python3 Инструменты/проверить_активный_контур.py [корень]
@@ -95,6 +96,29 @@ def main():
     report_source = (ROOT / 'Веб' / 'report.html').read_text(encoding='utf-8')
     preview_path = ROOT / 'Веб' / 'preview.html'
     preview_source = preview_path.read_text(encoding='utf-8') if preview_path.is_file() else ''
+    # 28.09: внешние ресурсы страниц (<script src>, <img src>, url('IMG/…')) обязаны
+    # существовать рядом со страницей. Эта проверка ловит, например, перенос
+    # Tools/printPage.js, после которого весь основной скрипт прайса падал.
+    missing = []
+    for page in active_files + ('Публикация/report.html',):
+        path = ROOT / 'Веб' / page
+        source = path.read_text(encoding='utf-8')
+        refs = re.findall(r'<script[^>]+src="([^"]+)"', source)
+        refs += re.findall(r'<img[^>]+src="([^"#]+)"', source)
+        refs += re.findall(r"url\('((?:IMG|Fonts)/[^']+)'\)", source)
+        # пути, записанные в скрипте строкой (например, CHARACTERS в report.html)
+        refs += re.findall(r"['\"]((?:IMG|Fonts|Tools)/[^'\"\s]+\.(?:png|jpe?g|webp|svg|gif|ttf|woff2?|js))['\"]", source)
+        for ref in refs:
+            # адрес, собираемый в скрипте ('+…+'), проверяется строкой выше
+            if re.match(r'^(https?:|data:|/cdn-cgi/|//)', ref) or "'+" in ref:
+                continue
+            # Публикационную копию выкладывают рядом с calc.html и price.html
+            # (вместо development report), поэтому её пути считаются от Веб/.
+            base = ROOT / 'Веб'
+            if not (base / ref).is_file():
+                missing.append(f'{page} → {ref}')
+    check('внешние ресурсы страниц существуют', not missing, '; '.join(missing)[:240])
+
     check('активные локальные переходы ведут к существующим целям',
           calc_source.count('href="preview.html"') == 3
           and calc_source.count('>Посмотреть пример отчёта<') == 3
@@ -183,6 +207,16 @@ def main():
               f"Δ={residual-tax_off['Ny']:.6f}")
     except Exception as error:
         check('расчёт: сценарий без налогов выполняется', False, str(error)[:200])
+
+    # 28.09, дорожная карта фаза 3.2: сценарий «сайт создан самостоятельно».
+    # Выручка включает goalSelfSiteCost, поэтому кольцо отчёта обязано его показать.
+    try:
+        site_self = harness({'радио': {'site_mode': 'self'}})
+        gap = site_self['R'] - sum(site_self['__parts'])
+        check('сайт своими силами: сумма сегментов отчёта равна выручке', abs(gap) < 1,
+              f"Δ={gap:.2f}; goalSelfSiteCost={site_self['goalSelfSiteCost']:.2f}")
+    except Exception as error:
+        check('сайт своими силами: сценарий расчёта выполняется', False, str(error)[:200])
 
     try:
         below_break_even = harness({'поля': {'current_rate': 1000}})

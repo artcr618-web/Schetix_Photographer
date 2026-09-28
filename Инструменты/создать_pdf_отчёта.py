@@ -38,4 +38,4 @@ for mode,name in jobs.items():
     a4=bool(re.search(rb'/MediaBox\s*\[0 0 841\.[0-9]+ 594\.[0-9]+\]',data))
     if not data.startswith(b'%PDF') or not a4 or pages<minimum[mode]:
         raise SystemExit(f'{mode}: некорректный PDF, pages={pages}, A4={a4}, size={len(data)}')
-    print(f'✓ {mode}: {pages} стр. · A4 · {len(data)} байт · {target.relative_to(ROOT)}')
+    print(f'✓ {mode}: {pages} стр. · A4 · {len(data)} байт · {target.relative_to(ROOT) if target.is_relative_to(ROOT) else target}')
