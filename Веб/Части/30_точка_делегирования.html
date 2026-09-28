@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Счётикс · Точка делегирования</title>
+</head>
+<body>
+<!--
+  ПРОТОТИП ОДНОГО БЛОКА · «Точка делегирования»
+  Дорожная карта построена из d после calc.html (localStorage phc_report).
+  Если данных ещё нет, включается DEMO. В блоке нет обещания продаж: он
+  показывает финансовый порог, ёмкость и условия, при которых штат/аутсорс
+  не подменяют пустой спрос фиктивной «выгодой».
+-->
+<section id="phr-root" data-block-id="FORECAST-DELEGATION">
+<style>
+#phr-root{--ink:#1A1A1A;--ink2:#374151;--ink3:#4B5563;--mut:#6B7280;--mut2:#9CA3AF;--line:#E5E7EB;--line2:#F0F2F5;--bg:#F5F6F8;--surf:#FAFBFC;--white:#fff;--g50:#F5FBF7;--g100:#EAF6EE;--g200:#D8EEDF;--g300:#A9DDB8;--g500:#21A038;--g700:#158026;--g800:#0B6B22;--a50:#FFFBEF;--a100:#FEF3D6;--a200:#FBE3AE;--a800:#92400E;--r50:#FFF6F6;--r200:#F7D3D3;--r700:#B91C1C;--b50:#F6FAFE;--b100:#E7F0FA;--b200:#CFE0F3;--b700:#2A6FAB;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;color:var(--ink);line-height:1.45;background:var(--surf);padding:28px clamp(10px,3vw,26px);-webkit-font-smoothing:antialiased}
+#phr-root *{box-sizing:border-box;margin:0;padding:0}
+#phr-root .delegation{max-width:1040px;margin:auto;overflow:hidden;border:1px solid var(--line);border-radius:20px;background:var(--white);box-shadow:0 3px 18px rgba(16,24,40,.06)}
+#phr-root .head{position:relative;overflow:hidden;padding:29px 31px 25px;background:linear-gradient(135deg,var(--g50),var(--b50));border-bottom:1px solid var(--line)}
+#phr-root .head:before,#phr-root .head:after{content:"";position:absolute;border-radius:50%;pointer-events:none}.head:before{width:176px;height:176px;right:-57px;top:-84px;background:rgba(33,160,56,.08)}.head:after{width:72px;height:72px;right:114px;bottom:-42px;background:rgba(42,111,171,.08)}
+#phr-root .eyebrow{position:relative;z-index:1;font-size:11px;font-weight:750;letter-spacing:.09em;text-transform:uppercase;color:var(--g700)}
+#phr-root h1{position:relative;z-index:1;margin-top:7px;font-size:clamp(24px,3vw,33px);line-height:1.1;letter-spacing:-.028em}
+#phr-root .lead{position:relative;z-index:1;max-width:760px;margin-top:10px;font-size:14px;line-height:1.58;color:var(--ink2)}
+#phr-root .body{padding:25px 31px 31px}
+#phr-root .source{display:flex;align-items:center;gap:7px;margin-bottom:18px;color:var(--mut);font-size:12px}.source i{display:block;width:8px;height:8px;border-radius:50%;background:var(--g500)}
+#phr-root .section-title{font-size:17px;line-height:1.25;letter-spacing:-.01em}.section-copy{margin-top:5px;font-size:12px;line-height:1.5;color:var(--mut)}
+#phr-root .grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:13px}.panel{padding:18px;border:1px solid var(--line);border-radius:15px;background:var(--surf)}
+#phr-root .panel h3{font-size:14px;line-height:1.3}.panel .hint{margin-top:4px;color:var(--mut);font-size:12px;line-height:1.45}
+#phr-root .fields{display:grid;grid-template-columns:repeat(2,1fr);gap:11px;margin-top:15px}.field.full{grid-column:1/-1}
+#phr-root label{display:flex;justify-content:space-between;gap:6px;font-size:11.5px;line-height:1.25;font-weight:680;color:var(--ink2)}#phr-root label output{color:var(--g700);white-space:nowrap}
+#phr-root input,#phr-root select{width:100%;height:38px;margin-top:6px;padding:0 10px;border:1px solid #D7DDE4;border-radius:9px;background:#fff;color:var(--ink);font:inherit;font-size:13px;outline:none}#phr-root input:focus,#phr-root select:focus{border-color:var(--g500);box-shadow:0 0 0 3px rgba(33,160,56,.11)}
+#phr-root .range{display:flex;align-items:center;gap:8px;margin-top:8px}.range input{height:4px;margin:0;padding:0;accent-color:var(--g500)}.range span{min-width:43px;text-align:right;color:var(--g700);font-size:12px;font-weight:750}
+#phr-root .result{position:relative;margin-top:15px;padding:15px;border:1px solid var(--g200);border-radius:13px;background:var(--g50)}.result.warn{border-color:var(--a200);background:var(--a50)}.result.no{border-color:var(--r200);background:var(--r50)}
+#phr-root .tag{font-size:10.5px;font-weight:750;letter-spacing:.08em;text-transform:uppercase;color:var(--g700)}.warn .tag{color:var(--a800)}.no .tag{color:var(--r700)}
+#phr-root .result h3{margin-top:4px;font-size:18px;letter-spacing:-.017em;line-height:1.2}.result p{margin-top:7px;color:var(--ink2);font-size:12.5px;line-height:1.52}
+#phr-root .metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}.metric{padding:10px;border:1px solid rgba(21,128,38,.17);border-radius:10px;background:rgba(255,255,255,.72)}.warn .metric{border-color:rgba(146,64,14,.18)}.no .metric{border-color:rgba(185,28,28,.16)}.metric span{display:block;color:var(--mut);font-size:10.5px;line-height:1.25}.metric b{display:block;margin-top:5px;font-size:16px;line-height:1.1;letter-spacing:-.02em}
+#phr-root .rule{margin-top:13px;padding-top:12px;border-top:1px solid var(--line);color:var(--mut);font-size:11.5px;line-height:1.5}.rule b{color:var(--ink2)}
+#phr-root .stages{margin-top:28px;padding-top:24px;border-top:1px solid var(--line)}.stage-list{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}.stage{position:relative;min-height:166px;padding:14px;border:1px solid var(--line);border-radius:13px;background:#fff}.stage-num{display:flex;align-items:center;justify-content:center;width:23px;height:23px;border-radius:50%;background:var(--g100);color:var(--g800);font-size:11px;font-weight:750}.stage h3{margin-top:9px;font-size:13px;line-height:1.25}.stage p{margin-top:5px;color:var(--mut);font-size:11px;line-height:1.45}.stage b{color:var(--ink2)}
+#phr-root .team{margin-top:28px;padding-top:24px;border-top:1px solid var(--line)}.team-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:13px}.role{padding:12px;border:1px solid var(--line);border-radius:12px;background:var(--surf)}.role b{font-size:12px;line-height:1.25}.role span{display:block;margin-top:5px;color:var(--mut);font-size:10.8px;line-height:1.42}.role em{display:inline-block;margin-top:7px;color:var(--b700);font-style:normal;font-size:10px;font-weight:700}
+#phr-root .sales{margin-top:28px;padding:21px;border:1px solid var(--b200);border-radius:16px;background:var(--b50)}.sales .grid{margin-top:14px}.sales .panel{background:rgba(255,255,255,.78)}.sales .result{margin-top:0}
+#phr-root .scale{margin-top:28px;padding:21px;border:1px solid var(--g200);border-radius:16px;background:var(--g50)}.scale .grid{margin-top:14px}.scale .panel{background:rgba(255,255,255,.78)}.scale .result{margin-top:0}.scale-list{margin:11px 0 0 18px;color:var(--ink2);font-size:12px;line-height:1.52}.scale-list li+li{margin-top:7px}
+#phr-root .market{margin-top:28px;padding-top:24px;border-top:1px solid var(--line)}.market-table{width:100%;margin-top:13px;border-collapse:separate;border-spacing:0;border:1px solid var(--line);border-radius:13px;overflow:hidden;font-size:11.5px}.market-table th,.market-table td{padding:10px 11px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line);line-height:1.42}.market-table th{background:var(--surf);color:var(--ink3);font-size:10.5px;text-transform:uppercase;letter-spacing:.035em}.market-table tr:last-child td{border-bottom:0}.market-table td:nth-child(2){font-weight:700;white-space:nowrap}.market-table a{color:var(--b700);text-decoration:none;border-bottom:1px solid rgba(42,111,171,.25)}
+#phr-root details{margin-top:24px;padding-top:16px;border-top:1px solid var(--line)}#phr-root summary{cursor:pointer;color:var(--b700);font-size:12px;font-weight:700}#phr-root details p,#phr-root details li{color:var(--mut);font-size:11.5px;line-height:1.55}#phr-root details p{margin-top:9px}#phr-root details ul{margin:7px 0 0 18px}
+#phr-root .foot{margin-top:15px;color:var(--mut2);font-size:10.5px;line-height:1.48}
+@media(max-width:820px){#phr-root .grid{grid-template-columns:1fr}.stage-list,.team-grid{grid-template-columns:repeat(2,1fr)}#phr-root .stage{min-height:145px}}
+@media(max-width:520px){#phr-root{padding:12px 7px}#phr-root .head,#phr-root .body{padding-left:17px;padding-right:17px}.fields,.metrics{grid-template-columns:1fr}.stage-list,.team-grid{grid-template-columns:1fr}.market-table{display:block;overflow-x:auto;white-space:normal}.market-table th,.market-table td{min-width:128px}.delegation{border-radius:15px!important}}
+</style>
+
+<article class="delegation">
+  <header class="head">
+    <div class="eyebrow">Прогноз развития</div>
+    <h1>Точка делегирования</h1>
+    <p class="lead">Дорожная карта роста фотографа: сначала отдаём повторяющуюся работу, затем — ежедневный поток заказов. SMM, маркетинг и реклама начинаются только там, где фотограф уже не может одновременно снимать, продавать и руководить людьми.</p>
+  </header>
+
+  <main class="body">
+    <div class="source"><i></i><span id="sourceText">Расчёт построен по DEMO</span></div>
+
+    <section aria-labelledby="retouch-title">
+      <h2 class="section-title" id="retouch-title">Первый шаг — ретушёр на аутсорсе</h2>
+      <p class="section-copy">Ретушь — первый кандидат: задача повторяется, её легко проверить по тестовому заданию, а фотограф оставляет за собой стиль, отбор и финальный контроль.</p>
+      <div class="grid">
+        <section class="panel" aria-label="Параметры ретуши">
+          <h3>Проверка одной съёмки</h3>
+          <p class="hint">Ставка подрядчика сравнивается с вашей стоимостью рабочего часа. Но окончательное решение зависит от цены одного <em>освобождённого</em> часа после контроля.</p>
+          <div class="fields">
+            <div class="field"><label for="ownerRetouch">Ваша обработка, ч/проект</label><input id="ownerRetouch" type="number" min="0" step=".25" value="3"></div>
+            <div class="field"><label for="review">Контроль ретушёра, ч/проект</label><input id="review" type="number" min="0" step=".25" value="1"></div>
+            <div class="field"><label for="retoucherRate">Ретушёр, ₽/ч</label><input id="retoucherRate" type="number" min="0" step="25" value="400"></div>
+            <div class="field"><label for="retoucherHours">Ретушь у подрядчика, ч/проект</label><input id="retoucherHours" type="number" min="0" step=".25" value="3"></div>
+            <div class="field full"><label for="demand">Какая часть освобождённой ёмкости будет продана</label><div class="range"><input id="demand" type="range" min="0" max="100" value="90"><span id="demandOut">90 %</span></div></div>
+          </div>
+          <p class="rule"><b>Правило владельца.</b> Плановая ставка помощника не выше вашей ставки рабочего часа: <b id="ownerRateOut"></b>. Для подрядчика важнее ещё и цена часа, который он реально освободил.</p>
+        </section>
+        <section class="result" id="retouchVerdict" aria-live="polite">
+          <div class="tag" id="retouchTag"></div>
+          <h3 id="retouchTitle"></h3>
+          <p id="retouchText"></p>
+          <div class="metrics">
+            <div class="metric"><span>Цена ретуши за проект</span><b id="retouchFeeOut"></b></div>
+            <div class="metric"><span>Освобождается фотографу</span><b id="savedOut"></b></div>
+            <div class="metric"><span>Потенциал новых проектов</span><b id="newProjectsOut"></b></div>
+          </div>
+          <p class="rule" id="retouchProfit"></p>
+        </section>
+      </div>
+    </section>
+
+    <section class="stages" aria-labelledby="stages-title">
+      <h2 class="section-title" id="stages-title">Очередность роста</h2>
+      <p class="section-copy">Не штат «на вырост», а следующий узкий участок, который уже ограничивает продажи или качество.</p>
+      <div class="stage-list">
+        <article class="stage"><div class="stage-num">0</div><h3>Сначала — порядок</h3><p>Стандарты обработки, папки, бриф, шаблоны ответов, CRM и тест ретушёра. <b>Без этого делегируется хаос, а не работа.</b></p></article>
+        <article class="stage"><div class="stage-num">1</div><h3>Ретушёр и бухгалтер</h3><p>Ретушёр — самозанятый/ИП по тесту и результату; бухгалтерия — внешний сервис. Фотограф сохраняет стиль, контроль качества и финальные решения.</p></article>
+        <article class="stage"><div class="stage-num">2</div><h3>Помощник фотографа</h3><p>Берёт ежедневные поиск заказов, лидогенерацию, первый ответ, CRM, публикацию и напоминания. <b>Фотограф обсуждает съёмку и подтверждает заказ сам.</b></p></article>
+        <article class="stage"><div class="stage-num">3</div><h3>Курирование потока</h3><p>После стандарта помощник ведёт статусы и дедлайны ретушёра, собирает правки и файлы. Стиль, приёмка и обратная связь ретушёру остаются у фотографа.</p></article>
+        <article class="stage"><div class="stage-num">4</div><h3>Не ещё одна задача, а руководитель</h3><p>SMM, маркетолог и таргетолог создают отдельную систему. Если она появляется, фотограф становится креативным руководителем либо нужен продюсер/операционный руководитель.</p></article>
+        <article class="stage"><div class="stage-num">5</div><h3>Второй фотограф</h3><p>После подтверждённого спроса сверх собственной ёмкости сначала подключается фотограф на проект. При двух и более фотографах нужен владелец-руководитель или отдельный продюсер.</p></article>
+      </div>
+    </section>
+
+    <section class="team" aria-labelledby="team-title">
+      <h2 class="section-title" id="team-title">Команда продакшна в зрелой модели</h2>
+      <p class="section-copy">Не все роли нужны одному фотографу сразу. Часть из них разумно покупать как услугу под загрузку или конкретный проект.</p>
+      <div class="team-grid">
+        <article class="role"><b>Фотограф · креативный руководитель</b><span>Съёмка, стиль, финальное решение, ключевой разговор с заказчиком и приёмка качества.</span><em>ядро до масштаба</em></article>
+        <article class="role"><b>Ретушёр</b><span>Потоковая обработка, экспорт и подготовка файлов. Фотограф принимает результат и сохраняет авторский стиль.</span><em>первый аутсорс</em></article>
+        <article class="role"><b>Помощник фотографа по потоку заказов</b><span>Поиск заказов, лиды, первый ответ, CRM, публикации, напоминания; после стандарта — статусы ретушёра.</span><em>40–60 ч/мес. на старте</em></article>
+        <article class="role"><b>Бухгалтер / бухгалтерский сервис</b><span>Первичка, отчётность, налоги, сверки и календарь обязательств.</span><em>аутсорс по умолчанию</em></article>
+        <article class="role"><b>Продюсер / операционный руководитель</b><span>План съёмок, сроки, загрузка людей, подрядчики и клиентский процесс. Не заменяет креативного директора.</span><em>обязателен при масштабе</em></article>
+        <article class="role"><b>Второй фотограф</b><span>Берёт подтверждённые проекты по стандарту качества и по брифу. Начинать с оплаты за проект, не со штата.</span><em>после заполнения ёмкости</em></article>
+        <article class="role"><b>SMM-специалист</b><span>Ведёт готовый контент-план и регулярные публикации. Не должен становиться ещё одной задачей фотографа.</span><em>после помощника / частично</em></article>
+        <article class="role"><b>Маркетолог и таргетолог</b><span>Маркетолог отвечает за оффер и воронку, таргетолог — за измеряемый платный канал. Оба работают через руководителя.</span><em>после процесса и аналитики</em></article>
+        <article class="role"><b>Фотографы команды</b><span>Один или два дополнительных исполнителя появляются только под подтверждённый спрос и положительную экономику каждого проекта.</span><em>затем — регулярная команда</em></article>
+      </div>
+    </section>
+
+    <section class="sales" aria-labelledby="sales-title">
+      <h2 class="section-title" id="sales-title">Помощник фотографа: поток заказов, продажи и публикации</h2>
+      <p class="section-copy">Это не «продажник вместо фотографа». Это человек, который забирает повторяющиеся 2 часа в день: поиск заказов, лиды, первый ответ, CRM, публикации и напоминания. После отстройки процесса он также координирует статусы ретушёра. Фотограф проводит содержательный разговор, бриф и подтверждает заказ.</p>
+      <div class="grid">
+        <section class="panel" aria-label="Параметры помощника фотографа">
+          <h3>Сценарий помощника</h3>
+          <div class="fields">
+            <div class="field full"><label for="salesMode">Форма работы</label><select id="salesMode"><option value="outsource">Аутсорс / самозанятый: пакет часов и результата</option><option value="staff">Штат: начисленная зарплата до НДФЛ</option></select></div>
+            <div class="field"><label for="salesBudget">Бюджет в месяц, ₽</label><input id="salesBudget" type="number" min="0" step="1000" value="24000"></div>
+            <div class="field"><label for="salesHours">Часов помощника в месяц</label><input id="salesHours" type="number" min="1" step="1" value="50"></div>
+            <div class="field full"><label for="conversion">Конверсия квалифицированного лида в заказ</label><div class="range"><input id="conversion" type="range" min="5" max="80" value="25"><span id="conversionOut">25 %</span></div></div>
+          </div>
+          <p class="rule" id="payrollRule"></p>
+        </section>
+        <section class="result" id="salesVerdict" aria-live="polite">
+          <div class="tag" id="salesTag"></div>
+          <h3 id="salesTitle"></h3>
+          <p id="salesText"></p>
+          <div class="metrics">
+            <div class="metric"><span>Полная цена помощника / мес</span><b id="salesCostOut"></b></div>
+            <div class="metric"><span>Плановая ставка помощника</span><b id="salesHourOut"></b></div>
+            <div class="metric"><span>Новых заказов нужно / мес</span><b id="salesProjectsOut"></b></div>
+          </div>
+          <p class="rule" id="salesCapacity"></p>
+        </section>
+      </div>
+    </section>
+
+    <section class="scale" aria-labelledby="scale-title">
+      <h2 class="section-title" id="scale-title">Граница: частный фотограф → продакшн</h2>
+      <p class="section-copy">SMM, маркетолог и таргетолог — не продолжение личного списка дел фотографа. Они увеличивают число касаний, заявок, материалов и людей, которых необходимо направлять. В этот момент появляется отдельная управленческая работа.</p>
+      <div class="grid">
+        <section class="panel" aria-label="Ёмкость текущей модели">
+          <h3>Ёмкость одной производственной роли</h3>
+          <p class="hint">Это потолок текущего плана, а не обещание продаж. Он показывает, когда для роста недостаточно просто «работать больше».</p>
+          <div class="metrics">
+            <div class="metric"><span>Проектов в текущем плане</span><b id="capacityProjectsOut"></b></div>
+            <div class="metric"><span>Ёмкость в месяц</span><b id="capacityMonthOut"></b></div>
+            <div class="metric"><span>Плановый оборот этой ёмкости</span><b id="capacityRevenueOut"></b></div>
+          </div>
+          <p class="rule" id="ownerAcquisition"></p>
+        </section>
+        <section class="result" id="scaleVerdict">
+          <div class="tag">Точка перехода</div>
+          <h3>Сначала руководитель процесса, затем масштаб команды</h3>
+          <p>Как только в регулярном потоке появляются второй фотограф и отдельные SMM/маркетинг/реклама, кто-то обязан держать единый план, качество, загрузку, сроки и экономику. Владелец может взять эту роль как креативный руководитель; если хочет оставаться преимущественно фотографом, нужен продюсер или операционный руководитель.</p>
+          <ul class="scale-list"><li>Подтверждайте спрос: не менее 2–3 месяцев у 80 % календарной ёмкости, очередь либо отказы из-за нехватки дат.</li><li>Второго фотографа сначала тестируйте на оплате за проект и по стандарту качества. Его проект должен оставлять положительный вклад после оплаты исполнителя, ретуши, прямых расходов и налогов.</li><li>При двух и более фотографах нельзя оставлять координацию «между съёмками»: назначается владелец-руководитель или продюсер.</li></ul>
+          <p class="rule" id="secondPhotoEconomics"></p>
+        </section>
+      </div>
+    </section>
+
+    <section class="market" aria-labelledby="market-title">
+      <h2 class="section-title" id="market-title">Рынок: ориентир для переговоров, не прайс</h2>
+      <p class="section-copy">Это срез открытых вакансий и зарплатных агрегаторов за 2026 год. Для аутсорса важнее тестовое задание, скорость, права на исходники и фактическая цена за освобождённый час фотографа.</p>
+      <table class="market-table">
+        <thead><tr><th>Роль</th><th>Рыночный ориентир</th><th>Как покупать на старте</th></tr></thead>
+        <tbody>
+          <tr><td>Ретушёр</td><td>40–64 тыс. ₽/мес.<br>в найме</td><td>Тестовое задание → самозанятый/ИП → цена за проект или пакет. Не ставка в штат.</td></tr>
+          <tr><td>Помощник фотографа по потоку заказов</td><td>50–75 тыс. ₽/мес.<br>полная удалённая роль</td><td>На старте покупать 40–60 ч/мес.: лиды, CRM, первый ответ, публикации и статусы. Ставка часа — не выше рабочего часа фотографа.</td></tr>
+          <tr><td>SMM-специалист</td><td>≈58–80 тыс. ₽/мес.<br>полная занятость</td><td>Пакет часов/публикаций; только когда помощник и руководитель процесса могут принять и направить этот поток.</td></tr>
+          <tr><td>Интернет-маркетолог</td><td>≈80–100 тыс. ₽/мес.</td><td>Аудит и стратегия проектно; после стандарта продаж и перед масштабированием канала.</td></tr>
+          <tr><td>Таргетолог</td><td>≈58–73 тыс. ₽/мес.</td><td>Проектный запуск и оптимизация после готового оффера, аналитики, рекламного бюджета и ответственного руководителя.</td></tr>
+        </tbody>
+      </table>
+      <p class="foot">Источники среза: <a href="https://russia.gorodrabot.ru/salaries/retusher">ретушёр</a>, <a href="https://www.superjob.ru/vakansii/udalennyj-menedzher.html">удалённые продажи</a>, <a href="https://wikiprof.ru/blog/zarplaty-smm-speczialistov-v-rossii-i-za-rubezhom/">SMM</a>, <a href="https://russia.gorodrabot.ru/salaries/marketolog-internet">интернет-маркетолог</a>, <a href="https://russia.gorodrabot.ru/salaries/targetolog">таргетолог</a>. Вилки различаются по региону, портфолио и формату занятости.</p>
+    </section>
+
+    <details>
+      <summary>Налоги и безопасный формат сотрудничества</summary>
+      <p><b>Самозанятый / ИП.</b> Для настоящего внешнего подрядчика цена договора — это расход фотографа; НПД 6 % с оплаты от ИП или организации платит сам исполнитель. Нужны договор, задание, результат/акт и чек «Мой налог». НПД подходит только самостоятельному исполнителю без наёмных работников и действует до лимита 2,4 млн ₽ в год.</p>
+      <p><b>Штат.</b> В модели применяется базовый ориентир: начисленная зарплата × 1,302 — 30 % единых страховых взносов и 0,2 % травматизма. НДФЛ удерживается из начисленной зарплаты, а не добавляется сверху к расходу работодателя. Для высоких выплат, льготных тарифов и конкретного региона расчёт должен проверить бухгалтер.</p>
+      <ul><li>Не маскируйте фактические трудовые отношения постоянного сотрудника самозанятостью.</li><li>Для ретушёра и SMM фиксируйте тест, сроки, число правок, передачу файлов и права использования.</li><li>Первые 1–2 месяца измеряйте не «ощущение разгрузки», а часы контроля, срок, процент переделок, цену освобождённого часа и прирост оплаченных заказов.</li></ul>
+      <p class="foot">Нормативная справка: <a href="https://www.nalog.gov.ru/rn25/ifns/r25_14/info/16615800/">ФНС о НПД</a>; <a href="https://www.buhonline.ru/pub/82311-strahovye_vznosy">базовый тариф взносов 2026</a>. Это рабочая модель, а не персональная налоговая консультация.</p>
+    </details>
+    <p class="foot">Блок остаётся самостоятельным прототипом в папке «Части». Название: «Точка делегирования».</p>
+  </main>
+</article>
+
+<script>
+(function(){
+  'use strict';
+  var FALLBACK={R:3610642.127885637,NT:1533,NW:43.8,py:175.2,post:555.165,clT:175.2,promo:438,accT:43.8,mgmtT:87.6,taxAll:216638.52767313822,vari:283980,directFrameCosts:268154.569047619,profitY:613809.1617405583,rateWork:691.9954337899543};
+  function num(v,fallback){v=Number(v);return isFinite(v)?v:fallback}
+  function data(){try{if(window.SCHETIX_DELEGATION_DATA)return window.SCHETIX_DELEGATION_DATA;var raw=window.localStorage&&localStorage.getItem('phc_report');if(raw)return JSON.parse(raw)}catch(e){}return FALLBACK}
+  var d=data(),live=d!==FALLBACK,$=function(id){return document.getElementById(id)};
+  $('sourceText').textContent=live?'Расчёт построен по вашим данным из калькулятора':'Расчёт построен по данным DEMO';
+  var NW=Math.max(1,num(d.NW,43.8)),NT=Math.max(1,num(d.NT,1533)),py=Math.max(0,num(d.py,0)),R=Math.max(0,num(d.R,0));
+  var ownerRate=Math.max(0,num(d.rateWork,0)), projectRevenue=py>0?R/py:0, taxRate=Math.min(.5,Math.max(0,num(d.taxAll,0)/Math.max(R,1)));
+  var directPerProject=py>0?Math.max(0,num(d.directFrameCosts,num(d.vari,0))/py):0, annualProfit=Math.max(0,num(d.profitY,0));
+  var timePerProject=py>0?NT/py:0,promotionHours=Math.max(0,num(d.promo,0));
+  function rub(x){return Math.round(Math.max(0,x)).toLocaleString('ru-RU')+' ₽'}
+  function plain(x){return Math.round(Math.max(0,x)).toLocaleString('ru-RU')}
+  function setResult(id,kind,tag,title,text){var el=$(id);el.className='result'+(kind?' '+kind:'');$('#'+id+'Tag');$(id+'Tag').textContent=tag;$(id+'Title').textContent=title;$(id+'Text').textContent=text}
+  $('ownerRateOut').textContent=rub(ownerRate)+'/ч';
+  var capacityMonth=py/12,ownerFlowWeek=promotionHours/NW;
+  $('capacityProjectsOut').textContent=plain(py)+'/год';
+  $('capacityMonthOut').textContent=(Math.round(capacityMonth*10)/10).toLocaleString('ru-RU',{maximumFractionDigits:1})+'/мес.';
+  $('capacityRevenueOut').textContent=rub(R)+'/год';
+  $('ownerAcquisition').innerHTML='<b>Время владельца.</b> В текущем плане «Продвижение» занимает около '+(Math.round(ownerFlowWeek*10)/10).toLocaleString('ru-RU',{maximumFractionDigits:1})+' ч/нед. — это и есть примерно 2 ч в день на поиск заказов и публикации. Его первым забирает помощник, а не SMM-команда.';
+
+  var retouch={};
+  function renderRetouch(){
+    var own=Math.max(0,num($('ownerRetouch').value,0)),review=Math.max(0,num($('review').value,0)),rate=Math.max(0,num($('retoucherRate').value,0)),contractHours=Math.max(0,num($('retoucherHours').value,0)),demand=num($('demand').value,0)/100;
+    $('demandOut').textContent=Math.round(demand*100)+' %';
+    var freed=Math.max(0,own-review),fee=rate*contractHours,ownerValue=freed*ownerRate,screenRate=rate<=ownerRate,screenTask=fee<=ownerValue&&freed>0;
+    var existingProjects=Math.floor(py+1e-8),savedAnnual=freed*existingProjects;
+    var newProjects=timePerProject>0?Math.floor(savedAnnual*demand/timePerProject+1e-8):0;
+    var contribution=Math.max(0,projectRevenue*(1-taxRate)-directPerProject-fee);
+    var delta=newProjects*contribution-existingProjects*fee, forecast=annualProfit+delta;
+    retouch={fee:fee,freed:freed,newProjects:newProjects,contribution:contribution,existingProjects:existingProjects};
+    $('retouchFeeOut').textContent=rub(fee);$('savedOut').textContent=(Math.round(freed*10)/10).toLocaleString('ru-RU',{maximumFractionDigits:1})+' ч/проект';$('newProjectsOut').textContent=plain(newProjects)+'/год';
+    var r=$('retouchVerdict');r.className='result';
+    if(!screenRate||!screenTask){
+      r.classList.add('no');$('retouchTag').textContent='Не сходится';$('retouchTitle').textContent='Текущая цена ретуши съедает цену освобождённого часа';
+      $('retouchText').textContent='Ставка ретушёра '+rub(rate)+'/ч, а ваша ставка '+rub(ownerRate)+'/ч. Цена проекта '+rub(fee)+' должна быть не выше '+rub(ownerValue)+' — стоимости '+freed.toLocaleString('ru-RU',{maximumFractionDigits:1})+' освобождённых часов.';
+    }else if(newProjects===0){
+      r.classList.add('warn');$('retouchTag').textContent='Сначала спрос';$('retouchTitle').textContent='Ретушь можно отдать, но новая выручка пока не подтверждена';
+      $('retouchText').textContent='Экономика одной съёмки сходится. Начните с тестового пакета: освобождённое время должно превращаться в оплачиваемую съёмку, иначе аутсорс уменьшит чистую прибыль.';
+    }else{
+      $('retouchTag').textContent='Можно тестировать';$('retouchTitle').textContent='Ретушёр проходит финансовый порог';
+      $('retouchText').textContent='Сначала отдайте 1–2 серии и измерьте правки. При продаже '+Math.round(demand*100)+' % высвобождённой ёмкости модель видит место примерно для '+plain(newProjects)+' дополнительных проектов в год.';
+    }
+    $('retouchProfit').innerHTML='<b>Модель чистой прибыли.</b> При сохранении цены, качества и спроса: '+rub(annualProfit)+' текущей прибыли + '+(delta>=0?'+':'−')+rub(Math.abs(delta))+' прогнозного изменения = около <b>'+rub(forecast)+'/год</b>. В расчёт включены цена ретушёра для текущих и новых проектов, налоговая доля и прямые расходы на новые проекты; это сценарий, не обещание продаж.';
+    renderScale();
+    renderSales();
+  }
+
+  function renderScale(){
+    var ceiling=Math.max(0,projectRevenue*(1-taxRate)-directPerProject-(retouch.fee||0));
+    $('secondPhotoEconomics').innerHTML='<b>Экономика второго фотографа.</b> После налоговой доли, прямых расходов и текущей цены ретуши в одном проекте остаётся '+rub(ceiling)+'. Это не рекомендуемый гонорар, а абсолютный потолок оплаты фотографа-подрядчика до расходов на руководство, маркетинг и прибыли. Договорная цена должна быть заметно ниже него.';
+  }
+
+  function renderSales(){
+    var mode=$('salesMode').value,budget=Math.max(0,num($('salesBudget').value,0)),hours=Math.max(1,num($('salesHours').value,1)),conversion=num($('conversion').value,0)/100;
+    $('conversionOut').textContent=Math.round(conversion*100)+' %';
+    /* 30 % единых взносов + 0,2 % травматизма: базовый сценарий штатного
+       сотрудника с годовой выплатой ниже предельной базы. */
+    var fullCost=mode==='staff'?budget*1.302:budget;
+    var effectiveHour=fullCost/hours,contribution=Math.max(0,retouch.contribution||0);
+    var requiredProjects=contribution>0?Math.ceil(fullCost/contribution-1e-8):0;
+    var requiredLeads=conversion>0?Math.ceil(requiredProjects/conversion-1e-8):0;
+    /* «Продвижение» в календарной модели — нынешнее время владельца на
+       поиск заказов и публикации: 2 ч/день в DEMO. Его не создаёт помощник,
+       а забирает у фотографа и возвращает производству. */
+    var ownerFlowMonth=promotionHours/12;
+    var assistantProjectCapacity=timePerProject>0?promotionHours/timePerProject/12:0;
+    var retouchProjectCapacity=(retouch.newProjects||0)/12;
+    var combinedCapacity=assistantProjectCapacity+retouchProjectCapacity;
+    $('salesCostOut').textContent=rub(fullCost);$('salesHourOut').textContent=rub(effectiveHour)+'/ч';$('salesProjectsOut').textContent=plain(requiredProjects);
+    $('payrollRule').innerHTML=mode==='staff'
+      ? '<b>Штат.</b> '+rub(budget)+' начисленной зарплаты → '+rub(fullCost)+' расхода работодателя в месяц: 30 % страховых взносов + 0,2 % травматизма. НДФЛ удерживается из зарплаты сотрудника.'
+      : '<b>Аутсорс.</b> В бюджете уже должна быть полная цена пакета часов и результата. Для самостоятельного самозанятого не добавляются зарплатные взносы работодателя; исполнитель сам платит НПД.';
+    var r=$('salesVerdict');r.className='result';
+    if(requiredProjects===0||conversion<=0){r.classList.add('no');$('salesTag').textContent='Нет данных';$('salesTitle').textContent='Сначала зафиксируйте цену проекта и конверсию';$('salesText').textContent='Без цены одного дополнительного заказа и доли лидов, доходящих до заказа, помощника нельзя честно окупить.'}
+    else if(effectiveHour>ownerRate){r.classList.add('warn');$('salesTag').textContent='Дороже вашего часа';$('salesTitle').textContent='Сократите пакет или измените формат';$('salesText').textContent='Плановая цена помощника '+rub(effectiveHour)+'/ч выше вашей ставки '+rub(ownerRate)+'/ч. Нужен меньший пакет, аутсорс или оплата за подтверждённый результат — иначе вы покупаете свой же час дороже.'}
+    else if(combinedCapacity+1e-9<requiredProjects){r.classList.add('warn');$('salesTag').textContent='Рано для такого бюджета';$('salesTitle').textContent='Сначала подтвердите спрос и загрузку';$('salesText').textContent='Для окупаемости нужны '+plain(requiredProjects)+' дополнительных заказа и '+plain(requiredLeads)+' квалифицированных лидов в месяц, а расчётно высвобождается около '+(Math.round(combinedCapacity*10)/10).toLocaleString('ru-RU',{maximumFractionDigits:1})+' проекта. Начните с меньшего пакета или оплаты за результат.'}
+    else{$('salesTag').textContent='Можно тестировать';$('salesTitle').textContent='Помощник проходит финансовый порог';$('salesText').textContent='Нужно дополнительно получать не менее '+plain(requiredLeads)+' квалифицированных лидов в месяц при конверсии '+Math.round(conversion*100)+' %, чтобы получить '+plain(requiredProjects)+' заказа и закрыть стоимость помощника. Содержательный бриф и подтверждение заказа остаются у фотографа.'}
+    $('salesCapacity').innerHTML='<b>Что именно передаётся.</b> В текущем плане фотограф тратит около '+(Math.round(ownerFlowMonth*10)/10).toLocaleString('ru-RU',{maximumFractionDigits:1})+' ч/мес. на поиск заказов и публикации. Помощник берёт этот ежедневный поток, а после стандарта — статусы ретушёра. В связке с ретушью это создаёт расчётную дополнительную ёмкость около '+(Math.round(combinedCapacity*10)/10).toLocaleString('ru-RU',{maximumFractionDigits:1})+' проекта/мес.; это ёмкость, не обещание спроса.';
+  }
+
+  ['ownerRetouch','review','retoucherRate','retoucherHours','demand'].forEach(function(id){$(id).addEventListener('input',renderRetouch)});
+  ['salesMode','salesBudget','salesHours','conversion'].forEach(function(id){$(id).addEventListener(id==='salesMode'?'change':'input',renderSales)});
+  renderRetouch();
+})();
+</script>
+</section>
+</body>
+</html>

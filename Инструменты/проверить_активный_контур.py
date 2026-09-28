@@ -137,10 +137,10 @@ def main():
               abs(base['R'] - base['C'] - base['aq'] - base['taxAll'] - base['fundY']
                   - base['discY'] - base['Ny']) < 1,
               f"R={base['R']:.2f}")
-        check('расчёт: browser-default содержит исключения, автофонд и автоматически подобранный УСН',
-              base['mgmtT'] == 0 and base['varEmp'] == 0 and base['fundP'] == .2
-              and base['regimeCode'] == 'usn6',
-              f"mgmtT={base['mgmtT']}; varEmp={base['varEmp']}; fundP={base['fundP']}; regime={base['regimeCode']}")
+        check('расчёт: browser-default включает управление и все резервы, автофонд и автоматически подобранный УСН',
+              base['mgmtT'] > 0 and base['fmT'] > 0 and base['discP'] == .15
+              and base['varEmp'] == 0 and base['fundP'] > 0 and base['regimeCode'] == 'usn6',
+              f"mgmtT={base['mgmtT']}; fmT={base['fmT']}; discP={base['discP']}; varEmp={base['varEmp']}; fundP={base['fundP']}; regime={base['regimeCode']}")
         check('З-001: чистая прибыль и буфер явно складываются в совместимый fundY',
               abs(base['fundY'] - base['profitY'] - base['cushionY']) < 1e-7,
               f"fundY={base['fundY']}; profitY={base['profitY']}; cushionY={base['cushionY']}")
@@ -197,8 +197,8 @@ def main():
         check('З-001: граничные сценарии запаса выручки выполняются', False, str(error)[:200])
 
     headless = command([NODE, str(TOOLS / 'проверить_report_headless.js'), str(ROOT)], cwd=TOOLS, timeout=300)
-    check('report: headless 16 сценариев, 30 блоков, 13 таблиц',
-          headless.returncode == 0 and '16 сценариев · 30 блоков · 13 таблиц · ошибок 0' in headless.stdout,
+    check('report: headless 17 сценариев, 30 блоков, 13 таблиц',
+          headless.returncode == 0 and '17 сценариев · 30 блоков · 13 таблиц · ошибок 0' in headless.stdout,
           (headless.stderr or headless.stdout).strip().split('\n')[-1][:200])
     finish()
 

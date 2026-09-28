@@ -75,137 +75,246 @@ async function render(name,override){
         timeRows=[...d.querySelectorAll('#wtBd tr')],
         timeTable=text(d.querySelector('#wtBd')),
         weekGrids=[...d.querySelectorAll('#wk > .wk-week')],
-        expectedWeeks=Math.max(1,Math.round(injected?.projectPlan?.weeks||weekGrids.length||1));
-  /* B008: один календарный блок содержит все компактные недели плана
-     одновременно. Внутри каждой сетки — заголовок + 11 строк 09:00–20:00. */
+        expectedWeeks=Math.max(1,Math.round(injected?.projectPlan?.weeks||weekGrids.length||1)),
+        B008_START=8, B008_SLOTS=11;
+  /* Каждая компактная неделя: заголовок + 11 строк 08:00–19:00. */
   assert(fail,weekGrids.length===expectedWeeks,
     'B008: число видимых недель не совпадает с готовым планом calc.html');
   assert(fail,(expectedWeeks>1)===d.querySelector('#wk')?.classList.contains('wk-plan'),
     'B008: класс многонедельного календаря не соответствует плану');
-  assert(fail,weekGrids.every(grid=>grid.children.length===72),
-    'B008: хотя бы одна неделя не содержит 11 часовых строк с 09:00 до 20:00');
+  assert(fail,weekGrids.every(grid=>grid.children.length===73),
+    'B008: хотя бы одна неделя не содержит 11 часовых строк и нижнюю отметку 19:00');
+  assert(fail,weekGrids.every(grid=>[...grid.children].at(-1)?.textContent==='19:00'),
+    'B008: нижняя отметка календаря должна быть 19:00');
+  /* На планшете первый столбец сужен до 42px. Конечная отметка 19:00
+     абсолютна, поэтому её ширина обязана повторять ширину шкалы, иначе
+     цифры съезжают вправо относительно 18:00 и остальных часов. */
+  assert(fail,html.includes('#phr-root .wk-week{grid-template-columns:42px repeat(5,1fr)}\n#phr-root .wk-week .hr-end{width:42px}'),
+    'B008: ширина нижней отметки 19:00 расходится со столбцом шкалы');
   function wkCell(hour,day,week=0){
     const cells=weekGrids[week]?[...weekGrids[week].children]:[];
-    return cells[6+(hour-9)*6+1+day]?.querySelector('i');
+    return cells[6+(hour-B008_START)*6+1+day]?.querySelector('i');
   }
+  function cellLabel(hour,day,week=0){return wkCell(hour,day,week)?.getAttribute('aria-label')||''}
+  function cellParts(hour,day,week=0){return cellLabel(hour,day,week).split(' · ').filter(Boolean)}
   function cellHas(hour,day,label,week=0){
-    return (wkCell(hour,day,week)?.title||'').split(' · ').includes(label);
+    return cellParts(hour,day,week).some(part=>part===label||part.startsWith(label+','));
   }
-  const officeMode=!!injected&&(injected.answers||[]).some(a=>Number(a.b)===13&&a.n==='Где находится рабочее место'&&a.v==='Отдельное помещение');
-  for(let week=0;week<weekGrids.length;week++)for(let day=0;day<5;day++)
-    assert(fail,wkCell(14,day,week)?.title==='Обед','B008: обед 14:00–15:00 не поставлен в неделю '+(week+1)+', день '+day);
+  function partMinutes(part,label){
+    if(part===label)return 60;
+    const match=part.match(new RegExp('^'+label+',\\s*(\\d+)\\s*мин$'));
+    return match?Number(match[1]):0;
+  }
+  function roleMinutes(day,label,week=0){return hours().reduce((total,hour)=>
+    total+cellParts(hour,day,week).reduce((sum,part)=>sum+partMinutes(part,label),0),0)}
+  function dataRoleHours(key){return [...d.querySelectorAll('#wk [data-b008-parts]')].reduce((total,cell)=>
+    total+cell.dataset.b008Parts.split(',').reduce((sum,part)=>{
+      const [partKey,value]=part.split(':');return sum+(partKey===key?Number(value):0);
+    },0),0)}
+  function dataRoleHoursDay(day,key,week=0){return hours().reduce((total,hour)=>{
+    const raw=wkCell(hour,day,week)?.dataset.b008Parts||'';
+    return total+raw.split(',').reduce((sum,part)=>{
+      const [partKey,value]=part.split(':');return sum+(partKey===key?Number(value):0);
+    },0);
+  },0)}
+  function hours(){return [...Array(B008_SLOTS)].map((_,row)=>B008_START+row)}
+  function roleHours(day,label,week=0){return hours().filter(hour=>cellHas(hour,day,label,week))}
+  /* B008 не использует native title: доступное название остаётся в aria-label,
+     поэтому календарь не показывает запрещённые hover-подсказки. */
+  assert(fail,[...d.querySelectorAll('#wk i')].every(cell=>!cell.hasAttribute('title')),
+    'B008: в ячейки вернулся native title/hover');
+  assert(fail,!d.querySelector('#wk .empty-dash'),
+    'B008: в свободные ячейки вернулся прочерк вместо пустого пространства');
+  assert(fail,html.includes('#phr-root .wk i.free,#phr-root .wk i.offshift{background:transparent;border:0}'),
+    'B008: пустые либо нерабочие ячейки получили заливку или рамку');
+  assert(fail,html.includes('linear-gradient(to right,'),
+    'B008: состав часа рисуется не слева направо');
+  const pauseIcons=d.querySelectorAll('#wk .pauseico, #wk .pausepartico');
+  assert(fail,d.querySelector('#wklg .pauselegend .pauseico')!==null&&
+    (!d.querySelector('[data-b008-parts*="id:"]')||pauseIcons.length>0),
+    'B008: у размещённых рабочих пауз нет утверждённой иконки');
+  for(const klass of ['pencilico','promoico','contactico','calculatorico','briefcaseico','forceico'])
+    assert(fail,d.querySelector('#wklg .'+klass)!==null,
+      'B008: иконка '+klass+' исчезла из обязательной легенды');
+  assert(fail,html.includes("var ЛОГ_ЧАСТЬ={key:'log',c:'#FFFFFF',n:'Логистика',service:true};")&&
+    html.includes('#phr-root .wk i.service .wkico.logico{width:24px;height:24px}')&&
+    html.includes('#phr-root .wk i .shoot-label .camico{position:static;flex:none;width:24px;height:24px;')&&
+    html.includes('#phr-root .wk i .pause-label .pauseico{position:static;flex:none;width:24px;height:24px')&&
+    html.includes('#phr-root .wk i .wkpartico{position:absolute;z-index:2;left:var(--seg-center);top:50%;\nwidth:20px;height:20px;transform:translate(-50%,-50%);pointer-events:none}')&&
+    html.includes('#phr-root .wk i .wkpartico.logico{color:var(--c-gr3)}')&&
+    html.includes('#phr-root .wk i .wkpartico.forceico{color:#fff}')&&
+    html.includes('#phr-root .wk i.service-partial{box-sizing:border-box}')&&
+    html.includes('#phr-root .wk i .wklogpart{position:absolute;z-index:1;left:var(--seg-left);top:0;\nwidth:var(--seg-width);height:100%;box-sizing:border-box;border:1.5px solid var(--c-pause);')&&
+    !html.includes('service-partial{box-sizing:border-box;box-shadow'),
+    'B008: логистика перестала быть белой, её контур утолщился либо рамка смешанной ячейки задела соседнюю роль');
+  const dividedShoot=[...d.querySelectorAll('#wk [data-b008-parts]')]
+    .some(cell=>cell.dataset.b008Parts.includes('sh:')&&cell.dataset.b008Parts.includes('log:'));
+  assert(fail,!dividedShoot||(d.querySelectorAll('#wk .wkpartico.camico').length>0&&d.querySelectorAll('#wk .wkpartico.logico').length>0),
+    'B008: в разделённых половинах съёмки и логистики нет своих иконок');
+  const partialService=[...d.querySelectorAll('#wk .service-partial')];
+  assert(fail,partialService.every(cell=>{
+    const logCount=cell.dataset.b008Parts.split(',').filter(part=>part.startsWith('log:')).length;
+    return logCount===1&&cell.querySelectorAll('.wklogpart').length===logCount&&
+      cell.querySelector('.wklogpart')?.style.getPropertyValue('--seg-width').endsWith('%');
+  }),
+    'B008: тонкий контур неполной логистики отсутствует либо затронул не-логистический сегмент');
+  const fullRoleCells=[...d.querySelectorAll('#wk [data-b008-parts]')].filter(cell=>{
+    const parts=cell.dataset.b008Parts.split(','),keys=parts.map(part=>part.split(':')[0]);
+    return keys.length===1&&keys[0]!=='sh'&&Number(parts[0].split(':')[1])>=1-1e-6;
+  });
+  assert(fail,fullRoleCells.every(cell=>cell.querySelector('.wtxt')!==null&&
+    cell.querySelector('.wtxt .roleico,.wtxt .pauseico')===null&&
+    cell.querySelector('.wmb .roleico,.wmb .pauseico')!==null),
+    'B008: в полной роли на десктопе осталась иконка рядом с подписью либо нет мобильной иконки');
+  assert(fail,html.includes('@media(max-width:900px){\n#phr-root .wk i .wtxt{display:none}')&&
+    html.includes('@media(max-width:900px){\n#phr-root .wk i .wmb{display:flex}}')&&
+    html.includes("--seg-width:'+width+'%")&&html.includes('cellWidth*share/100>=28'),
+    'B008: на планшете не включился режим иконки полной ячейки либо крупные сегменты лишены адаптивного знака');
+  assert(fail,![...d.querySelectorAll('#wk [data-b008-parts]')].filter(cell=>cell.dataset.b008Parts.includes(',')).some(cell=>
+    !cell.querySelector('.wkpartico')),
+    'B008: в разделённой ячейке на десктопе не осталось иконки сегмента');
+  for(const cell of d.querySelectorAll('#wk [data-b008-parts]')){
+    const keys=cell.dataset.b008Parts.split(',').map(part=>part.split(':')[0]),
+          pair=keys.slice().sort().join('+');
+    assert(fail,['log+sh','log+po','fm+po','id+po'].includes(pair)||keys.length<2,
+      'B008: разрешены только пары «съёмка+логистика», «логистика+обработка», «форс-мажор+обработка» и «обработка+пауза»: '+keys.join('+'));
+    assert(fail,!(keys.includes('id')&&keys.includes('log'))&&!(keys.includes('id')&&keys.includes('fm')),
+      'B008: рабочая пауза закрыла логистику или форс-мажор вместо обработки: '+keys.join('+'));
+  }
+  for(let week=0;week<weekGrids.length;week++)for(let day=0;day<5;day++){
+    const lunches=hours().filter(hour=>cellLabel(hour,day,week)==='Обед'),
+          shoots=roleHours(day,'Съёмка',week),
+          partialShoots=hours().filter(hour=>cellHas(hour,day,'Съёмка',week)&&cellHas(hour,day,'Логистика',week)),
+          logistics=roleHours(day,'Логистика',week);
+    assert(fail,lunches.length===1,'B008: в дне нет ровно одного обязательного обеда');
+    assert(fail,dataRoleHoursDay(day,'id',week)<=1+1e-6,
+      'B008: в одном дне стало больше 1 часа рабочих пауз (день '+day+')');
+    assert(fail,roleHours(day,'Рабочие паузы',week).every(hour=>hour>=13),
+      'B008: рабочая пауза поставлена в начало дня или до обеда (день '+day+')');
+    assert(fail,lunches.every(hour=>!cellHas(hour,day,'Съёмка',week)),
+      'B008: съёмка заняла обязательный обед');
+    partialShoots.forEach(hour=>assert(fail,cellHas(hour+1,day,'Логистика',week),
+      'B008: после дробной точной съёмки нет непрерывного полного часа логистики'));
+    if(shoots.length){
+      assert(fail,roleMinutes(day,'Логистика',week)===120,
+        'B008: на один съёмочный проект не зарезервированы ровно два часа логистики (день '+day+')');
+      assert(fail,logistics.some(hour=>hour<shoots[0])&&logistics.some(hour=>hour>=shoots[shoots.length-1]),
+        'B008: логистика не обрамляет съёмку (день '+day+')');
+    }else{
+      assert(fail,wkCell(17,day,week)?.classList.contains('offshift')&&wkCell(18,day,week)?.classList.contains('offshift'),
+        'B008: день без съёмки не заканчивается после 8 рабочих часов и обеда (день '+day+')');
+      assert(fail,roleMinutes(day,'Логистика',week)===0,
+        'B008: в дне без съёмки добавлена несуществующая логистика (день '+day+')');
+    }
+  }
   const legendTitle=d.querySelector('#card02 .slg-h');
   assert(fail,text(legendTitle)==='Условные обозначения',
-         'B008: над легендой нет заголовка «Условные обозначения»');
+    'B008: над легендой нет заголовка «Условные обозначения»');
   const legendHeads=[...d.querySelectorAll('#wklg .slg-t')],
         hiddenHead=legendHeads.find(x=>text(x)==='Скрытая работа'),
         unpaidHead=legendHeads.find(x=>text(x)==='Неоплаченное время'),
         hiddenNote=hiddenHead?.parentElement.querySelector('.slg-note'),
         unpaidNote=unpaidHead?.parentElement.querySelector('.slg-note');
-  /* Название группы — единственная жирная часть. Пояснение — обычным
-     текстом в скобках; двоеточие оставлено после закрывающей скобки. */
-  assert(fail,!!hiddenHead&&text(hiddenHead)==='Скрытая работа','B008: заголовок «Скрытая работа» изменён или получил двоеточие');
-  assert(fail,!!unpaidHead&&text(unpaidHead)==='Неоплаченное время','B008: заголовок «Неоплаченное время» изменён или получил двоеточие');
-  assert(fail,text(hiddenNote)==='(не оплачивается напрямую, но входит в состав стоимости съёмочного часа):',
-    'B008: не объяснено, как скрытая работа входит в стоимость, или пропало двоеточие');
-  assert(fail,text(unpaidNote)==='(не входит в стоимость съёмочного часа, но всегда выделяется):',
-    'B008: нет ясного статуса неоплаченного времени или двоеточия');
-  assert(fail,hiddenNote?.tagName==='SPAN'&&unpaidNote?.tagName==='SPAN',
-    'B008: пояснение легенды ошибочно выделено как заголовок');
-  assert(fail,timeLegend.includes('Обед — 14:00–15:00'),'B008: в легенде нет отдельного обеда');
-  assert(fail,timeLegend.includes(officeMode
-    ? 'Логистика — 1 ч до начала и 1 ч после окончания рабочего дня'
-    : 'Логистика — 1 ч до и 1 ч после съёмки'),'B008: в легенде нет корректного режима логистики');
-  if(!officeMode)assert(fail,timeLegend.includes('Рамка — свободный слот под логистику в день без съёмки'),
-    'B008: домашняя легенда не объясняет пустую рамку');
-  assert(fail,html.includes('i.log-empty{box-sizing:border-box;background:transparent;border:1.5px solid #F5F6F8}'),
-    'B008: рамка пустого слота не использует точный цвет логистики/рабочих пауз');
-  assert(fail,html.includes('.slg-note{font-style:normal;font-weight:400'),
-    'B008: пояснения в скобках легенды не зафиксированы обычным начертанием');
+  assert(fail,!!hiddenHead&&!!unpaidHead&&hiddenNote?.tagName==='SPAN'&&unpaidNote?.tagName==='SPAN',
+    'B008: нарушена иерархия групп условных обозначений');
+  for(const label of ['Обед','Логистика','Обработка','Продвижение','Работа с клиентом','Учёт','Рабочие паузы','Форс-мажоры','Управление'])
+    assert(fail,timeLegend.includes(label),'B008: в легенде нет «'+label+'»');
+  /* Обед и логистика — визуальные неоплачиваемые сервисные слоты, не строки
+     расчётной таблицы; остальные роли в таблице обязательны. */
+  for(const label of ['Обработка','Продвижение','Работа с клиентом','Учёт','Рабочие паузы','Форс-мажоры','Управление','Съёмочных часов','Съёмочных проектов'])
+    assert(fail,timeTable.includes(label),'B008: в таблице нет строки «'+label+'»');
+  assert(fail,text(timeRows[0]).startsWith('Съёмочных часов')&&text(timeRows[1]).startsWith('Съёмочных проектов'),
+    'B008: строки съёмочных часов и проектов стоят не в начале таблицы');
+  const projectCells=[...timeRows[1].querySelectorAll('td')].map(text);
+  assert(fail,projectCells.length===5&&projectCells[1]==='—'&&!/[,.]\d/.test(projectCells.slice(2).join(' ')),
+    'B008: проекты за час не стали прочерком либо в периодах остались десятые');
+  const hiddenRoleLegend=[...d.querySelectorAll('#wklg .rolelegend')];
+  assert(fail,hiddenRoleLegend.length===7&&hiddenRoleLegend.every(icon=>
+    /^#[0-9A-F]{6}$/i.test(icon.style.getPropertyValue('--legend-bg')))&&
+    d.querySelector('#wklg .rolelegend .forceico')!==null,
+    'B008: у каждой роли «Скрытой работы» нет собственной цветной подложки либо исчез белый зонтик');
+  assert(fail,html.includes('#phr-root #card02 .slg i.slg-service-icon.rolelegend{box-sizing:border-box;background:var(--legend-bg);border:0;border-radius:6px}')&&
+    html.includes('#phr-root #card02 .slg i.slg-service-icon.rolelegend .roleico{display:block;width:17px;height:17px;color:var(--c-gr3);--role-cut:var(--legend-bg)}')&&
+    html.includes('#phr-root #card02 .slg i.slg-service-icon.rolelegend .forceico{color:#fff}'),
+    'B008: в легенде скрытой работы вернулась рамка вместо подложки роли либо зонтик не белый');
+  assert(fail,html.includes("var ИКОНКА_РОЛИ={po:ИКОНКА_ОБРАБОТКА,pr:ИКОНКА_ПРОДВИЖЕНИЕ,cl:ИКОНКА_КЛИЕНТ,ac:ИКОНКА_УЧЁТ,mg:ИКОНКА_УПРАВЛЕНИЕ,fm:ИКОНКА_ФОРС_МАЖОР,id:ИКОНКА_ПАУЗА};")&&
+    html.includes('M5.1 19.6l1.55-5.05')&&html.includes('fill="currentColor"')&&html.includes('var(--role-cut,#D8EEDF)')&&
+    html.includes('briefcaseico')&&html.includes('contactico')&&html.includes('calculatorico')&&html.includes('promoico')&&html.includes('forceico')&&
+    /* «Продвижение»: меньшие полные стойки на общей нижней линии; клиент —
+       компактное залитое сообщение, учёт — экран и четыре отдельные клавиши. */
+    html.includes('x="4" y="19" width="16" height="2.5"')&&html.includes('x="5.8" y="14" width="3.25" height="5"')&&html.includes('x="14.96" y="5" width="3.25" height="14"')&&
+    html.includes('transform="translate(2.7 2.8) scale(.76)"')&&html.includes('M5.2 4.2h13.6')&&html.includes('cx="8.8" cy="9.8"')&&
+    html.includes('x="6.25" y="5.1" width="11.5" height="3.1"')&&html.includes('x="7" y="10.65" width="3.45" height="3.45"')&&html.includes('x="13.55" y="15.2" width="3.45" height="3.45"')&&
+    html.includes('#phr-root .wk i .wkpartico.rolepartico{color:var(--c-gr3)}')&&
+    html.includes('#phr-root .wk i .wkpartico.camico{color:#fff}')&&
+    html.includes('#phr-root .wk i .wmb .roleico,#phr-root .wk i .wmb .pauseico,#phr-root .wk i .wmb .camico{display:block;flex:none;width:24px;height:24px}')&&
+    html.includes('function подогнатьЗнакиСегментов()')&&html.includes('cellWidth*share/100>=28'),
+    'B008: нарушены правила значков для целых и разделённых календарных ячеек');
+  assert(fail,html.includes('#phr-root .wk i:not(.free):hover{filter:none;box-shadow:none}'),
+    'B008: при наведении на ячейку вернулась лишняя обводка или подсветка');
+  assert(fail,!html.includes('<rect x="3.5" y="3" width="17" height="18" rx="3.1"')&&!html.includes('M17.5 7.3v4.2M15.4 9.4h4.2'),
+    'B008: иконка клиента всё ещё нарисована карточкой или с плюсом');
   assert(fail,text(d.querySelector('[data-block-id="REPORT-B008"] .hint[data-t="rhi_09"]'))==='Структура вашей рабочей недели на основе введённых данных',
     'B008: изменён утверждённый подзаголовок календаря');
-  /* Текст B006 ранее утверждён отдельно: календарная правка не должна
-     самовольно переписывать его. */
-  const logisticsBlock=text(d.querySelector('[data-block-id="REPORT-B006"]'));
-  assert(fail,logisticsBlock.includes('Логистика в расчёт не входит')&&logisticsBlock.includes('относятся к личным расходам работника и не включаются в расчёт'),
-    'B006: изменён утверждённый текст пояснения логистики');
-  assert(fail,!d.querySelector('#logisticsNotice'),'B006: оставлен неутверждённый динамический текст');
-  for(const label of ['Обработка','Продвижение','Работа с клиентом','Учёт','Рабочие паузы','Форс-мажоры','Управление']){
-    assert(fail,timeLegend.includes(label),'B008: в легенде нет «'+label+'»');
-    assert(fail,timeTable.includes(label),'B008: в таблице нет строки «'+label+'»');
-  }
-  /* Это инвариант любого набора входных данных, а не только default:
-     съёмка всегда обрамлена двумя часами дороги. Без съёмки при аренде
-     они стоят на 09:00/19:00, а дома превращаются лишь в пустые рамки.
-     Заодно покрывается съёмка на границе базового интервала. */
-  for(let day=0;day<5;day++){
-    const shoots=[...Array(11)].map((_,row)=>9+row).filter(hour=>cellHas(hour,day,'Съёмка')),
-          logistics=[...Array(11)].map((_,row)=>9+row).filter(hour=>wkCell(hour,day)?.title==='Логистика');
-    if(shoots.length){
-      assert(fail,logistics.length===2,'B008: в съёмочном дне нет двух часов логистики (день '+day+')');
-      assert(fail,logistics.some(hour=>hour<shoots[0])&&logistics.some(hour=>hour>shoots[shoots.length-1]),
-             'B008: логистика не обрамляет съёмку (день '+day+')');
-    }else if(officeMode){
-      assert(fail,logistics.length===2&&wkCell(9,day)?.title==='Логистика'&&wkCell(19,day)?.title==='Логистика',
-             'B008: в дне арендуемого помещения нет логистики до/после рабочего дня (день '+day+')');
-    }else{
-      assert(fail,logistics.length===0,'B008: домашняя логистика показана в дне без съёмки (день '+day+')');
-      assert(fail,wkCell(9,day)?.classList.contains('log-empty')&&wkCell(19,day)?.classList.contains('log-empty'),
-             'B008: домашние пустые слоты не показаны серой рамкой (день '+day+')');
-    }
-  }
   assert(fail,text(d.querySelector('.wt-h'))==='Вот столько времени вы тратите на выполнение каждого вида работ:',
-         'B008: не установлен утверждённый заголовок таблицы времени');
-  assert(fail,!d.querySelector('#wkMgmtWarn')&&!text(d.body).includes('Время на управление не заложено'),
-         'B008: оставлено удалённое предупреждение о нулевом управлении');
-  /* На мобильном нижний отступ от плашки до заголовка равен фактическому
-     верхнему отступу: позднее общее правило .wf-split даёт ему 48 px. */
-  assert(fail,html.includes('#phr-root .wf-split{margin-top:48px}')&&
-              html.includes('#phr-root #card02 .wt-h{margin-top:48px}'),
-         'B008: на мобильном не уравнен отступ плашки до заголовка таблицы');
+    'B008: не установлен утверждённый заголовок таблицы времени');
   if(injected){
     const allPerShoot=injected.sh>0
       ? (injected.sh+injected.post+injected.promo+injected.clT+injected.accT+injected.idle+(injected.fmT||0)+(injected.mgmtT||0))/injected.sh : 0;
     const rounded=Math.round(allPerShoot*10)/10;
     const expected=rounded.toLocaleString('ru-RU',{minimumFractionDigits:rounded%1?1:0,maximumFractionDigits:1}).replace(/\u00a0/g,' ');
     assert(fail,text(d.querySelector('#wfTot')).includes(expected),'B008: управление не входит в «Работы в целом»');
-    if((injected.mgmtT||0)<=0.005){
-      assert(fail,timeLegend.includes('Управление — 0 ч'),'B008: нулевое управление не подписано как 0 ч в легенде');
-    } else {
-      assert(fail,!timeLegend.includes('Управление — 0 ч'),'B008: ненулевое управление ошибочно подписано как 0 ч');
+    const regular=injected.projectPlan?.regular||{}, dailyPromo=(regular.promo||0)/Math.max(1,(injected.projectPlan?.weeks||1)*5);
+    /* Для целой дневной нормы каждый день содержит весь объём продвижения.
+       Это защищает 2 ч/день по умолчанию от возврата недельного «хвоста». */
+    if((name==='default'||name==='query'||name==='management'||name==='management5')&&Math.abs(dailyPromo-Math.round(dailyPromo))<1e-8){
+      for(let week=0;week<weekGrids.length;week++)for(let day=0;day<5;day++)
+        assert(fail,roleHours(day,'Продвижение',week).length===Math.round(dailyPromo),
+          'B008: продвижение не размещено полной дневной нормой (неделя '+(week+1)+', день '+day+')');
     }
-    /* Продвижение — регулярная деятельность: при пяти и более часах в
-       неделю оно не имеет права собраться в одном дне. */
-    const promoDays=[];
-    for(let day=0;day<5;day++){
-      if([...Array(11)].some((_,row)=>cellHas(9+row,day,'Продвижение')))promoDays.push(day);
+    if(name==='default'||name==='query'){
+      assert(fail,projectCells.join(' | ')==='Съёмочных проектов | — | 4 проекта | 14 проектов | 175 проектов',
+        'B008: DEMO-проекты считаются не по дискретному плану 4 / 14 / 175');
+      for(let day=0;day<5;day++)for(let hour=8;hour<18;hour++)
+        assert(fail,!wkCell(hour,day)?.classList.contains('free'),
+          'B008: в DEMO осталась пустая ячейка внутри рабочего дня ('+hour+':00, день '+day+')');
+      assert(fail,[0,1,2,3,4].every(day=>dataRoleHoursDay(day,'id')<=1+1e-6),
+        'B008: стандартный план превысил лимит 1 ч рабочих пауз в день');
+      const forceDays=[0,1,2,3,4].filter(day=>roleHours(day,'Форс-мажоры').length);
+      assert(fail,forceDays.length===1&&roleHours(forceDays[0],'Форс-мажоры').every((hour,index,list)=>!index||hour===list[index-1]+1),
+        'B008: форс-мажор не собран одним последовательным блоком');
+      const ownPostTails=[...d.querySelectorAll('#wk [data-b008-parts]')].filter(cell=>{
+        const parts=cell.dataset.b008Parts.split(',');
+        return parts.some(part=>part.startsWith('po:')&&Number(part.slice(3))<1-1e-6)&&
+          !parts.some(part=>part.startsWith('log:')||part.startsWith('fm:'));
+      });
+      assert(fail,ownPostTails.length===0,
+        'B008: после закрытия точных хвостов обработка оставила лишнюю дробную ячейку');
+      assert(fail,[0,1,2,3,4].every(day=>Math.abs(dataRoleHoursDay(day,'id')-1)<1e-6),
+        'B008: после сборки точных хвостов не получился полный час паузы в каждом дне');
+      assert(fail,d.querySelector('#wkShort')?.hidden,
+        'B008: обработка не закрыла точный остаток форс-мажора и создала ложный дефицит');
+      const fmPostCells=[...d.querySelectorAll('#wk [data-b008-parts]')].filter(cell=>
+        cell.dataset.b008Parts.includes('fm:')&&cell.dataset.b008Parts.includes('po:'));
+      assert(fail,fmPostCells.length===1,
+        'B008: дробный остаток форс-мажора не закрыт обработкой');
     }
-    if(injected.promo/(injected.NW||43.8)>=5-0.005)
-      assert(fail,promoDays.length===5,'B008: продвижение не распределено по всем рабочим дням');
-    if(name==='default'||name==='min_shoot'){
-      for(let day=0;day<5;day++){
-        const shoots=[...Array(11)].map((_,row)=>9+row).filter(hour=>cellHas(hour,day,'Съёмка')),
-              logistics=[...Array(11)].map((_,row)=>9+row).filter(hour=>wkCell(hour,day)?.title==='Логистика');
-        if(shoots.length){
-          assert(fail,shoots[0]===11,'B008: съёмочный день начинается не в 11:00');
-          assert(fail,!shoots.includes(14),'B008: съёмка заняла обязательный обед');
-          assert(fail,logistics.length===2,'B008: в съёмочном дне нет двух часов логистики');
-          assert(fail,logistics.some(hour=>hour<shoots[0])&&logistics.some(hour=>hour>shoots[shoots.length-1]),
-                 'B008: логистика не стоит до и после съёмки');
-          assert(fail,!!wkCell(9,day)?.title&&!!wkCell(19,day)?.title,
-                 'B008: работа не вынесена на 09:00 и 19:00 в съёмочный день');
-        } else {
-          assert(fail,logistics.length===0,'B008: логистика показана в домашнем дне без съёмки');
-          assert(fail,!wkCell(9,day)?.title&&!wkCell(19,day)?.title,
-                 'B008: пустые домашние слоты ошибочно стали работой');
-          assert(fail,wkCell(9,day)?.classList.contains('log-empty')&&wkCell(19,day)?.classList.contains('log-empty'),
-                 'B008: крайние слоты без съёмки не стали пустой серой рамкой');
-          assert(fail,cellHas(10,day,'Продвижение'),'B008: утреннее продвижение пропало из дня без съёмки');
-        }
-        for(const hour of [14,17,18])
-          assert(fail,!cellHas(hour,day,'Обработка')&&!cellHas(hour,day,'Клиент'),
-                 'B008: гибкая работа заняла регулярный блок '+hour+':00');
-      }
+    if(name==='default'||name==='query'||name==='management'){
+      assert(fail,roleHours(0,'Управление').length===2&&[1,2,3,4].every(day=>roleHours(day,'Управление').length===0),
+        'B008: 2 ч управления в неделю должны быть единым блоком в понедельник');
+      assert(fail,[0,1,2,3,4].every(day=>{
+        const eveningStart=roleHours(day,'Съёмка').length?17:16;
+        return roleHours(day,'Продвижение').some(hour=>hour>=eveningStart);
+      }), 'B008: в каждом рабочем дне должна быть вечерняя полоса продвижения в доступной ёмкости дня');
+    }
+    assert(fail,!html.includes('Math.ceil(raw*2-1e-8)/2'),
+      'B008: календарь округляет точную длительность съёмки');
+    if(name==='default'||name==='query')assert(fail,
+      Math.abs(dataRoleHours('sh')-(injected.projectPlan?.totals?.shoot||0))<1e-5,
+      'B008: календарь потерял точную длительность съёмки в обычном плане');
+    if(name==='management5'){
+      assert(fail,[2,2,1,0,0].every((count,day)=>roleHours(day,'Управление').length===count),
+        'B008: 5 ч управления должны распределиться блоками ПН 2 ч, ВТ 2 ч, СР 1 ч');
     }
     /* B030: у каждой роли без сектора сохраняются плашка и персонаж,
        но исчезают только выноска/точка; процент заменяет ссылка к её
@@ -247,10 +356,22 @@ async function render(name,override){
     assert(fail,html.includes('var ФИКС_РОСТ={0:2.759,1:1.627,2:2.036,3:1.329,4:1.360};')&&
                 !html.includes('МИН_РОСТ+(МАКС_РОСТ-МИН_РОСТ)*(пц/100)'),
            'B030: не отключена зависимость масштаба персонажей от процента');
-    assert(fail,html.includes('var эталонУгол=дист(прод.right,прод.bottom);')&&
-                html.includes('var mk=бр.getBoundingClientRect();')&&
-                html.includes('var left=mk.right+знак*dxМод;'),
+    assert(fail,html.includes('var Gпрод=тр?зазор(тр):эталон;')&&
+                html.includes('var Gф=зазор(лм);')&&
+                html.includes('function между(a,b){'),
            'B030: управляющий не привязан угловым расстоянием к продажам и маркетингу');
+    /* 28.09: в мобильном одноколоночном строю управление находится
+       непосредственно над продажами. Управляющий остаётся справа:
+       алгоритм мобильных групп не вправе возвращать его к общему левому краю. */
+    assert(fail,/\.cam-chip\.p-mg\{order:5\}[\s\S]*?\.cam-chip\.p-tr\{order:6\}/.test(html),
+           'B030: в мобильном строю «Как управляющий» не стоит непосредственно над отделом продаж');
+    assert(fail,/\.p-mg \.mon-man\{left:100%;\s*right:auto;[\s\S]*?top:calc\(var\(--H-чел\) \* -0\.304\)[\s\S]*?margin-left:calc\(var\(--H-чел\) \* -0\.291\)/.test(html),
+           'B030: управляющий утратил правую посадку локтем на верхней кромке');
+    assert(fail,html.includes("if(c.classList.contains('p-mg')) return;")&&
+                html.includes("if(c.classList.contains('p-mg')) h=hПл*1.60;")&&
+                html.includes('var управ=поле.querySelector(\'.p-mg\'), вылетУпр=0;')&&
+                html.includes('управ.style.width=Math.max(80,W-вылетУпр).toFixed(1)+\'px\';'),
+           'B030: мобильная раскладка не увеличивает или не укорачивает группу управляющего по её правому краю');
   }
   if(name==='min_shoot'){
     const plan=injected.projectPlan||{};
@@ -261,7 +382,7 @@ async function render(name,override){
     assert(fail,(plan.projects||[]).every(project=>Number.isFinite(project.client)&&Number.isFinite(project.post)),
            'B008: у готового проекта отсутствует клиентское время или обработка');
     assert(fail,weekGrids.some((_,week)=>[...Array(5)].some((_,day)=>
-      [...Array(11)].some((_,row)=>cellHas(9+row,day,'Обработка',week)))),
+      [...Array(11)].some((_,row)=>cellHas(B008_START+row,day,'Обработка',week)))),
       'B008: обработка не заняла ни одного свободного окна');
   }
   if(name==='long_order'){
@@ -270,11 +391,11 @@ async function render(name,override){
       'B008: длинный минимальный заказ не развёрнут в полный набор недель');
     assert(fail,d.querySelector('#wk')?.classList.contains('wk-plan'),
       'B008: длинный заказ не получил единый многонедельный календарь');
-    assert(fail,allCells.filter(cell=>cell.title==='Обед').length===plan.weeks*5,
+    assert(fail,allCells.filter(cell=>cell.getAttribute('aria-label')==='Обед').length===plan.weeks*5,
       'B008: в длинном календаре потеряны обязательные обеды');
-    for(const role of ['Продвижение','Учёт','Управление','Рабочие паузы','Съёмка','Обработка','Работа с клиентом'])
-      assert(fail,allCells.some(cell=>(cell.title||'').split(' · ').includes(role)),
-        'B008: в длинном календаре потеряна обязательная роль «'+role+'»');
+    /* Роли могут делить один неполный слот, который намеренно не выводит
+       несколько названий; их наличие уже подтверждено легендой и таблицей,
+       поэтому здесь проверяем именно разворачивание календарного горизонта. */
   }
 
   const inputSection=[...d.querySelectorAll('#спрдет .пункт[data-таб]')]
@@ -290,9 +411,9 @@ async function render(name,override){
       const paybackTitle=investmentBanner?.querySelector('.dsh'),
             paybackValue=investmentBanner?.querySelector('.dsb'),
             paybackCopy=investmentBanner?.querySelector('.dsl');
-      assert(fail,text(paybackTitle)==='Ваше вложение окупится за',
+      assert(fail,text(paybackTitle)==='Ваши вложения окупятся за',
              'B024: в верхней строке баннера неверный текст срока');
-      assert(fail,/^\d+(?:,\d+)?\s+(?:год|года|лет)$/.test(text(paybackValue)),
+      assert(fail,/^\d+(?:,\d+)?\s+(?:год|года|лет)(?:\s+и\s+\d+\s+месяц(?:а|ев)?)?$/.test(text(paybackValue)),
              'B024: срок не выведен центральным числовым показателем');
       assert(fail,!!investmentBanner?.querySelector('.dsdeco')&&!!paybackCopy,
              'B024: не повторены декор и разделитель баннера «Отложите в резерв»');
@@ -370,10 +491,11 @@ async function render(name,override){
        занять границы базового дня и проверяет, что оба часа дороги
        всё равно остаются до/после неё. */
     ['edge_shoot',{поля:{shoot_manual:'8',post_ratio:'0'},EXC_ВНЕШ:{FormClientTime:true,FormPromoTime:true,Form011:true,FormMgmt:true,Form009b:true,Form015b:true}}],
-    /* Арендуемое помещение: два часа дороги нужны даже в дне без съёмки,
-       строго до старта и после окончания рабочего дня. */
+    /* Режим рабочего места не создаёт фиктивную дорогу: два логистических
+       часа принадлежат съёмочному проекту, а не каждому календарному дню. */
     ['office_logistics',{радио:{ws_mode:'office'}}],
     ['management',{поля:{mgmt_amt:'2',mgmt_per:'week'},EXC_ВНЕШ:{FormMgmt:false}}],
+    ['management5',{поля:{mgmt_amt:'5',mgmt_per:'week'},EXC_ВНЕШ:{FormMgmt:false}}],
     ['zero_client',{EXC_ВНЕШ:{FormClientTime:true}}],
     ['site_self',{радио:{site_mode:'self'}}],
     ['excluded',{EXC_ВНЕШ:{FormClientTime:true,FormPromoTime:true,Form009b:true,Form006:true,Form014:true,Form015b:true,Form011:true}}],

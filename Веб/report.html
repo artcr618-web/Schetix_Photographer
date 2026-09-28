@@ -17,7 +17,7 @@
 --c-gr3:#B6BCC4;
 --c-ln:#E5E7EB;
 --c-ln2:#F0F2F5;
---c-bg:#F5F6F8;
+--c-bg:#F5F6F8;--c-pause:#F5F6F8;
 --c-surf:#FAFBFC;
 --c-white:#FFFFFF;
 --c-g-50:#F5FBF7;
@@ -727,7 +727,7 @@ border:1px solid var(--c-r-200);text-align:left}
 font-size:12.5px;color:var(--gr)}
 #phr-root .slg span{display:flex;align-items:center;gap:6px}
 #phr-root .slg i{width:11px;height:11px;border-radius:3px;display:block;flex:none}
-#phr-root .slg i.log{box-sizing:border-box;background:transparent;border:1.5px solid #F5F6F8}
+#phr-root .slg i.lunch,#phr-root .slg i.log{box-sizing:border-box;background:transparent;border:1.5px solid var(--c-pause)}
 #phr-root .slg i.log-empty{background:transparent;border:0}
 /* ═══ БЛОК 06 · 15.09 (слово владельца) ═══
    Легенда — две группы: «Оплачиваемое время» (съёмка) и «Скрытое
@@ -2867,15 +2867,14 @@ html.печать-pdf #phr-root .monfig .cam-chip .cc-drag{display:none!importan
      сокращение на 30 % — см. комментарий у #card01m .hint выше). */
   html:not(.печать-pdf) #phr-root .mon-scene{position:relative;grid-column:1/-1;aspect-ratio:504/322;
   width:100%;height:auto;margin:0 0 14px;order:0}
-  /* 12.09 (слово владельца, уточнение): порядок на мобильном —
-     маркетолог, фотограф, БУХГАЛТЕР, отдел продаж.
-     Прежде бухгалтер стоял четвёртым, продажник третьим. */
+  /* 28.09: в одноколоночной раскладке управление идёт непосредственно
+     НАД отделом продаж. Остальные роли сохраняют утверждённый порядок. */
   html:not(.печать-pdf) #phr-root .monfig .cam-chip{order:5}
   html:not(.печать-pdf) #phr-root .monfig .cam-chip.p-br{order:1}
   html:not(.печать-pdf) #phr-root .monfig .cam-chip.p-lm{order:2}
-  html:not(.печать-pdf) #phr-root .monfig .cam-chip.p-mg{order:3}
   html:not(.печать-pdf) #phr-root .monfig .cam-chip.p-rm{order:4}
-  html:not(.печать-pdf) #phr-root .monfig .cam-chip.p-tr{order:5}
+  html:not(.печать-pdf) #phr-root .monfig .cam-chip.p-mg{order:5}
+  html:not(.печать-pdf) #phr-root .monfig .cam-chip.p-tr{order:6}
   html:not(.печать-pdf) #phr-root .monfig-svg{display:none}
   html:not(.печать-pdf) #phr-root .monfig .cam-chip .cc-drag{display:none}
   html:not(.печать-pdf) #phr-root .mon-scene .mon-pct{display:block;font-size:19px}
@@ -2960,11 +2959,15 @@ html.печать-pdf #phr-root .monfig .cam-chip .cc-drag{display:none!importan
      она ровно вписывается. */
   html:not(.печать-pdf) #phr-root .monfig .p-rm .mon-man{left:auto;right:100%;
   bottom:auto;top:0;margin-left:0;margin-right:3.99px}
-  /* 24.09: на мобильном управленец, как бухгалтер, встаёт слева от плашки,
-     иначе фигура уходит за правый край колонки. Локоть на кромке — правило
-     десктопа; здесь его перекрывает постановка слева. */
-  html:not(.печать-pdf) #phr-root .monfig .p-mg .mon-man{left:auto;right:100%;
-  bottom:auto;top:0;margin-left:0;margin-right:4px}
+  /* 28.09: управляющий в одноколоночной раскладке стоит СПРАВА от своей
+     плашки. По контуру role2_управляющий.png (228×560) внешний сгиб
+     левого локтя — y=170px = 0,304H: поднимаем его ровно на верхнюю
+     кромку плашки. Горизонтальный заход -0,291H оставляет руку на краю,
+     не закрывая текст. Высоту фигуры мобильный алгоритм увеличивает до
+     1,60 высоты плашки: подошвы выходят на 0,696H от её верха, то есть
+     чуть НИЖЕ низа, а не стоят на цветной заливке. */
+  html:not(.печать-pdf) #phr-root .monfig .p-mg .mon-man{left:100%;right:auto;
+  bottom:auto;top:calc(var(--H-чел) * -0.304);margin-left:calc(var(--H-чел) * -0.291);margin-right:0;z-index:2}
   html:not(.печать-pdf) #phr-root .monfig .cam-chip .cc-d{font-size:12px}
   /* 13.09 (слово владельца): цветная заливка — только здесь, в
      одноколоночном мобильном: стандартный градиент документа
@@ -3515,57 +3518,161 @@ letter-spacing:-.01em;padding:24px 28px 24px 56px;margin-top:16px}
    календарь в несколько компактных недельных сеток: это единая видимая
    матрица, не страницы и не свайп. */
 #phr-root .wk{margin-top:6px}
+/* Алгоритм не прячет неразмещённые минуты за ложной цветной ячейкой.
+   Если фиксированные правила смены действительно не вмещают план, под
+   сеткой появляется точное спокойное уведомление о дефиците. */
+#phr-root .wk-short{margin-top:12px;padding:10px 12px;border:1px solid var(--c-y-200);border-radius:10px;
+background:var(--c-y-50);color:var(--c-y-800);font-size:12px;line-height:1.45}
+#phr-root .wk-short b{font-weight:700}
 #phr-root .wk-plan{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px}
-#phr-root .wk-week{display:grid;grid-template-columns:58px repeat(5,1fr);column-gap:7px;row-gap:1px;align-content:start;
-position:relative;padding-bottom:14px}
+#phr-root .wk-week{display:grid;grid-template-columns:58px repeat(5,1fr);column-gap:7px;row-gap:7px;align-content:start;
+position:relative;padding-bottom:12px}
 #phr-root .wk-week:before{content:attr(data-week);grid-column:1/-1;text-align:center;
 font-size:12px;font-weight:700;color:var(--c-gr);letter-spacing:.02em;margin-bottom:1px}
 #phr-root .wk-week:first-child:before{display:none}
 #phr-root .wk .hd{font-size:12px;color:var(--gr);text-align:center;font-weight:600;
 padding-bottom:6px;letter-spacing:.02em}
-/* Метка стоит на верхней границе строки: 09:00 — начало интервала
-   09:00–10:00. Закрывающая отметка 20:00 рисуется отдельно снизу сетки. */
+/* Метки времени лежат на границах интервалов: 10:00 — на линии
+   между 09:00–10:00 и 10:00–11:00. Так шкала читается как начало часа,
+   а не как подпись по центру ячейки. */
 #phr-root .wk .hr{font-size:11px;color:var(--c-gr3);text-align:right;padding-right:10px;
-line-height:1.1;font-variant-numeric:tabular-nums;align-self:start}
-#phr-root .wk-week .hr-end{position:absolute;left:0;bottom:0;width:58px;
-line-height:1.1;white-space:nowrap}
+line-height:1.1;font-variant-numeric:tabular-nums;align-self:start;
+transform:translateY(calc(-50% - 3.5px))}
+#phr-root .wk .hr-start{transform:translateY(-50%)}
+#phr-root .wk-week .hr-end{position:absolute;left:0;bottom:3px;width:58px;
+line-height:1.1;white-space:nowrap;transform:none}
 #phr-root .wk i{display:block;height:38px;border-radius:12px;background:var(--c-bg);
-position:relative;transition:.15s}
-#phr-root .wk i.free{background:var(--c-bg)}
-/* В дни без съёмки 09:00 и 19:00 — не логистика, а свободный
-   предусмотренный слот. Он остаётся пустым и читается по серой рамке. */
-/* Пустой слот остаётся совсем пустым. Логистика, напротив, читается
-   только тонким контуром без заливки — тем же тоном, что рабочие паузы. */
+position:relative;cursor:default;transition:filter .15s,box-shadow .15s,border-color .15s}
+/* Календарь — спокойная схема, а не набор интерактивных кнопок: наведение
+   не добавляет контур, тень или изменение яркости ячейки. */
+#phr-root .wk i:not(.free):hover{filter:none;box-shadow:none}
+/* Пустое время не маскируется под задачу: ни свободный час, ни окончание
+   смены не получают заливку, рамку или прочерк. «Вне рабочего дня» — это
+   ограничение алгоритма ёмкости, а не серый декоративный блок в календаре. */
+#phr-root .wk i.free,#phr-root .wk i.offshift{background:transparent;border:0}
+#phr-root .wk i.offshift:hover{filter:none;box-shadow:none}
+/* Неполная логистика нужна, когда 30-минутный хвост съёмки заканчивается
+   в :30. Её сегмент всегда белый — это тот же сервис «Логистика», а не
+   форс-мажор. Контур рисуется строго по белой доле, а не по всей смешанной
+   ячейке: соседняя цветная роль не получает лишнюю тяжёлую рамку. */
+#phr-root .wk i.service-partial{box-sizing:border-box}
+#phr-root .wk i .wklogpart{position:absolute;z-index:1;left:var(--seg-left);top:0;
+width:var(--seg-width);height:100%;box-sizing:border-box;border:1.5px solid var(--c-pause);
+border-radius:var(--log-radius,0);pointer-events:none}
+/* Служебные слоты белые, с тонким серым контуром. На десктопе понятная
+   иконка идёт вместе с подписью; планшет и телефон сохраняют только знак. */
 #phr-root .wk i.log-empty{background:transparent;border:0}
-#phr-root .wk i.log{box-sizing:border-box;background:transparent!important;border:1.5px solid #F5F6F8}
+#phr-root .wk i.lunch,#phr-root .wk i.log{box-sizing:border-box;background:var(--c-white)!important;border:1.5px solid var(--c-pause)}
+#phr-root .wk i.service{display:flex;align-items:center;justify-content:center;gap:5px;z-index:0}
+#phr-root .wk i.service .wkico{position:static;flex:none;width:24px;height:24px;
+transform:none;color:var(--c-gr3);overflow:visible}
+/* Все календарные иконки имеют единый габарит 24×24: камера, приборы
+   обеда, автомобиль логистики и знак рабочей паузы. У автомобиля суженный
+   viewBox, поэтому силуэт не теряется внутри своего квадрата. */
+#phr-root .wk i.service .wkico.logico{width:24px;height:24px}
+#phr-root .wk i.service .wservice-label{position:static;inset:auto;display:flex;
+align-items:center;justify-content:flex-start;overflow:visible;padding:0;
+font-size:10.5px;font-weight:600;line-height:1.15;color:var(--c-gr3);
+letter-spacing:.01em;white-space:nowrap}
+/* В календаре нет всплывающих подсказок: название уже видно в полной
+   ячейке, а служебные слоты подписаны на десктопе. aria-label остаётся
+   только для средств чтения с экрана. */
+/* Чистая полная съёмка получает камеру рядом с подписью на десктопе.
+   На мобильном подпись скрывается, а остаётся только та же камера. */
+#phr-root .wk i .shoot-label{gap:4px}
+/* Камера в ячейке съёмки имеет тот же габарит, что приборы и автомобиль
+   в служебных слотах календаря: единая иерархия иконок B008. */
+#phr-root .wk i .shoot-label .camico{position:static;flex:none;width:24px;height:24px;
+transform:none;color:#fff;overflow:visible}
+#phr-root .wk i .shoot-label em{font-style:normal}
+/* Рабочая пауза использует утверждённый знак неэффективного времени:
+   две вертикальные планки. В полной ячейке есть название, а в доле часа
+   остаётся только компактная иконка на центре правого сегмента. */
+#phr-root .wk i .pause-label{gap:4px;color:var(--c-gr2);font-weight:600}
+#phr-root .wk i .pause-label .pauseico{position:static;flex:none;width:24px;height:24px;color:var(--c-gr2)}
+#phr-root .wk i .pause-label em{font-style:normal}
+/* Роли используют тот же компактный 24px-контейнер. Камера остаётся белой
+   на оплачиваемой съёмке; остальные роли — цельные серые силуэты, а тонкие
+   прорези внутри повторяют цвет собственной ячейки, без белых контуров. */
+#phr-root .wk i .role-label{gap:4px;color:var(--c-ink3);font-weight:600}
+#phr-root .wk i .role-label .roleico{position:static;flex:none;width:24px;height:24px;color:var(--c-gr3)}
+#phr-root .wk i .role-label em{font-style:normal}
+/* Значок разделённого сегмента — 20px. Он появляется только когда ширина
+   собственной доли оставляет ему по 4px воздуха с обеих сторон: решение
+   принимает скрипт после реального расчёта ширины, а не грубый viewport. */
+#phr-root .wk i .wkpartico{position:absolute;z-index:2;left:var(--seg-center);top:50%;
+width:20px;height:20px;transform:translate(-50%,-50%);pointer-events:none}
+#phr-root .wk i .wkpartico.pausepartico{color:var(--c-gr2)}
+#phr-root .wk i .wkpartico.camico{color:#fff}
+#phr-root .wk i .wkpartico.logico{color:var(--c-gr3)}
+#phr-root .wk i .wkpartico.rolepartico{color:var(--c-gr3)}
+#phr-root .wk i .wkpartico.forceico{color:#fff}
+#phr-root .wk i .role-label .pencilico,#phr-root .wk i .wkpartico.pencilico{--role-cut:#D8EEDF}
+#phr-root .wk i .role-label .contactico,#phr-root .wk i .wkpartico.contactico{--role-cut:#FEF3D6}
+#phr-root .wk i .role-label .calculatorico,#phr-root .wk i .wkpartico.calculatorico{--role-cut:#FDE8E8}
+#phr-root .wk i .role-label .briefcaseico,#phr-root .wk i .wkpartico.briefcaseico{--role-cut:#E7F0FA}
+#phr-root .wk i .role-label .forceico,#phr-root .wk i .wkpartico.forceico{--role-cut:#E5E7EB}
+/* Полная ячейка на телефоне показывает только знак. На широком экране
+   этот запасной знак скрыт, поэтому подпись роли не дублируется и сетка
+   не мельтешит. */
+#phr-root .wk i .wmb .roleico,#phr-root .wk i .wmb .pauseico,#phr-root .wk i .wmb .camico{display:block;flex:none;width:24px;height:24px}
+#phr-root .wk i .wmb .roleico{color:var(--c-gr3)}
+#phr-root .wk i .wmb .roleico.forceico{color:#fff}
+#phr-root .wk i .wmb .pauseico{color:var(--c-gr2)}
+#phr-root .wk i .wmb .camico{color:#fff}
+/* На вертикальном планшете подписи уже переносятся, поэтому полная ячейка
+   переходит на знак. Частичные ячейки не выключаются по viewport: крупная
+   доля сохраняет значок, а узкая прячет его по собственным 4px отступам. */
+@media(max-width:900px){
+#phr-root .wk i .wtxt{display:none}
+}
+/* В условных обозначениях используются те же иконки, а не безымянный
+   квадрат: это связывает расшифровку с ячейками календаря. */
+#phr-root #card02 .slg .slg-service{gap:8px}
+#phr-root #card02 .slg i.slg-service-icon{width:22px;height:22px;border-radius:6px;
+display:flex;align-items:center;justify-content:center;position:relative}
+#phr-root #card02 .slg i.slg-service-icon .wkico{display:block;flex:none;
+width:17px;height:17px;color:var(--c-gr3);overflow:visible}
+#phr-root #card02 .slg i.slg-service-icon .wkico.logico{width:19px;height:19px}
+#phr-root #card02 .slg i.slg-service-icon .camico{display:block;width:16px;height:16px;
+color:#fff;overflow:visible}
+/* В «Скрытой работе» цвет подложки — часть словаря ролей: та же заливка,
+   что у соответствующей ячейки, без нейтральной рамки. Силуэты остаются
+   серыми; исключение — белый зонтик форс-мажора на серой подложке. */
+#phr-root #card02 .slg i.slg-service-icon.rolelegend{box-sizing:border-box;background:var(--legend-bg);border:0;border-radius:6px}
+#phr-root #card02 .slg i.slg-service-icon.pauselegend .pauseico{display:block;width:17px;height:17px;color:var(--c-gr2)}
+#phr-root #card02 .slg i.slg-service-icon.rolelegend .roleico{display:block;width:17px;height:17px;color:var(--c-gr3);--role-cut:var(--legend-bg)}
+#phr-root #card02 .slg i.slg-service-icon.rolelegend .forceico{color:#fff}
+/* На планшетах и телефонах подписи служебных слотов не помещаются; остаётся
+   увеличенная иконка по центру. Обычные подписи ролей это правило не меняет. */
+@media(max-width:900px){
+#phr-root .wk i.service .wservice-label{display:none}
+#phr-root .wk i.service .wkico,#phr-root .wk i.service .wkico.logico,
+#phr-root .wk i .shoot-label .camico,#phr-root .wk i .pause-label .pauseico,
+#phr-root .wk i .role-label .roleico{width:24px;height:24px}}
 #phr-root .wk i.hatch{background-image:repeating-linear-gradient(45deg,
 rgba(255,255,255,.6) 0 4px,transparent 4px 8px)}
 #phr-root .wk i span{position:absolute;inset:0;display:flex;align-items:center;
 justify-content:center;font-size:10.5px;font-weight:600;color:var(--c-ink3);letter-spacing:.01em;
 padding:0 4px;text-align:center;line-height:1.15;overflow:hidden}
 #phr-root .wk i span.wlbl{color:#fff;font-weight:700}
-/* Символьные подписи (₽ / прочерк) появляются только при скрытом
-   тексте на малом экране. На светлых ячейках они остаются тёмными и
-   читаемыми; белый текст оставлен только для тёмной логистики и съёмки. */
-#phr-root .wk i span.wdsh{color:var(--c-ink3);font-weight:700}
+/* В пиктограммном режиме у полной ячейки остаётся только назначенный
+   ей знак: камера для съёмки, автомобиль у логистики и соответствующая
+   пиктограмма скрытой роли. Прочерков и иных символов нет. */
 #phr-root .wk i .wmb{display:none}
-@media(max-width:519px){
-#phr-root .wk i .wtxt{display:none}
+@media(max-width:900px){
 #phr-root .wk i .wmb{display:flex}}
-/* ПОДПИСИ В ЯЧЕЙКАХ КАЛЕНДАРЯ — решение владельца 26.08.
-   Ниже 520px подписи перестают помещаться и режутся: замер показал
-   «Продвижение» требует 66px, а ячейка даёт 63px на 480px и всего
-   38px на 320px — читалось «одвижен». На планшете (520px и выше)
-   подписи влезают и остаются.
-   Ниже — только цветовые обозначения; что означает каждый цвет,
-   расшифровывает легенда .slg под сеткой. */
-@media(max-width:519px){#phr-root .wk i span{display:none}}
+/* ПОДПИСИ В ЯЧЕЙКАХ КАЛЕНДАРЯ. При ширине до 900px две недели в сетке
+   или вертикальный планшет дают слишком узкие колонки для «Работы с
+   клиентом». Поэтому подписи выключаются раньше переноса на две строки;
+   смешанная ячейка показывает только горизонтальные цветовые части. */
 @media(max-width:700px){
 #phr-root .wk-plan{grid-template-columns:1fr;gap:14px}
-#phr-root .wk-week{grid-template-columns:44px repeat(5,1fr);column-gap:5px;row-gap:1px}
+#phr-root .wk-week{grid-template-columns:44px repeat(5,1fr);column-gap:5px;row-gap:5px}
 #phr-root .wk i{height:30px;border-radius:12px}
-#phr-root .wk .hr{line-height:1.1;font-size:10px}
-#phr-root .wk-week .hr-end{width:44px}}
+#phr-root .wk .hr{line-height:1.1;font-size:10px;transform:translateY(calc(-50% - 2.5px))}
+#phr-root .wk .hr-start{transform:translateY(-50%)}
+#phr-root .wk-week .hr-end{width:44px;bottom:3px;transform:none}}
 
 
 /* ═══ СПРАВОЧНИК И ПОДРОБНАЯ ДЕТАЛИЗАЦИЯ ═══ */
@@ -3820,7 +3927,11 @@ white-space:normal}
    иначе оно сбрасывает нижнее поле. */
 #phr-root .card{padding:20px 20px 78px}
 #phr-root .bn{left:20px;right:20px;bottom:20px;padding-top:16px}
+/* 28.09: шкала времени и нижняя отметка обязаны пользоваться ОДНОЙ
+   шириной первого столбца. Иначе .hr-end сохранял прежние 44/58px и
+   «19:00» уезжало вправо относительно остальных часов. */
 #phr-root .wk-week{grid-template-columns:42px repeat(5,1fr)}
+#phr-root .wk-week .hr-end{width:42px}
 #phr-root .nmg{grid-template-columns:1fr}
 #phr-root .scn .g{grid-template-columns:1fr 1fr}
 #phr-root .npd .g{grid-template-columns:1fr}
@@ -4578,6 +4689,7 @@ border:2px solid var(--c-white);transform:translateX(-50%)}
 <h2 data-t="rh2_09">Как распределяется ваше время</h2>
 <p class="hint" data-t="rhi_09">Структура вашей рабочей недели на основе введённых данных</p>
 <div class="wk" id="wk"></div>
+<div class="wk-short" id="wkShort" hidden role="status" aria-live="polite"></div>
 <!-- 15.09 (слово владельца): разделительная линия после календаря —
      выделяет условные обозначения. -->
 <div class="wt-div"></div>
@@ -5283,28 +5395,28 @@ var LB=['\u0421\u044a\u0451\u043c\u043a\u0430 \u2014 \u043a\u0430\u043a \u0444\u
    это снимок чистого старта calc.html в пустом браузере. Пересобирается
    Инструменты/демо.py; публикационная копия без DEMO — отдельная задача. */
 var DEMO={
-answers:[{"b":1,"n":"Желаемый доход","v":110216,"u":"₽/мес"},{"b":2,"n":"Налоговый режим","v":"ИП, УСН «Доходы» — 6%","u":""},{"b":3,"n":"Текущая ставка","v":6000,"u":"₽/ч"},{"b":4,"n":"Готовых кадров за 1 час","v":80,"u":"шт"},{"b":4,"n":"Срабатываний затвора за 1 час","v":350,"u":"шт"},{"b":4,"n":"Ресурс затвора","v":300000,"u":"шт"},{"b":5,"n":"Минимальный заказ","v":1,"u":"ч"},{"b":6,"n":"Время на постпродакшн","v":3,"u":"× ч"},{"b":7,"n":"Проектная работа с клиентами","v":1,"u":"ч"},{"b":8,"n":"Поиск заказов","v":2,"u":"ч/день"},{"b":13,"n":"Где находится рабочее место","v":"Дома","u":""},{"b":13,"n":"Сколько вы платите за жильё в месяц","v":40000,"u":"₽/мес"},{"b":13,"n":"Коммунальные платежи, интернет и связь","v":7000,"u":"₽/мес"},{"b":13,"n":"Общая площадь вашего жилья","v":50,"u":"м²"},{"b":13,"n":"Сколько метров выделено под рабочую зону","v":6,"u":"м²"},{"b":14,"n":"За сколько лет окупить вложения в обучение","v":7,"u":"лет"},{"b":15,"n":"Кто делал сайт","v":"Заказывал у специалистов","u":""},{"b":15,"n":"Сколько вы заплатили за создание сайта","v":70000,"u":"₽"},{"b":15,"n":"За сколько лет окупить вложения в сайт","v":7,"u":"лет"},{"b":17,"n":"Эквайринг","v":2.7,"u":"%"},{"b":17,"n":"Доля безналичных платежей","v":100,"u":"%"},{"b":18,"n":"Кто ведёт учёт","v":"Веду сам","u":""},{"b":18,"n":"Время на ведение учёта","v":1,"u":"ч/нед"},{"b":21,"n":"Чистая прибыль","v":30,"u":"%"}],
+answers:[{"b":1,"n":"Желаемый доход","v":110216,"u":"₽/мес"},{"b":2,"n":"Налоговый режим","v":"ИП, УСН «Доходы» — 6%","u":""},{"b":3,"n":"Текущая ставка","v":6000,"u":"₽/ч"},{"b":4,"n":"Готовых кадров за 1 час","v":80,"u":"шт"},{"b":4,"n":"Срабатываний затвора за 1 час","v":350,"u":"шт"},{"b":4,"n":"Ресурс затвора","v":300000,"u":"шт"},{"b":5,"n":"Минимальный заказ","v":1,"u":"ч"},{"b":6,"n":"Время на постпродакшн","v":3,"u":"× ч"},{"b":7,"n":"Проектная работа с клиентами","v":1,"u":"ч"},{"b":8,"n":"Поиск заказов","v":2,"u":"ч/день"},{"b":9,"n":"Управление делом","v":2,"u":"ч/нед"},{"b":13,"n":"Где находится рабочее место","v":"Дома","u":""},{"b":13,"n":"Сколько вы платите за жильё в месяц","v":40000,"u":"₽/мес"},{"b":13,"n":"Коммунальные платежи, интернет и связь","v":7000,"u":"₽/мес"},{"b":13,"n":"Общая площадь вашего жилья","v":50,"u":"м²"},{"b":13,"n":"Сколько метров выделено под рабочую зону","v":6,"u":"м²"},{"b":14,"n":"За сколько лет окупить вложения в обучение","v":7,"u":"лет"},{"b":15,"n":"Кто делал сайт","v":"Заказывал у специалистов","u":""},{"b":15,"n":"Сколько вы заплатили за создание сайта","v":70000,"u":"₽"},{"b":15,"n":"За сколько лет окупить вложения в сайт","v":7,"u":"лет"},{"b":17,"n":"Эквайринг","v":2.7,"u":"%"},{"b":17,"n":"Доля безналичных платежей","v":100,"u":"%"},{"b":18,"n":"Кто ведёт учёт","v":"Веду сам","u":""},{"b":18,"n":"Время на ведение учёта","v":1,"u":"ч/нед"},{"b":19,"n":"Резерв времени на простой и форс-мажоры","v":5,"u":"%"},{"b":20,"n":"Запас на скидку","v":15,"u":"%"},{"b":21,"n":"Чистая прибыль","v":27,"u":"%"}],
 catalog:[{"b":10,"n":"Canon EOS R6 Mark II Body","price":166999,"term":4,"kind":"life"},{"b":10,"n":"Canon RF 24–105mm f/4.0 L IS USM","price":130999,"term":7,"kind":"life"},{"b":10,"n":"Godox V1Pro C","price":36990,"term":5,"kind":"life"},{"b":10,"n":"Godox XPro II C","price":9355,"term":5,"kind":"life"},{"b":10,"n":"Аккумулятор LP-E6NH","price":12978,"term":5,"kind":"life"},{"b":10,"n":"SanDisk Extreme PRO 256 ГБ #1","price":6990,"term":2,"kind":"life"},{"b":10,"n":"SanDisk Extreme PRO 256 ГБ #2","price":6990,"term":2,"kind":"life"},{"b":10,"n":"Рюкзак Lowepro ProTactic","price":27962,"term":7,"kind":"life"},{"b":10,"n":"Godox RFT-05 отражатель","price":3000,"term":7,"kind":"life"},{"b":10,"n":"X-Rite ColorChecker","price":5000,"term":7,"kind":"life"},{"b":11,"n":"Системный блок","price":180000,"term":5,"kind":"life"},{"b":11,"n":"Монитор ASUS ProArt","price":55000,"term":5,"kind":"life"},{"b":11,"n":"Calibrite ColorChecker","price":30000,"term":5,"kind":"life"},{"b":11,"n":"Колонки Logitech Z207","price":5000,"term":5,"kind":"life"},{"b":11,"n":"Клавиатура Logitech K380","price":3500,"term":7,"kind":"life"},{"b":11,"n":"Мышь Logitech M650","price":4000,"term":3,"kind":"life"},{"b":11,"n":"Веб-камера Logitech Brio","price":15999,"term":5,"kind":"life"},{"b":11,"n":"Микрофон FIFINE K669B","price":3500,"term":5,"kind":"life"},{"b":11,"n":"Принтер Canon PIXMA G640","price":29999,"term":5,"kind":"life"},{"b":12,"n":"Adobe Creative Cloud Photography","price":2000,"term":12,"kind":"per"},{"b":12,"n":"Яндекс Диск 1 ТБ","price":250,"term":12,"kind":"per"},{"b":12,"n":"AmoCRM (CRM-система)","price":0,"term":12,"kind":"per"},{"b":12,"n":"СБИС (обмен электронными документами)","price":0,"term":12,"kind":"per"},{"b":12,"n":"Retouch4me Heal","price":6900,"term":3,"kind":"life"},{"b":12,"n":"Retouch4me Dodge & Burn","price":6900,"term":3,"kind":"life"},{"b":12,"n":"Retouch4me Fabric","price":6900,"term":3,"kind":"life"},{"b":12,"n":"Retouch4me Clean Backdrop","price":6900,"term":3,"kind":"life"},{"b":12,"n":"Retouch4me Dust","price":6900,"term":3,"kind":"life"},{"b":13,"n":"Компьютерный стол","price":15000,"term":7,"kind":"life"},{"b":13,"n":"Стул","price":9000,"term":7,"kind":"life"},{"b":13,"n":"Стеллаж для хранения","price":12000,"term":7,"kind":"life"},{"b":13,"n":"Шторы","price":6000,"term":7,"kind":"life"},{"b":13,"n":"Жалюзи","price":5000,"term":7,"kind":"life"},{"b":13,"n":"Карниз","price":2500,"term":7,"kind":"life"},{"b":13,"n":"Коврик под ноги","price":3000,"term":7,"kind":"life"},{"b":13,"n":"Ремонт помещения под ключ","price":30000,"term":7,"kind":"life"},{"b":14,"n":"Курс по фотографии","price":80000,"term":4,"kind":"months"},{"b":16,"n":"Домен сайта","price":1500,"term":1,"kind":"per"},{"b":16,"n":"Хостинг сайта","price":6000,"term":1,"kind":"per"},{"b":16,"n":"Яндекс Директ","price":15000,"term":12,"kind":"per"},{"b":16,"n":"Авито","price":0,"term":12,"kind":"per"},{"b":16,"n":"Таргетированная реклама","price":0,"term":12,"kind":"per"},{"b":16,"n":"Размещения у блогеров","price":0,"term":12,"kind":"per"},{"b":16,"n":"Отклики на Profi.ru","price":0,"term":12,"kind":"per"},{"b":17,"n":"Обслуживание счёта (РКО)","price":0,"term":12,"kind":"per"},{"b":17,"n":"СМС-уведомления","price":150,"term":12,"kind":"per"},{"b":17,"n":"","price":0,"term":12,"kind":"per"}],
-frames:80,NT:1533,idle:219,pool:1051.2,calDays:365,weekend:104,holidays:14,WD:247,VAC:20,SICK:8,ND:219,EFF:7,shutterPerHour:350,
-shutterLife:300000,shotsYear:76650.00000000001,camName:'Canon EOS R6 Mark II Body',camPrice:166999,camLife:4,camAmort:41749.75,
-camWear:0.5446803652968035,shootEquipmentWear:1.1018385052651194,costHour:2426.988383180505,markup:4.463350675250518,
-rateHour:13259.488622074376,rateZero:2426.9883831805046,workHours:1752,rateWork:691.9954337899543,rateWorkFull:1894.2126602963397,
-vacY:110216,minShootsY:32.068232558029294,minShootsM:2.672352713169108,zeroShootsY:219.00000000000003,zeroShootsM:18.250000000000004,
-loadGoal:{"shoots":175.2,"hours":1533,"days":219,"freeDays":146,"dayHours":7,"shootsPerDay":0.7999999999999999},
-loadCur:{"shoots":387.17706776457175,"hours":2804.862406587431,"days":400.69462951249017,"freeDays":-35.69462951249017,"dayHours":12.807590897659502,"shootsPerDay":1.7679318162765834},
-loadZero:{"shoots":957.1790383038909,"hours":6224.8742298233465,"days":889.267747117621,"freeDays":-524.267747117621,"dayHours":28.424083241202496,"shootsPerDay":4.370680540200415},
-promo:438,accT:43.8,fmT:0,mgmtT:0,S:1,pt:6.000000000000001,py:175.2,sh:219.00000000000003,post:657.0000000000001,clT:175.2,
-projectPlan:{"version":1,"weeks":1,"step":0.5,"minShoot":1,"capacity":24.000000000000004,"projects":[{"shoot":1.5000000000000009,"post":4.500000000000003,"client":1},{"shoot":1.5,"post":4.5,"client":1},{"shoot":1,"post":3,"client":1},{"shoot":1,"post":3,"client":1}],"regular":{"promo":10,"acc":1,"fm":0,"idle":5,"mgmt":0},"totals":{"shoot":5.000000000000001,"post":15.000000000000004,"client":4}},
-amort:173474.56904761904,vari:283980,C:457454.569047619,totalExpenses:710087.6057640022,Ny:1322592,R:2903828.0082342885,
-taxAll:174229.6804940573,aq:78403.3562223258,goalFund:871148.4024702867,goalDiscountReserve:0,goalSelfSiteCost:0,
-goalCostsTotal:1581236.0082342888,goalResult:1322591.9999999998,cur:6000,Rc:1314000.0000000002,leftC:348027.4309523811,
-taxC:78840.00000000001,aqC:35478.00000000001,currentFund:394200.0000000001,currentDiscountReserve:0,currentSelfSiteCost:0,
-currentCostsTotal:965972.5690476191,currentResult:348027.4309523811,currentIncome:348027.4309523811,currentLoss:0,currentIsLoss:false,
-currentBreakEvenMargin:0.5955019361365826,Rb:531510.4559165306,taxB:59705.10455916531,aqB:14350.782309746328,wsY:67680,siteY:10000,
-eduY:74409.14285714286,fundY:871148.4024702867,profitY:580765.6016468577,cushionY:290382.800823429,discY:0,fundP:0.2,discP:0,
-investmentShoot:407263,investmentPost:361498,investmentTime:590864,investmentTotal:1359625,investmentPaybackYears:2.341090787995289,
-depShoot:84455.92142857143,depOffice:65732.93333333333,depSoft:11500,depEdu:0,depSite:0,depWs:11785.714285714286,varAds:187500,varSoft:27000,
-varBank:1800,varRent:67680,varAcc:0,varEmp:0,directFrameCosts:268154.569047619,NW:43.8,K:3,cl:1,curRate:6000,
+frames:80,NT:1533,idle:219,pool:915.4200000000001,calDays:365,weekend:104,holidays:14,WD:247,VAC:20,SICK:8,ND:219,EFF:7,shutterPerHour:350,
+shutterLife:300000,shotsYear:64769.25,camName:'Canon EOS R6 Mark II Body',camPrice:166999,camLife:4,camAmort:41749.75,
+camWear:0.644592148280241,shootEquipmentWear:1.3039508938048754,costHour:2872.1756013970476,markup:5.793172340625898,
+rateHour:19511.183852830978,rateZero:2872.175601397047,workHours:1752,rateWork:691.9954337899543,rateWorkFull:2355.2786222345967,vacY:110216,
+minShootsY:25.790601388431384,minShootsM:2.149216782369282,zeroShootsY:185.055,zeroShootsM:15.42125,
+loadGoal:{"shoots":175.2,"hours":1533.0000000000002,"days":219.00000000000003,"freeDays":145.99999999999997,"dayHours":7.000000000000001,"shootsPerDay":0.7999999999999999},
+loadCur:{"shoots":569.7265685026646,"hours":3594.4013204264224,"days":513.4859029180603,"freeDays":-148.48590291806033,"dayHours":16.41279141747225,"shootsPerDay":2.601491180377464},
+loadZero:{"shoots":1190.1637940776575,"hours":6836.185824055761,"days":976.5979748651088,"freeDays":-611.5979748651088,"dayHours":31.21546038381626,"shootsPerDay":5.434537872500719},
+promo:438,accT:43.8,fmT:48.18000000000001,mgmtT:87.6,S:1,pt:5.2250000000000005,py:175.2,sh:185.055,post:555.165,clT:175.2,
+projectPlan:{"version":1,"weeks":1,"step":0.5,"minShoot":1,"capacity":20.900000000000002,"projects":[{"shoot":1.2250000000000005,"post":3.6750000000000016,"client":1},{"shoot":1,"post":3,"client":1},{"shoot":1,"post":3,"client":1},{"shoot":1,"post":3,"client":1}],"regular":{"promo":10,"acc":1,"fm":1.1000000000000003,"idle":5,"mgmt":2},"totals":{"shoot":4.2250000000000005,"post":12.675,"client":4}},
+amort:173474.56904761904,vari:283980,C:457454.569047619,totalExpenses:771580.4341736694,Ny:1322592,R:3610642.127885637,
+taxAll:216638.52767313822,aq:97487.33745291221,goalFund:974873.374529122,goalDiscountReserve:541596.3191828455,goalSelfSiteCost:0,
+goalCostsTotal:2288050.127885637,goalResult:1322592,cur:6000,Rc:1110330,leftC:89938.12095238082,taxC:66619.8,aqC:29978.910000000003,
+currentFund:299789.10000000003,currentDiscountReserve:166549.5,currentSelfSiteCost:0,currentCostsTotal:1020391.8790476192,
+currentResult:89938.12095238082,currentIncome:89938.12095238082,currentLoss:0,currentIsLoss:false,currentBreakEvenMargin:0.5213040664338254,
+Rb:531510.4559165306,taxB:59705.10455916531,aqB:14350.782309746328,wsY:67680,siteY:10000,eduY:74409.14285714286,fundY:974873.374529122,
+profitY:613809.1617405583,cushionY:361064.2127885637,discY:541596.3191828455,fundP:0.17,discP:0.15,investmentShoot:407263,
+investmentPost:361498,investmentTime:590864,investmentTotal:1359625,investmentPaybackYears:2.2150614307296363,depShoot:84455.92142857143,
+depOffice:65732.93333333333,depSoft:11500,depEdu:0,depSite:0,depWs:11785.714285714286,varAds:187500,varSoft:27000,varBank:1800,varRent:67680,
+varAcc:0,varEmp:0,directFrameCosts:268154.569047619,NW:43.8,K:3,cl:1,curRate:6000,
 regime:'\u0418\u041f, \u0423\u0421\u041d \u00ab\u0414\u043e\u0445\u043e\u0434\u044b\u00bb \u2014 6%',regimeCode:'usn6',clients:'mix',
 profession:'\u0444\u043e\u0442\u043e\u0433\u0440\u0430\u0444\u0430'};
 
@@ -6167,17 +6279,17 @@ var REFD=[
        (зелёный) и маркетингом (синий) — то есть идёт последним по
        часовой стрелке, сразу за синим сектором и перед зелёным. */
     var НАПР=[
-      {n:'Как отдел продаж',     o:'Работа с клиентами по проектам',      ч:(d.clT||0),            c:'#E1306C', img:'продажи',   chip:1},
-      {n:'Как отдел маркетинга', o:'Продвижение, реклама, поиск заказов', ч:(d.promo||0),          c:'#3B82F6', img:'маркетинг', chip:2},
+      {n:'Как отдел продаж',     o:'Работа с клиентами по проектам',      ч:(d.clT||0),            c:'#E1306C', img:'продажи',   chip:1, href:'calc.html#c_FormClientTime', go:'Заложить время на работу с клиентами'},
+      {n:'Как отдел маркетинга', o:'Продвижение, реклама, поиск заказов', ч:(d.promo||0),          c:'#3B82F6', img:'маркетинг', chip:2, href:'calc.html#c_FormPromoTime', go:'Заложить время на продвижение'},
       /* 24.09 (слово владельца): порядок секторов — фотограф, затем
          бухгалтерия, затем управленец. По часовой это маркетинг,
          управленец, бухгалтер, фотограф: от зелёного против часовой
          идут бухгалтер и сразу за ним управленец. */
       {n:'Как управляющий',       o:'Стратегия, решения, развитие дела',   ч:(d.mgmtT||0),          c:'#0F766E', img:'управляющий', chip:4, href:'calc.html#c_FormMgmt', go:'Заложить время на управление'},
-      {n:'Как бухгалтер',        o:'Учёт, отчётность, документы',         ч:(d.accT||0),           c:'#8B5CF6', img:'бухгалтер', chip:3},
+      {n:'Как бухгалтер',        o:'Учёт, отчётность, документы',         ч:(d.accT||0),           c:'#8B5CF6', img:'бухгалтер', chip:3, href:'calc.html#c_Form011', go:'Заложить время на учёт'},
       /* 11.09: точки-магниты у всех ролей — середина кольца сектора
          (см. расчёт точек ниже), поэтому персональные углы t не нужны. */
-      {n:'Как фотограф',         o:'Съёмка и обработка материала',        ч:(d.sh||0)+(d.post||0), c:'#21A038', img:'фотограф',  chip:0}
+      {n:'Как фотограф',         o:'Съёмка и обработка материала',        ч:(d.sh||0)+(d.post||0), c:'#21A038', img:'фотограф',  chip:0, href:'calc.html#frm', go:'Заложить время на съёмку и обработку'}
     ];
     var эфф=0; НАПР.forEach(function(о){эфф+=о.ч});
     if(эфф<=0) return;
@@ -6967,6 +7079,10 @@ var t=-Math.PI/2 - Math.PI/6, секторы=[];
         сп.forEach(function(c){
           var m=c.querySelector('.mon-man'); if(!m) return;
           var h=(c===этC? hПл : hПл*ростБ);
+          /* 28.09: управляющего увеличиваем отдельно. При посадке локтя
+             на верхнюю кромку (top:-0,304H) высота 1,60H выводит подошвы
+             на 0,114H ниже плашки — естественная стойка, не «на заливке». */
+          if(c.classList.contains('p-mg')) h=hПл*1.60;
           m.style.height=h.toFixed(1)+'px';
           /* Посадка (top/left у маркетолога и продажника) задана в долях
              --H-чел. Без синхронизации поза остаётся от прежнего роста и
@@ -6997,18 +7113,32 @@ var t=-Math.PI/2 - Math.PI/6, секторы=[];
         сп.forEach(function(c){ c.style.width=W.toFixed(1)+'px'; });
         ростыПоПлашке();
       }
+      /* 28.09: у управляющего правая точка силуэта должна закончиться
+         точно на вертикали правого края остальных плашек. Укорачиваем
+         ЕГО цветную плашку ровно на вылет фигуры вправо: группа остаётся
+         в общей ширине столбца, локоть сохраняет опору на её верхней
+         кромке, а зелёная плашка становится заметно короче. */
+      var управ=поле.querySelector('.p-mg'), вылетУпр=0;
+      if(управ){
+        var bУ=управ.getBoundingClientRect(), mУ=управ.querySelector('.mon-man'),
+            fУ=mУ?mУ.getBoundingClientRect():bУ;
+        вылетУпр=Math.max(0,fУ.right-bУ.right);
+        управ.style.width=Math.max(80,W-вылетУпр).toFixed(1)+'px';
+      }
 
       /* 4. Плашки стоят ровным столбцом: правый край — на том же поле
             от края блока, что и слева (владелец 12.09: «плашку
             продлеваем так, чтобы отступ справа был такой же, как
-            слева»). Ширина у всех общая, значит и левый край общий.
+            слева»). Управляющий — исключение: его КРАЙНЯЯ ПРАВАЯ ТОЧКА,
+            а не край укороченной плашки, ставится на эту общую вертикаль.
             Место в потоке добирается отступом снизу: transform его не
             занимает. */
       var Kк=карт.getBoundingClientRect();
       сп.forEach(function(c){
         var m=c.querySelector('.mon-man'); if(!m) return;
         var b=c.getBoundingClientRect(), f=m.getBoundingClientRect();
-        var сдвиг=(Kк.right-ПОЛЕ-b.width)-b.left;
+        var ширДляЛинии=c.classList.contains('p-mg')?W:b.width;
+        var сдвиг=(Kк.right-ПОЛЕ-ширДляЛинии)-b.left;
         var верх=Math.min(b.top,f.top)-b.top;
         var высота=Math.max(b.bottom,f.bottom)-Math.min(b.top,f.top);
         c.style.transformOrigin='0 0';
@@ -7026,6 +7156,11 @@ var t=-Math.PI/2 - Math.PI/6, секторы=[];
             остаться на общей линии столбца. */
       сп.forEach(function(c){
         var m=c.querySelector('.mon-man'); if(!m) return;
+        /* 28.09: управляющий — единственная фигура справа. Не выравниваем
+           её с левыми персонажами: CSS уже сажает локоть на правую кромку
+           собственной плашки, а принудительный translate возвращал фигуру
+           налево от карточки. */
+        if(c.classList.contains('p-mg')) return;
         var f=m.getBoundingClientRect();
         var dx=(Kк.left+ПОЛЕ)-f.left;
         if(Math.abs(dx)>0.3) m.style.transform='translateX('+dx.toFixed(1)+'px)';
@@ -7106,7 +7241,16 @@ var t=-Math.PI/2 - Math.PI/6, секторы=[];
                уведомление» блока 12). Отступ до уведомления — полный. */
             надо=низК+ОТСТУП12*0.7-bт.top;
           } else {
-            надо=(ряд[i2-1].getBoundingClientRect().bottom+ЗАЗОР)-bт.top;
+            var пред=ряд[i2-1], низПред=пред.getBoundingClientRect().bottom;
+            надо=(низПред+ЗАЗОР)-bт.top;
+            /* 28.09: после перестановки продажи стоят под управляющим.
+               Его подошвы специально выходят ниже собственной плашки,
+               но не должны касаться следующей цветной плашки: оставляем
+               4px воздуха, не мешая голове перекрывать верхнюю плашку. */
+            if(пред.classList.contains('p-mg')&&тек.classList.contains('p-tr')){
+              var фигПред=пред.querySelector('.mon-man');
+              if(фигПред) надо=Math.max(надо,фигПред.getBoundingClientRect().bottom+4-bт.top);
+            }
           }
           if(Math.abs(надо)>0.5){
             var тек0=parseFloat(тек.style.marginTop)||0;
@@ -8164,20 +8308,15 @@ var t=-Math.PI/2 - Math.PI/6, секторы=[];
      часы каждой роли в горизонте. Отчёт не меняет d, не выводит число
      заказов из часов и не создаёт дробный заказ самостоятельно. */
   var WK=['ПН','ВТ','СР','ЧТ','ПТ'];
-  var H0=9, HN=20, BASE_FIRST=0, BASE_LAST=19-H0;
-  var LUNCH_HOUR=14, LUNCH_SLOT=LUNCH_HOUR-H0, SLOTS=HN-H0;
+  var H0=8, HN=19, BASE_FIRST=0, BASE_LAST=HN-H0-1;
+  var LUNCH_HOUR=12, LUNCH_SLOT=LUNCH_HOUR-H0, SLOTS=HN-H0;
   var PLAN=d.projectPlan, WEEKS=Math.max(1,Math.round(PLAN.weeks||1)), DAYS=WEEKS*5;
-  var T10=10-H0,T15=15-H0,T16=16-H0,T17=17-H0,T18=18-H0;
-  /* Режим рабочего места — активный ответ ядра. */
-  var ОТДЕЛЬНОЕ_ПОМЕЩЕНИЕ=(d.answers||[]).some(function(a){
-    return Number(a.b)===13&&a.n==='Где находится рабочее место'&&a.v==='Отдельное помещение';
-  });
+  var T08=8-H0,T09=9-H0,T10=10-H0,T11=11-H0,T12=12-H0,T13=13-H0,T14=14-H0,
+      T15=15-H0,T16=16-H0,T17=17-H0,T18=18-H0;
   /* Эти значения приходят в составе расчётного горизонта, а не получаются
      календарём из d.*. Средненедельная подпись нужна только легенде. */
   var PR=PLAN.regular||{}, PT=PLAN.totals||{}, NWv=d.NW||43.8;
-  var shW=(PT.shoot||0)/WEEKS, poW=(PT.post||0)/WEEKS, clW=(PT.client||0)/WEEKS,
-      prW=(PR.promo||0)/WEEKS, acW=(PR.acc||0)/WEEKS, fmW=(PR.fm||0)/WEEKS,
-      idW=(PR.idle||0)/WEEKS, mgW=(PR.mgmt||0)/WEEKS;
+  var idW=(PR.idle||0)/WEEKS;
   var WC={sh:WK_sh,po:WK_po,cl:WK_cl,pr:WK_pr,ac:WK_ac,fm:WK_fm,id:WK_id,mg:WK_mg,lu:WK_lu};
   var РОЛИ={
     sh:{key:'sh',c:WC.sh,n:'Съёмка'}, po:{key:'po',c:WC.po,n:'Обработка'},
@@ -8192,17 +8331,39 @@ var t=-Math.PI/2 - Math.PI/6, секторы=[];
   for(var dd=0;dd<DAYS;dd++){
     grid[dd]=[];
     for(var ss=0;ss<SLOTS;ss++)grid[dd][ss]={parts:[],kind:''};
-    grid[dd][LUNCH_SLOT]={parts:[],kind:'lunch'};
+    /* Обед резервируется после размещения съёмки: в свободный день он
+       остаётся в 12:00, а в съёмочный день встаёт до выезда либо внутри
+       длинной смены. */
   }
   function used(cell){return cell.parts.reduce(function(sum,x){return sum+x.h},0)}
   function free(day,slot){
     var cell=grid[day][slot];
-    return cell.kind?0:Math.max(0,1-used(cell));
+    /* Ёмкость дня задаётся сервисом, а не искусственной раскраской:
+       обычный день имеет 8 рабочих часов и обед, съёмочный получает ещё
+       два часа исключительно из-за дороги до и после съёмки. Внутри часа
+       части идут последовательно, поэтому точный дробный хвост съёмки может
+       сразу перейти в логистику, а остаток часа — в следующую задачу. */
+    if(cell.kind)return 0;
+    return Math.max(0,1-used(cell));
+  }
+  function canAdd(day,slot,role){
+    var cell=grid[day][slot],isPause=role.key==='id',isPost=role.key==='po';
+    if(cell.kind||free(day,slot)<=1e-9)return false;
+    /* Час не превращается в мозаику из произвольных работ. Обработка —
+       единственная подвижная роль: она сразу закрывает точный остаток
+       логистики либо форс-мажора. Только последний хвост обработки может
+       быть закрыт рабочей паузой; пауза никогда не пристыковывается к
+       логистике или форс-мажору напрямую. */
+    if(!cell.parts.length)return true;
+    if(isPost)return cell.parts.every(function(x){return x.key==='log'||x.key==='fm'});
+    if(isPause)return cell.parts.every(function(x){return x.key==='po'});
+    return false;
   }
   function add(day,slot,role,hours){
-    var take=Math.min(Math.max(0,hours||0),free(day,slot));
+    if(!canAdd(day,slot,role))return 0;
+    var cell=grid[day][slot],take=Math.min(Math.max(0,hours||0),free(day,slot));
     if(take<=1e-9)return 0;
-    var cell=grid[day][slot], last=cell.parts[cell.parts.length-1];
+    var last=cell.parts[cell.parts.length-1];
     if(last&&last.key===role.key)last.h+=take;
     else cell.parts.push({key:role.key,c:role.c,n:role.n,idle:!!role.idle,h:take});
     return take;
@@ -8211,7 +8372,7 @@ var t=-Math.PI/2 - Math.PI/6, секторы=[];
     var out=[],seen={};
     function push(day,slot){
       var key=day+':'+slot;
-      if(day<0||day>=DAYS||slot<BASE_FIRST||slot>BASE_LAST||slot===LUNCH_SLOT||seen[key])return;
+      if(day<0||day>=DAYS||slot<BASE_FIRST||slot>BASE_LAST||seen[key])return;
       seen[key]=true;out.push([day,slot]);
     }
     /* Первый проход разносит регулярные задачи по дням всего горизонта. */
@@ -8227,113 +8388,517 @@ var t=-Math.PI/2 - Math.PI/6, секторы=[];
     for(var i=0;i<list.length&&left>1e-8;i++)left-=add(list[i][0],list[i][1],role,left);
     return left;
   }
-  /* Проектные съёмки приходят готовыми поштучно. Их размещение не меняет
-     их длительность: каждый проект остаётся не короче calc().minShoot. */
-  function projectCandidates(index){
+  /* Каркас съёмочного дня зависит от фактической длины съёмочной сессии.
+     До 4 ч: обед перед выездом (11:00), далее полный час дороги и съёмка.
+     Более 4 ч: первые четыре часа съёмки идут после дороги, затем обед
+     разрывает длинную смену, остаток съёмки и только потом логистика.
+     Это лишь проекция готовых часов projectPlan — суммы не меняются. */
+  function shootingSlots(longSession){
+    return longSession?[T12,T13,T14,T15,T17]:[T13,T14,T15,T16];
+  }
+  function sessionCandidates(index,longSession){
     var order=[];
     for(var w=0;w<WEEKS;w++)[0,2,4,1,3].forEach(function(day){order.push(w*5+day)});
     if(order.length){var shift=index%order.length;order=order.slice(shift).concat(order.slice(0,shift));}
-    var out=[];
-    /* У съёмочного дня всегда остаются обе крайние логистические ячейки:
-       09:00 — перед первой съёмкой и 19:00 — после последней. Поэтому
-       съёмка никогда не ставится в эти слоты. Сначала заполняем 11:00–18:00
-       (без обеда), затем при длинном проекте разрешаем 10:00: это даёт
-       восемь съёмочных часов в дне и сохраняет логистику с двух сторон. */
-    order.forEach(function(day){
-      for(var slot=11-H0;slot<19-H0;slot++)if(slot!==LUNCH_SLOT)out.push([day,slot]);
-      out.push([day,T10]);
-    });
+    var out=[],slots=shootingSlots(longSession);
+    order.forEach(function(day){slots.forEach(function(slot){out.push([day,slot])})});
     return out;
   }
-  /* Проекты остаются целыми. Длинные съёмки первыми получают разнесённые
-     дни недели — именно так они были показаны в утверждённом календаре. */
-  var ПРОЕКТЫ=(PLAN.projects||[]).slice().sort(function(a,b){return (b.shoot||0)-(a.shoot||0);});
-  ПРОЕКТЫ.forEach(function(project,index){
-    placeExact(РОЛИ.sh,project.shoot,projectCandidates(index));
+  /* Целый проект остаётся одним проектом и в точной календарной проекции.
+     Время съёмки НЕ округляется: календарь использует исходное значение
+     projectPlan вплоть до минут. Если заказчик округляет время на площадке
+     в большую сторону, это дополнительная выручка фотографа, а не причина
+     менять собственный рабочий план или вытеснять другую роль. */
+  var ПРОЕКТЫ=(PLAN.projects||[]).slice().sort(function(a,b){return (b.shoot||0)-(a.shoot||0);}),
+      СЕССИИ=[];
+  ПРОЕКТЫ.forEach(function(project){
+    var left=Math.max(0,Number(project.shoot)||0);
+    while(left>1e-8){
+      var hours=Math.min(5,left);
+      СЕССИИ.push({shoot:hours,long:hours>4+1e-8});
+      left-=hours;
+    }
   });
+  СЕССИИ.forEach(function(session,index){
+    placeExact(РОЛИ.sh,session.shoot,sessionCandidates(index,session.long));
+  });
+  function shootHours(day){
+    return grid[day].reduce(function(sum,cell){
+      return sum+cell.parts.reduce(function(inner,x){return inner+(x.key==='sh'?x.h:0)},0);
+    },0);
+  }
   function hasShoot(day,slot){return grid[day][slot].parts.some(function(x){return x.key==='sh'})}
+  /* Логистика может начинаться в любой дробной минуте после точной съёмки.
+     Она хранится как точная часть ячейки, а не сдвигается на следующий
+     целый час: «съёмка 13:00–14:13:30 → дорога 14:13:30–15:13:30»
+     остаётся непрерывной и по данным, и на цветовой шкале. */
+  var ЛОГ_ЧАСТЬ={key:'log',c:'#FFFFFF',n:'Логистика',service:true};
+  function lastShootEnd(day){
+    var end=-1;
+    for(var slot=0;slot<SLOTS;slot++){
+      var at=0;
+      grid[day][slot].parts.forEach(function(part){
+        at+=part.h;
+        if(part.key==='sh')end=slot+at;
+      });
+    }
+    return end;
+  }
+  function addLogPart(day,slot,hours){
+    var cell=grid[day][slot],take=Math.min(Math.max(0,hours||0),free(day,slot));
+    if(take<=1e-8)return 0;
+    cell.parts.push({key:ЛОГ_ЧАСТЬ.key,c:ЛОГ_ЧАСТЬ.c,n:ЛОГ_ЧАСТЬ.n,service:true,h:take});
+    return take;
+  }
+  function reservePostShootLogistics(day,end){
+    var slot=Math.floor(end),left=1;
+    /* Целый час, начинающийся на границе ячейки, получает обычную
+       сервисную карточку с иконкой. При старте в :30 та же дорога честно
+       раскладывается на две соседние половины часа. */
+    if(Math.abs(end-slot)<1e-8&&slot<SLOTS&&free(day,slot)>=1-1e-8){
+      grid[day][slot]={parts:[],kind:'log'};
+      return;
+    }
+    while(left>1e-8&&slot<SLOTS){
+      var put=addLogPart(day,slot,left);
+      left-=put;slot++;
+    }
+  }
   var СЪЁМОЧНЫЕ_ДНИ=[];
-  function logistics(day){
+  function reserveDayServices(day){
     var shoots=[];
     for(var slot=0;slot<SLOTS;slot++)if(hasShoot(day,slot))shoots.push(slot);
     if(!shoots.length){
-      grid[day][0].kind=ОТДЕЛЬНОЕ_ПОМЕЩЕНИЕ?'log':'logempty';
-      grid[day][SLOTS-1].kind=ОТДЕЛЬНОЕ_ПОМЕЩЕНИЕ?'log':'logempty';
+      /* Стандартный день: восемь рабочих часов и обед 12:00–13:00,
+         то есть окончание в 17:00. Два дополнительных вечерних часа
+         появляются не «для заполнения», а только вместе с конкретной
+         съёмкой и её двумя обязательными логистическими часами. */
+      grid[day][LUNCH_SLOT]={parts:[],kind:'lunch'};
+      grid[day][T17]={parts:[],kind:'off'};
+      grid[day][T18]={parts:[],kind:'off'};
       return;
     }
     СЪЁМОЧНЫЕ_ДНИ.push(day);
-    var before=shoots[0]-1, after=shoots[shoots.length-1]+1;
-    if(before>=0&&before!==LUNCH_SLOT)grid[day][before]={parts:[],kind:'log'};
-    if(after<SLOTS&&after!==LUNCH_SLOT)grid[day][after]={parts:[],kind:'log'};
+    if(shootHours(day)>4+1e-8){
+      /* Длинная смена: логистика 11:00, съёмка 12:00–16:00, обед в
+         середине, остаток съёмки после него. */
+      grid[day][T11]={parts:[],kind:'log'};
+      grid[day][T16]={parts:[],kind:'lunch'};
+    }else{
+      /* Обычная смена: обед до выезда, затем обязательный час логистики
+         непосредственно перед первой съёмкой. */
+      grid[day][T11]={parts:[],kind:'lunch'};
+      grid[day][T12]={parts:[],kind:'log'};
+    }
+    /* Полный час дороги начинается в ту же минуту, когда заканчивается
+       последняя съёмка. Для хвоста в 30 минут сервис занимает вторую
+       половину этой ячейки и первую половину следующей — без «дырки» и
+       без сдвига на 15:00. Сервис резервируется раньше гибких задач. */
+    reservePostShootLogistics(day,lastShootEnd(day));
   }
-  /* Логистика резервируется ДО модельной работы: она остаётся ровно до
-     первой и после последней съёмки, а не вытесняет весь день на края. */
-  for(var logDay=0;logDay<DAYS;logDay++)logistics(logDay);
-  function pairs(days,slot){return days.map(function(day){return [day,slot];});}
-  function withFallback(list){return list.concat(baseCandidates());}
-  var НЕСЪЁМОЧНЫЕ=[];
-  for(var d0=0;d0<DAYS;d0++)if(СЪЁМОЧНЫЕ_ДНИ.indexOf(d0)<0)НЕСЪЁМОЧНЫЕ.push(d0);
-  var T09=0,T11=11-H0,T12=12-H0,T13=13-H0,T19=19-H0;
-  /* Утреннее продвижение остаётся в дни со съёмкой; свободный день
-     сохраняет контурные 09:00/19:00 из утверждённого вида. */
-  var promo=pairs(СЪЁМОЧНЫЕ_ДНИ,T09).concat(pairs(НЕСЪЁМОЧНЫЕ,T10),baseCandidates([T17,T16,T18,T15],0));
-  placeExact(РОЛИ.pr,PR.promo,withFallback(promo));
-  placeExact(РОЛИ.id,PR.idle,baseCandidates([T18,T17,T16,T15,T10],0));
-  placeExact(РОЛИ.ac,PR.acc,baseCandidates([T16,T15,T17,T18,T10],2));
-  placeExact(РОЛИ.mg,PR.mgmt,baseCandidates([T16,T15,T17,T18,T10],1));
-  placeExact(РОЛИ.fm,PR.fm,baseCandidates([T18,T17,T16,T15,T10],4));
-  /* Работа с клиентом заполняет свободные слоты у логистики, затем вечер
-     одной съёмочной смены; так календарь сохраняет читабельную форму. */
-  var clientOrder=[];
-  [1,3,4,2,0].forEach(function(day){for(var w=0;w<WEEKS;w++)clientOrder.push([w*5+day,T13]);});
-  [2,0,1,4,3].forEach(function(day){for(var w=0;w<WEEKS;w++)clientOrder.push([w*5+day,T19]);});
-  placeExact(РОЛИ.cl,PT.client,withFallback(clientOrder));
-  /* Обработка занимает оставшееся проектное время: несъёмочный час 11:00,
-     дробные хвосты в 12:00, затем дневные и вечерние свободные ячейки. */
-  var post=pairs(НЕСЪЁМОЧНЫЕ,T11).concat(baseCandidates([T12,T15,T16],0),pairs(СЪЁМОЧНЫЕ_ДНИ,T19));
-  placeExact(РОЛИ.po,PT.post,withFallback(post));
+  /* Логистика и динамический обед резервируются до прочих ролей: соседние
+     со съёмкой часы не получают обработку, паузу или регулярную задачу. */
+  for(var logDay=0;logDay<DAYS;logDay++)reserveDayServices(logDay);
+
+  /* Утренний порядок задан владельцем. Первый час (08:00–09:00) отдан
+     управлению, учёту и работе с клиентом; 09:00–10:00 — продвижению,
+     10:00–11:00 — обработке. После них в съёмочный день остаются только
+     логистика, обед и съёмка. Если часов одной из первых ролей больше, чем вмещают первые
+     ячейки горизонта, остаток переносится в свободный конец дня — данные
+     calc.html при этом не меняются и не теряются. */
+  function slotsOnly(slots,shift){
+    var out=[],seen={};
+    (slots||[]).forEach(function(slot){
+      for(var day=0;day<DAYS;day++){
+        var realDay=(day+(shift||0))%DAYS,key=realDay+':'+slot;
+        if(slot<BASE_FIRST||slot>BASE_LAST||seen[key])continue;
+        seen[key]=true;out.push([realDay,slot]);
+      }
+    });
+    return out;
+  }
+  /* Конец дня начинается после обеда и логистики. Утро до 11:00 сперва
+     принадлежит приоритетным ролям, продвижению и первому часу обработки,
+     а не вечерним задачам. */
+  function endOfDayCandidates(){
+    /* В день без съёмки 12:00 — первый свободный час после обеда; в день
+       съёмки он уже занят логистикой и свободой не считается. */
+    return slotsOnly([T18,T17,T16,T15,T14,T13,T12]);
+  }
+  /* В отдельном помещении 08:00 занята ежедневной логистикой. Тогда первым
+     рабочим часом конкретного дня становится 09:00; дома и в съёмочный день
+     первым остаётся 08:00. */
+  function firstWorkHourCandidates(){
+    var out=[];
+    for(var day=0;day<DAYS;day++){
+      /* Выбираем по назначению слота, а не по его текущей заполненности:
+         если в 08:00 уже стоит учёт, клиентская работа идёт в 08:00 другого
+         дня, а не перепрыгивает на 09:00 того же дня. */
+      out.push([day,grid[day][T08].kind?T09:T08]);
+    }
+    return out;
+  }
+  function morningStepCandidates(step){
+    var out=[];
+    for(var day=0;day<DAYS;day++){
+      var first=grid[day][T08].kind?T09:T08;
+      out.push([day,first+step]);
+    }
+    return out;
+  }
+  function firstHourFirst(){
+    return firstWorkHourCandidates().concat(endOfDayCandidates());
+  }
+  /* Упорядоченный набор свободных кандидатов внутри одного дня. Первый
+     список задаёт постоянное место роли, второй — только безопасный запасной
+     путь, если это место занято съёмкой, обедом или логистикой. */
+  function dayCandidates(day,preferred){
+    var out=[],seen={};
+    function put(slot){
+      if(slot<BASE_FIRST||slot>BASE_LAST||seen[slot])return;
+      seen[slot]=true;out.push([day,slot]);
+    }
+    (preferred||[]).forEach(put);
+    [T18,T17,T16,T15,T14,T13,T12,T11,T10,T09,T08].forEach(put);
+    return out;
+  }
+  function firstHour(day){return grid[day][T08].kind?T09:T08}
+
+  /* Управление не превращается в случайные цветные доли по всей неделе.
+     На каждую неделю выделяется последовательность блоков не длиннее двух
+     часов: сначала понедельник, затем вторник и т. д. Поэтому стандартные
+     2 ч/нед всегда стоят единым блоком в понедельник; 3–4 ч занимают ПН и
+     ВТ, 5–6 ч — ПН–СР. */
+  function placeManagementByWeek(hours){
+    var total=Math.max(0,Number(hours)||0),left=total;
+    for(var week=0;week<WEEKS&&left>1e-8;week++){
+      var weekNeed=(week===WEEKS-1)?left:Math.min(left,total/WEEKS),progress=true;
+      /* Один обход даёт каждому дню блок до 2 ч. При большем недельном
+         объёме следующий обход начинается снова с понедельника — так даже
+         предельные значения не теряются, но сначала равномерно занимают дни. */
+      while(weekNeed>1e-8&&progress){
+        progress=false;
+        for(var wd=0;wd<5&&weekNeed>1e-8;wd++){
+          var day=week*5+wd,block=Math.min(2,weekNeed),first=firstHour(day),
+              rest=placeExact(РОЛИ.mg,block,dayCandidates(day,[first,first+1]));
+          var placed=block-rest;
+          if(placed>1e-8)progress=true;
+          weekNeed-=placed;left-=placed;
+        }
+      }
+    }
+    return left;
+  }
+  var managementLeft=placeManagementByWeek(PR.mgmt);
+
+  /* Утренний приоритет неизменен: после управления идут учёт и работа с
+     клиентом. Обработка не забирает утро — при нехватке места она спокойно
+     переносится в другое свободное окно позже в календаре. */
+  placeExact(РОЛИ.ac,PR.acc,firstHourFirst());
+  placeExact(РОЛИ.cl,PT.client,firstHourFirst());
+
+  /* Продвижение — ежедневная практика, а не недельный остаток. Его объём
+     делится поровну на все рабочие дни горизонта. Первая полоса идёт утром,
+     вторая — в последнем вечернем рабочем окне этого конкретного дня:
+     16:00–17:00 в стандартном дне и 17:00–18:00 в съёмочном, который
+     удлинён двумя логистическими часами. */
+  function promoCandidates(day){
+    var first=firstHour(day), evening=shootHours(day)>1e-8?T17:T16;
+    return dayCandidates(day,[first+1,evening,first+2,T18,T17,T16,T15,T14,T13,T12,T11,first]);
+  }
+  function placeDailyQuota(role,hours,candidateFactory){
+    var left=Math.max(0,Number(hours)||0);
+    for(var day=0;day<DAYS&&left>1e-8;day++){
+      var quota=left/(DAYS-day),rest=placeExact(role,quota,candidateFactory(day));
+      left-=quota-rest;
+    }
+    return left;
+  }
+  var promoLeft=placeDailyQuota(РОЛИ.pr,PR.promo,promoCandidates);
+
+  /* Рабочие паузы — максимум один час в каждом рабочем дне. Этот лимит
+     резервируется для последнего шага, но сами паузы рисуются только после
+     всех обязательных ролей, форс-мажора и сгруппированной обработки. */
+  function pauseBudgets(hours){
+    var left=Math.max(0,Number(hours)||0),budget=[];
+    for(var day=0;day<DAYS;day++){
+      var share=Math.min(1,left/Math.max(1,DAYS-day));
+      budget.push(share);left-=share;
+    }
+    return {days:budget,over:left};
+  }
+  var ПАУЗЫ=pauseBudgets(PR.idle), ПАУЗА_ДНЯ=ПАУЗЫ.days;
+  function freeHours(day){
+    return grid[day].reduce(function(sum,cell){return sum+free(day,grid[day].indexOf(cell))},0);
+  }
+  function dayTailCandidates(day){
+    /* Рабочая пауза не открывает день и не встаёт до обеда. Она может
+       закрыть только послеобеденный хвост уже начатой работы или сервиса. */
+    var out=[];
+    for(var slot=T13;slot<=BASE_LAST;slot++){
+      var left=free(day,slot);
+      if(left>1e-8&&left<1-1e-8)out.push([day,slot]);
+    }
+    return out;
+  }
+  function dayPauseCandidates(day){
+    var out=[];
+    /* Даже цельная пауза начинается только после обеда. */
+    for(var slot=T13;slot<=BASE_LAST;slot++)out.push([day,slot]);
+    return out;
+  }
+  function nextGroupedSlot(day,role){
+    /* Форс-мажор важен, но не открывает утро и не порождает паузу до обеда:
+       сначала берём послеобеденный непрерывный блок. Обработка по-прежнему
+       собирается в первое крупное доступное окно дня. */
+    var slots=role.key==='fm'
+      ? [T13,T14,T15,T16,T18,T17,T10,T11,T09,T08,T12]
+      : [T08,T09,T10,T11,T12,T13,T14,T15,T16,T17,T18];
+    for(var i=0;i<slots.length;i++)if(canAdd(day,slots[i],role))return slots[i];
+    return -1;
+  }
+  /* Форс-мажор и обработка занимают максимально крупные свободные блоки.
+     У каждого дня заранее оставляется не более один час под паузу; поэтому
+     обработка не разбрасывается по всем дням и не вытесняет паузу за лимит. */
+  function placeGrouped(role,hours){
+    var left=Math.max(0,Number(hours)||0),lastDay=-1;
+    while(left>1e-8){
+      var bestDay=-1,bestSlot=-1,bestCapacity=0;
+      for(var day=0;day<DAYS;day++){
+        var slot=nextGroupedSlot(day,role),capacity=Math.max(0,freeHours(day)-(ПАУЗА_ДНЯ[day]||0)),
+            sameCapacity=Math.abs(capacity-bestCapacity)<1e-8;
+        if(slot>=0&&(capacity>bestCapacity+1e-8||(sameCapacity&&(day===lastDay||(bestDay!==lastDay&&day<bestDay))))){
+          bestDay=day;bestSlot=slot;bestCapacity=capacity;
+        }
+      }
+      if(bestDay<0||bestCapacity<=1e-8)break;
+      var placed=add(bestDay,bestSlot,role,Math.min(left,bestCapacity));
+      if(placed<=1e-8)break;
+      left-=placed;lastDay=bestDay;
+    }
+    return left;
+  }
+  function postTailCandidates(){
+    var out=[];
+    for(var day=0;day<DAYS;day++)for(var slot=BASE_FIRST;slot<=BASE_LAST;slot++){
+      var cell=grid[day][slot],first=cell.parts[0];
+      /* Обработка занимает только остаток непрерывной цепочки: после
+         логистики либо после блока форс-мажора. Обход идёт слева направо,
+         поэтому в ячейке всегда виден порядок времени, а не замена цвета. */
+      if(first&&(first.key==='log'||first.key==='fm')&&free(day,slot)>1e-8)out.push([day,slot]);
+    }
+    return out;
+  }
+  /* Порядок заполнения после обязательных регулярных ролей: сначала
+     цельный блок форс-мажора. Затем обработка немедленно закрывает все
+     дробные остатки логистики и форс-мажора; лишь её оставшийся объём
+     собирается в крупнейшие окна. Рабочая пауза допустима только после
+     финального дробного хвоста обработки. */
+  var fmLeft=placeGrouped(РОЛИ.fm,PR.fm),
+      postAfterTails=placeExact(РОЛИ.po,PT.post,postTailCandidates()),
+      postLeft=placeGrouped(РОЛИ.po,postAfterTails);
+  function placeDailyPauses(){
+    var left=0;
+    for(var day=0;day<DAYS;day++){
+      var quota=ПАУЗА_ДНЯ[day]||0;
+      /* Сначала закрываем единственный дробный хвост обработки этого дня,
+         затем при наличии полной свободной ячейки ставим цельный час паузы.
+         Форс-мажор и логистика не получают паузу как цветную «добивку». */
+      left+=placeExact(РОЛИ.id,quota,dayTailCandidates(day).concat(dayPauseCandidates(day)));
+    }
+    return left+ПАУЗЫ.over;
+  }
+  var pauseLeft=placeDailyPauses();
+  /* Ничего не прячем: остаток — явная нехватка календарной ёмкости, а не
+     повод дробить другую роль, превысить 1 ч пауз или менять d/projectPlan. */
+  var КАЛЕНДАРНЫЙ_ДЕФИЦИТ={
+    management:managementLeft,promo:promoLeft,forceMajeure:fmLeft,post:postLeft,pause:pauseLeft
+  };
 
   function paint(parts){
+    /* Состав часа читается слева направо по ходу времени. Вертикальное
+       деление путало порядок и не оставляло места для пиктограммы паузы. */
     var at=0,stops=[];
     parts.forEach(function(x){var end=Math.min(1,at+x.h);stops.push(x.c+' '+(at*100).toFixed(2)+'% '+(end*100).toFixed(2)+'%');at=end;});
-    if(at<.999)stops.push('var(--c-bg) '+(at*100).toFixed(2)+'% 100%');
-    return stops.length?'linear-gradient(to bottom,'+stops.join(',')+')':'var(--c-bg)';
+    if(at<.999)stops.push('transparent '+(at*100).toFixed(2)+'% 100%');
+    return stops.length?'linear-gradient(to right,'+stops.join(',')+')':'transparent';
+  }
+  /* Служебные иконки: автомобиль повторяет силуэт из REPORT-B006
+     «Логистика», но без запрещающей диагонали. Обед — ясные вилка и ложка,
+     которые остаются узнаваемыми в компактной ячейке. */
+  var ИКОНКА_ОБЕД='<svg class="wkico lunchico" viewBox="0 0 24 24" fill="none" aria-hidden="true">'
+    +'<path d="M4.5 3.5v6.3M7.5 3.5v6.3M10.5 3.5v6.3M4.5 8h6M7.5 9.8v10.7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>'
+    +'<path d="M17.2 3.5c-1.9 0-3.2 1.9-3.2 4.3s1.3 4.3 3.2 4.3 3.2-1.9 3.2-4.3-1.3-4.3-3.2-4.3ZM17.2 12.1v8.4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  var ИКОНКА_ЛОГ='<svg class="wkico logico" viewBox="10 16 44 34" aria-hidden="true">'
+    +'<g fill="currentColor"><path d="M14 41V29.5a3.5 3.5 0 0 1 3.5-3.5h15a3.5 3.5 0 0 1 3.5 3.5V41z"/>'
+    +'<path d="M36 32h7.6a3.5 3.5 0 0 1 2.9 1.55L50 38.5V41H36z"/><rect x="20.5" y="18.5" width="9" height="5" rx="1.4"/></g>'
+    +'<g fill="currentColor" opacity=".82"><circle cx="22" cy="43" r="4.6"/><circle cx="43" cy="43" r="4.6"/></g></svg>';
+  var ИКОНКА_СЪЁМКА='<svg class="camico" viewBox="0 0 24 24" fill="none" aria-hidden="true">'
+    +'<path d="M4.5 8.5h15v10h-15zM9 8.5l1.35-2h3.3l1.35 2" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>'
+    +'<circle cx="12" cy="13.5" r="2.8" stroke="currentColor" stroke-width="1.8"/></svg>';
+  /* Утверждённый знак «Неэффективное рабочее время» из REPORT-B027:
+     две спокойные вертикальные паузы. В календаре используем сам знак,
+     без круглой подложки уведомления. */
+  var ИКОНКА_ПАУЗА='<svg class="pauseico" viewBox="0 0 64 64" aria-hidden="true">'
+    +'<rect x="23.5" y="20" width="6.5" height="24" rx="2.8" fill="currentColor"/>'
+    +'<rect x="34" y="20" width="6.5" height="24" rx="2.8" fill="currentColor"/></svg>';
+  /* Иконки ролей держат общий 24×24 контейнер и повторяются в календаре
+     и легенде буквально одним SVG. Клиент — залитое сообщение, не человек;
+     учёт — ясный залитый калькулятор с экраном и клавишами. */
+  var ИКОНКА_ОБРАБОТКА='<svg class="roleico pencilico" viewBox="0 0 24 24" fill="none" aria-hidden="true">'
+    +'<g transform="translate(1.9 1.9) scale(.84)"><path d="M5.1 19.6l1.55-5.05L16.45 4.75a2.28 2.28 0 0 1 3.22 3.22L9.87 17.77 5.1 19.6Z" fill="currentColor"/>'
+    +'<path d="m14.92 6.28 3.22 3.22M6.86 17.84l1.28 1.28" stroke="var(--role-cut,#D8EEDF)" stroke-width="1.55" stroke-linecap="round"/></g></svg>',
+      /* Сообщение из блока «Работа с клиентами» calc.html, но не контурное:
+         компактный залитый пузырь с тремя светлыми точками. */
+      ИКОНКА_КЛИЕНТ='<svg class="roleico contactico" viewBox="0 0 24 24" fill="none" aria-hidden="true">'
+    +'<g transform="translate(2.7 2.8) scale(.76)"><path d="M5.2 4.2h13.6a2.4 2.4 0 0 1 2.4 2.4v6.3a2.4 2.4 0 0 1-2.4 2.4h-7.6l-4.9 4.1v-4.1h-1.1a2.4 2.4 0 0 1-2.4-2.4V6.6a2.4 2.4 0 0 1 2.4-2.4Z" fill="currentColor"/>'
+    +'<circle cx="8.8" cy="9.8" r="1.15" fill="var(--role-cut,#FEF3D6)"/><circle cx="12" cy="9.8" r="1.15" fill="var(--role-cut,#FEF3D6)"/><circle cx="15.2" cy="9.8" r="1.15" fill="var(--role-cut,#FEF3D6)"/></g></svg>',
+      /* «Продвижение» — компактная устойчивая версия трёх стоек из calc:
+         общая нижняя линия и три полные скруглённые палочки, как у паузы. */
+      ИКОНКА_ПРОДВИЖЕНИЕ='<svg class="roleico promoico" viewBox="0 0 24 24" fill="none" aria-hidden="true">'
+    +'<g transform="translate(2.65 2.9) scale(.78)" fill="currentColor"><rect x="4" y="19" width="16" height="2.5" rx="1.25"/><rect x="5.8" y="14" width="3.25" height="5" rx="1.25"/><rect x="10.38" y="9.5" width="3.25" height="9.5" rx="1.25"/><rect x="14.96" y="5" width="3.25" height="14" rx="1.25"/></g></svg>',
+      /* Компактный калькулятор: отдельный серый экран и ровно четыре серые
+         клавиши. Между элементами остаётся цвет ячейки — как в портфеле
+         «Управление», без тяжёлого общего корпуса. */
+      ИКОНКА_УЧЁТ='<svg class="roleico calculatorico" viewBox="0 0 24 24" fill="none" aria-hidden="true">'
+    +'<rect x="6.25" y="5.1" width="11.5" height="3.1" rx=".95" fill="currentColor"/>'
+    +'<g fill="currentColor"><rect x="7" y="10.65" width="3.45" height="3.45" rx=".85"/><rect x="13.55" y="10.65" width="3.45" height="3.45" rx=".85"/><rect x="7" y="15.2" width="3.45" height="3.45" rx=".85"/><rect x="13.55" y="15.2" width="3.45" height="3.45" rx=".85"/></g></svg>',
+      ИКОНКА_УПРАВЛЕНИЕ='<svg class="roleico briefcaseico" viewBox="0 0 24 24" fill="none" aria-hidden="true">'
+    +'<g transform="translate(2.15 2.15) scale(.82)"><path d="M9 8V6.1A2.1 2.1 0 0 1 11.1 4h1.8A2.1 2.1 0 0 1 15 6.1V8" stroke="currentColor" stroke-width="2.35" stroke-linecap="round"/>'
+    +'<rect x="3.5" y="8" width="17" height="11" rx="2.4" fill="currentColor"/>'
+    +'<path d="M3.8 12.7h16.4" stroke="var(--role-cut,#E7F0FA)" stroke-width="1.55" stroke-linecap="round"/>'
+    +'<rect x="10.25" y="11.75" width="3.5" height="2" rx=".55" fill="var(--role-cut,#E7F0FA)"/></g></svg>',
+      ИКОНКА_ФОРС_МАЖОР='<svg class="roleico forceico" viewBox="0 0 24 24" fill="none" aria-hidden="true">'
+    +'<g transform="translate(1.85 1.85) scale(.85)"><path d="M4.2 12.35a7.8 7.8 0 0 1 15.6 0H4.2Z" fill="currentColor"/>'
+    +'<path d="M12 12.35v4.75a2.35 2.35 0 0 0 4.7 0v-.65" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>'
+    +'<path d="M5 12.35h14" stroke="var(--role-cut,#E5E7EB)" stroke-width="1.45" stroke-linecap="round"/></g></svg>';
+  var ИКОНКА_РОЛИ={po:ИКОНКА_ОБРАБОТКА,pr:ИКОНКА_ПРОДВИЖЕНИЕ,cl:ИКОНКА_КЛИЕНТ,ac:ИКОНКА_УЧЁТ,mg:ИКОНКА_УПРАВЛЕНИЕ,fm:ИКОНКА_ФОРС_МАЖОР,id:ИКОНКА_ПАУЗА};
+  /* В смешанном часе белая логистика нуждается в тонком контуре, иначе
+     сливается со свободным полем. Обводим только её временной сегмент:
+     никакой рамки вокруг соседней обработки или съёмки. */
+  function logisticsOutline(parts){
+    var at=0,out=[],eps=1e-8;
+    parts.forEach(function(x){
+      var end=Math.min(1,at+x.h);
+      if(x.key==='log'&&end>at+eps){
+        var left=(at*100).toFixed(2),width=((end-at)*100).toFixed(2),
+            first=at<=eps?'12px':'0',last=end>=1-eps?'12px':'0';
+        out.push('<b class="wklogpart" aria-hidden="true" style="--seg-left:'+left+'%;--seg-width:'+width+'%;--log-radius:'+first+' '+last+' '+last+' '+first+'"></b>');
+      }
+      at=end;
+    });
+    return out.join('');
+  }
+  function segmentIcons(parts){
+    var at=0,out=[];
+    function partSvg(icon,klass,center,width){
+      return icon.replace(/class="[^"]+"/, 'class="wkpartico '+klass+'" style="--seg-center:'+center+'%;--seg-width:'+width+'%"');
+    }
+    parts.forEach(function(x){
+      var end=Math.min(1,at+x.h),center=((at+end)/2*100).toFixed(2),width=((end-at)*100).toFixed(2);
+      /* Каждый сегмент получает потенциальный знак. После реальной раскладки
+         сетки подогнатьЗнакиСегментов оставит его только при ширине доли
+         не менее 20px + 4px воздуха с каждой стороны. */
+      if(end>at+1e-8){
+        if(x.key==='sh')out.push(partSvg(ИКОНКА_СЪЁМКА,'camico',center,width));
+        else if(x.key==='log')out.push(partSvg(ИКОНКА_ЛОГ,'logico',center,width));
+        else if(ИКОНКА_РОЛИ[x.key])out.push(partSvg(ИКОНКА_РОЛИ[x.key],x.key==='id'?'pausepartico':'rolepartico '+x.key+'ico',center,width));
+      }
+      at=end;
+    });
+    return out.join('');
   }
   function cellHtml(cell){
-    if(cell.kind==='lunch')return '<i style="background:'+WC.lu+'" title="Обед"><span class="wtxt">Обед</span><span class="wmb" aria-hidden="true">—</span></i>';
-    if(cell.kind==='log')return '<i class="log" title="Логистика"><span class="wtxt">Логистика</span><span class="wmb" aria-hidden="true">—</span></i>';
-    if(cell.kind==='logempty')return '<i class="log-empty" aria-hidden="true"></i>';
-    if(!cell.parts.length)return '<i class="free"></i>';
-    var only=cell.parts[0].n,same=true,shootOnly=true,hatch=false,несъёмка=null;
+    if(cell.kind==='lunch')return '<i class="lunch service" aria-label="Обед">'+ИКОНКА_ОБЕД+'<span class="wservice-label">Обед</span></i>';
+    if(cell.kind==='log')return '<i class="log service" aria-label="Логистика">'+ИКОНКА_ЛОГ+'<span class="wservice-label">Логистика</span></i>';
+    /* После 17:00 в обычный день нет «свободного часа»: смена закончена.
+       Ячейка сохраняет геометрию общей недельной шкалы, но явно отличается
+       от доступного рабочего окна и недоступна планировщику. */
+    if(cell.kind==='off')return '<i class="offshift" aria-label="Вне рабочего дня"></i>';
+    /* Свободная ячейка остаётся действительно пустой: прочерк в середине
+       производственного расписания выглядит как ошибка или отменённая
+       задача, поэтому не показываем его ни дома, ни в сервисном окне. */
+    if(cell.kind==='logempty')return '<i class="free" aria-label="Свободное окно"></i>';
+    if(!cell.parts.length)return '<i class="free" aria-label="Свободное окно"></i>';
+    var only=cell.parts[0].n,same=true,shootOnly=true,hatch=false,full=used(cell)>=1-1e-8,
+        hasPartialService=cell.parts.some(function(x){return x.service});
     cell.parts.forEach(function(x){
       if(x.n!==only)same=false;
-      if(x.key!=='sh'){shootOnly=false;if(!несъёмка)несъёмка=x;}
+      if(x.key!=='sh')shootOnly=false;
       if(x.idle)hatch=true;
     });
-    /* Ячейка может быть визуально поделена между двумя точными долями часа,
-       но подпись всегда называет только один вид работы. В смешанном часу
-       приоритет у несъёмочной части: белый текст остаётся только у чистой
-       съёмки и никогда не ложится на светлую половину обработки. */
-    var label=same?only:(несъёмка?несъёмка.n:only), title=label;
-    return '<i class="'+(hatch?'hatch':'')+'" style="background:'+paint(cell.parts)+'" title="'+title+'">'
-      +'<span class="wtxt '+(shootOnly?'wlbl':'')+'">'+label+'</span>'
-      +'<span class="wmb '+(shootOnly?'wlbl':'wdsh')+'" aria-hidden="true">'+(shootOnly?'₽':'—')+'</span></i>';
+    /* Состав неполного часа читается слева направо. Текст нескольких ролей
+       не склеивается в самой ячейке, но aria даёт точную последовательность
+       и длительности; иконка паузы остаётся на её правом сегменте. */
+    var partsAttr=' data-b008-parts="'+cell.parts.map(function(x){return x.key+':'+x.h.toFixed(6)}).join(',')+'"',
+        aria=cell.parts.map(function(x){return x.n+', '+Math.round(x.h*60)+' мин'}).join(' · '),
+        segmentIcos=segmentIcons(cell.parts);
+    if(hasPartialService)return '<i class="service-partial '+(hatch?'hatch':'')+'" style="background:'+paint(cell.parts)+'" aria-label="'+aria+'"'+partsAttr+'>'+logisticsOutline(cell.parts)+segmentIcos+'</i>';
+    if(!same||!full)return '<i class="'+(hatch?'hatch':'')+'" style="background:'+paint(cell.parts)+'" aria-label="'+aria+'"'+partsAttr+'>'+segmentIcos+'</i>';
+    var roleKey=cell.parts[0].key,roleIcon=ИКОНКА_РОЛИ[roleKey]||'',
+        /* Десктоп: полная роль читается подписью, без знака рядом. Камера
+           остаётся единственным исключением среди ролей. Телефон получает
+           обратное представление — только знак, без длинной подписи. */
+        метка=shootOnly
+          ? '<span class="wtxt wlbl shoot-label">'+ИКОНКА_СЪЁМКА+'<em>'+only+'</em></span>'
+          : '<span class="wtxt">'+only+'</span>',
+        mobileIcon=shootOnly?ИКОНКА_СЪЁМКА:roleIcon;
+    return '<i class="'+(hatch?'hatch':'')+'" style="background:'+paint(cell.parts)+'" aria-label="'+only+'"'+partsAttr+'>'
+      +метка+(mobileIcon?'<span class="wmb" aria-hidden="true">'+mobileIcon+'</span>':'')+'</i>';
   }
   function weekHtml(week){
     var html='<div class="wk-week" data-week="Неделя '+(week+1)+'"><div></div>'+WK.map(function(w){return '<div class="hd">'+w+'</div>'}).join('');
     for(var slot=0;slot<SLOTS;slot++){
       var hour=H0+slot;
-      html+='<div class="hr">'+(hour<10?'0':'')+hour+':00</div>';
+      html+='<div class="hr'+(slot===0?' hr-start':'')+'">'+(hour<10?'0':'')+hour+':00</div>';
       for(var day=0;day<5;day++)html+='<div class="wk-cell" data-day="'+day+'" data-hour="'+hour+'">'+cellHtml(grid[week*5+day][slot])+'</div>';
     }
-    /* 20:00 — нижняя граница последнего интервала, окончание рабочего дня. */
-    html+='<div class="hr hr-end" aria-label="Окончание рабочего дня">20:00</div>';
+    /* 19:00 — нижняя граница последнего интервала, окончание рабочего дня. */
+    html+='<div class="hr hr-end" aria-label="Окончание рабочего дня">19:00</div>';
     return html+'</div>';
   }
   var weekMarkup='';
   for(var week=0;week<WEEKS;week++)weekMarkup+=weekHtml(week);
+  /* Частичный знак не привязан к «desktop/mobile» условно. Его 20px силуэт
+     остаётся, пока конкретная цветовая доля имеет минимум 28px ширины:
+     20px самого знака и по 4px спокойного отступа по краям. */
+  function подогнатьЗнакиСегментов(){
+    if(!wkNode)return;
+    Array.prototype.forEach.call(wkNode.querySelectorAll('.wkpartico'),function(icon){
+      var cell=icon.parentNode,cellWidth=cell&&((cell.getBoundingClientRect&&cell.getBoundingClientRect().width)||cell.clientWidth||0),
+          share=parseFloat(icon.style.getPropertyValue('--seg-width'))||0;
+      /* JSDOM и скрытый контейнер не имеют геометрии: не портим разметку
+         ложным «не помещается», браузер повторит проверку при resize. */
+      if(cellWidth<=0)return;
+      icon.style.display=cellWidth*share/100>=28?'block':'none';
+    });
+  }
   var wkNode=$('wk');
-  if(wkNode){wkNode.classList.toggle('wk-plan',WEEKS>1);wkNode.innerHTML=weekMarkup;}
+  if(wkNode){
+    wkNode.classList.toggle('wk-plan',WEEKS>1);wkNode.innerHTML=weekMarkup;
+    (window.requestAnimationFrame||function(fn){fn();})(подогнатьЗнакиСегментов);
+    if(window.ResizeObserver){
+      try{new ResizeObserver(подогнатьЗнакиСегментов).observe(wkNode)}catch(e){}
+    }else window.addEventListener('resize',подогнатьЗнакиСегментов);
+  }
+  /* Неразмещённое время не исчезает и не маскируется заливкой. Такое
+     состояние появляется только при действительно несовместимом объёме:
+     правила 8-часового дня, двух дорог для съёмки и 1 ч паузы в день не
+     позволяют незаметно вытеснить или исказить другую работу. */
+  var дефицитПодписи={management:'управление',promo:'продвижение',forceMajeure:'форс-мажоры',post:'обработка',pause:'рабочие паузы'},
+      дефицитСтроки=[],дефицитМинут=0;
+  Object.keys(КАЛЕНДАРНЫЙ_ДЕФИЦИТ).forEach(function(key){
+    var hours=Math.max(0,КАЛЕНДАРНЫЙ_ДЕФИЦИТ[key]||0),minutes=Math.round(hours*60);
+    if(minutes>0){дефицитМинут+=minutes;дефицитСтроки.push(дефицитПодписи[key]+' — '+minutes+' мин');}
+  });
+  var wkShort=$('wkShort');
+  if(wkShort){
+    wkShort.hidden=!дефицитСтроки.length;
+    wkShort.innerHTML=дефицитСтроки.length
+      ? '<b>Календарной ёмкости не хватает на '+дефицитМинут+' мин.</b> Не размещено: '
+        +дефицитСтроки.join(', ')+'. Часы не смешаны и не отброшены: измените объём плана или расширьте рабочий горизонт.'
+      : '';
+  }
 
   /* --- легенда цветов под сеткой (13.09, повторный: возврат на
      прежнее место, как было размещено ранее) --- */
@@ -8342,33 +8907,37 @@ var t=-Math.PI/2 - Math.PI/6, секторы=[];
   var wlg=$('wklg');
   if(wlg){
     function слгЭл(x){
-      var ноль=(x[3]||0)<=0.005?' — 0 ч':'';
-      return '<span><i'+(x[2]?' class="hatch"':'')+' style="background:'+x[0]+'"></i>'+x[1]+ноль+'</span>';
+      if(x[3]){
+        var icon=ИКОНКА_РОЛИ[x[3]];
+        /* Каждая скрытая роль сохраняет в легенде собственную цветовую
+           подложку — тот же цвет, что в календаре. */
+        return '<span><i class="slg-service-icon rolelegend '+(x[3]==='id'?'pauselegend':'')+'" style="--legend-bg:'+x[0]+'" aria-hidden="true">'+icon+'</i>'+x[1]+'</span>';
+      }
+      return '<span><i'+(x[2]?' class="hatch"':'')+' style="background:'+x[0]+'"></i>'+x[1]+'</span>';
     }
-    /* Легенда — полный словарь модели, даже если на этой неделе вид равен 0.
-       Нулевое время не рисуется в кольцах, но не должно исчезать из линейного
-       календаря и расшифровки: работа остаётся частью модели. */
-    var СКР=[[WC.po,'\u041e\u0431\u0440\u0430\u0431\u043e\u0442\u043a\u0430',false,poW],
-             [WC.pr,'\u041f\u0440\u043e\u0434\u0432\u0438\u0436\u0435\u043d\u0438\u0435',false,prW],
-             [WC.cl,'\u0420\u0430\u0431\u043e\u0442\u0430 \u0441 \u043a\u043b\u0438\u0435\u043d\u0442\u043e\u043c',false,clW],
-             [WC.ac,'\u0423\u0447\u0451\u0442',false,acW],
-             [WC.id,'\u0420\u0430\u0431\u043e\u0447\u0438\u0435 \u043f\u0430\u0443\u0437\u044b',false,idW],
-             [WC.fm,'\u0424\u043e\u0440\u0441-\u043c\u0430\u0436\u043e\u0440\u044b',true,fmW],
-             [WC.mg,'\u0423\u043f\u0440\u0430\u0432\u043b\u0435\u043d\u0438\u0435',false,mgW]];
-    var логПодпись=ОТДЕЛЬНОЕ_ПОМЕЩЕНИЕ
-      ? 'Логистика — 1 ч до начала и 1 ч после окончания рабочего дня'
-      : 'Логистика — 1 ч до и 1 ч после съёмки';
-    var пустаяЛогистика='';
+    function слгСлужебный(вид,иконка,текст){
+      return '<span class="slg-service"><i class="'+вид+' slg-service-icon" aria-hidden="true">'+иконка+'</i>'+текст+'</span>';
+    }
+    /* Легенда — словарь цветов и иконок. Она объясняет обозначения,
+       а не показывает объём часов, поэтому остаётся одинаковой при любом
+       плане, включая нулевые роли. */
+    var СКР=[[WC.po,'\u041e\u0431\u0440\u0430\u0431\u043e\u0442\u043a\u0430',false,'po'],
+             [WC.pr,'\u041f\u0440\u043e\u0434\u0432\u0438\u0436\u0435\u043d\u0438\u0435',false,'pr'],
+             [WC.cl,'\u0420\u0430\u0431\u043e\u0442\u0430 \u0441 \u043a\u043b\u0438\u0435\u043d\u0442\u043e\u043c',false,'cl'],
+             [WC.ac,'\u0423\u0447\u0451\u0442',false,'ac'],
+             [WC.id,'\u0420\u0430\u0431\u043e\u0447\u0438\u0435 \u043f\u0430\u0443\u0437\u044b',false,'id'],
+             [WC.fm,'\u0424\u043e\u0440\u0441-\u043c\u0430\u0436\u043e\u0440\u044b',true,'fm'],
+             [WC.mg,'\u0423\u043f\u0440\u0430\u0432\u043b\u0435\u043d\u0438\u0435',false,'mg']];
     wlg.innerHTML='<div class="slg-h">Условные обозначения</div>'
       +'<div class="slg-g"><b class="slg-t">Оплачиваемое время:</b>'
-      +'<span><i style="background:'+WC.sh+'"></i>Съёмка'+(shW<=0.005?' — 0 ч':'')+'</span></div>'
+      +'<span class="slg-service"><i class="slg-service-icon" style="background:'+WC.sh+';border-color:'+WC.sh+'" aria-hidden="true">'+ИКОНКА_СЪЁМКА+'</i>Съёмка</span></div>'
       +'<div class="slg-g"><b class="slg-t">Скрытая работа</b>'
       +'<span class="slg-note">(не оплачивается напрямую, но входит в состав стоимости съёмочного часа):</span>'
       +СКР.filter(function(x){return x[1].trim()}).map(слгЭл).join('')+'</div>'
       +'<div class="slg-g"><b class="slg-t">Неоплаченное время</b>'
       +'<span class="slg-note">(не входит в стоимость съёмочного часа, но всегда выделяется):</span>'
-      +'<span><i style="background:'+WC.id+'"></i>Обед — 14:00–15:00</span>'
-      +'<span><i class="log"></i>'+логПодпись+'</span>'+пустаяЛогистика+'</div>';
+      +слгСлужебный('lunch',ИКОНКА_ОБЕД,'Обед')
+      +слгСлужебный('log',ИКОНКА_ЛОГ,'Логистика')+'</div>';
 
   }
 
@@ -8402,28 +8971,43 @@ var t=-Math.PI/2 - Math.PI/6, секторы=[];
      месяцев и на часы съёмки (÷ d.sh). --- */
   /* Таблица, в отличие от кольцевых диаграмм, показывает все виды работы.
      Так нулевое управление или резерв не маскируются под отсутствие задачи. */
-  var ВТ=[['\u0421\u044a\u0451\u043c\u043a\u0430',d.sh],
-          ['\u041e\u0431\u0440\u0430\u0431\u043e\u0442\u043a\u0430',d.post],
-          ['\u041f\u0440\u043e\u0434\u0432\u0438\u0436\u0435\u043d\u0438\u0435',d.promo],
-          ['\u0420\u0430\u0431\u043e\u0442\u0430 \u0441 \u043a\u043b\u0438\u0435\u043d\u0442\u043e\u043c',d.clT],
-          ['\u0423\u0447\u0451\u0442',d.accT],
-          ['\u0420\u0430\u0431\u043e\u0447\u0438\u0435 \u043f\u0430\u0443\u0437\u044b',d.idle],
-          ['\u0424\u043e\u0440\u0441-\u043c\u0430\u0436\u043e\u0440\u044b',d.fmT||0],
-          ['\u0423\u043f\u0440\u0430\u0432\u043b\u0435\u043d\u0438\u0435',d.mgmtT||0]];
+  var ВТ=[
+          ['\u0421\u044a\u0451\u043c\u043e\u0447\u043d\u044b\u0445 \u0447\u0430\u0441\u043e\u0432',d.sh,'hours'],
+          ['\u0421\u044a\u0451\u043c\u043e\u0447\u043d\u044b\u0445 \u043f\u0440\u043e\u0435\u043a\u0442\u043e\u0432',d.py||0,'projects'],
+          ['\u041e\u0431\u0440\u0430\u0431\u043e\u0442\u043a\u0430',d.post,'hours'],
+          ['\u041f\u0440\u043e\u0434\u0432\u0438\u0436\u0435\u043d\u0438\u0435',d.promo,'hours'],
+          ['\u0420\u0430\u0431\u043e\u0442\u0430 \u0441 \u043a\u043b\u0438\u0435\u043d\u0442\u043e\u043c',d.clT,'hours'],
+          ['\u0423\u0447\u0451\u0442',d.accT,'hours'],
+          ['\u0420\u0430\u0431\u043e\u0447\u0438\u0435 \u043f\u0430\u0443\u0437\u044b',d.idle,'hours'],
+          ['\u0424\u043e\u0440\u0441-\u043c\u0430\u0436\u043e\u0440\u044b',d.fmT||0,'hours'],
+          ['\u0423\u043f\u0440\u0430\u0432\u043b\u0435\u043d\u0438\u0435',d.mgmtT||0,'hours']];
   function чТ(x){
     if(!isFinite(x)||Math.abs(x)<0.005)x=0;
     return x.toLocaleString('ru-RU',{minimumFractionDigits:0,maximumFractionDigits:2})+'\u00a0\u0447';
   }
+  function прТ(x){
+    /* За периодом может остаться только часть проектной ёмкости. Она уже
+       распределена по существующим съёмкам в projectPlan, а не является
+       отдельным заказом; поэтому в витрине показываем целое число готовых
+       проектов вниз, без десятых и без искусственного нового проекта. */
+    var n=(!isFinite(x)||x<=0)?0:Math.floor(x+1e-8),word;
+    if(n%100>=11&&n%100<=14)word='проектов';
+    else if(n%10===1)word='проект';
+    else if(n%10>=2&&n%10<=4)word='проекта';
+    else word='проектов';
+    return n.toLocaleString('ru-RU')+'\u00a0'+word;
+  }
   var wtB=$('wtBd');
-  /* 15.09 (слово владельца): первый столбец — наименования видов
-     времени (₽ и прочерки живут в календаре, в таблице не должны
-     быть). */
+  /* Первый столбец различает съёмочные часы и число проектов. Проект не
+     бывает долей часа: в колонке «за 1 час съёмки» ставим прочерк, а для
+     недели, месяца и года используем дискретные завершённые проекты. */
   if(wtB)wtB.innerHTML=ВТ.map(function(x){
+    var isProjects=x[2]==='projects',formatter=isProjects?прТ:чТ;
     return '<tr><td>'+x[0]+'</td>'
-      +'<td>'+(d.sh>0?чТ(x[1]/d.sh):'\u2014')+'</td>'
-      +'<td>'+чТ(x[1]/NWv)+'</td>'
-      +'<td>'+чТ(x[1]/12)+'</td>'
-      +'<td>'+чТ(x[1])+'</td></tr>';
+      +'<td>'+(isProjects?'\u2014':(d.sh>0?formatter(x[1]/d.sh):'\u2014'))+'</td>'
+      +'<td>'+formatter(x[1]/NWv)+'</td>'
+      +'<td>'+formatter(x[1]/12)+'</td>'
+      +'<td>'+formatter(x[1])+'</td></tr>';
   }).join('');
 
   /* З-137 (слово владельца 27.08): уведомление «За неделю у вас …
@@ -10095,11 +10679,20 @@ var _p=$('dlpdf'); if(_p)_p.onclick=function(){if(window.PHR_PRINT)window.PHR_PR
      одновременно окупить каждую покупку. */
   var прибыль=Number(Д.profitY)||0,
       срок=Number(Д.investmentPaybackYears);
+  /* Срок показывается целыми месяцами, а не десятичной дробью года.
+     Округление вверх не обещает окупаемость раньше расчётного срока. */
+  function склонение(n,формы){
+    var остаток100=Math.abs(n)%100,остаток10=Math.abs(n)%10;
+    if(остаток100>=11&&остаток100<=14)return формы[2];
+    if(остаток10===1)return формы[0];
+    if(остаток10>=2&&остаток10<=4)return формы[1];
+    return формы[2];
+  }
   function периодОкупаемости(n){
-    var x=Math.round(n*10)/10, i=Math.floor(x), слово;
-    if(x!==i)слово='года';
-    else {var d1=i%10,d2=i%100; слово=(d2>=11&&d2<=14)?'лет':(d1===1?'год':(d1>=2&&d1<=4?'года':'лет'));}
-    return {число:x.toLocaleString('ru-RU'),слово:слово};
+    var месяцев=Math.max(0,Math.ceil(n*12-1e-9)),лет=Math.floor(месяцев/12),остаток=месяцев%12,части=[];
+    if(лет)части.push(лет+' '+склонение(лет,['год','года','лет']));
+    if(остаток)части.push(остаток+' '+склонение(остаток,['месяц','месяца','месяцев']));
+    return части.length?части.join(' и '):'меньше месяца';
   }
   var пл=document.getElementById('инвПлашка');
   if(прибыль>0 && isFinite(срок)){
@@ -10112,8 +10705,8 @@ var _p=$('dlpdf'); if(_p)_p.onclick=function(){if(window.PHR_PRINT)window.PHR_PR
         +'<rect x="19.81" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 24.86 16)" fill="var(--c-b-600)"/>'
         +'<rect x="10.95" y="19.81" width="10.10" height="10.10" rx="1.90" transform="rotate(45 16 24.86)" fill="var(--c-b-600)"/>'
         +'<rect x="2.09" y="10.95" width="10.10" height="10.10" rx="1.90" transform="rotate(45 7.14 16)" fill="var(--c-b-600)"/></svg>'
-        +'<div class="dsh">Ваше вложение окупится за</div>'
-        +'<div class="dsb">'+период.число+' '+период.слово+'</div>'
+        +'<div class="dsh">Ваши вложения окупятся за</div>'
+        +'<div class="dsb">'+период+'</div>'
         +'<div class="dsl">После возврата инвестиций вы сможете направить эти средства на развитие бизнеса или увеличить личный доход.</div>';
     }
   }else if(пл){

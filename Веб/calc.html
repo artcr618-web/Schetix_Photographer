@@ -3208,7 +3208,7 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 <div class="qf focus-field time-field period-field"><div class="qf-input"><input type="number" inputmode="decimal" data-limit-live data-step-live id="mgmt_amt" value="2" min="1" max="20" step="1"><span class="un">часов</span></div><select id="mgmt_per"><option value="day">В день</option><option value="week" selected>В неделю</option><option value="month">В месяц</option></select></div>
 <div class="zapn">По умолчанию выведено минимальное количество времени, которое необходимо фотографу для управления своим делом. Вы можете использовать его или указать собственное.</div>
 <div class="post-exclude"><p>Работа на себя — это тоже бизнес, сжатый до границ одного человека. Он подчиняется тем же законам, что и крупная корпорация, но гораздо более трудоёмкий в управлении. <b>Ведь управлять вам приходится самым проблемным сотрудником — самим собой.</b></p><p>Вы это делаете, когда принимаете решение поднять цену, дать скидку клиенту, подключить новый канал продвижения или договориться о партнёрстве.</p><p><b>Это ежедневный управленческий труд, о котором большинство работающих на себя фотографов предпочитают не думать.</b></p></div>
-<label class="exc"><input type="checkbox" data-exc="FormMgmt" checked>Не учитывать в расчёте</label>
+<label class="exc"><input type="checkbox" data-exc="FormMgmt">Не учитывать в расчёте</label>
 
 </div>
 
@@ -3869,7 +3869,7 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 
 <div class="zap">
 <div class="zaph">
-<label class="flag"><input type="checkbox" id="fm_on">Учитывать резерв времени на простой и форс-мажоры</label>
+<label class="flag"><input type="checkbox" id="fm_on" checked>Учитывать резерв времени на простой и форс-мажоры</label>
 </div>
 <div class="zaprow">
 <input type="range" id="fm_pct" min="0" max="15" step="1" value="5" disabled>
@@ -3889,7 +3889,7 @@ animation:thx-полёт var(--t,1.05s) cubic-bezier(.15,.7,.3,1) forwards}
 
 <div class="zap">
 <div class="zaph">
-<label class="flag"><input type="checkbox" id="disc_on">Заложить запас на скидку</label>
+<label class="flag"><input type="checkbox" id="disc_on" checked>Заложить запас на скидку</label>
 </div>
 <div data-t="qd_23" class="qd">Без этого запаса получится давать только небольшие скидки за объём или фактически доплачивать клиенту из своего кармана.</div>
 <div class="zapn" data-t="qd_23b">Внутри готовая программа лояльности на целый год + комплект подарочных сертификатов.</div>
@@ -5466,10 +5466,11 @@ function calc(){
 
      Весь остаток проектной ёмкости сохраняется: после N клиентских блоков
      он делится между съёмкой и обработкой в утверждённой пропорции 1:K.
-     Индивидуальные длительности плана нужны B008: полные полчаса хвоста
-     распределяются между проектами максимально ровно, а остаток меньше
-     получаса прикрепляется к первому. Шаг 0,5 ч — шаг поля shoot_manual,
-     а не дополнительный минимум, введённый алгоритмом. */
+     Индивидуальные длительности плана нужны B008. Хвост сначала делится
+     только целыми часами между уже созданными проектами по кругу. Лишь
+     остаток меньше часа присоединяется следующему проекту одной точной
+     дробью: час не превращается в две добавки по полчаса. Шаг 0,5 ч —
+     шаг поля shoot_manual, а не дополнительный минимум алгоритма. */
   var ptMin=S*M+cl, projectWeek=NW>0?pool/NW:0;
   var planWeeks=1, periodPool=projectWeek, projectCount=0,
       clientPeriod=0, shootPeriod=0, postPeriod=0, planProjects=[];
@@ -5481,13 +5482,15 @@ function calc(){
     shootPeriod=Math.max(0,(periodPool-clientPeriod)/M);
     postPeriod=shootPeriod*K;
 
-    var tail=Math.max(0,shootPeriod-projectCount*S), step=0.5;
-    var halfUnits=Math.floor(tail/step+1e-10), perProject=Math.floor(halfUnits/projectCount),
-        extraUnits=halfUnits%projectCount, exactRest=tail-halfUnits*step;
+    var tail=Math.max(0,shootPeriod-projectCount*S);
+    var wholeHours=Math.floor(tail+1e-10), fullRounds=Math.floor(wholeHours/projectCount),
+        extraHours=wholeHours%projectCount, exactRest=tail-wholeHours;
     if(Math.abs(exactRest)<1e-9)exactRest=0;
     for(var projectIndex=0;projectIndex<projectCount;projectIndex++){
-      var extra=perProject*step+(projectIndex<extraUnits?step:0);
-      if(projectIndex===0)extra+=exactRest;
+      /* Сначала целые часы: по одному проектам по кругу. Дробный хвост
+         получает следующий проект после тех, кому достались целые часы. */
+      var extra=fullRounds+(projectIndex<extraHours?1:0);
+      if(exactRest>0&&projectIndex===extraHours)extra+=exactRest;
       var shootHours=S+extra;
       planProjects.push({shoot:shootHours,post:shootHours*K,client:cl});
     }
